@@ -1,0 +1,26 @@
+# Compiled Source #
+###################
+*.o
+*.a
+
+# Code Editor #
+###############
+*.swo
+*.swp
+*~
+*.un~
+
+# OSX Generated Files #
+#######################
+.DS_*
+.Spot*
+.Trash*
+._*
+.fseve*
+
+# Other #
+#########
+*.nfs*
+minishell
+a.out
+tags
