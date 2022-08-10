@@ -8,9 +8,6 @@
 
 # //////////////////////// CHRISTEL
 
-> fix builtin
-- blablablabla
-
 # //////////////////////// TO DO
 
 
