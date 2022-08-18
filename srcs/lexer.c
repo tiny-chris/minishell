@@ -48,6 +48,85 @@ int	ft_quote(char *line)
 	return (0);
 }
 
+/* on compte le nombre de pipes hors quotes 
+*/
+
+int	ft_count_pipe(char *line)
+{
+	int		count;
+	int		i;
+	char	c;
+
+	i = 0;
+	count = 0;
+	while (line[i])
+	{
+		if (line[i] == 34 || line[i] == 39)
+		{
+			c = line[i];
+			while (line[i] != c)
+				i++;
+		}
+		else if (line[i] == '|')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+int	ft_pipe(char *line)
+{
+	int		i;
+	int		count;
+	char	c;
+
+	i = 0;
+	count = ft_count_pipe(line);
+	while (line[i] && count)
+	{
+		if (i == 0)
+		{
+			if (i == 0 && line[i] == '|')
+				return (1);
+			if (i == 0 && line[i] == ' ')
+			{
+				while (line[i] && line[i] == ' ')
+					i++;
+				if (line[i] == '|')
+					return (1);
+			}
+			if (line[i] == 34 || line[i] == 39)
+			{
+				c = line[i];
+				while (line[i] != c)
+					i++;	
+			}
+			while (line[i] && line[i] != '|')
+				i++;
+		}
+		i++;
+		if (line[i] == '\0' || line[i] == '|')
+			return (1);
+		if (line[i] == ' ')
+		{
+			while (line[i] && line[i] == ' ')
+				i++;
+			if (line[i] == '\0' || line[i] == '|')
+				return (1);
+		}
+		if (line[i] == 34 || line[i] == 39)
+		{
+			c = line[i];
+			while (line[i] != c)
+				i++;
+		}
+		while (line[i] && line[i] != '|')
+			i++;
+		count--;
+	}
+	return(0);
+}
+
 int	ft_lexer(char *line)
 {
 	if (!line)
@@ -55,6 +134,8 @@ int	ft_lexer(char *line)
 	else 
 	{
 		if (ft_quote(line) == 1)
+			return (1);
+		if (ft_pipe(line) == 1)
 			return (1);
 	}
 	return (0);
