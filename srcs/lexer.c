@@ -74,6 +74,32 @@ int	ft_count_pipe(char *line)
 	return (count);
 }
 
+int	ft_first_pipe(char *line)
+{
+	int		i;
+	char	c;
+
+	i = 0;
+	if (line[i] == '|')
+		return (1);
+	if (line[i] == ' ')
+	{
+		while (line[i] && line[i] == ' ')
+			i++;
+		if (line[i] == '|')
+			return (1);
+	}
+	if (line[i] == 34 || line[i] == 39)
+	{
+		c = line[i];
+		while (line[i] != c)
+			i++;	
+	}
+	while (line[i] && line[i] != '|')
+		i++;
+	return (i);
+}
+
 int	ft_pipe(char *line)
 {
 	int		i;
@@ -85,25 +111,7 @@ int	ft_pipe(char *line)
 	while (line[i] && count)
 	{
 		if (i == 0)
-		{
-			if (i == 0 && line[i] == '|')
-				return (1);
-			if (i == 0 && line[i] == ' ')
-			{
-				while (line[i] && line[i] == ' ')
-					i++;
-				if (line[i] == '|')
-					return (1);
-			}
-			if (line[i] == 34 || line[i] == 39)
-			{
-				c = line[i];
-				while (line[i] != c)
-					i++;	
-			}
-			while (line[i] && line[i] != '|')
-				i++;
-		}
+			i = ft_first_pipe(line);
 		i++;
 		if (line[i] == '\0' || line[i] == '|')
 			return (1);

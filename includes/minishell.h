@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/18 16:59:42 by marvin           ###   ########.fr       */
+/*   Updated: 2022/08/18 17:50:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	ft_free_env(t_env **env);
 
 int		ft_quote(char *line);
 int		ft_pipe(char *line);
+int		ft_first_pipe(char *line);
 int		ft_count_pipe(char *line);
 int		ft_lexer(char *line);
 
