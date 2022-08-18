@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/17 17:36:05 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/08/18 11:38:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ t_env	*ft_get_env(char **envp);
 int		ft_lstadd_env(t_env **env, char *envp);
 t_env	*ft_lstlast_env(t_env *lst);
 int		ft_new_strchr(const char *s, int c);
+void	ft_lstdelone_env(t_env *node);
+void	ft_free_env(t_env **env);
 
 #endif

@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/08/17 16:25:36 by lmelard          ###   ########.fr        #
+#    Updated: 2022/08/18 11:28:46 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = ./srcs/minishell.c
+SRCS = 	./srcs/minishell.c \
+		./srcs/env.c
 
 OBJS = ${SRCS:.c=.o}
 
