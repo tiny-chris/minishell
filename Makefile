@@ -6,18 +6,20 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/08/18 11:28:46 by marvin           ###   ########.fr        #
+#    Updated: 2022/08/18 12:24:41 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS = 	./srcs/minishell.c \
+		./srcs/utils.c \
 		./srcs/env.c
 
 OBJS = ${SRCS:.c=.o}
 
-CC = clang
+#CC = clang
+CC = gcc
 RM = rm -rf
 
 CFLAGS = -Wall -Werror -Wextra

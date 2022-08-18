@@ -12,22 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int	ft_new_strchr(const char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == (char)c)
-			return (i++);
-		i++;
-	}
-	if ((char)c == '\0' && s[i] == '\0')
-		return (0);
-	return (0);
-}
-
 t_env	*ft_lstlast_env(t_env *lst)
 {
 	t_env	*node;
@@ -49,7 +33,7 @@ int	ft_lstadd_env(t_env **env, char *envp)
 	new = malloc(sizeof(t_env));
 	if (!new)
 	{
-		ft_lstclear_env(env)
+		ft_free_env(env);
 		return (1);
 	}
 	equal = ft_new_strchr(envp, '=');
