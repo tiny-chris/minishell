@@ -10,7 +10,7 @@
 
 # //////////////////////// TO DO
 
->		Free t_env *env in main.c
+>		reset the compilator to 'clang' !! (modified to gcc for valgrind use)
 
 
 ##  WTF
