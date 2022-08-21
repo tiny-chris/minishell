@@ -6,53 +6,58 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/08/18 14:42:22 by marvin           ###   ########.fr        #
+#    Updated: 2022/08/21 19:52:41 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME	=	minishell
 
-SRCS = 	./srcs/minishell.c \
-		./srcs/utils.c \
-		./srcs/env.c \
-		./srcs/lexer.c
+#CC		=	clang
+CC		=	gcc
+RM		=	rm -rf
+#INC		=	-I./includes -I./libft
+CFLAGS	=	-Wall -Werror -Wextra
+LIBFLAGS =	-L./libft -lft
 
-OBJS = ${SRCS:.c=.o}
+SRCS 	= 	minishell.c \
+			utils.c \
+			env.c \
+			lexer.c
 
-#CC = clang
-CC = gcc
-RM = rm -rf
+SRCDIR	=	srcs
+OBJDIR	=	objs
 
-CFLAGS = -Wall -Werror -Wextra
+SOURCES	:=	${addprefix ${SRCDIR}/, ${SRCS}}
+OBJS	:=	${SOURCES:${SRCDIR}/%.c=${OBJDIR}/%.o}
 
-LIBFLAGS = -L./libft -lft
-
-.c.o:
-#	${CC} ${CFLAGS} -g3 -lreadline -c $< -o ${<:.c=.o}
-	${CC} ${CFLAGS} -g3 -c $< -o ${<:.c=.o}
+${OBJDIR}/%.o: ${SRCDIR}/%.c
+			@[ ! -d ${OBJDIR} ] && mkdir -p ${OBJDIR} || true
+			@${CC} ${CFLAGS} -c $< -o $@
+#			@${CC} ${CFLAGS} -c ${INC} $< -o $@
 
 all: ${NAME}
 
 $(NAME): ${OBJS}
-	@echo "Compiling the libft..."
-	@make -C libft
-	@echo "Compiling the mandatory part..."
-#	${CC} ${CFLAGS} -g3 -lreadline -o ${NAME} ${OBJS} ${LIBFLAGS}
-	${CC} ${CFLAGS} -g3 -o ${NAME} ${OBJS} ${LIBFLAGS} -lreadline
-	@echo "---> minishell is ready to be used <---"
+			@echo "Compiling the libft..."
+			@make -C libft
+			@echo "Compiling the mandatory part..."
+#			${CC} ${CFLAGS} -g3 -lreadline -o ${NAME} ${OBJS} ${LIBFLAGS}
+			${CC} ${CFLAGS} -g3 -o ${NAME} ${OBJS} ${LIBFLAGS} -lreadline
+			@echo "---> minishell is ready to be used <---"
 
 clean:
-	@echo "Removing libft's objects..."
-	@make clean -C libft
-	@echo "Removing objects..."
-	${RM} ${OBJS}
+			@echo "Removing libft's object files..."
+			@make clean -C libft
+			@echo "Removing minishell mandatory's object files..."
+			${RM} ${OBJS}
+			${RM} ${OBJDIR}
 
-fclean: clean
-	@echo "Removing libft archive..."
-	@make fclean -C libft
-	@echo "Removing minishell ..."
-	${RM} ${NAME}
+fclean: 	clean
+			@echo "Removing libft's archive..."
+			@make fclean -C libft
+			@echo "Removing binary files..."
+			${RM} ${NAME}
 
-re: fclean all
+re: 		fclean all
 
-.PHONY: all clean fclean re
+.PHONY: 	all clean fclean re
