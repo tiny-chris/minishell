@@ -11,6 +11,7 @@
 ##  Parsing
 ##  Termios
 ##  Tests
+##  Valgrind check
 
 ##  Misc
 
@@ -370,3 +371,7 @@ Should not write 'salut' while 'yes' command is running:
     $ yes<CR>
     $ salut<CR>
     $ <C-C>
+
+##  Valgrind check
+
+valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --suppressions=.ignore_readline ./minishell
