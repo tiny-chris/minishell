@@ -3,14 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/18 14:10:16 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/18 14:10:16 by marvin           ###   ########.fr       */
+/*   Created: 2022/08/24 14:55:03 by cgaillag          #+#    #+#             */
+/*   Updated: 2022/08/24 14:55:03 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/*	2 étapes
+	1. check contenu i+1
+		- espaces uniquement
+		- quotes fermées directement (simples ou doubles)
+		-
+	2. check file
+*/
+int	ft_check_redir(char *line, int i)
+{
+	int		j;
+	char	q;
+
+	j = i;
+	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62))
+	{
+		if (j == i && line[j] == ' ')
+		{
+			while (line[j] && line[j] == ' ')
+				j++;
+			if ((line[j] == '\0') || (line[j] == '|') || (line[j] == 60) || (line[j] == 62))
+				return (-1);
+		}
+		if (line[j] == 34 || line[j] == 39)
+		{
+			q = line[j];
+			j++;
+			if (line[j] == q)
+				return (-1);
+		}
+		j++;
+	}
+	if (j == i)
+		return (-1);
+	return (j - 1);
+}
+
+/*	check 'chevrons'
+**	val ASCII redir infile : 60
+**	val ASCII redir outfile : 62
+*/
+int	ft_redir(char *line)
+{
+	int		i;
+	char	q;
+	char	c;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == 34 || line[i] == 39)
+		{
+			q = line[i];
+			while (line[i] != q)
+				i++;
+		}
+		else if (line[i] == 60 || line[i] == 62)
+		{
+			c = line[i];
+			i++;
+			if (line[i] == c)
+				i++;
+			i = ft_check_redir(line, i);
+			if (i == -1)
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
 
 /*	check if 'quotes englobantes' sont bien fermées
 **	val ASCII simple quote : 39
@@ -48,7 +118,7 @@ int	ft_quote(char *line)
 	return (0);
 }
 
-/* on compte le nombre de pipes hors quotes 
+/* on compte le nombre de pipes hors quotes
 */
 
 int	ft_count_pipe(char *line)
@@ -93,7 +163,7 @@ int	ft_first_pipe(char *line)
 	{
 		c = line[i];
 		while (line[i] != c)
-			i++;	
+			i++;
 	}
 	while (line[i] && line[i] != '|')
 		i++;
@@ -139,11 +209,13 @@ int	ft_lexer(char *line)
 {
 	if (!line)
 		return (0);
-	else 
+	else
 	{
 		if (ft_quote(line) == 1)
 			return (1);
 		if (ft_pipe(line) == 1)
+			return (1);
+		if (ft_redir(line) == 1)
 			return (1);
 	}
 	return (0);
