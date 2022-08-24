@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/24 16:47:45 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/24 19:19:10 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ int	main(int argc, char **argv, char **envp)
 		{
 			data.line = readline(data.prompt);
 			add_history(data.line);
+			data.nb_pipes = ft_count_pipe(data.line);
+			printf("nb pipes = %d\n", data.nb_pipes);
 			if (ft_lexer(data.line) == 1)
 			{// msg : syntax error et exit status = 2
 				ft_putendl_fd(ERRSTX, 2);
 				data.val_exit = 2;
 				printf("exit status %d\n", data.val_exit);
 			}
-		//	ft_get_commands(data.line);
+			data.cmd = ft_get_commands(&data);
 			free(data.line);
 		}
 		rl_clear_history();

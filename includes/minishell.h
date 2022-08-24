@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/24 16:47:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/24 19:21:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@
 # include <stdlib.h>
 
 # define ERRSTX "syntax error"
+# define ERRMAL "memory allocation error"
 
-typedef struct s_env{
+typedef struct s_env
+{
 	char			*var;
 	char			*content;
 	struct s_env	*next;
@@ -41,6 +43,7 @@ typedef struct s_data
 	char			*prompt;
 	t_env			*env;
 	int				val_exit;
+	int				nb_pipes;
 	t_cmd			*cmd;
 }	t_data;
 
@@ -59,6 +62,11 @@ int		ft_redir(char *line);
 int		ft_check_redir(char *line, int i);
 int		ft_lexer(char *line);
 
-
+int		ft_get_pipe(char *line, int i);
+t_cmd	*ft_lstlast_cmd(t_cmd *lst);
+int		ft_lstadd_cmd(t_cmd **cmd, char *cmdline);
+char	*ft_get_cmdline(t_data *data, int i);
+int		ft_next_pipe(char *line, int i);
+t_cmd	*ft_get_commands(t_data *data);
 
 #endif

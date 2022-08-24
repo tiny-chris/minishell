@@ -134,6 +134,7 @@ int	ft_count_pipe(char *line)
 		if (line[i] == 34 || line[i] == 39)
 		{
 			c = line[i];
+			i++;
 			while (line[i] != c)
 				i++;
 		}

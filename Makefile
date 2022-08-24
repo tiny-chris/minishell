@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/08/21 19:52:41 by marvin           ###   ########.fr        #
+#    Updated: 2022/08/24 16:58:03 by cgaillag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ LIBFLAGS =	-L./libft -lft
 SRCS 	= 	minishell.c \
 			utils.c \
 			env.c \
-			lexer.c
+			lexer.c \
+			get_commands.c \
 
 SRCDIR	=	srcs
 OBJDIR	=	objs
