@@ -37,6 +37,7 @@ int	main(int argc, char **argv, char **envp)
 			}
 			data.cmd = ft_get_commands(&data);
 			free(data.line);
+			ft_free_cmd(&(data.cmd));
 		}
 		rl_clear_history();
 		free(data.prompt);

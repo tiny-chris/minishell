@@ -68,5 +68,8 @@ int		ft_lstadd_cmd(t_cmd **cmd, char *cmdline);
 char	*ft_get_cmdline(t_data *data, int i);
 int		ft_next_pipe(char *line, int i);
 t_cmd	*ft_get_commands(t_data *data);
+void	ft_lstdelone_cmd(t_cmd *node);
+void	ft_free_cmd(t_cmd **cmd);
+
 
 #endif

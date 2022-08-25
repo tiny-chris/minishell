@@ -140,3 +140,30 @@ t_cmd	*ft_get_commands(t_data *data)
 	}
 	return (cmd);
 }
+
+void	ft_lstdelone_cmd(t_cmd *node)
+{
+	if (!node)
+		return ;
+	free(node->raw_cmd);
+	node->raw_cmd = NULL;
+	free(node->clean_cmd);
+	node->clean_cmd = NULL;
+	node->next = NULL;
+	free(node);
+}
+
+void	ft_free_cmd(t_cmd **cmd)
+{
+	t_cmd	*tmp;
+
+	if (!*cmd)
+		return ;
+	while (*cmd != NULL)
+	{
+		tmp = (*cmd)->next;
+		ft_lstdelone_cmd(*cmd);
+		(*cmd) = tmp;
+	}
+	(*cmd) = NULL;
+}

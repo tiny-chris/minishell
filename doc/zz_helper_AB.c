@@ -64,11 +64,11 @@ minishell(){
 		if (ft_lexer(str) == 0)
 		{
 			subdiviser_en_commande();
-			
+
 			ft_parsing();
-			
+
 			ft_token();
-			
+
 			ft_exec();
 		}
 	}
@@ -79,7 +79,7 @@ subdiviser_en_commande();
 
 exemple:
 
-echo "bonjour $USER" "" | echo -fdsfds "|" '$USER' '''' | cat $USER$USER
+echo "bonjour $USER" "" | echo -fdsfds "|" '$USER' '''' | cat $USER$USER "''''"
 
 
 compter le nombre de pipe et definir le nb de commande
@@ -100,7 +100,7 @@ s_minishell->command[2]->str_pas_clean = cat $USER$USER "''''"
 
 en ca (FLAT_TEXT)
 s_minishell->command[0]->str_clean =echo bonjour cgaillag  > outfile1
-s_minishell->command[1]->str_clean = echo -fdsfds | $USER 
+s_minishell->command[1]->str_clean = echo -fdsfds | $USER
 s_minishell->command[2]->str_clean = cat cgaillagcgaillag ''''
 
 
@@ -157,7 +157,7 @@ le premier token qui nest pas une redirection est forcement la command (et yen a
 pour les redirection en fonction de loperator qui le precede on sait quel type de redirection
 
 tout le role de cette fonction cest de typer en fonction de leur position/operator/contenu
-echo 
+echo
 
 
 
