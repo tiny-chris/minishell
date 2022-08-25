@@ -33,6 +33,7 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			*raw_cmd;
+	char			*unquote_cmd;
 	char			*clean_cmd;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -71,5 +72,9 @@ t_cmd	*ft_get_commands(t_data *data);
 void	ft_lstdelone_cmd(t_cmd *node);
 void	ft_free_cmd(t_cmd **cmd);
 
+int		ft_del_quotes(t_data *data);
+int		ft_unquote_cmd_len(char *raw_cmd);
+int		ft_is_allspace(char *str, int i, char c);
+char	*ft_fill_unquote_cmd(char *raw_cmd, int len);
 
 #endif

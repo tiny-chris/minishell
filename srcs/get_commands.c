@@ -147,6 +147,8 @@ void	ft_lstdelone_cmd(t_cmd *node)
 		return ;
 	free(node->raw_cmd);
 	node->raw_cmd = NULL;
+	free(node->unquote_cmd);
+	node->unquote_cmd = NULL;
 	free(node->clean_cmd);
 	node->clean_cmd = NULL;
 	node->next = NULL;

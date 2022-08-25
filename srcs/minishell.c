@@ -23,19 +23,21 @@ int	main(int argc, char **argv, char **envp)
 		data.env = ft_get_env(envp);
 		printf("env %s", data.env[0].var);/////
 		data.prompt = ft_strdup("minishell> ");
-		while (1)
+	//	while (1)
 		{
 			data.line = readline(data.prompt);
 			add_history(data.line);
 			data.nb_pipes = ft_count_pipe(data.line);
 			printf("nb pipes = %d\n", data.nb_pipes);
-			if (ft_lexer(data.line) == 1)
+			if (ft_lexer(data.line))
 			{// msg : syntax error et exit status = 2
+				printf("ft_lexer = %d\n", ft_lexer(data.line));
 				ft_putendl_fd(ERRSTX, 2);
 				data.val_exit = 2;
 				printf("exit status %d\n", data.val_exit);
 			}
 			data.cmd = ft_get_commands(&data);
+			ft_del_quotes(&data);
 			free(data.line);
 			ft_free_cmd(&(data.cmd));
 		}

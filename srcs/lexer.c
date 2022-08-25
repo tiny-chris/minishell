@@ -64,6 +64,7 @@ int	ft_redir(char *line)
 		if (line[i] == 34 || line[i] == 39)
 		{
 			q = line[i];
+			i++;
 			while (line[i] != q)
 				i++;
 		}
@@ -163,6 +164,7 @@ int	ft_first_pipe(char *line)
 	if (line[i] == 34 || line[i] == 39)
 	{
 		c = line[i];
+		i++;
 		while (line[i] != c)
 			i++;
 	}
@@ -196,6 +198,7 @@ int	ft_pipe(char *line)
 		if (line[i] == 34 || line[i] == 39)
 		{
 			c = line[i];
+			i++;
 			while (line[i] != c)
 				i++;
 		}
@@ -215,9 +218,9 @@ int	ft_lexer(char *line)
 		if (ft_quote(line) == 1)
 			return (1);
 		if (ft_pipe(line) == 1)
-			return (1);
+			return (2);
 		if (ft_redir(line) == 1)
-			return (1);
+			return (3);
 	}
 	return (0);
 }

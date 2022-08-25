@@ -24,6 +24,7 @@ SRCS 	= 	minishell.c \
 			env.c \
 			lexer.c \
 			get_commands.c \
+			del_quotes.c \
 
 SRCDIR	=	srcs
 OBJDIR	=	objs
