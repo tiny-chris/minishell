@@ -68,6 +68,56 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 	return (len);
 }
 
+static void	ft_empty_quotes_case(char *raw_cmd, int *i, char *unquote_cmd, int *j)
+{
+	char	c;
+
+	c = raw_cmd[*i];
+	unquote_cmd[*j] = raw_cmd[*i];
+	(*i)++;
+	(*j)++;
+	while (raw_cmd[*i] && raw_cmd[*i] != c)
+	{
+		unquote_cmd[*j] = raw_cmd[*i];
+		(*i)++;
+		(*j)++;
+	}
+	unquote_cmd[*j] = raw_cmd[*i];
+	(*j)++;
+}
+
+static void	ft_quotes_case(char *raw_cmd, int *i, char *unquote_cmd, int *j)
+{
+	char	c;
+
+	c = raw_cmd[*i];
+	if (ft_is_allspace(raw_cmd, *i, c) == 0)
+		ft_empty_quotes_case(raw_cmd, i, unquote_cmd, j);
+	else
+	{
+		(*i)++;
+		while (raw_cmd[*i] && raw_cmd[*i] != c)
+		{
+			if ((raw_cmd[*i] == '$' && c == 39) || (raw_cmd[*i] == '<') || (raw_cmd[*i] == '>'))
+				unquote_cmd[*j] = (-1) * raw_cmd[*i];
+			else
+				unquote_cmd[*j] = raw_cmd[*i];
+			(*i)++;
+			(*j)++;
+		}
+	}
+}
+
+static void	ft_spaces_case(char *raw_cmd, int *i, char *unquote_cmd, int *j)
+{
+	unquote_cmd[*j] = raw_cmd[*i];
+	(*i)++;
+	(*j)++;
+	while (raw_cmd[*i] && raw_cmd[*i] == ' ')
+		(*i)++;
+	(*i)--;
+}
+
 /*
 	- simple quote:
 		- si caractere d'apres = meme quote --> copier les quotes (les 2)
@@ -92,13 +142,11 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 
 	+ ne pas copier qu'un espace si plusieurs espaces contigus
 */
-
 char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 {
 	char	*unquote_cmd;
 	int		i;
 	int		j;
-	char	c;
 
 	i = 0;
 	j = 0;
@@ -107,48 +155,10 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 		return (NULL);
 	while (raw_cmd[i])
 	{
-		//ft_is_allspace == 0 --> copie tout sinon, pas les guillemets et on checke
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
-		{
-			c = raw_cmd[i];
-			if (ft_is_allspace(raw_cmd, i, c) == 0)
-			{//copier tout
-				unquote_cmd[j] = raw_cmd[i];
-				i++;
-				j++;
-				while (raw_cmd[i] && raw_cmd[i] != c)
-				{
-					unquote_cmd[j] = raw_cmd[i];
-					i++;
-					j++;
-				}
-				unquote_cmd[j] = raw_cmd[i];
-				j++;
-			}
-			else
-			{
-				i++;
-				while (raw_cmd[i] && raw_cmd[i] != c)
-				{
-
-					if ((raw_cmd[i] == '$' && c == 39) || (raw_cmd[i] == '<') || (raw_cmd[i] == '>'))
-						unquote_cmd[j] = (-1) * raw_cmd[i];
-					else
-						unquote_cmd[j] = raw_cmd[i];
-					i++;
-					j++;
-				}
-			}
-		}
+			ft_quotes_case(raw_cmd, &i, unquote_cmd, &j);
 		else if (raw_cmd[i] == ' ')
-		{
-			unquote_cmd[j] = raw_cmd[i];
-			i++;
-			j++;
-			while (raw_cmd[i] && raw_cmd[i] == ' ')
-				i++;
-			i--;
-		}
+			ft_spaces_case(raw_cmd, &i, unquote_cmd, &j);
 		else
 		{
 			unquote_cmd[j] = raw_cmd[i];

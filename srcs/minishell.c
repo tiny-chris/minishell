@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 		data.env = ft_get_env(envp);
 		printf("env %s", data.env[0].var);/////
 		data.prompt = ft_strdup("minishell> ");
-	//	while (1)
+		while (1)
 		{
 			data.line = readline(data.prompt);
 			add_history(data.line);
