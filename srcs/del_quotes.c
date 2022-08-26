@@ -63,6 +63,11 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 			}
 			i--;
 		}
+		else if (raw_cmd[i] == '$')
+		{
+			if (raw_cmd[i + 1] == 34 || raw_cmd[i + 1] == 39)
+				len--;
+		}
 		i++;
 	}
 	return (len);
@@ -161,8 +166,12 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 			ft_spaces_case(raw_cmd, &i, unquote_cmd, &j);
 		else
 		{
-			unquote_cmd[j] = raw_cmd[i];
-			j++;
+			if ((raw_cmd[i] != '$') ||
+			((raw_cmd[i] == '$') && (raw_cmd[i + 1] != 34 && raw_cmd[i + 1] != 39)))
+			{
+				unquote_cmd[j] = raw_cmd[i];
+				j++;
+			}
 		}
 		i++;
 	}

@@ -77,4 +77,9 @@ int		ft_unquote_cmd_len(char *raw_cmd);
 int		ft_is_allspace(char *str, int i, char c);
 char	*ft_fill_unquote_cmd(char *raw_cmd, int len);
 
+int		ft_expand(t_data *data);
+int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);
+int		ft_get_expand_size(char *unquote_cmd, int *i, t_data *data);
+char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data);
+
 #endif

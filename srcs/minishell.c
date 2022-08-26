@@ -38,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
 			}
 			data.cmd = ft_get_commands(&data);
 			ft_del_quotes(&data);
+			ft_expand(&data);
 			free(data.line);
 			ft_free_cmd(&(data.cmd));
 		}
