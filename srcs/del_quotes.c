@@ -65,8 +65,15 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 		}
 		else if (raw_cmd[i] == '$')
 		{
-			if (raw_cmd[i + 1] == 34 || raw_cmd[i + 1] == 39)
+			i++;
+			while(raw_cmd[i] == '$')
+			{
+				i++;
 				len--;
+			}
+			if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
+				len--;
+			i--;
 		}
 		i++;
 	}
@@ -105,6 +112,14 @@ static void	ft_quotes_case(char *raw_cmd, int *i, char *unquote_cmd, int *j)
 		{
 			if ((raw_cmd[*i] == '$' && c == 39) || (raw_cmd[*i] == '<') || (raw_cmd[*i] == '>'))
 				unquote_cmd[*j] = (-1) * raw_cmd[*i];
+			else if (raw_cmd[*i] == '$' && c == 34 && raw_cmd[*i + 1] == '$')
+			{
+				(*i)++;
+				while (raw_cmd[*i] == '$')
+					(*i)++;
+				(*i)--;
+				unquote_cmd[*j] = raw_cmd[*i];
+			}
 			else
 				unquote_cmd[*j] = raw_cmd[*i];
 			(*i)++;
@@ -164,6 +179,18 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 			ft_quotes_case(raw_cmd, &i, unquote_cmd, &j);
 		else if (raw_cmd[i] == ' ')
 			ft_spaces_case(raw_cmd, &i, unquote_cmd, &j);
+		else if (raw_cmd[i] == '$' && raw_cmd[i + 1] && raw_cmd[i + 1] == '$')
+		{
+			i++;
+			while (raw_cmd[i] == '$')
+				i++;
+			i--;
+			if (raw_cmd[i + 1] != 34 && raw_cmd[i + 1] != 39)
+			{
+				unquote_cmd[j] = raw_cmd[i];
+				j++;
+			}
+		}
 		else
 		{
 			if ((raw_cmd[i] != '$') ||
