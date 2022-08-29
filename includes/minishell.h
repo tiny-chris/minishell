@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/24 19:21:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/29 13:21:31 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,29 @@
 # define ERRSTX "syntax error"
 # define ERRMAL "memory allocation error"
 
+typedef enum s_type
+{
+	COMMAND 		= 0,
+	BUILTIN 		= 1,
+	WORD 			= 2,
+	WORD_N 			= 3,
+	GREAT 			= 4,
+	D_GREAT			= 5,
+	LESS			= 6,
+	D_LESS			= 7,
+	OUTFILE 		= 8,
+	OUTFILE_APPEND 	= 9,
+	INFILE 			= 10,
+	HERE_DOC 		= 11,
+}	t_type;
+
+typedef struct s_token
+{
+	char			*token;
+	int				type;
+	struct s_token	*next;
+}	t_token;
+
 typedef struct s_env
 {
 	char			*var;
@@ -35,6 +58,7 @@ typedef struct s_cmd
 	char			*raw_cmd;
 	char			*unquote_cmd;
 	char			*clean_cmd;
+	t_token			*token;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -46,8 +70,11 @@ typedef struct s_data
 	int				val_exit;
 	int				nb_pipes;
 	t_cmd			*cmd;
+	char			**built_in;
 }	t_data;
 
+char	**ft_built_in(void);
+void	*ft_free_tabstr(char **tab_str);
 t_env	*ft_get_env(char **envp);
 int		ft_lstadd_env(t_env **env, char *envp);
 t_env	*ft_lstlast_env(t_env *lst);

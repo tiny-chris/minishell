@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/24 19:37:40 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/29 13:30:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int argc, char **argv, char **envp)
 		data.env = ft_get_env(envp);
 		printf("env %s", data.env[0].var);/////
 		data.prompt = ft_strdup("minishell> ");
+		data.built_in = ft_built_in();
 		while (1)
 		{
 			data.line = readline(data.prompt);
@@ -41,6 +42,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_expand(&data);
 			free(data.line);
 			ft_free_cmd(&(data.cmd));
+			ft_free_tabstr(data.built_in);
 		}
 		rl_clear_history();
 		free(data.prompt);

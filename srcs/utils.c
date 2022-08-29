@@ -27,3 +27,21 @@ int	ft_new_strchr(const char *s, int c)
 		return (0);
 	return (0);
 }
+
+void	*ft_free_tabstr(char **tab_str)
+{
+	int	i;
+
+	i = 0;
+	if (tab_str != NULL)
+	{
+		while (tab_str[i])
+		{
+			free(tab_str[i]);
+			i++;
+		}
+		free(tab_str);
+		tab_str = NULL;
+	}
+	return (NULL);
+}
