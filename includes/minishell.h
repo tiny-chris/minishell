@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/29 13:21:31 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/29 14:55:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_cmd
 	char			*raw_cmd;
 	char			*unquote_cmd;
 	char			*clean_cmd;
-	t_token			*token;
+	t_token			**token;
 	struct s_cmd	*next;
 }	t_cmd;
 

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 16:32:07 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/24 16:32:07 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/29 16:48:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	ft_is_allspace(char *str, int i, char c)
 {
 	int	j;
 
-	j = i + 1;
+	//j = i + 1;
+	j = i;
+	j++;
 	if (str[j] == c)
 		return (0);
 	while (str[j] && str[j] != c)
@@ -75,8 +77,27 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 				len--;
 			i--;
 		}
+		// else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
+		// {
+		// 	c = raw_cmd[i];
+		// 	i++;
+		// 	if (raw_cmd[i] == c)
+		// 		i++;
+		// 	if (raw_cmd[i] == ' ')
+		// 	{
+		// 		i++;
+		// 		len--;
+		// 		while (raw_cmd[i] && raw_cmd[i] == ' ')
+		// 		{
+		// 			len--;
+		// 			i++;
+		// 		}
+		// 		i--;
+		// 	}
+		// }
 		i++;
 	}
+	printf("len à malloc %d\n", len);
 	return (len);
 }
 
@@ -167,6 +188,7 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 	char	*unquote_cmd;
 	int		i;
 	int		j;
+//	char	c;
 
 	i = 0;
 	j = 0;
@@ -177,6 +199,26 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 	{
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
 			ft_quotes_case(raw_cmd, &i, unquote_cmd, &j);
+		// else if ((raw_cmd[i] == '>') || (raw_cmd[i] == '<'))
+		// {
+		// 	c = raw_cmd[i];
+		// 	unquote_cmd[j] = raw_cmd[i];
+		// 	i++;
+		// 	j++;
+		// 	if (raw_cmd[i] == c)
+		// 	{
+		// 		unquote_cmd[j] = raw_cmd[i];
+		// 		i++;
+		// 		j++;
+		// 	}
+		// 	if (raw_cmd[i] == ' ')
+		// 	{
+		// 		i++;
+		// 		while (raw_cmd[i] && raw_cmd[i] == ' ')
+		// 			i++;
+		// 	}
+		// 	i--;
+		// }
 		else if (raw_cmd[i] == ' ')
 			ft_spaces_case(raw_cmd, &i, unquote_cmd, &j);
 		else if (raw_cmd[i] == '$' && raw_cmd[i + 1] && raw_cmd[i + 1] == '$')
