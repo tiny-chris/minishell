@@ -5,15 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/24 16:32:07 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/29 16:48:27 by cgaillag         ###   ########.fr       */
+/*   Created: 2022/08/30 11:22:23 by cgaillag          #+#    #+#             */
+/*   Updated: 2022/08/30 11:33:49 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/////// REFAIRE LE HEADER !!!!!!
-
-
-////// REFAIRE LE HEADER !!!!!!
 
 #include "../includes/minishell.h"
 
@@ -77,24 +72,24 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 				len--;
 			i--;
 		}
-		// else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
-		// {
-		// 	c = raw_cmd[i];
-		// 	i++;
-		// 	if (raw_cmd[i] == c)
-		// 		i++;
-		// 	if (raw_cmd[i] == ' ')
-		// 	{
-		// 		i++;
-		// 		len--;
-		// 		while (raw_cmd[i] && raw_cmd[i] == ' ')
-		// 		{
-		// 			len--;
-		// 			i++;
-		// 		}
-		// 		i--;
-		// 	}
-		// }
+		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
+		{
+			c = raw_cmd[i];
+			i++;
+			if (raw_cmd[i] == c)
+				i++;
+			if (raw_cmd[i] == ' ')
+			{
+				i++;
+				len--;
+				while (raw_cmd[i] && raw_cmd[i] == ' ')
+				{
+					len--;
+					i++;
+				}
+				i--;
+			}
+		}
 		i++;
 	}
 	printf("len à malloc %d\n", len);
@@ -111,7 +106,7 @@ static void	ft_empty_quotes_case(char *raw_cmd, int *i, char *unquote_cmd, int *
 	(*j)++;
 	while (raw_cmd[*i] && raw_cmd[*i] != c)
 	{
-		unquote_cmd[*j] = raw_cmd[*i];
+		unquote_cmd[*j] = (-1) * raw_cmd[*i];
 		(*i)++;
 		(*j)++;
 	}
@@ -131,7 +126,7 @@ static void	ft_quotes_case(char *raw_cmd, int *i, char *unquote_cmd, int *j)
 		(*i)++;
 		while (raw_cmd[*i] && raw_cmd[*i] != c)
 		{
-			if ((raw_cmd[*i] == '$' && c == 39) || (raw_cmd[*i] == '<') || (raw_cmd[*i] == '>'))
+			if ((raw_cmd[*i] == '$' && c == 39) || (raw_cmd[*i] == '<') || (raw_cmd[*i] == '>') || (raw_cmd[*i] == ' '))
 				unquote_cmd[*j] = (-1) * raw_cmd[*i];
 			else if (raw_cmd[*i] == '$' && c == 34 && raw_cmd[*i + 1] == '$')
 			{
@@ -188,7 +183,7 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 	char	*unquote_cmd;
 	int		i;
 	int		j;
-//	char	c;
+	char	c;
 
 	i = 0;
 	j = 0;
@@ -199,26 +194,26 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 	{
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
 			ft_quotes_case(raw_cmd, &i, unquote_cmd, &j);
-		// else if ((raw_cmd[i] == '>') || (raw_cmd[i] == '<'))
-		// {
-		// 	c = raw_cmd[i];
-		// 	unquote_cmd[j] = raw_cmd[i];
-		// 	i++;
-		// 	j++;
-		// 	if (raw_cmd[i] == c)
-		// 	{
-		// 		unquote_cmd[j] = raw_cmd[i];
-		// 		i++;
-		// 		j++;
-		// 	}
-		// 	if (raw_cmd[i] == ' ')
-		// 	{
-		// 		i++;
-		// 		while (raw_cmd[i] && raw_cmd[i] == ' ')
-		// 			i++;
-		// 	}
-		// 	i--;
-		// }
+		else if ((raw_cmd[i] == '>') || (raw_cmd[i] == '<'))
+		{
+			c = raw_cmd[i];
+			unquote_cmd[j] = raw_cmd[i];
+			i++;
+			j++;
+			if (raw_cmd[i] == c)
+			{
+				unquote_cmd[j] = raw_cmd[i];
+				i++;
+				j++;
+			}
+			if (raw_cmd[i] == ' ')
+			{
+				i++;
+				while (raw_cmd[i] && raw_cmd[i] == ' ')
+					i++;
+			}
+			i--;
+		}
 		else if (raw_cmd[i] == ' ')
 			ft_spaces_case(raw_cmd, &i, unquote_cmd, &j);
 		else if (raw_cmd[i] == '$' && raw_cmd[i + 1] && raw_cmd[i + 1] == '$')

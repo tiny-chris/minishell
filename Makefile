@@ -6,7 +6,7 @@
 #    By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/08/29 13:19:07 by cgaillag         ###   ########.fr        #
+#    Updated: 2022/08/30 12:26:25 by cgaillag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS 	= 	minishell.c \
 			del_quotes.c \
 			expand.c \
 			built_in.c \
+			token.c \
 
 SRCDIR	=	srcs
 OBJDIR	=	objs

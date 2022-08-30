@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/29 16:01:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/30 12:19:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	main(int argc, char **argv, char **envp)
 	if (argc == 1 && !argv[1])
 	{
 		data.env = ft_get_env(envp);
-		printf("env %s", data.env[0].var);/////
 		data.prompt = ft_strdup("minishell> ");
 		data.built_in = ft_built_in();
 		while (1)
@@ -40,11 +39,11 @@ int	main(int argc, char **argv, char **envp)
 			data.cmd = ft_get_commands(&data);
 			ft_del_quotes(&data);
 			ft_expand(&data);
-			//ft_tokenizer(&data);
+			ft_tokenizer(&data);
 			free(data.line);
 			ft_free_cmd(&(data.cmd));
-			ft_free_tabstr(data.built_in);
 		}
+		ft_free_tabstr(data.built_in);
 		rl_clear_history();
 		free(data.prompt);
 		ft_free_env(&(data.env));

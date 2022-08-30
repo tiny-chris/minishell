@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/29 14:55:41 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/30 13:12:22 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ typedef enum s_type
 	BUILTIN 		= 1,
 	WORD 			= 2,
 	WORD_N 			= 3,
-	GREAT 			= 4,
-	D_GREAT			= 5,
-	LESS			= 6,
-	D_LESS			= 7,
-	OUTFILE 		= 8,
-	OUTFILE_APPEND 	= 9,
-	INFILE 			= 10,
-	HERE_DOC 		= 11,
+	GREAT 			= 10,
+	OUTFILE 		= 20,
+	D_GREAT			= 11,
+	OUTFILE_APPEND 	= 21,
+	LESS			= 12,
+	INFILE 			= 22,
+	D_LESS			= 13,
+	HERE_DOC 		= 23,
 }	t_type;
 
 typedef struct s_token
@@ -58,7 +58,7 @@ typedef struct s_cmd
 	char			*raw_cmd;
 	char			*unquote_cmd;
 	char			*clean_cmd;
-	t_token			**token;
+	t_token			*token;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -108,5 +108,14 @@ int		ft_expand(t_data *data);
 int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);
 int		ft_get_expand_size(char *unquote_cmd, int *i, t_data *data);
 char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data);
+
+int		ft_tokenizer(t_data *data);
+t_token	*ft_get_token(char *clean_cmd, t_data *data);
+int		ft_check_built_in(char *clean_cmd, t_data *data, int i);
+int		ft_is_redir(char *clean_cmd, int *i);
+int		ft_lstadd_token(t_token **tok, int type, char *token);
+t_token	*ft_lstlast_tok(t_token *lst);
+void	ft_free_tok(t_token **tok);
+void	ft_lstdelone_tok(t_token *node);
 
 #endif
