@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/30 18:01:32 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/30 18:21:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ t_token	*ft_get_token(t_cmd *cmd, t_data *data)
 	i = 0;
 	j = 0;
 	token = NULL;
-	cmd->token = token;
 	clean_cmd_no_redir = cmd->clean_cmd_no_redir;
 	while (clean_cmd_no_redir[i] && clean_cmd_no_redir[i] != ' ')
 		i++;
@@ -187,6 +186,7 @@ t_token	*ft_get_token(t_cmd *cmd, t_data *data)
 			j++;
 		if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd_no_redir, i, j - i)))
 			return (NULL);
+		cmd->token = token;
 		return (0);
 	}
 	while (clean_cmd_no_redir[j])
@@ -198,10 +198,14 @@ t_token	*ft_get_token(t_cmd *cmd, t_data *data)
 		if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd_no_redir, i, j - i)))
 			return (NULL);
 		if (clean_cmd_no_redir[j] == '\0')
+		{
+			cmd->token = token;
 			return (0);
+		}
 		j++;
 		i = j;
 	}
+	cmd->token = token;
 	return (0);
 }
 
@@ -314,6 +318,28 @@ int	ft_get_redir(t_cmd	*cmd)
 	return (0);
 }
 
+void	ft_clean_token(t_cmd *cmd)
+{
+	t_token	*token;
+	int		i;
+
+	i = 0;
+	token = cmd->token;
+	while (token)
+	{
+		printf("entre dans  clean token\n");
+		while (token->token[i])
+		{
+			if (token->token[i] < 0)
+				token->token[i] = (-1) * (token->token[i]);
+			i++;
+		}
+		printf("token = %s, size = %ld\n", token->token, ft_strlen(token->token));
+		token = token->next;
+		i = 0;
+	}
+}
+
 int	ft_tokenizer(t_data *data)
 {
 	t_cmd	*cmd;
@@ -324,8 +350,8 @@ int	ft_tokenizer(t_data *data)
 		ft_get_redir(cmd);
 		printf("clean cmd no redir = %s\n", cmd->clean_cmd_no_redir);
 		ft_get_token(cmd, data);
+		ft_clean_token(cmd);
 		cmd = cmd->next;
 	}
 	return (0);
 }
-
