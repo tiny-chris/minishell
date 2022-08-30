@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/30 15:54:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:18:08 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,15 @@ int		ft_get_expand_size(char *unquote_cmd, int *i, t_data *data);
 char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data);
 
 int		ft_tokenizer(t_data *data);
-t_token	*ft_get_token(char *clean_cmd, t_data *data);
+t_token	*ft_get_token(t_cmd *cmd, t_data *data);
 int		ft_check_built_in(char *clean_cmd, t_data *data, int i);
+int		ft_check_word_n(char *clean_cmd_no_redir, int *i, t_token **token);
 int		ft_is_redir(char *clean_cmd, int *i);
 int		ft_lstadd_token(t_token **tok, int type, char *token);
 t_token	*ft_lstlast_tok(t_token *lst);
 void	ft_free_tok(t_token **tok);
 void	ft_lstdelone_tok(t_token *node);
-int		ft_get_redir(t_cmd	*cmd);
+int		ft_get_redir(t_cmd *cmd);
 void	ft_fill_no_redir(char *clean_cmd, char *clean_cmd_no_redir);
 int		ft_get_redir_list(char *clean_cmd, t_token *tok_redir);
 int		ft_len_no_redir(char *clean_cmd);
