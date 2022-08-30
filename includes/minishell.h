@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/30 13:12:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/30 15:54:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ typedef struct s_cmd
 	char			*raw_cmd;
 	char			*unquote_cmd;
 	char			*clean_cmd;
+	char			*clean_cmd_no_redir;
 	t_token			*token;
+	t_token			*tok_redir;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -117,5 +119,10 @@ int		ft_lstadd_token(t_token **tok, int type, char *token);
 t_token	*ft_lstlast_tok(t_token *lst);
 void	ft_free_tok(t_token **tok);
 void	ft_lstdelone_tok(t_token *node);
+int		ft_get_redir(t_cmd	*cmd);
+void	ft_fill_no_redir(char *clean_cmd, char *clean_cmd_no_redir);
+int		ft_get_redir_list(char *clean_cmd, t_token *tok_redir);
+int		ft_len_no_redir(char *clean_cmd);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/30 13:12:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:06:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,114 @@ t_token	*ft_get_token(char *clean_cmd, t_data *data)
 	return (0);
 }
 
+int	ft_len_no_redir(char *clean_cmd)
+{
+	int	len;
+	int	i;
+
+	i = 0;
+	len = ft_strlen(clean_cmd);
+	while(clean_cmd[i])
+	{
+		if (clean_cmd[i] == '>' || clean_cmd[i] == '<')
+		{
+			len--;
+			i++;
+			if ((clean_cmd[i] == '>' || clean_cmd[i] == '<'))
+			{
+				len--;
+				i++;
+			}
+			while (clean_cmd[i] && clean_cmd[i] != ' ' && clean_cmd[i] != '>' && clean_cmd[i] != '<')
+			{
+				len--;
+				i++;
+			}
+			if (clean_cmd[i] == ' ')
+				len--;
+			i--;
+		}
+		i++;
+	}
+	return (len);
+}
+
+int	ft_get_redir_list(char *clean_cmd, t_token *tok_redir)
+{
+	int	i;
+	int	j;
+	int	type;
+
+	i = 0;
+	j = 0;
+	type = 0;
+	while(clean_cmd[j])
+	{
+		type = ft_is_redir(clean_cmd, &i);
+		if (type)
+		{
+			if (ft_lstadd_token(&tok_redir, type, ft_substr(clean_cmd, j, (i - j))))
+				return (1); //free tout ce qu'il y a à free
+			j = i;
+			while (clean_cmd[i] && clean_cmd[i] != ' ' && clean_cmd[i] != '>'  && clean_cmd[i] != '<')
+				i++;
+			if (ft_lstadd_token(&tok_redir, type + 10, ft_substr(clean_cmd, j, i - j)))
+				return (1); //free tout ce qu'il y a à free
+			j = i - 1;
+		}
+		j++;
+	}
+	return (0);
+}
+
+void	ft_fill_no_redir(char *clean_cmd, char *clean_cmd_no_redir)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while(clean_cmd[j])
+	{
+		if (clean_cmd[j] == '>' || clean_cmd[j] == '<')
+		{
+			j++;
+			if ((clean_cmd[j] == '>' || clean_cmd[j] == '<'))
+				j++;
+			while (clean_cmd[j] && clean_cmd[j] != ' ' && clean_cmd[j] != '>' && clean_cmd[j] != '<')
+				j++;
+			if (clean_cmd[j] != ' ')
+				j--;
+		}
+		else
+		{
+			clean_cmd_no_redir[i] = clean_cmd[j];
+			i++;
+		}
+		j++;
+	}
+	clean_cmd_no_redir[i] = '\0';
+}
+
+int	ft_get_redir(t_cmd	*cmd)
+{
+	char	*clean_cmd;
+	char	*clean_cmd_no_redir;
+	t_token *tok_redir;
+
+	tok_redir = NULL;
+	clean_cmd = cmd->clean_cmd;
+	clean_cmd_no_redir = malloc(sizeof(char) * (ft_len_no_redir(clean_cmd) + 1));
+	if (!clean_cmd_no_redir)
+		return (1); // bien free tout ce qu'il y a à free
+	if (ft_get_redir_list(clean_cmd, tok_redir))
+		return (1);// FREE
+	cmd->tok_redir = tok_redir;
+	cmd->clean_cmd_no_redir = clean_cmd_no_redir;
+	ft_fill_no_redir(clean_cmd, clean_cmd_no_redir);
+	return (0);
+}
+
 int	ft_tokenizer(t_data *data)
 {
 	t_cmd	*cmd;
@@ -180,24 +288,11 @@ int	ft_tokenizer(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
-		ft_get_token(cmd->clean_cmd, data);
+		ft_get_redir(cmd);
+		printf("clean cmd no redir = %s\n", cmd->clean_cmd_no_redir);
+	//	ft_get_token(cmd->clean_cmd_no_redir, data);
 		cmd = cmd->next;
 	}
-	cmd = data->cmd;
-	/////
-	// t_token	*tmp;
-
-	// while (cmd != NULL)
-	// {
-	// 	tmp = cmd->token;
-	// 	while (cmd != NULL)
-	// 	{
-	// 		printf("token char = %s et type = %d\n", tmp->token, tmp->type);
-	// 		tmp = tmp->next;
-	// 	}
-	// 	cmd = cmd->next;
-	// }
-	// /////
 	return (0);
 }
 

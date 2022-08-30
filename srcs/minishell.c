@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/30 12:19:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/30 14:43:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_expand(&data);
 			ft_tokenizer(&data);
 			free(data.line);
-			ft_free_cmd(&(data.cmd));
+			ft_free_cmd(&(data.cmd)); // modifier la ft pour free les tokens
 		}
 		ft_free_tabstr(data.built_in);
 		rl_clear_history();
