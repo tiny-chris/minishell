@@ -180,7 +180,8 @@ minishell.command[0].token[2].type = WORD
 s_minishell->command[1]->str_pas_clean = cat >outfile
 minishell.command[1].token[0].token = cat
 minishell.command[1].token[0].type = COMMAND
-minishell.command[1].token[1].token = >
+minishell.command[1].token[1].token =
+
 minishell.command[1].token[1].type =OPERATOR
 minishell.command[1].token[2].token = outfile
 minishell.command[1].token[2].type = OUTFILE

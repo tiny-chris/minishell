@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/30 14:43:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/31 15:33:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
 
-	data.env = NULL;
-	data.val_exit = 0;
 	if (argc == 1 && !argv[1])
 	{
+		data.env = NULL;
+		data.val_exit = 0;
 		data.env = ft_get_env(envp);
 		data.prompt = ft_strdup("minishell> ");
 		data.built_in = ft_built_in();
@@ -36,12 +36,15 @@ int	main(int argc, char **argv, char **envp)
 				data.val_exit = 2;
 				printf("exit status %d\n", data.val_exit);
 			}
-			data.cmd = ft_get_commands(&data);
-			ft_del_quotes(&data);
-			ft_expand(&data);
-			ft_tokenizer(&data);
+			else
+			{
+				data.cmd = ft_get_commands(&data);
+				ft_del_quotes(&data);
+				ft_expand(&data);
+				ft_tokenizer(&data);
+				ft_free_cmd(&(data.cmd));
+			}
 			free(data.line);
-			ft_free_cmd(&(data.cmd)); // modifier la ft pour free les tokens
 		}
 		ft_free_tabstr(data.built_in);
 		rl_clear_history();

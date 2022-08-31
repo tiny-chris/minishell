@@ -25,21 +25,22 @@ int	ft_check_redir(char *line, int i)
 	char	q;
 
 	j = i;
-	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62))
+	if (line[j] && line[j] == ' ')
 	{
-		if (j == i && line[j] == ' ')
-		{
-			while (line[j] && line[j] == ' ')
-				j++;
-			if ((line[j] == '\0') || (line[j] == '|') || (line[j] == 60) || (line[j] == 62))
-				return (-1);
-		}
+		while (line[j] && line[j] == ' ')
+			j++;
+		if ((line[j] == '\0') || (line[j] == '|') || (line[j] == 60) || (line[j] == 62))
+			return (-1);
+	}
+	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62) && (line[j] != ' '))
+	{
 		if (line[j] == 34 || line[j] == 39)
 		{
 			q = line[j];
 			j++;
-			if (line[j] == q)
-				return (-1);
+			while (line[j] != q)
+				j++;
+			return (j);
 		}
 		j++;
 	}
@@ -136,7 +137,7 @@ int	ft_count_pipe(char *line)
 		{
 			c = line[i];
 			i++;
-			while (line[i] != c)
+			while (line[i] && line[i] != c)
 				i++;
 		}
 		else if (line[i] == '|')

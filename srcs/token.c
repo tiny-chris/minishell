@@ -6,36 +6,11 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/30 18:21:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/31 14:34:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	ft_lstdelone_tok(t_token *node)
-{
-	if (!node)
-		return ;
-	free(node->token);
-	node->token = NULL;
-	node->next = NULL;
-	free(node);
-}
-
-void	ft_free_tok(t_token **tok)
-{
-	t_token	*tmp;
-
-	if (!*tok)
-		return ;
-	while (*tok != NULL)
-	{
-		tmp = (*tok)->next;
-		ft_lstdelone_tok(*tok);
-		(*tok) = tmp;
-	}
-	(*tok) = NULL;
-}
 
 t_token	*ft_lstlast_tok(t_token *lst)
 {
@@ -57,7 +32,7 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 	new = malloc(sizeof(t_token));
 	if (!new)
 	{
-		ft_free_tok(tok);
+		ft_free_token(tok);
 		return (1);
 	}
 	new->token = token;

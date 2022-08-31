@@ -141,6 +141,31 @@ t_cmd	*ft_get_commands(t_data *data)
 	return (cmd);
 }
 
+void	ft_lstdelone_tok(t_token *node)
+{
+	if (!node)
+		return ;
+	free(node->token);
+	node->token = NULL;
+	node->next = NULL;
+	free(node);
+}
+
+void	ft_free_token(t_token **token)
+{
+	t_token	*tmp;
+
+	if (!*token)
+		return ;
+	while (*token != NULL)
+	{
+		tmp = (*token)->next;
+		ft_lstdelone_tok(*token);
+		(*token) = tmp;
+	}
+	(*token) = NULL;
+}
+
 void	ft_lstdelone_cmd(t_cmd *node)
 {
 	if (!node)
@@ -151,6 +176,10 @@ void	ft_lstdelone_cmd(t_cmd *node)
 	node->unquote_cmd = NULL;
 	free(node->clean_cmd);
 	node->clean_cmd = NULL;
+	free(node->clean_cmd_no_redir);
+	node->clean_cmd_no_redir = NULL;
+	ft_free_token(&(node->token));
+	ft_free_token(&(node->tok_redir));
 	node->next = NULL;
 	free(node);
 }
