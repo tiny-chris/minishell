@@ -375,3 +375,6 @@ Should not write 'salut' while 'yes' command is running:
 ##  Valgrind check
 
 valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --suppressions=.ignore_readline ./minishell
+
+
+valgrind --leak-check=full --track-origins=yes --track-fds=yes --show-leak-kinds=all --suppressions=.ignore_readline ./minishell

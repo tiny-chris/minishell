@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:22:23 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/30 11:33:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:10:14 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 
 	i = 0;
 	len = ft_strlen(raw_cmd);
-	printf("strlen raw_cmd = %d\n", len);
+	//printf("strlen raw_cmd = %d\n", len);
 	while (raw_cmd[i])
 	{
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
@@ -92,7 +92,7 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 		}
 		i++;
 	}
-	printf("len à malloc %d\n", len);
+	//printf("len à malloc %d\n", len);
 	return (len);
 }
 
@@ -187,6 +187,7 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 
 	i = 0;
 	j = 0;
+	unquote_cmd = NULL;
 	unquote_cmd = malloc(sizeof(char) * (len + 1));
 	if (!unquote_cmd)
 		return (NULL);
@@ -257,11 +258,11 @@ int	ft_del_quotes(t_data *data)
 	while (cmd)
 	{
 		unquote_cmd_len = ft_unquote_cmd_len(cmd->raw_cmd);
-		printf("len cmd unquote = %d\n", unquote_cmd_len);
+		//printf("len cmd unquote = %d\n", unquote_cmd_len);
 		cmd->unquote_cmd = ft_fill_unquote_cmd(cmd->raw_cmd, unquote_cmd_len);
 		if (!cmd->unquote_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
-		printf("unquote_cmd = %s\n", cmd->unquote_cmd);
+		//printf("unquote_cmd = %s\n", cmd->unquote_cmd);
 		cmd = cmd->next;
 	}
 	return (0);

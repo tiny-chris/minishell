@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/31 14:34:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:01:34 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 	new = malloc(sizeof(t_token));
 	if (!new)
 	{
-		ft_free_token(tok);
+		ft_free_token(*tok);
 		return (1);
 	}
 	new->token = token;
-	dprintf(2, "new token %s\n", new->token);
+	dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
 	new->type = type;
 	dprintf(2, "type %d\n", new->type);
 	new->next = NULL;
@@ -166,10 +166,10 @@ t_token	*ft_get_token(t_cmd *cmd, t_data *data)
 	}
 	while (clean_cmd_no_redir[j])
 	{
-		dprintf(2, "i: %d\n, j: %d\n", i, j);
+		//dprintf(2, "i: %d\n, j: %d\n", i, j);
 		while (clean_cmd_no_redir[j] != '\0' && clean_cmd_no_redir[j] != ' ')
 			j++;
-		dprintf(2, "i: %d\n, j: %d\n", i, j);
+		//dprintf(2, "i: %d\n, j: %d\n", i, j);
 		if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd_no_redir, i, j - i)))
 			return (NULL);
 		if (clean_cmd_no_redir[j] == '\0')
@@ -216,7 +216,7 @@ int	ft_len_no_redir(char *clean_cmd)
 	return (len);
 }
 
-int	ft_get_redir_list(char *clean_cmd, t_token *tok_redir)
+int	ft_get_redir_list(char *clean_cmd, t_token **tok_redir)
 {
 	int	i;
 	int	j;
@@ -230,12 +230,12 @@ int	ft_get_redir_list(char *clean_cmd, t_token *tok_redir)
 		type = ft_is_redir(clean_cmd, &i);
 		if (type)
 		{
-			if (ft_lstadd_token(&tok_redir, type, ft_substr(clean_cmd, j, (i - j))))
+			if (ft_lstadd_token(tok_redir, type, ft_substr(clean_cmd, j, (i - j))))
 				return (1); //free tout ce qu'il y a à free
 			j = i;
 			while (clean_cmd[i] && clean_cmd[i] != ' ' && clean_cmd[i] != '>'  && clean_cmd[i] != '<')
 				i++;
-			if (ft_lstadd_token(&tok_redir, type + 10, ft_substr(clean_cmd, j, i - j)))
+			if (ft_lstadd_token(tok_redir, type + 10, ft_substr(clean_cmd, j, i - j)))
 				return (1); //free tout ce qu'il y a à free
 			j = i - 1;
 		}
@@ -285,7 +285,7 @@ int	ft_get_redir(t_cmd	*cmd)
 	clean_cmd_no_redir = malloc(sizeof(char) * (ft_len_no_redir(clean_cmd) + 1));
 	if (!clean_cmd_no_redir)
 		return (1); // bien free tout ce qu'il y a à free
-	if (ft_get_redir_list(clean_cmd, tok_redir))
+	if (ft_get_redir_list(clean_cmd, &tok_redir))
 		return (1);// FREE
 	cmd->tok_redir = tok_redir;
 	cmd->clean_cmd_no_redir = clean_cmd_no_redir;
@@ -293,6 +293,7 @@ int	ft_get_redir(t_cmd	*cmd)
 	return (0);
 }
 
+//token sans val negatives
 void	ft_clean_token(t_cmd *cmd)
 {
 	t_token	*token;
@@ -302,14 +303,14 @@ void	ft_clean_token(t_cmd *cmd)
 	token = cmd->token;
 	while (token)
 	{
-		printf("entre dans  clean token\n");
-		while (token->token[i])
+//		printf("entre dans clean token\n");
+		while (token->token[i] != '\0')
 		{
 			if (token->token[i] < 0)
 				token->token[i] = (-1) * (token->token[i]);
 			i++;
 		}
-		printf("token = %s, size = %ld\n", token->token, ft_strlen(token->token));
+//		printf("token = %s, size = %ld\n", token->token, ft_strlen(token->token));
 		token = token->next;
 		i = 0;
 	}
@@ -323,7 +324,7 @@ int	ft_tokenizer(t_data *data)
 	while (cmd)
 	{
 		ft_get_redir(cmd);
-		printf("clean cmd no redir = %s\n", cmd->clean_cmd_no_redir);
+		//printf("clean cmd no redir = %s\n", cmd->clean_cmd_no_redir);
 		ft_get_token(cmd, data);
 		ft_clean_token(cmd);
 		cmd = cmd->next;

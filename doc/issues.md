@@ -5,6 +5,12 @@
 
 # //////////////////////// BEWARE
 
+		Invalid read of size 1:
+>		< file cmd '$USER' '' | youhou << dd << dd | " $    'youpi"
+
+		Conditional jump or move depends on uninitialised value(s)
+	+	Invalid read of size 1:
+>		< file cmd '$USER' '' | youhou << dd << dd | $
 
 # //////////////////////// LENA
 
