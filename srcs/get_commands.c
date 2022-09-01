@@ -151,18 +151,18 @@ void	ft_lstdelone_tok(t_token *node)
 	free(node);
 }
 
-void	ft_free_token(t_token *token)
+void	ft_free_token(t_token **token)
 {
 	t_token	*tmp;
 
-	if (!token)
+	if (!*token)
 		return ;
-	while (token != NULL)
+	while (*token != NULL)
 	{
-		tmp = (token)->next;
-		dprintf(2, "token val = %s\n", token->token);
-		ft_lstdelone_tok(token);
-		(token) = tmp;
+		tmp = (*token)->next;
+		//dprintf(2, "token val = %s\n", (*token)->token);
+		ft_lstdelone_tok(*token);
+		(*token) = tmp;
 	}
 	(token) = NULL;
 }
@@ -179,8 +179,8 @@ void	ft_lstdelone_cmd(t_cmd *node)
 	node->clean_cmd = NULL;
 	free(node->clean_cmd_no_redir);
 	node->clean_cmd_no_redir = NULL;
-	ft_free_token((node->tok_redir));
-	ft_free_token((node->token));
+	ft_free_token(&(node->tok_redir));
+	ft_free_token(&(node->token));
 	node->next = NULL;
 	free(node);
 }

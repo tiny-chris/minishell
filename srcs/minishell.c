@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/08/31 15:56:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 08:58:15 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int argc, char **argv, char **envp)
 				//printf("ft_lexer = %d\n", ft_lexer(data.line));
 				ft_putendl_fd(ERRSTX, 2);
 				data.val_exit = 2;
-				printf("exit status %d\n", data.val_exit);
+				//printf("exit status %d\n", data.val_exit);
 			}
 			else
 			{

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/31 18:01:34 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 13:15:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 		return (1);
 	}
 	new->token = token;
-	dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
+	//dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
 	new->type = type;
-	dprintf(2, "type %d\n", new->type);
+	//dprintf(2, "type %d\n", new->type);
 	new->next = NULL;
 	if (ft_lstlast_tok(*tok) == 0)
 	{
@@ -114,11 +114,11 @@ int	ft_check_word_n(char *clean_cmd_no_redir, int *i, t_token **token)
 			j++;
 		else
 			return (0);
-		if (clean_cmd_no_redir[j] != 'n')
+		if (clean_cmd_no_redir[j] && clean_cmd_no_redir[j] != 'n')
 			return (0);
-		while (clean_cmd_no_redir[j] == 'n')
+		while (clean_cmd_no_redir[j] && clean_cmd_no_redir[j] == 'n')
 			j++;
-		if (clean_cmd_no_redir[j] == ' ' || clean_cmd_no_redir[j] == '\0')
+		if (clean_cmd_no_redir[j] && (clean_cmd_no_redir[j] == ' ' || clean_cmd_no_redir[j] == '\0'))
 		{
 			if (ft_lstadd_token(token, WORD_N, ft_strdup("-n")))
 				return (-1); // free all
@@ -151,34 +151,46 @@ t_token	*ft_get_token(t_cmd *cmd, t_data *data)
 		type = COMMAND;
 	if (ft_lstadd_token(&token, type, ft_substr(clean_cmd_no_redir, j, i - j)))
 		return (NULL);
-	i++;// le 1 = ' '
-	j = i;
-	if (clean_cmd_no_redir[j] && type == BUILTIN && ft_strncmp(token->token, "echo", 4) == 0)
+	if (!clean_cmd_no_redir[i])
 	{
-		ft_check_word_n(clean_cmd_no_redir, &i, &token);
-		j = i;
-		while (clean_cmd_no_redir[j])
-			j++;
-		if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd_no_redir, i, j - i)))
-			return (NULL);
 		cmd->token = token;
 		return (0);
 	}
-	while (clean_cmd_no_redir[j])
+	i++;// le 1 = ' '
+	j = i;
+	if (clean_cmd_no_redir[j])
 	{
-		//dprintf(2, "i: %d\n, j: %d\n", i, j);
-		while (clean_cmd_no_redir[j] != '\0' && clean_cmd_no_redir[j] != ' ')
-			j++;
-		//dprintf(2, "i: %d\n, j: %d\n", i, j);
-		if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd_no_redir, i, j - i)))
-			return (NULL);
-		if (clean_cmd_no_redir[j] == '\0')
+		if (type == BUILTIN && ft_strncmp(token->token, "echo", 4) == 0)
 		{
+			ft_check_word_n(clean_cmd_no_redir, &i, &token);
+			j = i;
+			if (clean_cmd_no_redir[j])
+				while (clean_cmd_no_redir[j])
+					j++;
+			if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd_no_redir, i, j - i)))
+				return (NULL);
 			cmd->token = token;
 			return (0);
 		}
-		j++;
-		i = j;
+		else
+		{
+			while (clean_cmd_no_redir[j])
+			{
+				//dprintf(2, "i: %d\n, j: %d\n", i, j);
+				while (clean_cmd_no_redir[j] != '\0' && clean_cmd_no_redir[j] != ' ')
+					j++;
+				//dprintf(2, "i: %d\n, j: %d\n", i, j);
+				if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd_no_redir, i, j - i)))
+					return (NULL);
+				if (clean_cmd_no_redir[j] == '\0')
+				{
+					cmd->token = token;
+					return (0);
+				}
+				j++;
+				i = j;
+			}
+		}
 	}
 	cmd->token = token;
 	return (0);
@@ -197,7 +209,7 @@ int	ft_len_no_redir(char *clean_cmd)
 		{
 			len--;
 			i++;
-			if ((clean_cmd[i] == '>' || clean_cmd[i] == '<'))
+			if (clean_cmd[i] && (clean_cmd[i] == '>' || clean_cmd[i] == '<'))
 			{
 				len--;
 				i++;
@@ -282,6 +294,8 @@ int	ft_get_redir(t_cmd	*cmd)
 
 	tok_redir = NULL;
 	clean_cmd = cmd->clean_cmd;
+	if (!clean_cmd)
+		return (1);
 	clean_cmd_no_redir = malloc(sizeof(char) * (ft_len_no_redir(clean_cmd) + 1));
 	if (!clean_cmd_no_redir)
 		return (1); // bien free tout ce qu'il y a à free
@@ -323,7 +337,8 @@ int	ft_tokenizer(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
-		ft_get_redir(cmd);
+		if (ft_get_redir(cmd))
+			return (1);
 		//printf("clean cmd no redir = %s\n", cmd->clean_cmd_no_redir);
 		ft_get_token(cmd, data);
 		ft_clean_token(cmd);

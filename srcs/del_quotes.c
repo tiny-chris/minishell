@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:22:23 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/08/31 18:10:14 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 13:22:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ char	*ft_fill_unquote_cmd(char *raw_cmd, int len)
 			while (raw_cmd[i] == '$')
 				i++;
 			i--;
+			//cas de $'USER' ou $"coucou" --> bash ne conserve pas le $
 			if (raw_cmd[i + 1] != 34 && raw_cmd[i + 1] != 39)
 			{
 				unquote_cmd[j] = raw_cmd[i];
@@ -257,6 +258,8 @@ int	ft_del_quotes(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
+		if (cmd->raw_cmd == NULL)/////chris
+			return (2);// check si la commande n'est pas nulle
 		unquote_cmd_len = ft_unquote_cmd_len(cmd->raw_cmd);
 		//printf("len cmd unquote = %d\n", unquote_cmd_len);
 		cmd->unquote_cmd = ft_fill_unquote_cmd(cmd->raw_cmd, unquote_cmd_len);

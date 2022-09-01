@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/31 18:08:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 13:21:02 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 	env = data->env;
 	while (unquote_cmd[j] != '\0' && unquote_cmd[j] != '$' && unquote_cmd[j] != '<' \
 		&& unquote_cmd[j] != '>' && unquote_cmd[j] != 34 && unquote_cmd[j] != 39 \
-		&& unquote_cmd[j] != ' ')
+		&& unquote_cmd[j] != ' ' && unquote_cmd[j])
 		j++;
 	var_to_expand = ft_substr(unquote_cmd, *i, (j - *i));
 	if (!var_to_expand)
@@ -165,8 +165,8 @@ char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data)
 			i++;
 			j++;
 		}
-	clean_cmd[j] = '\0';
 	}
+	clean_cmd[j] = '\0';
 	return (clean_cmd);
 }
 
@@ -184,7 +184,7 @@ int	ft_expand(t_data *data)
 	while (cmd)
 	{
 		expand_cmd_len = ft_expand_cmd_len(cmd->unquote_cmd, data);//function that get the len of clean_cmd
-		printf("len avec expand = %d\n", expand_cmd_len);
+		//printf("len avec expand = %d\n", expand_cmd_len);
 		cmd->clean_cmd = ft_fill_clean_cmd(cmd->unquote_cmd, expand_cmd_len, data);
 		if (!cmd->clean_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
