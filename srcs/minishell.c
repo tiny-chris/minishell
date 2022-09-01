@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/01 08:58:15 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 17:52:44 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,31 @@ int	main(int argc, char **argv, char **envp)
 		data.env = ft_get_env(envp);
 		data.prompt = ft_strdup("minishell> ");
 		data.built_in = ft_built_in();
-		//while (1)
+		while (1)
 		{
 			data.line = readline(data.prompt);
-			add_history(data.line);
-			data.nb_pipes = ft_count_pipe(data.line);
-			//printf("nb pipes = %d\n", data.nb_pipes);
-			if (ft_lexer(data.line))
-			{// msg : syntax error et exit status = 2
-				//printf("ft_lexer = %d\n", ft_lexer(data.line));
-				ft_putendl_fd(ERRSTX, 2);
-				data.val_exit = 2;
-				//printf("exit status %d\n", data.val_exit);
-			}
-			else
+			if (data.line && ft_strlen(data.line) != 0)
 			{
-				data.cmd = ft_get_commands(&data);
-				ft_del_quotes(&data);
-				ft_expand(&data);
-				ft_tokenizer(&data);
-				ft_free_cmd(&(data.cmd));
+				add_history(data.line);
+				//printf("nb pipes = %d\n", data.nb_pipes);
+				if (ft_lexer(data.line))
+				{// msg : syntax error et exit status = 2
+					//printf("ft_lexer = %d\n", ft_lexer(data.line));
+					ft_putendl_fd(ERRSTX, 2);
+					data.val_exit = 2;
+					//printf("exit status %d\n", data.val_exit);
+				}
+				else
+				{
+					data.nb_pipes = ft_count_pipe(data.line);
+					data.cmd = ft_get_commands(&data);
+					ft_del_quotes(&data);
+					ft_expand(&data);
+					ft_tokenizer(&data);
+					ft_free_cmd(&(data.cmd));
+				}
+				free(data.line);
 			}
-			free(data.line);
 		}
 		ft_free_tabstr(data.built_in);
 		rl_clear_history();

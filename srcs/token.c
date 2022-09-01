@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/01 17:20:27 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 17:56:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,6 @@ void	ft_clean_token(t_cmd *cmd, t_data *data)
 	i = 0;
 	while (token)
 	{
-//		printf("entre dans clean token\n");
 		while (token->token[i] != '\0')
 		{
 			if (token->token[i] < 0)

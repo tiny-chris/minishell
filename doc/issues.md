@@ -16,6 +16,10 @@
 		--> OK si '$', "$ ", $USER, $youpi...
 		--> OK si "<" ou ">"
 
+>		CHECK pour "enter"
+		si ca existe ?
+		--> si non on sort --> si pas une string avec une vraie adresse
+		--> si oui, on regarde si la len vaut 0 --> renvoie le prompt (probablement readline enlève le \n)
 
 # //////////////////////// LENA
 
