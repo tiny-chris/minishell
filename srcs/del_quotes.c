@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:22:23 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/01 13:22:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 16:53:15 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,29 +117,44 @@ static void	ft_empty_quotes_case(char *raw_cmd, int *i, char *unquote_cmd, int *
 static void	ft_quotes_case(char *raw_cmd, int *i, char *unquote_cmd, int *j)
 {
 	char	c;
+//	int		k;
 
 	c = raw_cmd[*i];
+//	k = (*i) + 1;
 	if (ft_is_allspace(raw_cmd, *i, c) == 0)
 		ft_empty_quotes_case(raw_cmd, i, unquote_cmd, j);
 	else
 	{
 		(*i)++;
-		while (raw_cmd[*i] && raw_cmd[*i] != c)
+		if (raw_cmd[*i] && raw_cmd[*i] != c && !(c == 34 && raw_cmd[*i] =='$'))
 		{
-			if ((raw_cmd[*i] == '$' && c == 39) || (raw_cmd[*i] == '<') || (raw_cmd[*i] == '>') || (raw_cmd[*i] == ' '))
-				unquote_cmd[*j] = (-1) * raw_cmd[*i];
-			else if (raw_cmd[*i] == '$' && c == 34 && raw_cmd[*i + 1] == '$')
-			{
-				(*i)++;
-				while (raw_cmd[*i] == '$')
-					(*i)++;
-				(*i)--;
-				unquote_cmd[*j] = raw_cmd[*i];
-			}
-			else
-				unquote_cmd[*j] = raw_cmd[*i];
+			unquote_cmd[*j] = (-1) * raw_cmd[*i];
+			printf("char unquote_cmd[*j = %d] = %c\n", (*j), unquote_cmd[*j]);
 			(*i)++;
 			(*j)++;
+		}
+		if (raw_cmd[*i])
+		{
+			while (raw_cmd[*i] && raw_cmd[*i] != c)
+			{
+				if ((raw_cmd[*i] == '$' && c == 39) || (raw_cmd[*i] == '<') || (raw_cmd[*i] == '>') || (raw_cmd[*i] == ' '))
+				{
+					unquote_cmd[*j] = (-1) * raw_cmd[*i];
+					printf("char unquote_cmd[*j = %d] = %c\n", (*j), unquote_cmd[*j]);
+				}
+				else if (raw_cmd[*i] == '$' && c == 34 && raw_cmd[*i + 1] == '$')
+				{
+					(*i)++;
+					while (raw_cmd[*i] && raw_cmd[*i] == '$')
+						(*i)++;
+					(*i)--;
+					unquote_cmd[*j] = raw_cmd[*i];
+				}
+				else
+					unquote_cmd[*j] = raw_cmd[*i];
+				(*i)++;
+				(*j)++;
+			}
 		}
 	}
 }
@@ -265,7 +280,7 @@ int	ft_del_quotes(t_data *data)
 		cmd->unquote_cmd = ft_fill_unquote_cmd(cmd->raw_cmd, unquote_cmd_len);
 		if (!cmd->unquote_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
-		//printf("unquote_cmd = %s\n", cmd->unquote_cmd);
+		printf("unquote_cmd = %s, size = %ld\n", cmd->unquote_cmd, ft_strlen(cmd->unquote_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

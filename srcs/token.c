@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/01 13:45:05 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 17:20:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 		return (1);
 	}
 	new->token = token;
-	//dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
+	dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
 	new->type = type;
-	//dprintf(2, "type %d\n", new->type);
+	dprintf(2, "type %d\n", new->type);
 	new->next = NULL;
 	if (ft_lstlast_tok(*tok) == 0)
 	{
@@ -308,13 +308,24 @@ int	ft_get_redir(t_cmd	*cmd)
 }
 
 //token sans val negatives
-void	ft_clean_token(t_cmd *cmd)
+void	ft_clean_token(t_cmd *cmd, t_data *data)
 {
 	t_token	*token;
 	int		i;
 
 	i = 0;
 	token = cmd->token;
+	while (token->token[i] != '\0')
+	{
+		if (token->token[i] < 0)
+			token->token[i] = (-1) * (token->token[i]);
+		i++;
+	}
+	if (ft_check_built_in(token->token, data, ft_strlen(token->token)))
+		token->type = BUILTIN;
+	printf("token = %s, size = %ld, type = %d\n", token->token, ft_strlen(token->token), token->type);
+	token = token->next;
+	i = 0;
 	while (token)
 	{
 //		printf("entre dans clean token\n");
@@ -324,7 +335,7 @@ void	ft_clean_token(t_cmd *cmd)
 				token->token[i] = (-1) * (token->token[i]);
 			i++;
 		}
-//		printf("token = %s, size = %ld\n", token->token, ft_strlen(token->token));
+		printf("token = %s, size = %ld, type = %d\n", token->token, ft_strlen(token->token), token->type);
 		token = token->next;
 		i = 0;
 	}
@@ -341,7 +352,7 @@ int	ft_tokenizer(t_data *data)
 			return (1);
 		//printf("clean cmd no redir = %s\n", cmd->clean_cmd_no_redir);
 		ft_get_token(cmd, data);
-		ft_clean_token(cmd);
+		ft_clean_token(cmd, data);
 		cmd = cmd->next;
 	}
 	return (0);
