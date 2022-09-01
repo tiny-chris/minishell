@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/01 13:15:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 13:45:05 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 	new = malloc(sizeof(t_token));
 	if (!new)
 	{
-		ft_free_token(*tok);
+		ft_free_token(tok);
 		return (1);
 	}
 	new->token = token;

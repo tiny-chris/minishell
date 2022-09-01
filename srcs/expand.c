@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/01 13:21:02 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/01 13:44:15 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ int	ft_expand_cmd_len(char *unquote_cmd, t_data *data)
 				len++;
 				return (len);
 			}
-			//inclure les caractères négatifs comme séparateur --> on compte juste le $ comme caractère
-			else if (unquote_cmd[i] < 0 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
+			//ce sont les séparateurs : y compris les caractères négatifs --> dans ce cas, on compte juste le $ comme caractère
+			else if (unquote_cmd[i] < 0 || unquote_cmd[i] == 39 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
 				len++;
 			else
 				len += ft_get_expand_size(unquote_cmd, &i, data);
@@ -143,7 +143,7 @@ char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data)
 				j++;///// attention doublon
 				break;
 			}
-			else if (unquote_cmd[i] < 0 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
+			else if (unquote_cmd[i] < 0 || unquote_cmd[i] == 39 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
 			{
 				clean_cmd[j] = '$';
 				j++;
