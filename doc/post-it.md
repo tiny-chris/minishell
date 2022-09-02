@@ -378,3 +378,6 @@ valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all --suppressions=
 
 
 valgrind --leak-check=full --track-origins=yes --track-fds=yes --show-leak-kinds=all --suppressions=.ignore_readline ./minishell
+
+SANS CHECK FD
+valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=.ignore_readline ./minishell

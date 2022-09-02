@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/01 17:52:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/02 17:58:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 		data.env = ft_get_env(envp);
 		data.prompt = ft_strdup("minishell> ");
 		data.built_in = ft_built_in();
-		while (1)
+		//while (1)
 		{
 			data.line = readline(data.prompt);
 			if (data.line && ft_strlen(data.line) != 0)
@@ -54,5 +54,6 @@ int	main(int argc, char **argv, char **envp)
 		free(data.prompt);
 		ft_free_env(&(data.env));
 	}
+	// penser à faire un message d'erreur si nb d'arg incorrect
 	return (1);
 }

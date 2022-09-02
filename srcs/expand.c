@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/01 17:10:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/02 15:14:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 		&& unquote_cmd[j] != '>' && unquote_cmd[j] != 34 && unquote_cmd[j] != 39)
 		j++;
 	var_to_expand = ft_substr(unquote_cmd, *i, (j - *i));
+	printf("var to expand = %s, size = %ld\n", var_to_expand, ft_strlen(var_to_expand));
 	if (!var_to_expand)
 		return (0);// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
 	while (env)
 	{
-		if (ft_strncmp(var_to_expand, env->var, (j - *i)) == 0)
+		if ((ft_strlen(var_to_expand) == ft_strlen(env->var)) \
+			&& (ft_strncmp(var_to_expand, env->var, (j - *i)) == 0))
 		{
 			len = ft_strlen(env->content);
 			// printf("len de env->content = %d\n", len);
@@ -42,6 +44,7 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 	}
 	*i = j;
 	free(var_to_expand);
+	printf("expand len = %d\n", len);
 	return (len);
 }
 
@@ -103,7 +106,8 @@ static void	ft_fill_expand(char *unquote_cmd, int *i, char *clean_cmd, int *j, t
 		return ;// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
 	while (env)
 	{
-		if (ft_strncmp(var_to_expand, env->var, (k - *i)) == 0)
+		if ((ft_strlen(var_to_expand) == ft_strlen(env->var)) \
+			&& (ft_strncmp(var_to_expand, env->var, (k - *i)) == 0))
 		{
 			while (env->content[l])
 			{
