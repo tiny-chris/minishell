@@ -6,11 +6,24 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/02 17:58:39 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/02 18:30:50 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	ft_only_space(char *line)
+{
+	int	i;
+
+	while (line[i])
+	{
+		if (line[i] != ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -23,10 +36,10 @@ int	main(int argc, char **argv, char **envp)
 		data.env = ft_get_env(envp);
 		data.prompt = ft_strdup("minishell> ");
 		data.built_in = ft_built_in();
-		//while (1)
+		while (1)
 		{
 			data.line = readline(data.prompt);
-			if (data.line && ft_strlen(data.line) != 0)
+			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
 			{
 				add_history(data.line);
 				//printf("nb pipes = %d\n", data.nb_pipes);

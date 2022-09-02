@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 16:07:15 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/02 18:05:45 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/02 18:23:10 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,21 @@ void	ft_lstclear_token(t_token *token)
 void	ft_echo_join_words_fill(t_token *token)
 {
 	t_token	*tmp;
-	char	*char_tmp;
+	char	*char_tmp1;
+	char	*char_tmp2;
 
 	tmp = token;
-	char_tmp = NULL;
+	char_tmp1 = NULL;
+	char_tmp2 = NULL;
 	while (tmp && tmp->next)
 	{
-		char_tmp = ft_strdup(token->token);
-		token->token = ft_strjoin(char_tmp, " ");
-		free(char_tmp);
-		char_tmp = ft_strdup(token->token);
-		token->token = ft_strjoin(char_tmp, tmp->next->token);
+		char_tmp1 = ft_strjoin(token->token," ");
+		free(token->token);
+		char_tmp2 = ft_strjoin(char_tmp1, tmp->next->token);
+		free(char_tmp1);
+		token->token = ft_strdup(char_tmp2);
 		tmp = tmp->next;
-		free(char_tmp);
+		free(char_tmp2);
 	}
 	if (token)
 		printf("last clean token = %s, type =%d \n", token->token, token->type);

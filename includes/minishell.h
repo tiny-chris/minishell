@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/02 17:51:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/02 18:30:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ typedef struct s_data
 	int				**pipe;//nb de fd[][]
 	char			**env_path;//
 }	t_data;
+
+int		ft_only_space(char *line);
 
 char	**ft_built_in(void);
 void	*ft_free_tabstr(char **tab_str);
