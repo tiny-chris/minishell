@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/02 18:30:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/05 17:46:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			*raw_cmd;
+	char			*undoll_cmd;
 	char			*unquote_cmd;
 	char			*clean_cmd;
 	char			*clean_cmd_no_redir;
@@ -108,10 +109,14 @@ t_cmd	*ft_get_commands(t_data *data);
 void	ft_lstdelone_cmd(t_cmd *node);
 void	ft_free_cmd(t_cmd **cmd);
 
+int		ft_del_dolls(t_data *data);
+int		ft_undoll_cmd_len(char *raw_cmd);
+char	*ft_fill_undoll_cmd(char *raw_cmd, int len);
+
 int		ft_del_quotes(t_data *data);
-int		ft_unquote_cmd_len(char *raw_cmd);
+int		ft_unquote_cmd_len(char *undoll_cmd);
 int		ft_is_allspace(char *str, int i, char c);
-char	*ft_fill_unquote_cmd(char *raw_cmd, int len);
+char	*ft_fill_unquote_cmd(char *undoll_cmd, int len);
 
 int		ft_expand(t_data *data);
 int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);

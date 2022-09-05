@@ -5,7 +5,6 @@
 
 # //////////////////////// BEWARE
 
-
 >		***** Cas additionnel de $ entre double quotes avec texte qui n'est pas une variable *****
 		check "$tata" --> must return "" (command not found)
 
@@ -23,15 +22,18 @@
 			- si les " " en négatif sont vides, alors les mettre en positif et les conserver
 			- sinon, supprimer les " "
 
-		***** Cas d'un $ suivi immédiatement d'un chiffre, le tout hors ' ' *****
+>		***** Cas d'un $ suivi immédiatement d'un chiffre, le tout hors ' ' *****
 			Dans DEL_QUOTES aussi :
 			- faire une condition dans le cas où $ n'est pas entre ' ' mais est suivi d'un chiffre
 				--> supprimer $2
 				comme pour 	$"USER" --> USER : on supprime le $
 							$24444	--> 4444 : on supprime $2
 
+>		***** CAS DE "$" ou "$$$$$...$" *****
+			Dans ce cas, on garde 1 seul $ et on le met en négatif (car on retire les " ")
+
 >		***** CAS DE $? *****
-		- si '$?' 		--> texte donc $ en négatif (déjà géré), type "WORD" ou "COMMAND"
+		- si '$?' 		--> texte $? donc $ en négatif (déjà géré), type "WORD" ou "COMMAND"
 		- si $? ou "$?" --> type special "ERR_STATUS" (à créer dans enum)
 			et :
 				- si pas echo avant --> doit faire apparaitre 0

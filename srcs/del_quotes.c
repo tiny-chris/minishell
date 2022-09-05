@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 11:22:23 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/05 11:02:03 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/05 14:52:18 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
 		{
 			c = raw_cmd[i];
-			if (ft_is_allspace(raw_cmd, i, c) == 1)
+			if (ft_is_allspace(raw_cmd, i, c) == 1)//si au moins un caractère autre que 'espace' (et pas "" ou '')
 				len -= 2;
 			i++;
 			while (raw_cmd[i] && raw_cmd[i] != c)
@@ -69,7 +69,12 @@ int	ft_unquote_cmd_len(char *raw_cmd)
 				len--;
 			}
 			if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
-				len--;
+				len--;//on enlève le $
+			else if (ft_isdigit(raw_cmd[i]))
+			{
+				i++;
+				len -= 2;
+			}
 			i--;
 		}
 		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
