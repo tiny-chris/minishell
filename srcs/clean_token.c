@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 16:07:15 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/02 18:23:10 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/05 11:07:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_echo_join_words_fill(t_token *token)
 		free(char_tmp2);
 	}
 	if (token)
-		printf("last clean token = %s, type =%d \n", token->token, token->type);
+		//printf("last clean token = %s, type =%d \n", token->token, token->type);
 	ft_lstclear_token(token->next);
 	token->next = NULL;
 }
@@ -84,7 +84,7 @@ t_token	*ft_get_token_echo(t_token **token)
 			tmp_token->type = WORD_N;
 			free(tmp_token->token);
 			tmp_token->token = ft_strdup("-n");
-			printf("clean token = %s, type =%d \n", tmp_token->token, tmp_token->type);
+			//printf("clean token = %s, type =%d \n", tmp_token->token, tmp_token->type);
 		}
 		else
 			return (tmp_token);
@@ -116,7 +116,7 @@ void	ft_clean_token(t_cmd *cmd, t_data *data)
 	if (ft_check_built_in(token->token, data, ft_strlen(token->token)))
 		token->type = BUILTIN;
 	type_real = token->type;
-	printf("token = %s, size = %ld, type = %d\n", token->token, ft_strlen(token->token), token->type);
+	//printf("token = %s, size = %ld, type = %d\n", token->token, ft_strlen(token->token), token->type);
 	token = token->next;
 	i = 0;
 	while (token)
@@ -127,7 +127,7 @@ void	ft_clean_token(t_cmd *cmd, t_data *data)
 				token->token[i] = (-1) * (token->token[i]);
 			i++;
 		}
-		printf("token = %s, size = %ld, type = %d\n", token->token, ft_strlen(token->token), token->type);
+		//printf("token = %s, size = %ld, type = %d\n", token->token, ft_strlen(token->token), token->type);
 		token = token->next;
 		i = 0;
 	}
@@ -144,4 +144,14 @@ void	ft_clean_token(t_cmd *cmd, t_data *data)
 			ft_echo_join_words_fill(token);
 		}
 	}
+	/////
+	t_token	*display;
+
+	display = cmd->token;
+	while (display)
+	{
+		printf("token = %s, size = %ld, type = %d\n", display->token, ft_strlen(display->token), display->type);
+		display = display->next;
+	}
+	/////
 }

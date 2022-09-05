@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:40:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/02 16:07:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/05 11:02:46 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 		return (1);
 	}
 	new->token = token;
-	dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
+	//dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
 	new->type = type;
-	dprintf(2, "type %d\n", new->type);
+	//dprintf(2, "type %d\n", new->type);
 	new->next = NULL;
 	if (ft_lstlast_tok(*tok) == 0)
 	{
@@ -110,17 +110,17 @@ int	ft_check_word_n(char *clean_cmd_no_redir, int *i, t_token **token)
 	j = (*i);
 	while (clean_cmd_no_redir[j])
 	{
-		printf("passe dans ft_checj word n\n");
+		//printf("passe dans ft_checj word n\n");
 		if (clean_cmd_no_redir[j] == '-')
 		{
-			printf("1er char = -\n");
+			//printf("1er char = -\n");
 			j++;
 		}
 		else
 			return (0);
 		if (clean_cmd_no_redir[j] && clean_cmd_no_redir[j] != 'n')
 		{
-			printf("1er char = n\n");
+			//printf("1er char = n\n");
 			return (0);
 		}
 		while (clean_cmd_no_redir[j] && clean_cmd_no_redir[j] == 'n')
@@ -165,13 +165,13 @@ t_token	*ft_get_token(t_cmd *cmd, t_data *data)
 	}
 	i++;// le 1 = ' '
 	j = i;
-	printf("val de i après lecture du 1er arg + espace = %d\n", i);
+	//printf("val de i après lecture du 1er arg + espace = %d\n", i);
 	if (clean_cmd_no_redir[j])
 	{
 		if (type == BUILTIN && ft_strncmp(token->token, "echo", 4) == 0)
 		{
-			printf("builtin (1) = %d et val token->token = %s\n", type, token->token);
-			printf("resul ft_strncmp = %d\n", ft_strncmp(token->token, "echo", 4));
+			//printf("builtin (1) = %d et val token->token = %s\n", type, token->token);
+			//printf("resul ft_strncmp = %d\n", ft_strncmp(token->token, "echo", 4));
 			ft_check_word_n(clean_cmd_no_redir, &i, &token);
 			j = i;
 			if (clean_cmd_no_redir[j] != '\0')
