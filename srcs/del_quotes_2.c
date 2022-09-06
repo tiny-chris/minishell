@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 17:43:56 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/06 11:50:32 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/06 12:27:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,9 @@ static void	ft_quotes_case(char *undoll_cmd, int *i, char *unquote_cmd, int *j)
 		(*j)++;
 		while (undoll_cmd[*i] && undoll_cmd[*i] != c)
 		{
-			if ((undoll_cmd[*i] == '<') || (undoll_cmd[*i] == '>') || (undoll_cmd[*i] == ' '))
+			if (undoll_cmd[*i] == '$' && undoll_cmd[*i + 1] == c)
+				unquote_cmd[*j] = (-1) * undoll_cmd[*i];
+			else if ((undoll_cmd[*i] == '<') || (undoll_cmd[*i] == '>') || (undoll_cmd[*i] == ' '))
 				unquote_cmd[*j] = (-1) * undoll_cmd[*i];
 			else
 				unquote_cmd[*j] = undoll_cmd[*i];

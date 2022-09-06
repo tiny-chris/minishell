@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/05 11:02:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/06 12:15:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	ft_expand_cmd_len(char *unquote_cmd, t_data *data)
 				return (len);
 			}
 			//ce sont les séparateurs : y compris les caractères négatifs --> dans ce cas, on compte juste le $ comme caractère
-			else if (unquote_cmd[i] < 0 || unquote_cmd[i] == 39 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
+			else if (unquote_cmd[i] == '?' || unquote_cmd[i] < 0 || unquote_cmd[i] == 39 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
 				len++;
 			else
 				len += ft_get_expand_size(unquote_cmd, &i, data);
@@ -147,7 +147,7 @@ char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data)
 				j++;///// attention doublon
 				break;
 			}
-			else if (unquote_cmd[i] < 0 || unquote_cmd[i] == 39 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
+			else if (unquote_cmd[i] == '?' || unquote_cmd[i] < 0 || unquote_cmd[i] == 39 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
 			{
 				clean_cmd[j] = '$';
 				j++;
@@ -157,12 +157,12 @@ char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data)
 				//faire le cas particulier des expand pour calcul len
 				// + envoyer adresse de i
 		}
-		else if (unquote_cmd[i] == (-1) * '$')
-		{
-			clean_cmd[j] = '$';
-			j++;
-			i++;
-		}
+		// else if (unquote_cmd[i] == (-1) * '$')  // a mettre plutot dans clean token pour conserver le $? en négatif
+		// {
+		// 	clean_cmd[j] = '$';
+		// 	j++;
+		// 	i++;
+		// }
 		else/// a finaliser
 		{
 			clean_cmd[j] = unquote_cmd[i];
@@ -192,7 +192,7 @@ int	ft_expand(t_data *data)
 		cmd->clean_cmd = ft_fill_clean_cmd(cmd->unquote_cmd, expand_cmd_len, data);
 		if (!cmd->clean_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
-		//printf("clean_cmd = %s\n", cmd->clean_cmd);
+		printf("clean_cmd = %s, size = %ld\n", cmd->clean_cmd, ft_strlen(cmd->clean_cmd));
 		cmd = cmd->next;
 	}
 	return (0);
