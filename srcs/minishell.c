@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/06 12:15:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/06 17:54:48 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	ft_only_space(char *line)
 {
 	int	i;
 
+	i = 0;
 	while (line[i])
 	{
 		if (line[i] != ' ')
@@ -54,11 +55,13 @@ int	main(int argc, char **argv, char **envp)
 				{
 					data.nb_pipes = ft_count_pipe(data.line);
 					data.cmd = ft_get_commands(&data);//separation des commandes en fonction du nb de pipes
-					ft_del_dolls(&data);
-					ft_del_quotes(&data);
-					ft_expand(&data);
+					ft_del_spaces(&data);
+					ft_get_redir(&data);
+					//ft_del_dolls(&data);
+					//ft_del_quotes(&data);
+					//ft_expand(&data);
 					//ft_tokenizer(&data);
-					//ft_free_cmd(&(data.cmd));
+					ft_free_cmd(&(data.cmd));
 				}
 				free(data.line);
 			}

@@ -66,7 +66,13 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
 	}
 	new->raw_cmd = ft_strdup(cmdline);
 	//printf("raw cmd = %s\n", new->raw_cmd);
+	new->raw_cmd_no_space = NULL;
+	new->no_redir_cmd = NULL;
+	new->undoll_cmd = NULL;
+	new->unquote_cmd = NULL;
 	new->clean_cmd = NULL;
+	new->token = NULL;
+	new->tok_redir = NULL;
 	new->next = NULL;
 	if (ft_lstlast_cmd(*cmd) == 0)
 	{
@@ -135,36 +141,13 @@ t_cmd	*ft_get_commands(t_data *data)
 		if (ft_lstadd_cmd(&cmd, tmp) == 1)
 			return (NULL);
 		i = ft_next_pipe(data->line, i);
+		//supprimer les espaces inutiles
+		//creer notre liste de redirections
+		//expand quand ce n'est pas un heredoc
 		free(tmp);
 		nb_cmd--;
 	}
 	return (cmd);
-}
-
-void	ft_lstdelone_tok(t_token *node)
-{
-	if (!node)
-		return ;
-	free(node->token);
-	node->token = NULL;
-	node->next = NULL;
-	free(node);
-}
-
-void	ft_free_token(t_token **token)
-{
-	t_token	*tmp;
-
-	if (!*token)
-		return ;
-	while (*token != NULL)
-	{
-		tmp = (*token)->next;
-		//dprintf(2, "token val = %s\n", (*token)->token);
-		ft_lstdelone_tok(*token);
-		(*token) = tmp;
-	}
-	(token) = NULL;
 }
 
 void	ft_lstdelone_cmd(t_cmd *node)
@@ -173,14 +156,18 @@ void	ft_lstdelone_cmd(t_cmd *node)
 		return ;
 	free(node->raw_cmd);
 	node->raw_cmd = NULL;
-	free(node->unquote_cmd);
-	node->unquote_cmd = NULL;
-	free(node->clean_cmd);
-	node->clean_cmd = NULL;
-	free(node->clean_cmd_no_redir);
-	node->clean_cmd_no_redir = NULL;
+	free(node->raw_cmd_no_space);
+	node->raw_cmd_no_space = NULL;
+	free(node->no_redir_cmd);
+	node->no_redir_cmd = NULL;
+	// free(node->unquote_cmd);
+	// node->unquote_cmd = NULL;
+	// free(node->clean_cmd);
+	// node->clean_cmd = NULL;
+	// free(node->clean_cmd_no_redir);
+	// node->clean_cmd_no_redir = NULL;
 	ft_free_token(&(node->tok_redir));
-	ft_free_token(&(node->token));
+	// ft_free_token(&(node->token));
 	node->next = NULL;
 	free(node);
 }
