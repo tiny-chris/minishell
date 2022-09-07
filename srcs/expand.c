@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/06 12:15:39 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/07 12:07:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 	env = data->env;
 	while (unquote_cmd[j] && (unquote_cmd[j] > 0) && unquote_cmd[j] != '\0' \
 		&& unquote_cmd[j] != '$' && unquote_cmd[j] != '<' && unquote_cmd[j] != ' ' \
-		&& unquote_cmd[j] != '>' && unquote_cmd[j] != 34 && unquote_cmd[j] != 39)
+		&& unquote_cmd[j] != '>' && unquote_cmd[j] != 34 && unquote_cmd[j] != 39
+		&& unquote_cmd[j] != '?')
 		j++;
 	var_to_expand = ft_substr(unquote_cmd, *i, (j - *i));
 	//printf("var to expand = %s, size = %ld\n", var_to_expand, ft_strlen(var_to_expand));
@@ -99,7 +100,7 @@ static void	ft_fill_expand(char *unquote_cmd, int *i, char *clean_cmd, int *j, t
 	l = 0;
 	while (unquote_cmd[k] > 0 && unquote_cmd[k] != '\0' && unquote_cmd[k] != '$' \
 		&& unquote_cmd[k] != '<' && unquote_cmd[k] != '>' && unquote_cmd[k] != 34 \
-		&& unquote_cmd[k] != 39 && unquote_cmd[k] != ' ')
+		&& unquote_cmd[k] != 39 && unquote_cmd[k] != ' ' && unquote_cmd[k] != '?')
 		k++;
 	var_to_expand = ft_substr(unquote_cmd, *i, (k - *i));
 	if (!var_to_expand)
