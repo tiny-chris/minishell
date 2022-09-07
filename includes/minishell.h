@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/07 10:02:27 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/07 11:37:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int		ft_del_quotes(t_data *data);
 int		ft_unquote_cmd_len(char *undoll_cmd);
 int		ft_is_allspace(char *str, int i, char c);
 char	*ft_fill_unquote_cmd(char *undoll_cmd, int len);
+int		ft_contains_doll(char *undoll_cmd, int i, char c);
 
 int		ft_expand(t_data *data);
 int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);

@@ -6,7 +6,7 @@
 #    By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/09/07 10:03:34 by cgaillag         ###   ########.fr        #
+#    Updated: 2022/09/07 12:00:17 by cgaillag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,8 @@ SRCS 	= 	minishell.c \
 			get_redir.c \
 			token_list.c \
 			del_dolls.c \
-#			del_quotes_2.c \
-			expand.c \
+			del_quotes_2.c \
+#			expand.c \
 			token.c \
 			clean_token.c \
 
