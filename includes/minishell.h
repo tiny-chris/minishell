@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/06 17:34:26 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:02:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,15 @@ typedef struct s_data
 	char			**env_path;//
 }	t_data;
 
+int		ft_del_dolls(t_data *data);
+int		ft_undoll_cmd_len(char *no_redir_cmd);
+char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len);
 
 int		ft_get_redir(t_data *data);
 int		ft_len_no_redir(char *raw_cmd_no_space);
 char	*ft_fill_no_redir(char *raw_cmd_no_space, int len);
 int		ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir);
 int		ft_is_redir(char *raw_cmd_no_space, int *j);
-
 
 int		ft_del_spaces(t_data *data);
 int		ft_unspace_cmd_len(char	*raw_cmd);
@@ -122,10 +124,6 @@ int		ft_next_pipe(char *line, int i);
 t_cmd	*ft_get_commands(t_data *data);
 void	ft_lstdelone_cmd(t_cmd *node);
 void	ft_free_cmd(t_cmd **cmd);
-
-int		ft_del_dolls(t_data *data);
-int		ft_undoll_cmd_len(char *raw_cmd);
-char	*ft_fill_undoll_cmd(char *raw_cmd, int len);
 
 int		ft_del_quotes(t_data *data);
 int		ft_unquote_cmd_len(char *undoll_cmd);

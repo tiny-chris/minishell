@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/06 17:47:14 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:48:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,22 @@
 
 int	ft_len_no_redir(char *raw_cmd_no_space)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
+	char	c;
 
 	i = 0;
 	len = ft_strlen(raw_cmd_no_space);
 	while (raw_cmd_no_space[i])
 	{
-		if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
+		if (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39)
+		{
+			c = raw_cmd_no_space[i];
+			i++;
+			while (raw_cmd_no_space[i] != c)
+				i++;
+		}
+		else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
 		{
 			len--;
 			i++;
@@ -49,6 +57,7 @@ char	*ft_fill_no_redir(char *raw_cmd_no_space, int len)
 	char	*no_redir_cmd;
 	int		i;
 	int		j;
+	char	c;
 
 	i = 0;
 	j = 0;
@@ -57,7 +66,22 @@ char	*ft_fill_no_redir(char *raw_cmd_no_space, int len)
 		return (NULL); // free tout
 	while (raw_cmd_no_space[i])
 	{
-		if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
+		if (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39)
+		{
+			c = raw_cmd_no_space[i];
+			no_redir_cmd[j] = c;
+			i++;
+			j++;
+			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)
+			{
+				no_redir_cmd[j] = raw_cmd_no_space[i];
+				i++;
+				j++;
+			}
+			no_redir_cmd[j] = c;
+			j++;
+		}
+		else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
 		{
 			i++;
 			if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
@@ -107,26 +131,37 @@ int	ft_is_redir(char *raw_cmd_no_space, int *j)
 
 int	ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir)
 {
-	int	i;
-	int	j;
-	int	type;
+	int		i;
+	int		j;
+	int		type;
+	char	c;
 
 	i = 0;
 	j = 0;
 	type = 0;
 	while(raw_cmd_no_space[i])
 	{
-		type = ft_is_redir(raw_cmd_no_space, &j);
-		if (type)
+		if (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39)
 		{
-			if (ft_lstadd_token(tok_redir, type, ft_substr(raw_cmd_no_space, i, (j - i))))
-				return (1); //free tout ce qu'il y a à free
-			i = j;
-			while (raw_cmd_no_space[j] && raw_cmd_no_space[j] != ' ' && raw_cmd_no_space[j] != '>'  && raw_cmd_no_space[j] != '<')
-				j++;
-			if (ft_lstadd_token(tok_redir, type + 10, ft_substr(raw_cmd_no_space, i, j - i)))
-				return (1); //free tout ce qu'il y a à free
-			i = j - 1;
+			c = raw_cmd_no_space[i];
+			i++;
+			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)
+				i++;
+		}
+		else
+		{
+			type = ft_is_redir(raw_cmd_no_space, &j);
+			if (type)
+			{
+				if (ft_lstadd_token(tok_redir, type, ft_substr(raw_cmd_no_space, i, (j - i))))
+					return (1); //free tout ce qu'il y a à free
+				i = j;
+				while (raw_cmd_no_space[j] && raw_cmd_no_space[j] != ' ' && raw_cmd_no_space[j] != '>'  && raw_cmd_no_space[j] != '<')
+					j++;
+				if (ft_lstadd_token(tok_redir, type + 10, ft_substr(raw_cmd_no_space, i, j - i)))
+					return (1); //free tout ce qu'il y a à free
+				i = j - 1;
+			}
 		}
 		i++;
 		j = i;
