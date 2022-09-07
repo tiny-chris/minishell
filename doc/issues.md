@@ -5,6 +5,14 @@
 
 # //////////////////////// BEWARE
 
+>		check pour les clean token
+		echo "-nnnn  -n coucou"
+		vs.
+		echo "-nnnn" " n" "coucou"
+
+
+
+
 >		***** Cas additionnel de $ entre double quotes avec texte qui n'est pas une variable *****
 		check "$tata" --> must return "" (command not found)
 

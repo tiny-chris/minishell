@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/07 11:37:27 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/07 18:32:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int		ft_get_expand_size(char *unquote_cmd, int *i, t_data *data);
 char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data);
 
 int		ft_tokenizer(t_data *data);
-t_token	*ft_get_token(t_cmd *cmd, t_data *data);
+int		ft_get_token(t_cmd *cmd);
 int		ft_check_built_in(char *clean_cmd, t_data *data, int i);
 int		ft_check_word_n(char *clean_cmd_no_redir, int *i, t_token **token);
 void	ft_clean_token(t_cmd *cmd, t_data *data);

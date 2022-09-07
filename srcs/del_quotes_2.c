@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 17:43:56 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/07 11:43:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/07 18:18:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ static void	ft_quotes_case(char *undoll_cmd, int *i, char *unquote_cmd, int *j)
 		{
 			if (undoll_cmd[*i] == '$' && (undoll_cmd[*i + 1] == c || undoll_cmd[*i + 1] == ' ' || undoll_cmd[*i + 1] == '<' || undoll_cmd[*i + 1] == '>'))
 				unquote_cmd[*j] = (-1) * undoll_cmd[*i];
-			// else if ((undoll_cmd[*i] == '<') || (undoll_cmd[*i] == '>') || (undoll_cmd[*i] == ' '))//on garde les chevrons ?
-			// 	unquote_cmd[*j] = (-1) * undoll_cmd[*i];
+			else if ((undoll_cmd[*i] == '<') || (undoll_cmd[*i] == '>') || (undoll_cmd[*i] == ' '))//on garde les chevrons ?
+				unquote_cmd[*j] = (-1) * undoll_cmd[*i];
 			else
 				unquote_cmd[*j] = undoll_cmd[*i];
 			(*i)++;

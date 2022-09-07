@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 12:07:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/07 17:45:57 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,25 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 */
 int	ft_expand_cmd_len(char *unquote_cmd, t_data *data)
 {
-	int		i;
-	int		len;
+	int			i;
+	int			len;
+	signed char	*cmd;
 
 	i = 0;
 	len = 0;
-	while (unquote_cmd[i])
+	cmd = (signed char *)unquote_cmd;
+	while (cmd[i])
 	{
-		if (unquote_cmd[i] == '$')
+		if (cmd[i] == '$')
 		{
 			i++;
-			if (unquote_cmd[i] == '\0')
+			if (cmd[i] == '\0')
 			{
 				len++;
 				return (len);
 			}
 			//ce sont les séparateurs : y compris les caractères négatifs --> dans ce cas, on compte juste le $ comme caractère
-			else if (unquote_cmd[i] == '?' || unquote_cmd[i] < 0 || unquote_cmd[i] == 39 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
+			else if (cmd[i] == '?' || cmd[i] < 0 || cmd[i] == 39 || cmd[i] == ' ' || cmd[i] == '<' || cmd[i] == '>')
 				len++;
 			else
 				len += ft_get_expand_size(unquote_cmd, &i, data);
@@ -127,28 +129,29 @@ static void	ft_fill_expand(char *unquote_cmd, int *i, char *clean_cmd, int *j, t
 
 char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data)
 {
-	char	*clean_cmd;
-	int		i;
-	int		j;
+	char		*clean_cmd;
+	int			i;
+	int			j;
+	signed char	*cmd;
 
 	i = 0;
 	j = 0;
-	clean_cmd = NULL;
+	cmd = (signed char *)unquote_cmd;
 	clean_cmd = malloc(sizeof(char) * (len + 1));
 	if (!clean_cmd)
 		return (NULL);
-	while (unquote_cmd[i])
+	while (cmd[i])
 	{
-		if (unquote_cmd[i] == '$')
+		if (cmd[i] == '$')
 		{
 			i++;
-			if (unquote_cmd[i] == '\0')
+			if (cmd[i] == '\0')
 			{
 				clean_cmd[j] = '$';
 				j++;///// attention doublon
 				break;
 			}
-			else if (unquote_cmd[i] == '?' || unquote_cmd[i] < 0 || unquote_cmd[i] == 39 || unquote_cmd[i] == ' ' || unquote_cmd[i] == '<' || unquote_cmd[i] == '>')
+			else if (cmd[i] == '?' || cmd[i] < 0 || cmd[i] == 39 || cmd[i] == ' ' || cmd[i] == '<' || cmd[i] == '>')
 			{
 				clean_cmd[j] = '$';
 				j++;
@@ -164,9 +167,9 @@ char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data)
 		// 	j++;
 		// 	i++;
 		// }
-		else/// a finaliser
+		else
 		{
-			clean_cmd[j] = unquote_cmd[i];
+			clean_cmd[j] = cmd[i];
 			i++;
 			j++;
 		}
