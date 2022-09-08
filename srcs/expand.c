@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 17:45:57 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:35:34 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 
 	len = 0;
 	j = *i;
+	printf("j = %d\n", j);
 	env = data->env;
 	while (unquote_cmd[j] && (unquote_cmd[j] > 0) && unquote_cmd[j] != '\0' \
 		&& unquote_cmd[j] != '$' && unquote_cmd[j] != '<' && unquote_cmd[j] != ' ' \
 		&& unquote_cmd[j] != '>' && unquote_cmd[j] != 34 && unquote_cmd[j] != 39
 		&& unquote_cmd[j] != '?')
 		j++;
+	printf("j2 = %d\n", j);
 	var_to_expand = ft_substr(unquote_cmd, *i, (j - *i));
 	//printf("var to expand = %s, size = %ld\n", var_to_expand, ft_strlen(var_to_expand));
 	if (!var_to_expand)
@@ -45,10 +47,23 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 	}
 	*i = j;
 	free(var_to_expand);
-	//printf("expand len = %d\n", len);
+	printf("expand len = %d et le i =%d\n", len, *i);
 	return (len);
 }
 
+int	ft_get_error_size(t_data *data)
+{
+	char	*str_exit;
+	int		len;
+
+	len = 0;
+	str_exit = ft_itoa(data->val_exit);
+	if (!str_exit)
+		return (-1); ///free tout ce qu'il y a à free + exit
+	len = ft_strlen(str_exit);
+	data->str_exit = str_exit;
+	return (len);
+}
 /*
 	calcul taille à malloc pour chaque unquote_cmd (cas expand dans une fonction dédiée)
 
@@ -74,8 +89,10 @@ int	ft_expand_cmd_len(char *unquote_cmd, t_data *data)
 				return (len);
 			}
 			//ce sont les séparateurs : y compris les caractères négatifs --> dans ce cas, on compte juste le $ comme caractère
-			else if (cmd[i] == '?' || cmd[i] < 0 || cmd[i] == 39 || cmd[i] == ' ' || cmd[i] == '<' || cmd[i] == '>')
+			else if (cmd[i] < 0 || cmd[i] == 39 || cmd[i] == ' ' || cmd[i] == '<' || cmd[i] == '>')
 				len++;
+			else if (cmd[i] == '?')
+				len += ft_get_error_size(data) - 1;
 			else
 				len += ft_get_expand_size(unquote_cmd, &i, data);
 				//faire le cas particulier des expand pour calcul len
@@ -87,6 +104,7 @@ int	ft_expand_cmd_len(char *unquote_cmd, t_data *data)
 			len++;
 		}
 	}
+	printf("len clean cmd = %d\n", len);
 	return (len);
 }
 
@@ -132,10 +150,12 @@ char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data)
 	char		*clean_cmd;
 	int			i;
 	int			j;
+	int			k;
 	signed char	*cmd;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	cmd = (signed char *)unquote_cmd;
 	clean_cmd = malloc(sizeof(char) * (len + 1));
 	if (!clean_cmd)
@@ -151,10 +171,21 @@ char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data)
 				j++;///// attention doublon
 				break;
 			}
-			else if (cmd[i] == '?' || cmd[i] < 0 || cmd[i] == 39 || cmd[i] == ' ' || cmd[i] == '<' || cmd[i] == '>')
+			else if (cmd[i] < 0 || cmd[i] == 39 || cmd[i] == ' ' || cmd[i] == '<' || cmd[i] == '>')
 			{
 				clean_cmd[j] = '$';
 				j++;
+			}
+			else if (cmd[i] == '?')
+			{
+				while (data->str_exit[k])
+				{
+					clean_cmd[j] = data->str_exit[k];
+					j++;
+					k++;
+				}
+				i++;
+				k = 0;
 			}
 			else
 				ft_fill_expand(unquote_cmd, &i, clean_cmd, &j, data);

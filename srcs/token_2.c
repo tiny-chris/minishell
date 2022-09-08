@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/07 18:35:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:22:36 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_tokenizer(t_data *data)
 	while (cmd)
 	{
 		ft_get_token(cmd);
-		//ft_clean_token(cmd, data);
+		ft_clean_token(cmd, data);
 		cmd = cmd->next;
 	}
 

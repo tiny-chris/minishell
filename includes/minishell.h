@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/07 18:32:07 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:19:21 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_data
 	char			*prompt;
 	t_env			*env;
 	int				val_exit;
+	char			*str_exit;
 	int				nb_pipes;
 	t_cmd			*cmd;
 	char			**built_in;
@@ -140,7 +141,7 @@ int		ft_tokenizer(t_data *data);
 int		ft_get_token(t_cmd *cmd);
 int		ft_check_built_in(char *clean_cmd, t_data *data, int i);
 int		ft_check_word_n(char *clean_cmd_no_redir, int *i, t_token **token);
-void	ft_clean_token(t_cmd *cmd, t_data *data);
+int		ft_clean_token(t_cmd *cmd, t_data *data);
 //int		ft_is_redir(char *clean_cmd, int *i);
 int		ft_lstadd_token(t_token **tok, int type, char *token);
 t_token	*ft_lstlast_tok(t_token *lst);

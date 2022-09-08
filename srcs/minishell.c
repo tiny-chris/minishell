@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/07 18:25:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:02:48 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ int	main(int argc, char **argv, char **envp)
 		data.env = ft_get_env(envp);
 		data.prompt = ft_strdup("minishell> ");
 		data.built_in = ft_built_in();
+		data.str_exit = NULL;
 		while (1)
 		{
 			data.line = readline(data.prompt);
+			data.str_exit = NULL;
 			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
 			{
 				add_history(data.line);
@@ -66,6 +68,8 @@ int	main(int argc, char **argv, char **envp)
 					ft_free_cmd(&(data.cmd));
 				}
 				free(data.line);
+				if (data.str_exit)
+					free(data.str_exit);
 			}
 		}
 		ft_free_tabstr(data.built_in);
