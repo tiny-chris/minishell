@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/07 10:27:54 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:55:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,11 +168,11 @@ int	ft_del_dolls(t_data *data)
 	while (cmd)
 	{
 		undoll_len = ft_undoll_cmd_len(cmd->no_redir_cmd);
-		printf("len de del_dolls = %d\n", undoll_len);
 		cmd->undoll_cmd = ft_fill_undoll_cmd(cmd->no_redir_cmd, undoll_len);
 		if (!cmd->undoll_cmd)
 			return (1);
-		printf("val undoll_cmd = %s\n", cmd->undoll_cmd);
+		dprintf(2, "val undoll_cmd = %s\n", cmd->undoll_cmd);
+		dprintf(2, "val undoll_cmd len = %d vs. strlen = %ld\n", undoll_len, ft_strlen(cmd->undoll_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

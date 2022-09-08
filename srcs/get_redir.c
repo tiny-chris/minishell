@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/07 10:48:09 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:54:33 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,12 +179,11 @@ int	ft_get_redir(t_data *data)
 	while (cmd)
 	{
 		len = ft_len_no_redir(cmd->raw_cmd_no_space);
-		dprintf(2, "len à malloc no redir %d\n", len);
-		dprintf(2, "raw no space = %s\n", cmd->raw_cmd_no_space);
 		cmd->no_redir_cmd = ft_fill_no_redir(cmd->raw_cmd_no_space, len);
 		if (!cmd->no_redir_cmd)
 			return (1); // FREE tout ce qu'il y a à free
-		dprintf(2, "cmd sans redir = %s, len = %ld\n", cmd->no_redir_cmd, ft_strlen(cmd->no_redir_cmd));
+		dprintf(2, "cmd sans redir = %s\n", cmd->no_redir_cmd);
+		dprintf(2, "cmd sans redir len = %d vs; strlen = %ld\n", len, ft_strlen(cmd->no_redir_cmd));
 		if (ft_get_redir_list(cmd->raw_cmd_no_space, &cmd->tok_redir))
 			return (1); // FREE tout ce qu'il y a à free
 		cmd = cmd->next;

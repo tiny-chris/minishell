@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/06 18:00:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:53:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,12 +144,11 @@ int	ft_del_spaces(t_data *data)
 	while (cmd)
 	{
 		len = ft_unspace_cmd_len(cmd->raw_cmd);
-		dprintf(2, "raw cmd len = %ld\n", ft_strlen(cmd->raw_cmd));
-		dprintf(2, "len = %d\n", len);
 		cmd->raw_cmd_no_space = ft_fill_unspace_cmd(cmd->raw_cmd, len);
 		if (!cmd->raw_cmd_no_space)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!
 		dprintf(2, "raw cmd no space = %s\n", cmd->raw_cmd_no_space);
+		dprintf(2, "raw cmd no space len = %d vs strlen = %ld\n", len, ft_strlen(cmd->raw_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

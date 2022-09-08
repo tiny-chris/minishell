@@ -3,10 +3,10 @@
 // /*                                                        :::      ::::::::   */
 // /*   clean_token.c                                      :+:      :+:    :+:   */
 // /*                                                    +:+ +:+         +:+     */
-// /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+// /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 // /*                                                +#+#+#+#+#+   +#+           */
 // /*   Created: 2022/09/02 16:07:15 by cgaillag          #+#    #+#             */
-// /*   Updated: 2022/09/08 13:46:37 by lmelard          ###   ########.fr       */
+// /*   Updated: 2022/09/08 17:59:10 by cgaillag         ###   ########.fr       */
 // /*                                                                            */
 // /* ************************************************************************** */
 
@@ -150,7 +150,7 @@
 // 	display = cmd->token;
 // 	while (display)
 // 	{
-// 		printf("token = %s, size = %ld, type = %d\n", display->token, ft_strlen(display->token), display->type);
+// 		dprintf(2, "token = %s, size = %ld, type = %d\n", display->token, ft_strlen(display->token), display->type);
 // 		display = display->next;
 // 	}
 // 	/////

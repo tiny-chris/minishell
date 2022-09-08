@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/08 16:35:34 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/08 17:57:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,12 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 
 	len = 0;
 	j = *i;
-	printf("j = %d\n", j);
 	env = data->env;
 	while (unquote_cmd[j] && (unquote_cmd[j] > 0) && unquote_cmd[j] != '\0' \
 		&& unquote_cmd[j] != '$' && unquote_cmd[j] != '<' && unquote_cmd[j] != ' ' \
 		&& unquote_cmd[j] != '>' && unquote_cmd[j] != 34 && unquote_cmd[j] != 39
 		&& unquote_cmd[j] != '?')
 		j++;
-	printf("j2 = %d\n", j);
 	var_to_expand = ft_substr(unquote_cmd, *i, (j - *i));
 	//printf("var to expand = %s, size = %ld\n", var_to_expand, ft_strlen(var_to_expand));
 	if (!var_to_expand)
@@ -47,7 +45,7 @@ int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 	}
 	*i = j;
 	free(var_to_expand);
-	printf("expand len = %d et le i =%d\n", len, *i);
+	//printf("expand len = %d et le i =%d\n", len, *i);
 	return (len);
 }
 
@@ -104,7 +102,7 @@ int	ft_expand_cmd_len(char *unquote_cmd, t_data *data)
 			len++;
 		}
 	}
-	printf("len clean cmd = %d\n", len);
+	//printf("len clean cmd = %d\n", len);
 	return (len);
 }
 
@@ -227,7 +225,8 @@ int	ft_expand(t_data *data)
 		cmd->clean_cmd = ft_fill_clean_cmd(cmd->unquote_cmd, expand_cmd_len, data);
 		if (!cmd->clean_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
-		printf("clean_cmd = %s, size = %ld\n", cmd->clean_cmd, ft_strlen(cmd->clean_cmd));
+		dprintf(2, "clean_cmd = %s\n", cmd->clean_cmd);
+		dprintf(2, "clean_cmd len = %d vs. strlen = %ld\n", expand_cmd_len, ft_strlen(cmd->clean_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

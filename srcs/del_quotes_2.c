@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 17:43:56 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/07 18:18:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:56:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,11 +167,11 @@ int	ft_del_quotes(t_data *data)
 	while (cmd)
 	{
 		unquote_cmd_len = ft_unquote_cmd_len(cmd->undoll_cmd);
-		printf("len cmd unquote = %d\n", unquote_cmd_len);
 		cmd->unquote_cmd = ft_fill_unquote_cmd(cmd->undoll_cmd, unquote_cmd_len);
 		if (!cmd->unquote_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
-		printf("unquote_cmd = %s, size = %ld\n", cmd->unquote_cmd, ft_strlen(cmd->unquote_cmd));
+		printf("unquote_cmd = %s\n", cmd->unquote_cmd);
+		printf("unquote_cmd len = %d vs. strlen = %ld\n", unquote_cmd_len, ft_strlen(cmd->unquote_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

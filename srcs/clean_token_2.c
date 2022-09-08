@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_token_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 18:41:20 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/08 16:21:07 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/08 18:03:50 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,42 +22,6 @@
 			--> check specific situations incl. echo case (WORD_N...)
 */
 
-// int	ft_find_space(char *token)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (token[i])
-// 	{
-// 		if (token[i] == ' ')
-// 			return (1);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// int	ft_only_closed_quotes(char *token)
-// {
-// 	int		i;
-// 	char	c;
-
-// 	i = 0;
-// 	while (token[i])
-// 	{
-// 		if (token[i] == 34 || token[i] == 39)
-// 		{
-// 			c = token[i];
-// 			i++;
-// 			if (token[i] != c)
-// 				return (0);
-// 		}
-// 		else
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
 static int ft_new_len(char *token)
 {
 	int		i;
@@ -65,12 +29,19 @@ static int ft_new_len(char *token)
 
 	i = 0;
 	len = ft_strlen(token);
-	if (len == 2 && token[i] == -34 && token[i + 1] == -34)
-		return (len);
+	if (token[i] == -34 && token[i + 1] == -34)
+	{
+		while (token[i] && token[i] == -34 && token[i + 1] == -34)
+			i += 2;
+		if (token[i] == '\0')
+			return (2);
+		i = 0;
+	}
 	while (token[i])
 	{
 		if (token[i] == -34)
 		{
+			i++;
 			while (token[i] && token[i] != -34)
 				i++;
 			if (token[i] == '\0')
@@ -82,6 +53,85 @@ static int ft_new_len(char *token)
 	return (len);
 }
 
+int	ft_check_dq_neg(char *old_token, int i)
+{
+	if (old_token[i] == -34)
+	{
+		i++;
+		while (old_token[i] && old_token[i] != -34)
+			i++;
+		if (old_token[i] == '\0')
+			return (0);
+	}
+	return (1);
+}
+
+int	ft_first_token(t_token *token, int len)
+{
+	char	*new_token;
+	char	*old_token;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	old_token = token->token;
+	new_token = malloc(sizeof(char) * (len + 1));
+	if (!new_token)
+		return (1);// FREE TOUT ET EXIT
+	if (old_token[i] == -34 && old_token[i + 1] == -34)
+	{
+		while (old_token[i] && old_token[i] == -34 && old_token[i + 1] == -34)
+			i += 2;
+		if (old_token[i] == '\0')
+		{
+			new_token[j] = 34;
+			new_token[j + 1] = 34;
+			new_token[j + 2] = '\0';
+			free(old_token);
+			token->token = new_token;
+			return (0);
+		}
+		i = 0;
+	}
+	while (old_token[i])
+	{
+		if (old_token[i] == -34 && ft_check_dq_neg(old_token, i))//on copie pas les quotes
+		{
+			i++;
+			while (old_token[i] != -34)
+			{
+				new_token[j] = old_token[i];
+				i++;
+				j++;
+			}
+		}
+		else
+		{
+			new_token[j] = old_token[i];
+			j++;
+		}
+		i++;
+	}
+	new_token[j] = '\0';
+	free(old_token);
+	token->token = new_token;
+	return (0);
+}
+
+void	ft_positive_token(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token->token[i])
+	{
+		if(token->token[i] < 0)
+			token->token[i] = (-1) * token->token[i];
+		i++;
+	}
+}
+
 int	ft_clean_token(t_cmd *cmd, t_data *data)
 {
 	t_token	*token;
@@ -91,11 +141,18 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 	(void)data;
 	token = cmd->token;
 //	i = 0;
-	len = ft_new_len(token->token);
-	printf("len clean token = %d\n", len);
+	while (token)
+	{
+		len = ft_new_len(token->token);
+		//printf("len clean token = %d\n", len);
+		ft_first_token(token, len);
+		ft_positive_token(token);
+		//printf("clean new 1st token = %s, len = %ld\n", token->token, ft_strlen(token->token));
+		token = token->next;
+	}
 	return (0);
 	// while (token->token[i])
-	// { 
+	// {
 	// 	if (token->token[i] == -34 && token->token[i + 1] == -34 && y a rien apres )
 	// 	if (token->token[i] < 0)
 	// 		token->token[i] = (-1) * (token->token[i]);

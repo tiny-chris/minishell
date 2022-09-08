@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+         #
+#    By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/09/08 16:20:38 by lmelard          ###   ########.fr        #
+#    Updated: 2022/09/08 17:26:14 by cgaillag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ NAME	=	minishell
 CC		=	gcc
 RM		=	rm -rf
 #INC		=	-I./includes -I./libft
-#CFLAGS	=	-Wall -Werror -Wextra
-CFLAGS	=	-Wall -Wextra
+CFLAGS	=	-Wall -Werror -Wextra
+#CFLAGS	=	-Wall -Wextra
 LIBFLAGS =	-L./libft -lft
 
 SRCS 	= 	minishell.c \

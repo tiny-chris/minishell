@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/08 16:22:36 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/08 17:58:31 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	ft_tokenizer(t_data *data)
 		token = tmp->token;
 		while (token)
 		{
-			printf("token = %s, type = %d, size = %ld\n", token->token, token->type, ft_strlen(token->token));
+			dprintf(2, "clean token = %s, type = %d, size = %ld\n", token->token, token->type, ft_strlen(token->token));
 			token = token->next;
 		}
 		tmp = tmp->next;
