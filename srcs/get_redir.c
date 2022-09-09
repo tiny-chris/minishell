@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/08 17:54:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/09 12:22:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,39 @@ int	ft_len_no_redir(char *raw_cmd_no_space)
 				len--;
 				i++;
 			}
-			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
+			if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39))
 			{
-				len--;
+				c = raw_cmd_no_space[i];
 				i++;
-			}
-			if (raw_cmd_no_space[i] == ' ')
 				len--;
-			i--;
+				while (raw_cmd_no_space[i] != c)
+				{
+					i++;
+					len--;
+				}
+				len--;
+				while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
+				{
+					len--;
+					i++;
+				}
+				if (raw_cmd_no_space[i] == ' ')
+					len--;
+				else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
+					i--;
+			}
+			else
+			{
+				while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
+				{
+					len--;
+					i++;
+				}
+				if (raw_cmd_no_space[i] == ' ')
+					len--;
+				else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
+					i--;
+			}
 		}
 		i++;
 	}
@@ -86,10 +111,24 @@ char	*ft_fill_no_redir(char *raw_cmd_no_space, int len)
 			i++;
 			if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
 				i++;
-			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
+			if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39))
+			{
+				c = raw_cmd_no_space[i];
 				i++;
-			if (raw_cmd_no_space[i] != ' ')
-				i--;
+				while (raw_cmd_no_space[i] != c)
+					i++;
+				while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
+					i++;
+				if (raw_cmd_no_space[i] != ' ')
+					i--;
+			}
+			else
+			{
+				while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
+					i++;
+				if (raw_cmd_no_space[i] != ' ')
+					i--;
+			}
 		}
 		else
 		{
@@ -156,8 +195,19 @@ int	ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir)
 				if (ft_lstadd_token(tok_redir, type, ft_substr(raw_cmd_no_space, i, (j - i))))
 					return (1); //free tout ce qu'il y a à free
 				i = j;
-				while (raw_cmd_no_space[j] && raw_cmd_no_space[j] != ' ' && raw_cmd_no_space[j] != '>'  && raw_cmd_no_space[j] != '<')
+				if (raw_cmd_no_space[j] && (raw_cmd_no_space[j] == 34 || raw_cmd_no_space[j] == 39))
+				{
+					c = raw_cmd_no_space[j];
 					j++;
+					while (raw_cmd_no_space[j] != c)
+						j++;
+					j++;
+				}
+				else
+				{
+					while (raw_cmd_no_space[j] && raw_cmd_no_space[j] != ' ' && raw_cmd_no_space[j] != '>'  && raw_cmd_no_space[j] != '<')
+						j++;
+				}
 				if (ft_lstadd_token(tok_redir, type + 10, ft_substr(raw_cmd_no_space, i, j - i)))
 					return (1); //free tout ce qu'il y a à free
 				i = j - 1;
@@ -178,7 +228,9 @@ int	ft_get_redir(t_data *data)
 	len = 0;
 	while (cmd)
 	{
+		dprintf(2, "passe dans get redir avant calcul len = %d\n", len);
 		len = ft_len_no_redir(cmd->raw_cmd_no_space);
+		dprintf(2, "passe dans get redir apres calcul len = %d\n", len);
 		cmd->no_redir_cmd = ft_fill_no_redir(cmd->raw_cmd_no_space, len);
 		if (!cmd->no_redir_cmd)
 			return (1); // FREE tout ce qu'il y a à free
@@ -188,6 +240,10 @@ int	ft_get_redir(t_data *data)
 			return (1); // FREE tout ce qu'il y a à free
 		cmd = cmd->next;
 	}
+//	if (ft_clean_redir(data))
+//		return (1); // FREE tout ce qu'il y a à free + EXIT
+
+	//PRINT
 	t_cmd	*tmp;
 	t_token	*token;
 
@@ -197,10 +253,11 @@ int	ft_get_redir(t_data *data)
 		token = tmp->tok_redir;
 		while (token)
 		{
-			dprintf(2, "token = %s, type = %d\n", token->token, token->type);
+			dprintf(2, "token redir = %s, type = %d\n", token->token, token->type);
 			token = token->next;
 		}
 		tmp = tmp->next;
 	}
+
 	return (0);
 }

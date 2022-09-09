@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/08 17:58:31 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/09 09:38:11 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,18 @@ int	ft_tokenizer(t_data *data)
 	/* TO PRINT */
 	t_cmd	*tmp;
 	t_token	*token;
+	int		nb;
 
+	nb = 0;
 	tmp = data->cmd;
 	while (tmp)
 	{
 		token = tmp->token;
 		while (token)
 		{
-			dprintf(2, "clean token = %s, type = %d, size = %ld\n", token->token, token->type, ft_strlen(token->token));
+			dprintf(2, "clean token[%d] = %s, type = %d, size = %ld\n", nb, token->token, token->type, ft_strlen(token->token));
 			token = token->next;
+			nb++;
 		}
 		tmp = tmp->next;
 	}

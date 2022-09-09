@@ -6,11 +6,33 @@
 // /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 // /*                                                +#+#+#+#+#+   +#+           */
 // /*   Created: 2022/09/02 16:07:15 by cgaillag          #+#    #+#             */
-// /*   Updated: 2022/09/08 17:59:10 by cgaillag         ###   ########.fr       */
+// /*   Updated: 2022/09/09 10:54:02 by cgaillag         ###   ########.fr       */
 // /*                                                                            */
 // /* ************************************************************************** */
 
 // #include "../includes/minishell.h"
+
+// int	ft_check_built_in(char *clean_cmd, t_data *data, int i)
+// {
+// 	int	len;
+// 	int	j;
+// 	char **built_in;
+
+// 	len = 0;
+// 	j = 0;
+// 	built_in = data->built_in;
+// 	while (built_in[j])
+// 	{
+// 		len = ft_strlen(built_in[j]);
+// 		if (len == i)
+// 		{
+// 			if (ft_strncmp(clean_cmd, built_in[j], len) == 0)
+// 				return (1);
+// 		}
+// 		j++;
+// 	}
+// 	return (0);
+// }
 
 // void	ft_lstclear_token(t_token *token)
 // {
