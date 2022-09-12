@@ -6,7 +6,7 @@
 #    By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/09/08 17:26:14 by cgaillag         ###   ########.fr        #
+#    Updated: 2022/09/12 01:21:47 by cgaillag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS 	= 	minishell.c \
 			env.c \
 			lexer.c \
 			get_commands.c \
+			cmd_list.c \
 			built_in.c \
 			del_spaces.c \
 			get_redir.c \

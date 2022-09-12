@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	ft_get_pipe(char *line, int i)
+static int	ft_get_pipe(char *line, int i)
 {
 	int		len;
 	int		j;
@@ -41,67 +41,40 @@ int	ft_get_pipe(char *line, int i)
 	return (len);
 }
 
-t_cmd	*ft_lstlast_cmd(t_cmd *lst)
+/*	***** PARSING | raw_cmd *****
+**	<SUMMARY>
+**	Two steps:
+**	1. Gets the command from the command line starting from index i until next
+**	unquoted pipe (or end of command line) via static function: ft_get_pipe()
+**	2. Removes any space at both ends of the command via ft_strtrim() function
+**	<PARAM>		{t_data *} data
+**				{int} i --> index position to start the copy
+**	<RETURNS>	the string "raw_cmd" (to be included in the linked list cmd)
+*/
+
+//update with more relevant name: 'raw_cmd / cmd' rather than 'cmdmline'
+//char	*ft_get_cmdline(t_data *data, int i)
+
+
+
+char	*ft_get_raw_cmd(t_data *data, int i)
 {
-	t_cmd	*node;
-
-	if (!lst)
-		return (0);
-	node = lst;
-	while (node->next)
-		node = node->next;
-	return (node);
-}
-
-int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
-{
-	t_cmd	*new;
-	t_cmd	*last;
-
-	new = malloc(sizeof(t_cmd));
-	if (!new)
-	{
-		//ft_free_cmd(cmd);// A FAIRE !!
-		return (1);
-	}
-	new->raw_cmd = ft_strdup(cmdline);
-	//printf("raw cmd = %s\n", new->raw_cmd);
-	new->raw_cmd_no_space = NULL;
-	new->no_redir_cmd = NULL;
-	new->undoll_cmd = NULL;
-	new->unquote_cmd = NULL;
-	new->clean_cmd = NULL;
-	new->token = NULL;
-	new->tok_redir = NULL;
-	new->next = NULL;
-	if (ft_lstlast_cmd(*cmd) == 0)
-	{
-		*cmd = new;
-		return (0);
-	}
-	last = ft_lstlast_cmd(*cmd);
-	last->next = new;
-	return (0);
-}
-
-char	*ft_get_cmdline(t_data *data, int i)
-{
-	char	*cmdline;
+	char	*cmd;
 	char	*tmp;
 
-	cmdline = NULL;
+	cmd = NULL;
 	tmp = NULL;
 	tmp = ft_substr(data->line, i, ft_get_pipe(data->line, i));
 	if (!tmp)
 		return (NULL);//free tous les malloc
-	cmdline = ft_strtrim(tmp, " ");
-	if (!cmdline)
+	cmd = ft_strtrim(tmp, " ");
+	if (!cmd)
 		return (NULL);//free tous les malloc
 	free(tmp);
-	return (cmdline);
+	return (cmd);
 }
 
-int	ft_next_pipe(char *line, int i)
+static int	ft_next_pipe(char *line, int i)
 {
 	int		j;
 	char	c;
@@ -123,7 +96,15 @@ int	ft_next_pipe(char *line, int i)
 	return (j);
 }
 
-/*	substr et strtrim
+/*	***** PARSING | raw_cmd *****
+**	<SUMMARY>
+**	Gets the number of commands = number of unquoted pipes + 1
+**	Selects commands one by one via ft_get_raw_cmd() function and copies/add
+**	each command in a node of the t_cmd 'cmd' linked list
+**	<PARAM>		{t_data *} data
+**	<RETURNS>	t_cmd 'cmd' linked list
+**	<REMARKS>	after each created node, the index is updated to be on the
+**				next pipe
 */
 t_cmd	*ft_get_commands(t_data *data)
 {
@@ -137,7 +118,10 @@ t_cmd	*ft_get_commands(t_data *data)
 	nb_cmd = data->nb_pipes + 1;
 	while (nb_cmd > 0)
 	{
-		tmp = ft_get_cmdline(data, i);
+		//tmp = ft_get_cmdline(data, i);//update with more relevant name
+		tmp = ft_get_raw_cmd(data, i);
+		dprintf(2, "raw_cmd = %s\n", tmp);
+		dprintf(2, "  --> strlen = %ld\n", ft_strlen(tmp));
 		if (ft_lstadd_cmd(&cmd, tmp) == 1)
 			return (NULL);
 		i = ft_next_pipe(data->line, i);
@@ -148,41 +132,4 @@ t_cmd	*ft_get_commands(t_data *data)
 		nb_cmd--;
 	}
 	return (cmd);
-}
-
-void	ft_lstdelone_cmd(t_cmd *node)
-{
-	if (!node)
-		return ;
-	free(node->raw_cmd);
-	node->raw_cmd = NULL;
-	free(node->raw_cmd_no_space);
-	node->raw_cmd_no_space = NULL;
-	free(node->no_redir_cmd);
-	node->no_redir_cmd = NULL;
-	// free(node->unquote_cmd);
-	// node->unquote_cmd = NULL;
-	// free(node->clean_cmd);
-	// node->clean_cmd = NULL;
-	// free(node->clean_cmd_no_redir);
-	// node->clean_cmd_no_redir = NULL;
-	ft_free_token(&(node->tok_redir));
-	// ft_free_token(&(node->token));
-	node->next = NULL;
-	free(node);
-}
-
-void	ft_free_cmd(t_cmd **cmd)
-{
-	t_cmd	*tmp;
-
-	if (!*cmd)
-		return ;
-	while (*cmd != NULL)
-	{
-		tmp = (*cmd)->next;
-		ft_lstdelone_cmd(*cmd);
-		(*cmd) = tmp;
-	}
-	(*cmd) = NULL;
 }

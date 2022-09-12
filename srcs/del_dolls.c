@@ -6,12 +6,39 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/08 17:55:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/12 10:38:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/*	***** PARSING | undoll_cmd - LEN *****
+**	<SUMMARY>
+**	Defines the length of the new string (undoll_cmd) by removing useless $ or
+**	spaces
+**	<PARAM>		{char *} no_redir_cmd --> from get_redir.c
+**	<RETURNS>	the size of the new string to be copied raw_cmd_no_space (int)
+*/
+
+
+// TO BE NORMED
+/*	Notes pour nous:
+	tant que le char * de ref existe (no_redir_cmd) :
+	1. 	si on rencontre des quotes simples ou doubles, alors on avance et
+		tant qu'on n'a pas atteint la quote fermante correspondante
+			alors si le caractere est un dollar et les quotes sont des doubles, on avance
+				tant que le caractère suivant est un dollar, on avance (et on retire de la len)
+				si le caracètre d'après est un digit, alors on enlève le premier $ et ce digit de la len (expand vide)
+				sinon, si le caractère d'après est la quote fermante, alors reculer de 1 (car i++ après)
+	2.	AJOUT !!!
+		s'il y a des espaces hors quotes juxtaposés, n'en garder qu'un et si en fin de commande, supprimer
+	3.	si le caractere est un $ (hors quotes)
+		tant que le caractère suivant est un dollar, on avance (et on retire de la len)
+			si le caractère suivant est une quote (elle va avir sa correspondante après), alors on retire le $ de len
+			sinon, si le caracètre d'après est un digit, alors on enlève le premier $ et ce digit de la len (expand vide) et on avance
+			sinon, si le caractère d'après est un ?, alors on avance
+	à la fin, on retourne la len
+*/
 int	ft_undoll_cmd_len(char *no_redir_cmd)
 {
 	int		len;
@@ -44,6 +71,18 @@ int	ft_undoll_cmd_len(char *no_redir_cmd)
 				i++;
 			}
 		}
+		else if (no_redir_cmd[i] == ' ')//ajout de cette condition pour nettoyer nos espaces suite aux redir
+		{
+			i++;
+			while (no_redir_cmd[i] && no_redir_cmd[i] == ' ')
+			{
+				len--;
+				i++;
+			}
+			if (no_redir_cmd[i] == '\0')
+				len--;
+			i--;
+		}
 		else if (no_redir_cmd[i] == '$')
 		{
 			i++;
@@ -68,6 +107,17 @@ int	ft_undoll_cmd_len(char *no_redir_cmd)
 	return (len);
 }
 
+/*	***** PARSING | undoll_cmd - CONTENT *****
+**	<SUMMARY>
+**	Creates the new string to be copied as 'undoll_cmd' in the t_cmd
+**	'cmd' linked list
+**	<PARAM>		{char *} no_redir_cmd
+				{int} len --> previously calculated len
+**	<RETURNS>	the new string value (char *) without useless $ & spaces
+*/
+
+
+// TO BE NORMED
 char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len)
 {
 	char	*undoll_cmd;
@@ -129,6 +179,18 @@ char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len)
 				j++;
 			}
 		}
+		else if (no_redir_cmd[i] == ' ')//ajout de cette condition pour nettoyer nos espaces suite aux redir
+		{
+			i++;
+			while (no_redir_cmd[i] && no_redir_cmd[i] == ' ')
+				i++;
+			if (no_redir_cmd[i] != '\0')
+			{
+				undoll_cmd[j] = ' ';
+				j++;
+			}
+			i--;
+		}
 		else if (no_redir_cmd[i] == '$')
 		{
 			i++;
@@ -158,21 +220,35 @@ char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len)
 	return (undoll_cmd);
 }
 
+/*	***** PARSING | undoll_cmd *****
+**	<SUMMARY>
+**	Gets an updated cmd without useless $ and spaces (undoll_cmd) in 2 steps:
+**	1. Defines the length of the new string by removing useless $
+**	2. Copies the matching string in 'undoll_cmd' of the t_cmd 'cmd' linked list
+**	<PARAM>		{t_data *} data
+**	<RETURNS>	t_cmd 'cmd' linked list --> with an additional string
+**	<REMARKS>	1. useless dollars are those:
+**					- when there are consecutive dollars: keep only 1
+**					- when the next character is a digit and they are not into
+**					simple quotes
+**				2. useless spaces consecutive ones outside closed quotes that could
+**					appear again because of removed redirections
+*/
 int	ft_del_dolls(t_data *data)
 {
 	t_cmd	*cmd;
-	int		undoll_len;
+	int		len;
 
-	undoll_len = 0;
+	len = 0;
 	cmd = data->cmd;
 	while (cmd)
 	{
-		undoll_len = ft_undoll_cmd_len(cmd->no_redir_cmd);
-		cmd->undoll_cmd = ft_fill_undoll_cmd(cmd->no_redir_cmd, undoll_len);
+		len = ft_undoll_cmd_len(cmd->no_redir_cmd);
+		cmd->undoll_cmd = ft_fill_undoll_cmd(cmd->no_redir_cmd, len);
 		if (!cmd->undoll_cmd)
 			return (1);
 		dprintf(2, "val undoll_cmd = %s\n", cmd->undoll_cmd);
-		dprintf(2, "val undoll_cmd len = %d vs. strlen = %ld\n", undoll_len, ft_strlen(cmd->undoll_cmd));
+		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->undoll_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

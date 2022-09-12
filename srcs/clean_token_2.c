@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 18:41:20 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/09 10:53:06 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/12 11:42:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,15 @@ static int	ft_new_len_2(char *token)
 	len = 0;
 	i = 0;
 	while (token[i])
-	{
-	 	if (token[i] == 34 && ft_only_neg_space(token, i))
+	{// cas des simples quotes négatives
+		if (token[i] == -39)
+		{
+			i++;
+			while (token[i] && token[i] != -39)
+				i++;
+			len +=2;
+		}
+	 	else if (token[i] == 34 && ft_only_neg_space(token, i))// INCORRECT
 		{
 			i++;
 			len += 2;
@@ -70,10 +77,9 @@ static int ft_new_len(char *token)
 
 	i = 0;
 	len = ft_strlen(token);
-
 	if (token[i] == -34 && token[i + 1] == -34)
 	{
-		while (token[i] && token[i] == -34 && token[i + 1] == -34)
+		while (token[i] && token[i] == -34 && token[i + 1] && token[i + 1] == -34)
 			i += 2;
 		if (token[i] == '\0')
 			return (2);
@@ -92,7 +98,7 @@ static int ft_new_len(char *token)
 		}
 		i++;
 	}
-	len -= ft_new_len_2(token);
+	len -= ft_new_len_2(token);// retirer les simple quotes négatives mais garder le texte entre les quotes
 	return (len);
 }
 
@@ -144,6 +150,17 @@ int	ft_first_token(t_token *token, int len)
 			i++;
 			while (old_token[i] != -34)
 			{
+				new_token[j] = old_token[i];
+				i++;
+				j++;
+			}
+		}
+		else if (old_token[i] == -39)
+		{
+			i++;
+			while (old_token[i] && old_token[i] != -39)
+			{
+
 				new_token[j] = old_token[i];
 				i++;
 				j++;
@@ -289,7 +306,7 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 	while (token)
 	{
 		len = ft_new_len(token->token);
-		//printf("len clean token = %d\n", len);
+		printf("len clean token = %d\n", len);
 		ft_first_token(token, len);
 		ft_positive_token(token);
 		//printf("new clean token = %s, len = %ld\n", token->token, ft_strlen(token->token));

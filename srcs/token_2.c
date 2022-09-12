@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/09 09:38:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/12 05:00:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,20 @@ int	ft_get_token(t_cmd *cmd)
 	j = 0;
 	token = NULL;
 	clean_cmd = cmd->clean_cmd;
-	while (clean_cmd[i] && clean_cmd[i] != ' ')
-		i++;
-	if (ft_lstadd_token(&token, COMMAND, ft_substr(clean_cmd, j, i - j)))
-		return (1);
-	if (!clean_cmd[i])
+	if (clean_cmd[i])
 	{
-		cmd->token = token;
-		return (1);
+		while (clean_cmd[i] && clean_cmd[i] != ' ')
+			i++;
+		if (ft_lstadd_token(&token, COMMAND, ft_substr(clean_cmd, j, i - j)))
+			return (1);
+		if (!clean_cmd[i])
+		{
+			cmd->token = token;
+			return (0);//modif
+		}
 	}
-	i++;// le 1 = ' '
+	if (clean_cmd[i] == ' ')//ajout
+		i++;// le 1 = ' '
 	j = i;
 	if (clean_cmd[j])
 	{
@@ -69,7 +73,8 @@ int	ft_tokenizer(t_data *data)
 		cmd = cmd->next;
 	}
 
-	/* TO PRINT */
+	/* 	TEMPORARY --> TO PRINT */
+	/*	start */
 	t_cmd	*tmp;
 	t_token	*token;
 	int		nb;
@@ -87,6 +92,6 @@ int	ft_tokenizer(t_data *data)
 		}
 		tmp = tmp->next;
 	}
+	/*	end */
 	return (0);
-
 }

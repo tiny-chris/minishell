@@ -6,12 +6,44 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/09 12:22:19 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/12 04:49:17 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/*	***** PARSING | cmd_no_redir - LEN *****
+**	<SUMMARY>
+**	Defines the length of the new string (cmd_ne_redir) by removing
+**	redirections & corresponding files (or here doc)
+**	<PARAM>		{char *} raw_cmd_no_space --> from del_spaces.c
+**	<RETURNS>	the size of the new string to be copied as 'cmd_no_redir" (int)
+*/
+
+
+
+// TO BE NORMED
+/*	Notes pour nous:
+	tant que le char * de ref existe (raw_cmd_no_space):
+	si on rencontre des quotes simples ou doubles, alors on avance jusqu'à la prochaine quote correspondante + 1
+		puis on recommence au début de la boucle
+	si on atteint un chevron (hors quotes), alors on retire -1 à la len et on check la valeur du caractère suivant :
+		- si c'est un chevron identique alors on avance de +1 (et on retire -1 à la len), sinon on reste sur ce caractère
+		et on passe à la ligne suivante :
+			--> si le caractère n'est pas NULL et si c'est une quote, alors on avance jusqu'à la fin de la quote comprise et on retire tout de len
+				et on continue de checker après la quote: tant qu'on n'est pas sur un espace ou un chevron (ou la fin du char *), alors on avance et on retire de la len
+				puis, quand on a atteint un séparateur (NULL, chevron ou espace), on fonctionne ainsi:
+					- si c'est un espace: alors on va retirer l'espace de la len qui ne sera pas compté (car i++ à la fin)
+					- si c'est un NULL ou un chevron, alors on recule de -1 (car i++ à la fin)
+				puis on recommence au début de la boucle
+			--> autrement (pas d'espace juste après une redir car déjà supprimé): tant que le caractère n'est pas NULL et qu'il ne s'agit pas d'espace ni de chevron,
+				on avance et on retire le tout de la len
+				puis, comme ci-dessus, quand on a atteint un séparateur (NULL, chevron ou espace), on fonctionne ainsi:
+					- si c'est un espace: alors on va retirer l'espace de la len qui ne sera pas compté (car i++ à la fin)
+					- si c'est un NULL ou un chevron, alors on recule de -1 (car i++ à la fin)
+				puis on recommence au début de la boucle
+	à la fin, on retourne la len
+*/
 int	ft_len_no_redir(char *raw_cmd_no_space)
 {
 	int		i;
@@ -26,7 +58,7 @@ int	ft_len_no_redir(char *raw_cmd_no_space)
 		{
 			c = raw_cmd_no_space[i];
 			i++;
-			while (raw_cmd_no_space[i] != c)
+			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)// ajout condition si existe
 				i++;
 		}
 		else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
@@ -38,45 +70,50 @@ int	ft_len_no_redir(char *raw_cmd_no_space)
 				len--;
 				i++;
 			}
-			if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39))
+			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
 			{
-				c = raw_cmd_no_space[i];
+				if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39))
+				{
+					c = raw_cmd_no_space[i];
+					i++;
+					len--;
+					while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)// ajout condition si existe
+					{
+						i++;
+						len--;
+					}
+					len--;
+				}
+				else
+					len--;
 				i++;
-				len--;
-				while (raw_cmd_no_space[i] != c)
-				{
-					i++;
-					len--;
-				}
-				len--;
-				while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
-				{
-					len--;
-					i++;
-				}
-				if (raw_cmd_no_space[i] == ' ')
-					len--;
-				else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
-					i--;
 			}
-			else
-			{
-				while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
-				{
-					len--;
-					i++;
-				}
-				if (raw_cmd_no_space[i] == ' ')
-					len--;
-				else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
-					i--;
-			}
+			if (!raw_cmd_no_space[i] || raw_cmd_no_space[i] == ' ' || raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')// modif ici avec ajout si null
+				i--;
 		}
 		i++;
 	}
 	return (len);
 }
 
+// TO BE NORMED
+/*	Notes pour nous:
+	tant que le char * de ref existe (raw_cmd_no_space):
+	1. si on rencontre des quotes simples ou doubles, alors on copie et on avance jusqu'à la prochaine quote correspondante incluse
+		puis on recommence au début de la boucle
+	2. si on atteint un chevron (hors quotes), alors on avance de +1 et on check la valeur du caractère suivant :
+		- si c'est un chevron identique alors on avance de +1, sinon on reste sur ce caractère
+		et on passe à la ligne suivante :
+			--> si le caractère n'est pas NULL et si c'est une quote, alors on avance jusqu'à la fin de la quote comprise
+				et on continue de checker après la quote: tant qu'on n'est pas sur un espace ou un chevron (ou la fin du char *), alors on avance
+				puis, quand on a atteint un séparateur (NULL, chevron ou espace), on fonctionne ainsi:
+					- si c'est un espace: alors on va retirer l'espace de la len qui ne sera pas compté (car i++ à la fin)
+					- si c'est un NULL ou un chevron, alors on recule de -1 (car i++ à la fin)
+				puis on recommence au début de la boucle
+	3. sinon, on copie et on avance
+		puis on recommence au début de la boucle
+	à la fin, on retourne la nouvelle string
+*/
 char	*ft_fill_no_redir(char *raw_cmd_no_space, int len)
 {
 	char	*no_redir_cmd;
@@ -109,26 +146,21 @@ char	*ft_fill_no_redir(char *raw_cmd_no_space, int len)
 		else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
 		{
 			i++;
-			if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
+			if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<'))
 				i++;
-			if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39))
+			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i]!= '<')
 			{
-				c = raw_cmd_no_space[i];
+				if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39))
+				{
+					c = raw_cmd_no_space[i];
+					i++;
+					while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)
+						i++;
+				}
 				i++;
-				while (raw_cmd_no_space[i] != c)
-					i++;
-				while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
-					i++;
-				if (raw_cmd_no_space[i] != ' ')
-					i--;
 			}
-			else
-			{
-				while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
-					i++;
-				if (raw_cmd_no_space[i] != ' ')
-					i--;
-			}
+			if (!raw_cmd_no_space[i] || raw_cmd_no_space[i] == ' ' || raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')// modif ici avec ajout si null
+				i--;
 		}
 		else
 		{
@@ -187,7 +219,7 @@ int	ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir)
 			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)
 				i++;
 		}
-		else
+		else //if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')// ajout possible
 		{
 			type = ft_is_redir(raw_cmd_no_space, &j);
 			if (type)
@@ -195,23 +227,22 @@ int	ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir)
 				if (ft_lstadd_token(tok_redir, type, ft_substr(raw_cmd_no_space, i, (j - i))))
 					return (1); //free tout ce qu'il y a à free
 				i = j;
-				if (raw_cmd_no_space[j] && (raw_cmd_no_space[j] == 34 || raw_cmd_no_space[j] == 39))
+				while (raw_cmd_no_space[j] && raw_cmd_no_space[j] != ' ' && raw_cmd_no_space[j] != '>' && raw_cmd_no_space[j] != '<')
 				{
-					c = raw_cmd_no_space[j];
-					j++;
-					while (raw_cmd_no_space[j] != c)
+					if (raw_cmd_no_space[j] && (raw_cmd_no_space[j] == 34 || raw_cmd_no_space[j] == 39))
+					{
+						c = raw_cmd_no_space[j];
 						j++;
+						while (raw_cmd_no_space[j] != c)
+							j++;
+					}
 					j++;
-				}
-				else
-				{
-					while (raw_cmd_no_space[j] && raw_cmd_no_space[j] != ' ' && raw_cmd_no_space[j] != '>'  && raw_cmd_no_space[j] != '<')
-						j++;
 				}
 				if (ft_lstadd_token(tok_redir, type + 10, ft_substr(raw_cmd_no_space, i, j - i)))
 					return (1); //free tout ce qu'il y a à free
 				i = j - 1;
 			}
+			type = 0;//ajout
 		}
 		i++;
 		j = i;
@@ -219,6 +250,17 @@ int	ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir)
 	return (0);
 }
 
+/*	***** PARSING | no_redir_cmd *****
+**	<SUMMARY>
+**	1. Gets an updated cmd without unquoted redirections (no_redir_cmd) :
+**	   - Defines the length of the new string by removing redirections &
+**		corresponding files (or here doc)
+**	   - Copies the matching string in 'no_redir_cmd' of the t_cmd 'cmd'
+**		linked list
+**	2. Creates a redir linked list & corresponding file (or here doc)
+**	<PARAM>		{t_data *} data
+**	<RETURNS>	t_cmd 'cmd' linked list --> with an additional string
+*/
 int	ft_get_redir(t_data *data)
 {
 	t_cmd	*cmd;
@@ -228,22 +270,25 @@ int	ft_get_redir(t_data *data)
 	len = 0;
 	while (cmd)
 	{
-		dprintf(2, "passe dans get redir avant calcul len = %d\n", len);
+		//dprintf(2, "passe dans get redir avant calcul len = %d\n", len);
 		len = ft_len_no_redir(cmd->raw_cmd_no_space);
-		dprintf(2, "passe dans get redir apres calcul len = %d\n", len);
+		//dprintf(2, "passe dans get redir apres calcul len = %d\n", len);
 		cmd->no_redir_cmd = ft_fill_no_redir(cmd->raw_cmd_no_space, len);
 		if (!cmd->no_redir_cmd)
 			return (1); // FREE tout ce qu'il y a à free
 		dprintf(2, "cmd sans redir = %s\n", cmd->no_redir_cmd);
-		dprintf(2, "cmd sans redir len = %d vs; strlen = %ld\n", len, ft_strlen(cmd->no_redir_cmd));
+		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->no_redir_cmd));
 		if (ft_get_redir_list(cmd->raw_cmd_no_space, &cmd->tok_redir))
 			return (1); // FREE tout ce qu'il y a à free
 		cmd = cmd->next;
 	}
+// EN COURS D'ECRITURE POUR NOS TOKEN REDIR
+//
 //	if (ft_clean_redir(data))
 //		return (1); // FREE tout ce qu'il y a à free + EXIT
 
-	//PRINT
+	/* 	TEMPORARY --> TO PRINT */
+	/*	start */
 	t_cmd	*tmp;
 	t_token	*token;
 
@@ -258,6 +303,6 @@ int	ft_get_redir(t_data *data)
 		}
 		tmp = tmp->next;
 	}
-
+	/*	end */
 	return (0);
 }

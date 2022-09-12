@@ -6,12 +6,22 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/08 17:53:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/12 03:56:20 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/*	***** PARSING | raw_cmd_no_space - LEN *****
+**	<SUMMARY>
+**	Defines the length of the new string (raw_cmd_no_space) by removing useless
+**	spaces
+**	<PARAM>		{char *} raw_cmd --> from get_commands.c
+**	<RETURNS>	the size of the new string to be copied raw_cmd_no_space (int)
+*/
+
+
+// TO BE NORMED
 int	ft_unspace_cmd_len(char	*raw_cmd)
 {
 	int		len;
@@ -64,6 +74,17 @@ int	ft_unspace_cmd_len(char	*raw_cmd)
 	return (len);
 }
 
+/*	***** PARSING | raw_cmd_no_space - CONTENT *****
+**	<SUMMARY>
+**	Creates the new string to be copied as 'raw_cmd_no_space' in the t_cmd
+**	'cmd' linked list
+**	<PARAM>		{char *} raw_cmd
+				{int} len --> previously calculated len
+**	<RETURNS>	the new string value (char *) without useless spaces
+*/
+
+
+// TO BE NORMED
 char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
 {
 	char	*raw_cmd_no_space;
@@ -135,6 +156,19 @@ char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
 	return (raw_cmd_no_space);
 }
 
+/*	***** PARSING | raw_cmd_no_space *****
+**	<SUMMARY>
+**	Gets an updated cmd with unnecessary spaces (raw_cmd_no_space) in 2 steps:
+**	1. Defines the length of the new string by removing useless spaces
+**	2. Copies the matching string in 'raw_cmd_no_space' of the t_cmd 'cmd'
+**	linked list
+**	<PARAM>		{t_data *} data
+**	<RETURNS>	t_cmd 'cmd' linked list --> with an additional string
+**	<REMARKS>	useless spaces are those outside of closed quotes
+**				- when there are consecutive spaces: keep only 1
+**				- except if they are just after an unquoted redirection: delete
+**					all spaces just after a redir
+*/
 int	ft_del_spaces(t_data *data)
 {
 	t_cmd	*cmd;
@@ -148,7 +182,7 @@ int	ft_del_spaces(t_data *data)
 		if (!cmd->raw_cmd_no_space)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!
 		dprintf(2, "raw cmd no space = %s\n", cmd->raw_cmd_no_space);
-		dprintf(2, "raw cmd no space len = %d vs strlen = %ld\n", len, ft_strlen(cmd->raw_cmd));
+		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->raw_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

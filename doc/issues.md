@@ -10,6 +10,19 @@
 		vs.
 		echo "-nnnn" " n" "coucou"
 
+>	!attention une variable expand qui ne donne rien passe la main à l'argument suivant pour la commande:
+	Exemple:
+		$UxSER blabla 'abcd $? eee'
+
+>	problemes d'espaces si on retire les redirections
+	--> mieux vaut ne pas enlever les espaces lors de get_redir et nettoyer par la suite les espaces
+	(car ce seront des espaces hors quotes et donc pas en négatif...)
+	sinon, le risque est d'avoir 2 token collés (car plus de redir entre...)
+	tests:
+		"coucou">"tut""tot">>test 'abcd $? eee'
+		"coucou" >'tut' >> test 'youpi'
+
+
 
 
 

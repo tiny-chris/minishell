@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/09 11:18:21 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/12 01:21:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,12 @@ int		ft_redir(char *line);
 int		ft_check_redir(char *line, int i);
 int		ft_lexer(char *line);
 
-int		ft_get_pipe(char *line, int i);
+//int		ft_get_pipe(char *line, int i);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 int		ft_lstadd_cmd(t_cmd **cmd, char *cmdline);
-char	*ft_get_cmdline(t_data *data, int i);
-int		ft_next_pipe(char *line, int i);
+//char	*ft_get_cmdline(t_data *data, int i);//modifiée par get_raw_cmd
+char	*ft_get_raw_cmd(t_data *data, int i);
+//int		ft_next_pipe(char *line, int i);// mise en static
 t_cmd	*ft_get_commands(t_data *data);
 void	ft_lstdelone_cmd(t_cmd *node);
 void	ft_free_cmd(t_cmd **cmd);
