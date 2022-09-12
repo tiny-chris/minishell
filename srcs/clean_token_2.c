@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 18:41:20 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/12 11:42:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/12 16:36:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int	ft_new_len_2(char *token)
 {
 	int		len;
 	int		i;
+	char	c;
 
 	len = 0;
 	i = 0;
@@ -58,11 +59,12 @@ static int	ft_new_len_2(char *token)
 				i++;
 			len +=2;
 		}
-	 	else if (token[i] == 34 && ft_only_neg_space(token, i))// INCORRECT
+	 	else if ((token[i] == 34) && ft_only_neg_space(token, i))
 		{
+			c = token[i];
 			i++;
 			len += 2;
-			while (token[i] && token[i] != 34)
+			while (token[i] && token[i] != c)
 				i++;
 		}
 		i++;
@@ -119,6 +121,7 @@ int	ft_first_token(t_token *token, int len)
 {
 	char	*new_token;
 	char	*old_token;
+	char 	c;
 	int		i;
 	int		j;
 
@@ -128,7 +131,7 @@ int	ft_first_token(t_token *token, int len)
 	new_token = malloc(sizeof(char) * (len + 1));
 	if (!new_token)
 		return (1);// FREE TOUT ET EXIT
-	if (old_token[i] == -34 && old_token[i + 1] == -34)
+	if ((old_token[i] == -34 && old_token[i + 1] == -34))
 	{
 		while (old_token[i] && old_token[i] == -34 && old_token[i + 1] == -34)
 			i += 2;
@@ -166,10 +169,11 @@ int	ft_first_token(t_token *token, int len)
 				j++;
 			}
 		}
-		else if (old_token[i] == 34 && ft_only_neg_space(old_token, i))
+		else if ((old_token[i] == 34) && ft_only_neg_space(old_token, i))
 		{
+			c = old_token[i];
 			i++;
-			while (old_token[i] != 34)
+			while (old_token[i] != c)
 			{
 				new_token[j] = old_token[i];
 				i++;
