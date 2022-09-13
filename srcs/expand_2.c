@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/13 12:52:34 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 14:11:18 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,86 @@ int	ft_expand_cmd_len(char *undoll_cmd, t_data *data)
 	return (len);
 }
 
+static void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data)
+{
+	t_env	*env;
+	char	*var_to_expand;
+	int		k;
+	int		l;
+
+	env = data->env;
+	k = *i;
+	l = 0;
+	while (undoll_cmd[k] > 0 && undoll_cmd[k] != '\0' && undoll_cmd[k] != '$' \
+		&& undoll_cmd[k] != '<' && undoll_cmd[k] != '>' && undoll_cmd[k] != 34 \
+		&& undoll_cmd[k] != 39 && undoll_cmd[k] != ' ' && undoll_cmd[k] != '?')
+		k++;
+	var_to_expand = ft_substr(undoll_cmd, *i, (k - *i));
+	if (!var_to_expand)
+		return ;// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
+	while (env)
+	{
+		if ((ft_strlen(var_to_expand) == ft_strlen(env->var)) \
+			&& (ft_strncmp(var_to_expand, env->var, (k - *i)) == 0))
+		{
+			while (env->content[l])
+			{
+				clean_cmd[*j] = env->content[l];
+				(*j)++;
+				l++;
+			}
+			break ;
+		}
+		env = env->next;
+	}
+	free(var_to_expand);
+	*i = k;
+	return ;
+}
+
+char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data)
+{
+	char	*clean_cmd;
+	int		i;
+	int		j;
+	int		k;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	clean_cmd = malloc(sizeof(char) * (len + 1));
+	if (!clean_cmd)
+		return (NULL);// FREE TOUT ET EXIT !!
+	while (undoll_cmd[i])
+	{
+		if (undoll_cmd[i] == '$')
+		{
+			i++;
+			if (undoll_cmd[i] == '?')
+			{
+				while (data->str_exit[k])
+				{
+					clean_cmd[j] = data->str_exit[k];
+					j++;
+					k++;
+				}
+				i++;
+				k = 0;
+			}
+			else
+				ft_fill_expand(undoll_cmd, &i, clean_cmd, &j, data);
+		}
+		else
+		{
+			clean_cmd[j] = undoll_cmd[i];
+			i++;
+			j++;
+		}
+	}
+	clean_cmd[j] = '\0';
+	return (clean_cmd);
+}
+
 int	ft_expand(t_data *data)
 {
 	t_cmd	*cmd;
@@ -99,13 +179,12 @@ int	ft_expand(t_data *data)
 	while (cmd)
 	{
 		len = ft_expand_cmd_len(cmd->undoll_cmd, data);//function that get the len of clean_cmd
-		printf("len avec expand = %d\n", len);
-		//cmd->clean_cmd = ft_fill_clean_cmd(cmd->undoll_cmd, len, data);
-		// if (!cmd->clean_cmd)
-		// 	return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
-		//new len
-	//	dprintf(2, "clean_cmd= %s\n", cmd->clean_cmd);
-		//dprintf(2, "clean_cmd len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->clean_cmd));
+	//	printf("len avec expand = %d\n", len);
+		cmd->clean_cmd = ft_fill_clean_cmd(cmd->undoll_cmd, len, data);
+		 if (!cmd->clean_cmd)
+			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
+		dprintf(2, "clean_cmd= %s\n", cmd->clean_cmd);
+		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->clean_cmd));
 		cmd = cmd->next;
 	}
 	return (0);
