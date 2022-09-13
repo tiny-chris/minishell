@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/12 10:38:36 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 12:20:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,12 @@ char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len)
 			{
 				undoll_cmd[j] = '$';
 				j++;
-				if (no_redir_cmd[i] != '\0')
+				if (no_redir_cmd[i] == '\0')
+				{
+					undoll_cmd[j] = '\0';
+					return (undoll_cmd);
+				}
+				else if (no_redir_cmd[i] != '\0')
 				{
 					undoll_cmd[j] = no_redir_cmd[i];
 					j++;
@@ -218,6 +223,42 @@ char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len)
 	}
 	undoll_cmd[j] = '\0';
 	return (undoll_cmd);
+}
+
+void	ft_neg_dolls(char *undoll_cmd)
+{
+	int		i;
+
+	i = 0;
+	while (undoll_cmd[i])
+	{
+		if (undoll_cmd[i] == 39)
+		{
+			i++;
+			while (undoll_cmd[i] && undoll_cmd[i] != 39)
+			{
+				if (undoll_cmd[i] == '$')
+					undoll_cmd[i] = (-1) * undoll_cmd[i];
+				i++;
+			}
+		}
+		else if (undoll_cmd[i] == 34)
+		{
+			i++;
+			while (undoll_cmd[i] && undoll_cmd[i] != 34)
+			{
+				if (undoll_cmd[i] == '$' && (undoll_cmd[i + 1] == 34 || undoll_cmd[i + 1] == 39 || undoll_cmd[i + 1] == ' ' || undoll_cmd[i + 1] == '<' || undoll_cmd[i + 1] == '>'))
+					undoll_cmd[i] = (-1) * undoll_cmd[i];
+				i++;
+			}
+		}
+		else if (undoll_cmd[i] == '$')
+		{
+			if (undoll_cmd[i + 1] == '\0' || undoll_cmd[i + 1] < 0 || undoll_cmd[i + 1] == 39 || undoll_cmd[i + 1] == ' ' || undoll_cmd[i + 1] == '<' || undoll_cmd[i + 1] == '>')
+				undoll_cmd[i] = (-1) * undoll_cmd[i];
+		}
+		i++;
+	}
 }
 
 /*	***** PARSING | undoll_cmd *****
@@ -247,6 +288,7 @@ int	ft_del_dolls(t_data *data)
 		cmd->undoll_cmd = ft_fill_undoll_cmd(cmd->no_redir_cmd, len);
 		if (!cmd->undoll_cmd)
 			return (1);
+		ft_neg_dolls(cmd->undoll_cmd);
 		dprintf(2, "val undoll_cmd = %s\n", cmd->undoll_cmd);
 		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->undoll_cmd));
 		cmd = cmd->next;

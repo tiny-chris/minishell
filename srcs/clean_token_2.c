@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 18:41:20 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/12 16:36:19 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 11:06:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,10 @@ static int ft_new_len(char *token)
 			while (token[i] && token[i] != -34)
 				i++;
 			if (token[i] == '\0')
+			{
+				printf("test rentre dasn le if \n");
 				return (len);
+			}
 			len -= 2;
 		}
 		i++;

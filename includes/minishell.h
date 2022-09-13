@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/12 01:21:07 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 12:41:49 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_data
 int		ft_del_dolls(t_data *data);
 int		ft_undoll_cmd_len(char *no_redir_cmd);
 char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len);
+void	ft_neg_dolls(char *undoll_cmd);
 
 int		ft_get_redir(t_data *data);
 int		ft_len_no_redir(char *raw_cmd_no_space);
@@ -134,9 +135,15 @@ char	*ft_fill_unquote_cmd(char *undoll_cmd, int len);
 int		ft_contains_doll(char *undoll_cmd, int i, char c);
 
 int		ft_expand(t_data *data);
-int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);
-int		ft_get_expand_size(char *unquote_cmd, int *i, t_data *data);
-char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data);
+int		ft_expand_cmd_len(char *undoll_cmd, t_data *data);
+int		ft_get_expand_size(char *undoll_cmd, int *i, t_data *data);
+int		ft_get_error_size(t_data *data);
+
+
+// int		ft_expand(t_data *data);
+// int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);
+// int		ft_get_expand_size(char *unquote_cmd, int *i, t_data *data);
+// char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data);
 
 int		ft_tokenizer(t_data *data);
 int		ft_get_token(t_cmd *cmd);
