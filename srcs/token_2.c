@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/13 15:06:09 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 17:39:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,44 +18,43 @@ int	ft_get_token(t_cmd *cmd)
 	t_token	*token;
 	int		i;
 	int		j;
+	char	c;
 
 	i = 0;
 	j = 0;
 	token = NULL;
 	clean_cmd = cmd->clean_cmd;
-	if (clean_cmd[i])
+	while (clean_cmd[j])
 	{
-		while (clean_cmd[i] && clean_cmd[i] != ' ')
-			i++;
-		if (ft_lstadd_token(&token, COMMAND, ft_substr(clean_cmd, j, i - j)))
-			return (1);
-		if (!clean_cmd[i])
+		if (clean_cmd[j] == 34 || clean_cmd[j] == 39)
 		{
-			cmd->token = token;
-			return (0);//modif
-		}
-	}
-	if (clean_cmd[i] == ' ')//ajout
-		i++;// le 1 = ' '
-	j = i;
-	if (clean_cmd[j])
-	{
-		while (clean_cmd[j])
-		{
-			//dprintf(2, "i: %d\n, j: %d\n", i, j);
-			while (clean_cmd[j] != '\0' && clean_cmd[j] != ' ')
+			c = clean_cmd[j];
+			j++;
+			while (clean_cmd[j] && clean_cmd[j] != c)
 				j++;
-			//dprintf(2, "i: %d\n, j: %d\n", i, j);
+			j++;
+		}
+		if (clean_cmd[j] == ' ' || clean_cmd[j] == '\0')
+		{
 			if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
-				return (1);
+				return (1);//FREE & EXIT
 			if (clean_cmd[j] == '\0')
 			{
 				cmd->token = token;
 				return (0);
 			}
+			i = j + 1;
 			j++;
-			i = j;
 		}
+		else if (clean_cmd[j] != 34 && clean_cmd[j] != 39)
+			j++;
+	}
+	if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
+		return (1);
+	if (clean_cmd[j] == '\0')
+	{
+		cmd->token = token;
+		return (0);
 	}
 	cmd->token = token;
 	return (0);
@@ -70,29 +69,30 @@ int	ft_tokenizer(t_data *data)
 	{
 		ft_get_token(cmd);
 		ft_clean_token(cmd, data);
+		ft_type_token(cmd, data);
 		cmd = cmd->next;
 	}
 
 	/* 	TEMPORARY --> TO PRINT */
 	/*	start */
-	// t_cmd	*tmp;
-	// t_token	*token;
-	// int		nb;
+	t_cmd	*tmp;
+	t_token	*token;
+	int		nb;
 
-	// nb = 0;
-	// tmp = data->cmd;
-	// while (tmp)
-	// {
-	// 	token = tmp->token;
-	// 	while (token)
-	// 	{
-	// 		dprintf(2, "clean token[%d] = %s, type = %d, size = %ld\n", nb, token->token, token->type, ft_strlen(token->token));
-	// 		token = token->next;
-	// 		nb++;
-	// 	}
-	// 	tmp = tmp->next;
-	// 	nb = 0;
-	// }
+	nb = 0;
+	tmp = data->cmd;
+	while (tmp)
+	{
+		token = tmp->token;
+		while (token)
+		{
+			dprintf(2, "clean token[%d] = %s, type = %d, size = %ld\n", nb, token->token, token->type, ft_strlen(token->token));
+			token = token->next;
+			nb++;
+		}
+		tmp = tmp->next;
+		nb = 0;
+	}
 	/*	end */
 	return (0);
 }

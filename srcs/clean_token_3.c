@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/13 15:25:25 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 17:35:29 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,9 @@ int	ft_clean_len(char *token)
 	len = ft_strlen(token);
 	while (token[i])
 	{
-		if (token[i] == 34 || token[i] == 39)
+		if ((token[i] == 34 || token[i] == 39) && (token[i + 1] == token[i]))
+			i++;
+		else if (token[i] == 34 || token[i] == 39)
 		{
 			c = token[i];
 			i++;
@@ -152,23 +154,62 @@ int	ft_clean_len(char *token)
 	return (len);
 }
 
-// int	ft_fill_clean_token(t_token *token, int len)
-// {
-// 	char	*new_token;
-// 	char	*old_token;
-// 	char 	c;
-// 	int		i;
-// 	int		j;
+char	*ft_fill_clean_token(char *tmp_token, int len)
+{
+	char	*token;
+	char 	c;
+	int		i;
+	int		j;
 
-// 	i = 0;
-// 	j = 0;
-// 	old_token = token->token;
-// 	new_token = malloc(sizeof(char) * (len + 1));
-// 	if (!new_token)
-// 		return (1);// FREE TOUT ET EXIT
+	i = 0;
+	j = 0;
+	token = malloc(sizeof(char) * (len + 1));
+	if (!token)
+		return (NULL);// FREE TOUT ET EXIT
+	while (tmp_token[i])
+	{
+		if ((tmp_token[i] == 34 || tmp_token[i] == 39) && (tmp_token[i + 1] == tmp_token[i]))
+		{
+			token[j] = tmp_token[i];
+			j++;
+			i++;
+			token[j] = tmp_token[i];
+			j++;
+		}
+		else if (tmp_token[i] == 34 || tmp_token[i] == 39)
+		{
+			c = tmp_token[i];
+			i++;
+			while (tmp_token[i] && tmp_token[i] != c)
+			{
+				token[j] = tmp_token[i];
+				j++;
+				i++;
+			}
+		}
+		else
+		{
+			token[j] = tmp_token[i];
+			j++;
+		}
+		i++;
+	}
+	token[j] = '\0';
+	return (token);
+}
 
-// }
+void	ft_positive_token(t_token *token)
+{
+	int	i;
 
+	i = 0;
+	while (token->token[i])
+	{
+		if(token->token[i] < 0)
+			token->token[i] = (-1) * token->token[i];
+		i++;
+	}
+}
 
 int	ft_clean_token(t_cmd *cmd, t_data *data)
 {
@@ -187,11 +228,14 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 		tmp_token = ft_fill_consec_quotes(token->token, len);
 		dprintf(2, "tmp_token = %s\n", tmp_token);
 		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(tmp_token));
+		free(token->token);
 		//2e étape
-	//	len = ft_clean_len(tmp_token);
-	//	ft_fill_clean_token(tmp_token, len);
-	//	free(tmp_token);
-	//	ft_positive_token(token);
+		len = ft_clean_len(tmp_token);
+		token->token = ft_fill_clean_token(tmp_token, len);
+		free(tmp_token);
+		ft_positive_token(token);
+	//	dprintf(2, "clean_token = %s\n", token->token);
+	//	dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(token->token));
 		token = token->next;
 	}
 	return (0);

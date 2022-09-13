@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 18:41:20 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/13 11:06:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 17:35:08 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,12 +334,4 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 	}
 
 	return (0);
-	// while (token->token[i])
-	// {
-	// 	if (token->token[i] == -34 && token->token[i + 1] == -34 && y a rien apres )
-	// 	if (token->token[i] < 0)
-	// 		token->token[i] = (-1) * (token->token[i]);
-	// 	i++;
-	// }
-	// i = 0;
 }
