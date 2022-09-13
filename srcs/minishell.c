@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/13 12:25:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 15:03:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 					ft_del_dolls(&data);
 					ft_expand(&data);
 					// ft_del_quotes(&data);
-					// ft_tokenizer(&data);
+					ft_tokenizer(&data);
 					ft_free_cmd(&(data.cmd));
 				}
 				free(data.line);

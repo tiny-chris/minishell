@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/13 12:41:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 15:22:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,11 @@ int		ft_get_token(t_cmd *cmd);
 int		ft_check_built_in(char *token, t_data *data, int i);
 //int		ft_check_word_n(char *clean_cmd_no_redir, int *i, t_token **token);
 int		ft_clean_token(t_cmd *cmd, t_data *data);
-int		ft_first_token(t_token *token, int len);
+int		ft_consec_quotes_len(char *token);
+int		ft_clean_len(char *token);
+int		ft_fill_clean_token(t_token *token, int len);
+char	*ft_fill_consec_quotes(char *token, int len);
+//int		ft_first_token(t_token *token, int len);
 void	ft_positive_token(t_token *token);
 //int		ft_is_redir(char *clean_cmd, int *i);
 int		ft_lstadd_token(t_token **tok, int type, char *token);

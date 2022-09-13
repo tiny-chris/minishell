@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/12 17:05:36 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/13 15:06:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,24 +75,24 @@ int	ft_tokenizer(t_data *data)
 
 	/* 	TEMPORARY --> TO PRINT */
 	/*	start */
-	t_cmd	*tmp;
-	t_token	*token;
-	int		nb;
+	// t_cmd	*tmp;
+	// t_token	*token;
+	// int		nb;
 
-	nb = 0;
-	tmp = data->cmd;
-	while (tmp)
-	{
-		token = tmp->token;
-		while (token)
-		{
-			dprintf(2, "clean token[%d] = %s, type = %d, size = %ld\n", nb, token->token, token->type, ft_strlen(token->token));
-			token = token->next;
-			nb++;
-		}
-		tmp = tmp->next;
-		nb = 0;
-	}
+	// nb = 0;
+	// tmp = data->cmd;
+	// while (tmp)
+	// {
+	// 	token = tmp->token;
+	// 	while (token)
+	// 	{
+	// 		dprintf(2, "clean token[%d] = %s, type = %d, size = %ld\n", nb, token->token, token->type, ft_strlen(token->token));
+	// 		token = token->next;
+	// 		nb++;
+	// 	}
+	// 	tmp = tmp->next;
+	// 	nb = 0;
+	// }
 	/*	end */
 	return (0);
 }
