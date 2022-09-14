@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/13 15:03:27 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 09:47:50 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 		data.prompt = ft_strdup("minishell> ");
 		data.built_in = ft_built_in();
 		data.str_exit = NULL;
-		while (1)
+//		while (1)
 		{
 			data.line = readline(data.prompt);
 			data.str_exit = NULL;

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/13 17:48:50 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 09:47:20 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			*raw_cmd;
-	char			*raw_cmd_no_space; //à free
-	char			*no_redir_cmd; //à free
-	char			*undoll_cmd; // à free
-	char			*unquote_cmd;
+	char			*raw_cmd_no_space;
+	char			*no_redir_cmd;
+	char			*undoll_cmd;
+//	char			*unquote_cmd;
 	char			*clean_cmd;
 //	char			*clean_cmd_no_redir;
 	t_token			*token;
@@ -79,9 +79,9 @@ typedef struct s_data
 	int				nb_pipes;
 	t_cmd			*cmd;
 	char			**built_in;
-	int				*pid;//
-	int				**pipe;//nb de fd[][]
-	char			**env_path;//
+	// int				*pid;//
+	// int				**pipe;//nb de fd[][]
+	// char			**env_path;//
 }	t_data;
 
 int		ft_del_dolls(t_data *data);
