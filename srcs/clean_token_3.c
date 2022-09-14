@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/13 17:35:29 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 10:45:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,23 +90,20 @@ char	*ft_fill_consec_quotes(char *token, int len)
 			{
 				if (i == 0)
 				{
-					if (token[i + 2] != '\0')
-					{
+					i += 2;
+					while (token[i] && (token[i] == 34 || token[i] == 39)
+					&& (token[i + 1] && token[i + 1] == token[i]))
 						i += 2;
-						while (token[i] && (token[i] == 34 || token[i] == 39)
-						&& (token[i + 1] && token[i + 1] == token[i]))
-							i += 2;
-						if (token[i] == '\0')
-						{
-							tmp_cmd[j] = c;
-							j++;
-							tmp_cmd[j] = c;
-							j++;
-							tmp_cmd[j] = '\0';
-							return (tmp_cmd);
-						}
-						i--;
+					if (token[i] == '\0')
+					{
+						tmp_cmd[j] = c;
+						j++;
+						tmp_cmd[j] = c;
+						j++;
+						tmp_cmd[j] = '\0';
+						return (tmp_cmd);
 					}
+					i--;
 				}
 				else if (i > 0)
 				{
@@ -116,6 +113,20 @@ char	*ft_fill_consec_quotes(char *token, int len)
 						i += 2;
 					i--;
 				}
+			}
+			else
+			{
+				tmp_cmd[j] = c;
+				j++;
+				i++;
+				while (token[i] && token[i] != c)
+				{
+					tmp_cmd[j] = token[i];
+					i++;
+					j++;
+				}
+				tmp_cmd[j] = c;
+				j++;
 			}
 		}
 		else
@@ -224,6 +235,7 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 	while (token)
 	{
 		tmp_token = NULL;
+		dprintf(2, "token->token = %s, strlen = %ld\n", token->token, ft_strlen(token->token));
 		len = ft_consec_quotes_len(token->token);
 		tmp_token = ft_fill_consec_quotes(token->token, len);
 		dprintf(2, "tmp_token = %s\n", tmp_token);
