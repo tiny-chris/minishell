@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 11:11:08 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 12:02:26 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 13:33:33 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,127 @@ int	ft_fill_expand_redir(t_token *token, int len, t_data *data)
 	return (0);
 }
 
+int	ft_fill_consec_quotes_redir(t_token *token, int len)
+{
+	char	*tok_unquote;
+	int		i;
+	int		j;
+	char	c;
+
+	i = 0;
+	j = 0;
+	tok_unquote = malloc(sizeof(char) * (len + 1));
+	if (!tok_unquote)
+		return (1); // FREE TOUTTTT + EXIT OF COURSE
+	while (token->token[i])
+	{
+		if (token->token[i] == 34 || token->token[i] == 39)
+		{
+			c = token->token[i];
+			if (token->token[i + 1] == c)
+			{
+				if (i == 0)
+				{
+					i += 2;
+					while (token->token[i] && (token->token[i] == 34 || token->token[i] == 39)
+					&& (token->token[i + 1] && token->token[i + 1] == token->token[i]))
+						i += 2;
+					if (token->token[i] == '\0')
+					{
+						tok_unquote[j] = c;
+						j++;
+						tok_unquote[j] = c;
+						j++;
+						tok_unquote[j] = '\0';
+						free (token->token);
+						token->token = tok_unquote;
+						return (0);
+					}
+					i--;
+				}
+				else if (i > 0)
+				{
+					i += 2;
+					while (token->token[i] && (token->token[i] == 34 || token->token[i] == 39)
+						&& (token->token[i + 1] && token->token[i + 1] == token->token[i]))
+						i += 2;
+					i--;
+				}
+			}
+			else
+			{
+				tok_unquote[j] = c;
+				j++;
+				i++;
+				while (token->token[i] && token->token[i] != c)
+				{
+					tok_unquote[j] = token->token[i];
+					i++;
+					j++;
+				}
+				tok_unquote[j] = c;
+				j++;
+			}
+		}
+		else
+		{
+			tok_unquote[j] = token->token[i];
+			j++;
+		}
+		i++;
+	}
+	tok_unquote[j] = '\0';
+	free (token->token);
+	token->token = tok_unquote;
+	return (0);
+}
+
+int	ft_fill_clean_redir(t_token *token, int len)
+{
+	char	*tok_unquote;
+	char 	c;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	tok_unquote = malloc(sizeof(char) * (len + 1));
+	if (!tok_unquote)
+		return (1);// FREE TOUT ET EXIT
+	while (token->token[i])
+	{
+		if ((token->token[i] == 34 || token->token[i] == 39) && (token->token[i + 1] == token->token[i]))
+		{
+			tok_unquote[j] = token->token[i];
+			j++;
+			i++;
+			tok_unquote[j] = token->token[i];
+			j++;
+		}
+		else if (token->token[i] == 34 || token->token[i] == 39)
+		{
+			c = token->token[i];
+			i++;
+			while (token->token[i] && token->token[i] != c)
+			{
+				tok_unquote[j] = token->token[i];
+				j++;
+				i++;
+			}
+		}
+		else
+		{
+			tok_unquote[j] = token->token[i];
+			j++;
+		}
+		i++;
+	}
+	tok_unquote[j] = '\0';
+	free(token->token);
+	token->token = tok_unquote;
+	return (0);
+}
+
 int	ft_clean_redir(t_cmd *cmd, t_data *data)
 {
 	t_token	*tok_redir;
@@ -181,6 +302,13 @@ int	ft_clean_redir(t_cmd *cmd, t_data *data)
 			len = ft_expand_cmd_len(tok_redir->token, data);
 			ft_fill_expand_redir(tok_redir, len, data);
 			dprintf(2, "expand tok_redir = %s, len = %d vs. strlen = %ld\n", tok_redir->token, len, ft_strlen(tok_redir->token));
+			len = ft_consec_quotes_len(tok_redir->token);
+			ft_fill_consec_quotes_redir(tok_redir, len);
+			dprintf(2, "unquote tok_redir = %s, len = %d vs. strlen = %ld\n", tok_redir->token, len, ft_strlen(tok_redir->token));
+			len = ft_clean_len(tok_redir->token);
+			ft_fill_clean_redir(tok_redir, len);
+			ft_positive_token(tok_redir);
+			dprintf(2, "clean tok_redir = %s, len = %d vs. strlen = %ld\n", tok_redir->token, len, ft_strlen(tok_redir->token));
 		}
 //		else
 //			ft_here_doc(tok_redir);
