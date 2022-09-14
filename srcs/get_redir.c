@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 10:54:45 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 16:46:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,20 +264,24 @@ int	ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir)
 int	ft_get_redir(t_data *data)
 {
 	t_cmd	*cmd;
+	char	*trim_cmd;
 	int		len;
 
 	cmd = data->cmd;
+	trim_cmd = NULL;
 	len = 0;
 	while (cmd)
 	{
 		//dprintf(2, "passe dans get redir avant calcul len = %d\n", len);
 		len = ft_len_no_redir(cmd->raw_cmd_no_space);
 		//dprintf(2, "passe dans get redir apres calcul len = %d\n", len);
-		cmd->no_redir_cmd = ft_fill_no_redir(cmd->raw_cmd_no_space, len);
-		if (!cmd->no_redir_cmd)
+		trim_cmd = ft_fill_no_redir(cmd->raw_cmd_no_space, len);
+		if (!trim_cmd)
 			return (1); // FREE tout ce qu'il y a à free
 		dprintf(2, "cmd sans redir = %s\n", cmd->no_redir_cmd);
 		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->no_redir_cmd));
+		cmd->no_redir_cmd = ft_strtrim(trim_cmd, " ");
+		free(trim_cmd);
 		if (ft_get_redir_list(cmd->raw_cmd_no_space, &cmd->tok_redir))
 			return (1); // FREE tout ce qu'il y a à free
 		ft_clean_redir(cmd, data);

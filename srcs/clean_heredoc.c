@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:55:17 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 14:37:31 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 16:33:08 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,11 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 				j++;
 			}
 			i--;
+		}
+		else
+		{
+			undoll_token[j] = token->token[i];
+			j++;
 		}
 		i++;
 	}

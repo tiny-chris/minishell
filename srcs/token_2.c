@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 10:33:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 18:17:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,21 @@ int	ft_get_token(t_cmd *cmd)
 	return (0);
 }
 
+static void	ft_print_token(t_cmd *cmd)//  A SUPPRIMER
+{
+	t_token	*token;
+	int		nb;
+
+	nb = 0;
+	token = cmd->token;
+	while (token)
+	{
+		dprintf(2, "print del empty token[%d] = %s, type = %d, size = %ld\n", nb, token->token, token->type, ft_strlen(token->token));
+		token = token->next;
+		nb++;
+	}
+}
+
 int	ft_tokenizer(t_data *data)
 {
 	t_cmd	*cmd;
@@ -69,7 +84,13 @@ int	ft_tokenizer(t_data *data)
 	{
 		ft_get_token(cmd);
 		ft_clean_token(cmd, data);
-		ft_type_token(cmd, data);
+		ft_del_empty_token(cmd, data);
+		ft_print_token(cmd);
+		if (cmd->token)
+		{
+			dprintf(2, "passe avant type token\n");
+			ft_type_token(cmd, data);
+		}
 		cmd = cmd->next;
 	}
 

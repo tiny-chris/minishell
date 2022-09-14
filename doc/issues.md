@@ -5,6 +5,12 @@
 
 # //////////////////////// BEWARE
 
+
+>	14/09/2022 :
+	résultat de la commande à corriger (fonction : del_empty_token)
+	$tutu $toto <youpla pwd
+
+
 >		check pour les clean token
 		echo "-nnnn  -n coucou"
 		vs.
