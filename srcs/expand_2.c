@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/13 15:28:16 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 12:00:48 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	ft_expand_cmd_len(char *undoll_cmd, t_data *data)
 	return (len);
 }
 
-static void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data)
+void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data)
 {
 	t_env	*env;
 	char	*var_to_expand;

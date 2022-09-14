@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/14 09:47:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 12:02:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int		ft_expand(t_data *data);
 int		ft_expand_cmd_len(char *undoll_cmd, t_data *data);
 int		ft_get_expand_size(char *undoll_cmd, int *i, t_data *data);
 int		ft_get_error_size(t_data *data);
-
+void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data);
 
 // int		ft_expand(t_data *data);
 // int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);
@@ -169,5 +169,9 @@ void	ft_lstclear_token(t_token *token);
 //int		ft_len_no_redir(char *clean_cmd);
 void	ft_echo_join_words_fill(t_token *token);
 t_token	*ft_get_token_echo(t_token **token);
+
+int		ft_clean_redir(t_cmd *cmd, t_data *data);
+int		ft_fill_undoll_redir(t_token *token, int len);
+int		ft_fill_expand_redir(t_token *token, int len, t_data *data);
 
 #endif

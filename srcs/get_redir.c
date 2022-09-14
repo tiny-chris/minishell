@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/12 04:49:17 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 10:54:45 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,7 @@ int	ft_get_redir(t_data *data)
 		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->no_redir_cmd));
 		if (ft_get_redir_list(cmd->raw_cmd_no_space, &cmd->tok_redir))
 			return (1); // FREE tout ce qu'il y a à free
+		ft_clean_redir(cmd, data);
 		cmd = cmd->next;
 	}
 // EN COURS D'ECRITURE POUR NOS TOKEN REDIR
