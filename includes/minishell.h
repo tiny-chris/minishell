@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/14 14:23:54 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 14:37:51 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,5 +178,7 @@ int		ft_fill_consec_quotes_redir(t_token *token, int len);
 int		ft_clean_heredoc(t_token *token);
 int		ft_undoll_heredoc_len(char *token);
 int		ft_fill_undoll_heredoc(t_token *token, int len);
+int		ft_unquote_heredoc_len(char *token);
+int		ft_fill_unquote_heredoc(t_token *token, int len);
 
 #endif
