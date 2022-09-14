@@ -6,16 +6,16 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 11:11:08 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 13:33:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/14 14:21:38 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-- undoll (diff pour heredoc)
+- undoll + neg doll (diff pour heredoc)
 - expand (sauf heredoc)
-- quotes
+- quotes + positive doll
 */
 
 int	ft_fill_undoll_redir(t_token *token, int len)
@@ -310,8 +310,8 @@ int	ft_clean_redir(t_cmd *cmd, t_data *data)
 			ft_positive_token(tok_redir);
 			dprintf(2, "clean tok_redir = %s, len = %d vs. strlen = %ld\n", tok_redir->token, len, ft_strlen(tok_redir->token));
 		}
-//		else
-//			ft_here_doc(tok_redir);
+		else
+			ft_clean_heredoc(tok_redir);
 		tok_redir = tok_redir->next;
 	}
 	return (0);

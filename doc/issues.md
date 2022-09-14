@@ -101,6 +101,7 @@
 >		a re-tester avec les $ et espaces : $USER $$USER $'coucou' $$$$$$$$$'USER' "$$  "
 >		free clean_cmd_no_redir; token; tok_redir in ft_free_cmd
 >		bien penser modifier val exit dans data en cas d'erreurs de malloc
+>		pour les redirections : 1ère étape de l'exec (avant execve) et mettre "ambiguous redirect" sans nécessairement faire référence au token concerné
 
 ##  WTF
 
