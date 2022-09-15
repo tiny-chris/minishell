@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/13 17:47:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 16:19:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,17 @@ void	ft_echo_join_words_fill(t_token *token)
 	tmp = token;
 	char_tmp1 = NULL;
 	char_tmp2 = NULL;
+	while (tmp)
+	{
+		if (tmp->type == SP_QUOTES)
+		{
+			free(tmp->token);
+			tmp->token = ft_strdup("");
+		}
+		tmp = tmp->next;
+	}
+	tmp = token;
+
 	while (tmp && tmp->next)
 	{
 		char_tmp1 = ft_strjoin(token->token," ");

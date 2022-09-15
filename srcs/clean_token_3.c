@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 16:54:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 15:29:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,7 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(tmp_token));
 		free(token->token);
 		//2e étape
+		ft_space_quotes(tmp_token, token);
 		len = ft_clean_len(tmp_token);
 		token->token = ft_fill_clean_token(tmp_token, len);
 		free(tmp_token);

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/15 10:11:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 16:21:32 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef enum s_type
 	BUILTIN 		= 1,
 	WORD 			= 2,
 	WORD_N 			= 3,
+	SP_QUOTES		= 4,
 	GREAT 			= 10,
 	OUTFILE 		= 20,
 	D_GREAT			= 11,
@@ -227,7 +228,7 @@ void	ft_lstclear_token(t_token *token);
 void	ft_echo_join_words_fill(t_token *token);
 t_token	*ft_get_token_echo(t_token **token);
 
-
+int		ft_space_quotes(char *tmp_token, t_token *token);
 
 
 #endif

@@ -154,7 +154,7 @@ int	ft_first_pipe(char *line)
 
 	i = 0;
 	if (line[i] == '|')
-		return (1);
+		return (-1);
 	if (line[i] == ' ')
 	{
 		while (line[i] && line[i] == ' ')
@@ -186,6 +186,8 @@ int	ft_pipe(char *line)
 	{
 		if (i == 0)
 			i = ft_first_pipe(line);
+		if (i == -1)
+			return (1);
 		i++;
 		if (line[i] == '\0' || line[i] == '|')
 			return (1);

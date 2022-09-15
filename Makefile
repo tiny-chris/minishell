@@ -6,7 +6,7 @@
 #    By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/09/14 17:39:21 by cgaillag         ###   ########.fr        #
+#    Updated: 2022/09/15 16:20:58 by cgaillag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ SRCS 	= 	minishell.c \
 			type_token.c \
 			clean_redir.c \
 			clean_heredoc.c \
-			del_empty_token.c
+			del_empty_token.c \
+			space_quotes.c \
 
 SRCDIR	=	srcs
 OBJDIR	=	objs
