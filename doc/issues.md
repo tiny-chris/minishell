@@ -9,6 +9,7 @@
 >	14/09/2022 :
 	résultat de la commande à corriger (fonction : del_empty_token)
 	$tutu $toto <youpla pwd
+	$tutu $toto <youpla pwd $tut <<$$$$bou super $?
 
 
 >		check pour les clean token

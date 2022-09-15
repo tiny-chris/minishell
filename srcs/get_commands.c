@@ -118,7 +118,6 @@ t_cmd	*ft_get_commands(t_data *data)
 	nb_cmd = data->nb_pipes + 1;
 	while (nb_cmd > 0)
 	{
-		//tmp = ft_get_cmdline(data, i);//update with more relevant name
 		tmp = ft_get_raw_cmd(data, i);
 		dprintf(2, "raw_cmd = %s\n", tmp);
 		dprintf(2, "  --> strlen = %ld\n", ft_strlen(tmp));
