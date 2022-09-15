@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 16:55:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/15 13:27:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 17:02:03 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,13 +165,10 @@ int	ft_del_empty_token(t_cmd *cmd, t_data *data)
 	tmp = NULL;
 	while (tok)
 	{
-//		dprintf(2, "check dans empty token - v2\n");
 		if (tok->token[0] == '\0')
 		{
-//			dprintf(2, "check dans empty token - v3 (tok empty)\n");
 			if (tok->next != NULL)
 			{
-				dprintf(2, "check dans empty token - v3b\n");
 				todel = tok;
 				tok = tok->next;
 				todel->next = NULL;
@@ -187,15 +184,10 @@ int	ft_del_empty_token(t_cmd *cmd, t_data *data)
 		}
 		else//(tok->token[0] != '\0' )
 		{
-//			dprintf(2, "check dans empty token - v4 (tok PAS empty)\n");
 			if (tok->next == NULL)
-			{
-//				dprintf(2, "check dans empty token - v4b (pas de tok->next)\n");
 				return (0);
-			}
 			else if (tok->next != NULL && tok->next->token[0] == '\0')
 			{
-//				dprintf(2, "tok->next == 0 - v4c (tok->next == 0)\n");
 				if (tok->next->next != NULL)
 				{
 					todel = tok->next;
@@ -214,10 +206,7 @@ int	ft_del_empty_token(t_cmd *cmd, t_data *data)
 				}
 			}
 			else
-			{
-//				dprintf(2, "tok->next == 0 - v4c (tok->next != 0)\n");
 				tok = tok->next;
-			}
 		}
 	}
 	return (0);

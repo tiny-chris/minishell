@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/15 16:21:32 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 17:27:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,7 @@ void	ft_echo_join_words_fill(t_token *token);
 t_token	*ft_get_token_echo(t_token **token);
 
 int		ft_space_quotes(char *tmp_token, t_token *token);
+int		ft_del_nword(t_cmd *cmd);
 
 
 #endif

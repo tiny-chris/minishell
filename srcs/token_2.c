@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/15 14:14:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 17:06:51 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	ft_tokenizer(t_data *data)
 			dprintf(2, "passe avant type token\n");
 			ft_type_token(cmd, data);
 		}
+		ft_del_nword(cmd);
 		cmd = cmd->next;
 	}
 
