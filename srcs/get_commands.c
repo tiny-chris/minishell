@@ -119,14 +119,10 @@ t_cmd	*ft_get_commands(t_data *data)
 	while (nb_cmd > 0)
 	{
 		tmp = ft_get_raw_cmd(data, i);
-		dprintf(2, "raw_cmd = %s\n", tmp);
-		dprintf(2, "  --> strlen = %ld\n", ft_strlen(tmp));
+		dprintf(2, "raw cmd        = %s --> strlen = %ld\n", tmp, ft_strlen(tmp));
 		if (ft_lstadd_cmd(&cmd, tmp) == 1)
 			return (NULL);
 		i = ft_next_pipe(data->line, i);
-		//supprimer les espaces inutiles
-		//creer notre liste de redirections
-		//expand quand ce n'est pas un heredoc
 		free(tmp);
 		nb_cmd--;
 	}

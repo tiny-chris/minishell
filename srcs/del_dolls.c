@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/13 12:20:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 22:51:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	Defines the length of the new string (undoll_cmd) by removing useless $ or
 **	spaces
 **	<PARAM>		{char *} no_redir_cmd --> from get_redir.c
-**	<RETURNS>	the size of the new string to be copied raw_cmd_no_space (int)
+**	<RETURNS>	the size of the new string to be copied unspace_cmd (int)
 */
 
 
@@ -289,8 +289,7 @@ int	ft_del_dolls(t_data *data)
 		if (!cmd->undoll_cmd)
 			return (1);
 		ft_neg_dolls(cmd->undoll_cmd);
-		dprintf(2, "val undoll_cmd = %s\n", cmd->undoll_cmd);
-		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->undoll_cmd));
+		dprintf(2, "undoll cmd     = %s --> len = %d vs. strlen = %ld\n", cmd->undoll_cmd, len, ft_strlen(cmd->undoll_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

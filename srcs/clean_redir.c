@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 11:11:08 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 14:21:38 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 23:00:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,7 @@ int	ft_clean_redir(t_cmd *cmd, t_data *data)
 {
 	t_token	*tok_redir;
 	int		len;
+	int		nb = 0;//A SUPPRIMER - juste pour impression
 
 	(void) data;//TO DELETE
 	len = 0;
@@ -298,21 +299,24 @@ int	ft_clean_redir(t_cmd *cmd, t_data *data)
 			len = ft_undoll_cmd_len(tok_redir->token);
 			ft_fill_undoll_redir(tok_redir, len);
 			ft_neg_dolls(tok_redir->token);
-			dprintf(2, "undoll tok_redir = %s, len = %d vs. strlen = %ld\n", tok_redir->token, len, ft_strlen(tok_redir->token));
+			//dprintf(2, "undoll tok_redir[%d]   = %s, len = %d vs. strlen = %ld\n", nb, tok_redir->token, len, ft_strlen(tok_redir->token));
 			len = ft_expand_cmd_len(tok_redir->token, data);
 			ft_fill_expand_redir(tok_redir, len, data);
-			dprintf(2, "expand tok_redir = %s, len = %d vs. strlen = %ld\n", tok_redir->token, len, ft_strlen(tok_redir->token));
+			//dprintf(2, "expand tok_redir[%d]   = %s, len = %d vs. strlen = %ld\n", nb, tok_redir->token, len, ft_strlen(tok_redir->token));
 			len = ft_consec_quotes_len(tok_redir->token);
 			ft_fill_consec_quotes_redir(tok_redir, len);
-			dprintf(2, "unquote tok_redir = %s, len = %d vs. strlen = %ld\n", tok_redir->token, len, ft_strlen(tok_redir->token));
+			//dprintf(2, "unquote1 tok_redir[%d] = %s, len = %d vs. strlen = %ld\n", nb, tok_redir->token, len, ft_strlen(tok_redir->token));
 			len = ft_clean_len(tok_redir->token);
 			ft_fill_clean_redir(tok_redir, len);
+			//dprintf(2, "unquote2 tok_redir[%d] = %s, len = %d vs. strlen = %ld\n", nb, tok_redir->token, len, ft_strlen(tok_redir->token));
 			ft_positive_token(tok_redir);
-			dprintf(2, "clean tok_redir = %s, len = %d vs. strlen = %ld\n", tok_redir->token, len, ft_strlen(tok_redir->token));
+			dprintf(2, "clean tok_redir[%d]    = %s, len = %d vs. strlen = %ld\n", nb, tok_redir->token, len, ft_strlen(tok_redir->token));
 		}
 		else
 			ft_clean_heredoc(tok_redir);
 		tok_redir = tok_redir->next;
+		nb++;//A SUPPRIMER - juste pour impression
+
 	}
 	return (0);
 }

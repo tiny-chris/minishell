@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/15 17:27:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 09:12:37 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,10 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			*raw_cmd;
-	char			*raw_cmd_no_space;//modifier par unspace_cmd ??
+	char			*unspace_cmd;//raw_cmd_no_space;//modifié
 	char			*no_redir_cmd;
 	char			*undoll_cmd;
-//	char			*unquote_cmd;
 	char			*clean_cmd;//modifier par expand_cmd ??
-//	char			*clean_cmd_no_redir;
 	t_token			*token;
 	t_token			*tok_redir;
 	int				infile;//
@@ -85,8 +83,13 @@ typedef struct s_data
 	// char			**env_path;//
 }	t_data;
 
-/*	***** INIT *****
-*/
+/*	***** INIT *****	*/
+/*	*****************	*/
+
+t_env	*ft_get_env(char **envp);
+char	**ft_built_in(void);
+int		ft_only_space(char *line);
+
 
 /*	***** LEXER *****	*/
 /*	*****************	*/
@@ -118,10 +121,10 @@ char	*ft_fill_unspace_cmd(char *raw_cmd, int len);
 /*	Step 3	extract_redir */
 
 int		ft_get_redir(t_data *data);
-int		ft_len_no_redir(char *raw_cmd_no_space);
-char	*ft_fill_no_redir(char *raw_cmd_no_space, int len);
-int		ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir);
-int		ft_is_redir(char *raw_cmd_no_space, int *j);
+int		ft_len_no_redir(char *unspace_cmd);
+char	*ft_fill_no_redir(char *unspace_cmd, int len);
+int		ft_get_redir_list(char *unspace_cmd, t_token **tok_redir);
+int		ft_is_redir(char *unspace_cmd, int *j);
 
 /*	Step (x)	clean_redir */
 
@@ -157,12 +160,29 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 
 /*	Step 6	to_tokens */
 
+int		ft_tokenizer(t_data *data);
+int		ft_get_token(t_cmd *cmd);
+int		ft_clean_token(t_cmd *cmd, t_data *data);
+int		ft_consec_quotes_len(char *token);
+char	*ft_fill_consec_quotes(char *token, int len);
+int		ft_space_quotes(char *tmp_token, t_token *token);
+int		ft_clean_len(char *token);
+char	*ft_fill_clean_token(char *tmp_token, int len);
+void	ft_positive_token(t_token *token);
+//int		ft_del_empty_token(t_cmd **cmd, t_data *data);
+int		ft_del_empty_token(t_cmd *cmd, t_data *data);
+int		ft_type_token(t_cmd *cmd, t_data *data);
+int		ft_check_built_in(char *token, t_data *data, int tok_len);
+t_token	*ft_get_token_echo(t_token **token);
+void	ft_echo_join_words_fill(t_token *token);
+int		ft_del_nword(t_cmd *cmd);
 
-//token_2.C
-//clean_token....
+	/*	env_list */
 
-
-
+t_env	*ft_lstlast_env(t_env *lst);
+int		ft_lstadd_env(t_env **env, char *envp);
+void	ft_lstdelone_env(t_env *node);
+void	ft_free_env(t_env **env);
 
 	/*	cmd_list */
 
@@ -173,63 +193,43 @@ void	ft_free_cmd(t_cmd **cmd);
 
 	/*	token_list */
 
-int		ft_tokenizer(t_data *data);
-int		ft_get_token(t_cmd *cmd);
-int		ft_clean_token(t_cmd *cmd, t_data *data);
-int		ft_consec_quotes_len(char *token);
-char	*ft_fill_consec_quotes(char *token, int len);
-int		ft_clean_len(char *token);
-char	*ft_fill_clean_token(char *tmp_token, int len);
-void	ft_positive_token(t_token *token);
-//int		ft_del_empty_token(t_cmd **cmd, t_data *data);
-int		ft_del_empty_token(t_cmd *cmd, t_data *data);
-int		ft_type_token(t_cmd *cmd, t_data *data);
-int		ft_check_built_in(char *token, t_data *data, int tok_len);
+t_token	*ft_lstlast_tok(t_token *lst);
+int		ft_lstadd_token(t_token **tok, int type, char *token);
+void	ft_lstdelone_tok(t_token *node);
+void	ft_lstclear_token(t_token *token);
+void	ft_free_token(t_token **token);
 
+	/*	utils */
 
-
-
-
-int		ft_only_space(char *line);
-
-char	**ft_built_in(void);
 void	*ft_free_tabstr(char **tab_str);
-t_env	*ft_get_env(char **envp);
-int		ft_lstadd_env(t_env **env, char *envp);
-t_env	*ft_lstlast_env(t_env *lst);
 int		ft_new_strchr(const char *s, int c);
-void	ft_lstdelone_env(t_env *node);
-void	ft_free_env(t_env **env);
 
-int		ft_del_quotes(t_data *data);
-int		ft_unquote_cmd_len(char *undoll_cmd);
-int		ft_is_allspace(char *str, int i, char c);
-char	*ft_fill_unquote_cmd(char *undoll_cmd, int len);
-int		ft_contains_doll(char *undoll_cmd, int i, char c);
+/*	***** EXEC *****	*/
+/*	****************	*/
 
+// ***** ex-del_quotes *****
+
+//int		ft_del_quotes(t_data *data);
+//int		ft_unquote_cmd_len(char *undoll_cmd);
+//int		ft_is_allspace(char *str, int i, char c);
+//char	*ft_fill_unquote_cmd(char *undoll_cmd, int len);
+//int		ft_contains_doll(char *undoll_cmd, int i, char c);
+
+// ***** doublon expand *****
 
 // int		ft_expand(t_data *data);
 // int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);
 // int		ft_get_expand_size(char *unquote_cmd, int *i, t_data *data);
 // char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data);
 
+// ***** old token & redir management *****
+
 //int		ft_check_word_n(char *clean_cmd_no_redir, int *i, t_token **token);
 //int		ft_first_token(t_token *token, int len);
 //int		ft_is_redir(char *clean_cmd, int *i);
-int		ft_lstadd_token(t_token **tok, int type, char *token);
-t_token	*ft_lstlast_tok(t_token *lst);
-void	ft_free_token(t_token **token);
-void	ft_lstdelone_tok(t_token *node);
-void	ft_lstclear_token(t_token *token);
 //int		ft_get_redir(t_cmd *cmd);
 //void	ft_fill_no_redir(char *clean_cmd, char *clean_cmd_no_redir);
 //int		ft_get_redir_list(char *clean_cmd, t_token **tok_redir);
 //int		ft_len_no_redir(char *clean_cmd);
-void	ft_echo_join_words_fill(t_token *token);
-t_token	*ft_get_token_echo(t_token **token);
-
-int		ft_space_quotes(char *tmp_token, t_token *token);
-int		ft_del_nword(t_cmd *cmd);
-
 
 #endif

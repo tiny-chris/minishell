@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 12:00:48 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 22:51:51 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,7 @@ int	ft_expand(t_data *data)
 		cmd->clean_cmd = ft_fill_clean_cmd(cmd->undoll_cmd, len, data);
 		 if (!cmd->clean_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
-		dprintf(2, "clean_cmd= %s\n", cmd->clean_cmd);
-		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->clean_cmd));
+		dprintf(2, "expand cmd     = %s --> len = %d vs. strlen = %ld\n", cmd->clean_cmd, len, ft_strlen(cmd->clean_cmd));
 		cmd = cmd->next;
 	}
 	return (0);

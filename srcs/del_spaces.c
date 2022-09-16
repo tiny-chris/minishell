@@ -6,18 +6,18 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 09:55:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 09:13:35 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*	***** PARSING | raw_cmd_no_space - LEN *****
+/*	***** PARSING | unspace_cmd - LEN *****
 **	<SUMMARY>
-**	Defines the length of the new string (raw_cmd_no_space) by removing useless
+**	Defines the length of the new string (unspace_cmd) by removing useless
 **	spaces
 **	<PARAM>		{char *} raw_cmd --> from get_commands.c
-**	<RETURNS>	the size of the new string to be copied raw_cmd_no_space (int)
+**	<RETURNS>	the size of the new string to be copied unspace_cmd (int)
 */
 
 
@@ -74,9 +74,9 @@ int	ft_unspace_cmd_len(char	*raw_cmd)
 	return (len);
 }
 
-/*	***** PARSING | raw_cmd_no_space - CONTENT *****
+/*	***** PARSING | unspace_cmd - CONTENT *****
 **	<SUMMARY>
-**	Creates the new string to be copied as 'raw_cmd_no_space' in the t_cmd
+**	Creates the new string to be copied as 'unspace_cmd' in the t_cmd
 **	'cmd' linked list
 **	<PARAM>		{char *} raw_cmd
 				{int} len --> previously calculated len
@@ -87,36 +87,36 @@ int	ft_unspace_cmd_len(char	*raw_cmd)
 // TO BE NORMED
 char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
 {
-	char	*raw_cmd_no_space;
+	char	*unspace_cmd;//raw_cmd_no_space;
 	int		i;
 	int		j;
 	char	c;
 
 	i = 0;
 	j = 0;
-	raw_cmd_no_space = malloc(sizeof(char) * (len + 1));
-	if (!raw_cmd_no_space)
+	unspace_cmd = malloc(sizeof(char) * (len + 1));
+	if (!unspace_cmd)
 		return (NULL); // free tout ce qu'il y a à free
 	while (raw_cmd[i])
 	{
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
 		{
 			c = raw_cmd[i];
-			raw_cmd_no_space[j] = raw_cmd[i];
+			unspace_cmd[j] = raw_cmd[i];
 			i++;
 			j++;
 			while (raw_cmd[i] != c)
 			{
-				raw_cmd_no_space[j] = raw_cmd[i];
+				unspace_cmd[j] = raw_cmd[i];
 				i++;
 				j++;
 			}
-			raw_cmd_no_space[j] = raw_cmd[i];
+			unspace_cmd[j] = raw_cmd[i];
 			j++;
 		}
 		else if (raw_cmd[i] == ' ')
 		{
-			raw_cmd_no_space[j] = raw_cmd[i];
+			unspace_cmd[j] = raw_cmd[i];
 			i++;
 			j++;
 			while (raw_cmd[i] && raw_cmd[i] == ' ')
@@ -126,12 +126,12 @@ char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
 		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
 		{
 			c = raw_cmd[i];
-			raw_cmd_no_space[j] = raw_cmd[i];
+			unspace_cmd[j] = raw_cmd[i];
 			i++;
 			j++;
 			if (raw_cmd[i] == c)
 			{
-				raw_cmd_no_space[j] = raw_cmd[i];
+				unspace_cmd[j] = raw_cmd[i];
 				i++;
 				j++;
 			}
@@ -147,20 +147,20 @@ char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
 		}
 		else
 		{
-			raw_cmd_no_space[j] = raw_cmd[i];
+			unspace_cmd[j] = raw_cmd[i];
 			j++;
 		}
 		i++;
 	}
-	raw_cmd_no_space[j] = '\0';
-	return (raw_cmd_no_space);
+	unspace_cmd[j] = '\0';
+	return (unspace_cmd);
 }
 
-/*	***** PARSING | raw_cmd_no_space *****
+/*	***** PARSING | unspace_cmd *****
 **	<SUMMARY>
-**	Gets an updated cmd with unnecessary spaces (raw_cmd_no_space) in 2 steps:
+**	Gets an updated cmd with unnecessary spaces (unspace_cmd) in 2 steps:
 **	1. Defines the length of the new string by removing useless spaces
-**	2. Copies the matching string in 'raw_cmd_no_space' of the t_cmd 'cmd'
+**	2. Copies the matching string in 'unspace_cmd' of the t_cmd 'cmd'
 **	linked list
 **	<PARAM>		{t_data *} data
 **	<RETURNS>	t_cmd 'cmd' linked list --> with an additional string
@@ -178,11 +178,10 @@ int	ft_del_spaces(t_data *data)
 	while (cmd)
 	{
 		len = ft_unspace_cmd_len(cmd->raw_cmd);
-		cmd->raw_cmd_no_space = ft_fill_unspace_cmd(cmd->raw_cmd, len);
-		if (!cmd->raw_cmd_no_space)
+		cmd->unspace_cmd = ft_fill_unspace_cmd(cmd->raw_cmd, len);
+		if (!cmd->unspace_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!
-		dprintf(2, "raw cmd no space = %s\n", cmd->raw_cmd_no_space);
-		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->raw_cmd));
+		dprintf(2, "unspace cmd    = %s --> len = %d vs. strlen = %ld\n", cmd->unspace_cmd, len, ft_strlen(cmd->raw_cmd));//
 		cmd = cmd->next;
 	}
 	return (0);

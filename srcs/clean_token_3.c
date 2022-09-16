@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/15 16:28:04 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 22:57:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,11 +235,10 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 	while (token)
 	{
 		tmp_token = NULL;
-		dprintf(2, "token->token = %s, strlen = %ld\n", token->token, ft_strlen(token->token));
+		dprintf(2, "token->token   = %s, strlen = %ld\n", token->token, ft_strlen(token->token));
 		len = ft_consec_quotes_len(token->token);
 		tmp_token = ft_fill_consec_quotes(token->token, len);
-		dprintf(2, "tmp_token = %s\n", tmp_token);
-		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(tmp_token));
+		dprintf(2, "csquotes token = %s --> len = %d vs. strlen = %ld\n", tmp_token, len, ft_strlen(tmp_token));
 		free(token->token);
 		//2e étape
 		ft_space_quotes(tmp_token, token);

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/14 16:46:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/15 22:51:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 **	<SUMMARY>
 **	Defines the length of the new string (cmd_ne_redir) by removing
 **	redirections & corresponding files (or here doc)
-**	<PARAM>		{char *} raw_cmd_no_space --> from del_spaces.c
+**	<PARAM>		{char *} unspace_cmd --> from del_spaces.c
 **	<RETURNS>	the size of the new string to be copied as 'cmd_no_redir" (int)
 */
 
@@ -24,7 +24,7 @@
 
 // TO BE NORMED
 /*	Notes pour nous:
-	tant que le char * de ref existe (raw_cmd_no_space):
+	tant que le char * de ref existe (unspace_cmd):
 	si on rencontre des quotes simples ou doubles, alors on avance jusqu'à la prochaine quote correspondante + 1
 		puis on recommence au début de la boucle
 	si on atteint un chevron (hors quotes), alors on retire -1 à la len et on check la valeur du caractère suivant :
@@ -44,40 +44,40 @@
 				puis on recommence au début de la boucle
 	à la fin, on retourne la len
 */
-int	ft_len_no_redir(char *raw_cmd_no_space)
+int	ft_len_no_redir(char *unspace_cmd)
 {
 	int		i;
 	int		len;
 	char	c;
 
 	i = 0;
-	len = ft_strlen(raw_cmd_no_space);
-	while (raw_cmd_no_space[i])
+	len = ft_strlen(unspace_cmd);
+	while (unspace_cmd[i])
 	{
-		if (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39)
+		if (unspace_cmd[i] == 34 || unspace_cmd[i] == 39)
 		{
-			c = raw_cmd_no_space[i];
+			c = unspace_cmd[i];
 			i++;
-			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)// ajout condition si existe
+			while (unspace_cmd[i] && unspace_cmd[i] != c)// ajout condition si existe
 				i++;
 		}
-		else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
+		else if (unspace_cmd[i] == '>' || unspace_cmd[i] == '<')
 		{
 			len--;
 			i++;
-			if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<'))
+			if (unspace_cmd[i] && (unspace_cmd[i] == '>' || unspace_cmd[i] == '<'))
 			{
 				len--;
 				i++;
 			}
-			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i] != '<')
+			while (unspace_cmd[i] && unspace_cmd[i] != ' ' && unspace_cmd[i] != '>' && unspace_cmd[i] != '<')
 			{
-				if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39))
+				if (unspace_cmd[i] && (unspace_cmd[i] == 34 || unspace_cmd[i] == 39))
 				{
-					c = raw_cmd_no_space[i];
+					c = unspace_cmd[i];
 					i++;
 					len--;
-					while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)// ajout condition si existe
+					while (unspace_cmd[i] && unspace_cmd[i] != c)// ajout condition si existe
 					{
 						i++;
 						len--;
@@ -88,7 +88,7 @@ int	ft_len_no_redir(char *raw_cmd_no_space)
 					len--;
 				i++;
 			}
-			if (!raw_cmd_no_space[i] || raw_cmd_no_space[i] == ' ' || raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')// modif ici avec ajout si null
+			if (!unspace_cmd[i] || unspace_cmd[i] == ' ' || unspace_cmd[i] == '>' || unspace_cmd[i] == '<')// modif ici avec ajout si null
 				i--;
 		}
 		i++;
@@ -98,7 +98,7 @@ int	ft_len_no_redir(char *raw_cmd_no_space)
 
 // TO BE NORMED
 /*	Notes pour nous:
-	tant que le char * de ref existe (raw_cmd_no_space):
+	tant que le char * de ref existe (unspace_cmd):
 	1. si on rencontre des quotes simples ou doubles, alors on copie et on avance jusqu'à la prochaine quote correspondante incluse
 		puis on recommence au début de la boucle
 	2. si on atteint un chevron (hors quotes), alors on avance de +1 et on check la valeur du caractère suivant :
@@ -114,7 +114,7 @@ int	ft_len_no_redir(char *raw_cmd_no_space)
 		puis on recommence au début de la boucle
 	à la fin, on retourne la nouvelle string
 */
-char	*ft_fill_no_redir(char *raw_cmd_no_space, int len)
+char	*ft_fill_no_redir(char *unspace_cmd, int len)
 {
 	char	*no_redir_cmd;
 	int		i;
@@ -126,45 +126,45 @@ char	*ft_fill_no_redir(char *raw_cmd_no_space, int len)
 	no_redir_cmd = malloc(sizeof(char) * (len + 1));
 	if (!no_redir_cmd)
 		return (NULL); // free tout
-	while (raw_cmd_no_space[i])
+	while (unspace_cmd[i])
 	{
-		if (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39)
+		if (unspace_cmd[i] == 34 || unspace_cmd[i] == 39)
 		{
-			c = raw_cmd_no_space[i];
+			c = unspace_cmd[i];
 			no_redir_cmd[j] = c;
 			i++;
 			j++;
-			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)
+			while (unspace_cmd[i] && unspace_cmd[i] != c)
 			{
-				no_redir_cmd[j] = raw_cmd_no_space[i];
+				no_redir_cmd[j] = unspace_cmd[i];
 				i++;
 				j++;
 			}
 			no_redir_cmd[j] = c;
 			j++;
 		}
-		else if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')
+		else if (unspace_cmd[i] == '>' || unspace_cmd[i] == '<')
 		{
 			i++;
-			if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<'))
+			if (unspace_cmd[i] && (unspace_cmd[i] == '>' || unspace_cmd[i] == '<'))
 				i++;
-			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != ' ' && raw_cmd_no_space[i] != '>' && raw_cmd_no_space[i]!= '<')
+			while (unspace_cmd[i] && unspace_cmd[i] != ' ' && unspace_cmd[i] != '>' && unspace_cmd[i]!= '<')
 			{
-				if (raw_cmd_no_space[i] && (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39))
+				if (unspace_cmd[i] && (unspace_cmd[i] == 34 || unspace_cmd[i] == 39))
 				{
-					c = raw_cmd_no_space[i];
+					c = unspace_cmd[i];
 					i++;
-					while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)
+					while (unspace_cmd[i] && unspace_cmd[i] != c)
 						i++;
 				}
 				i++;
 			}
-			if (!raw_cmd_no_space[i] || raw_cmd_no_space[i] == ' ' || raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')// modif ici avec ajout si null
+			if (!unspace_cmd[i] || unspace_cmd[i] == ' ' || unspace_cmd[i] == '>' || unspace_cmd[i] == '<')// modif ici avec ajout si null
 				i--;
 		}
 		else
 		{
-			no_redir_cmd[j] = raw_cmd_no_space[i];
+			no_redir_cmd[j] = unspace_cmd[i];
 			j++;
 		}
 		i++;
@@ -173,12 +173,12 @@ char	*ft_fill_no_redir(char *raw_cmd_no_space, int len)
 	return (no_redir_cmd);
 }
 
-int	ft_is_redir(char *raw_cmd_no_space, int *j)
+int	ft_is_redir(char *unspace_cmd, int *j)
 {
-	if (raw_cmd_no_space[*j] == '<')
+	if (unspace_cmd[*j] == '<')
 	{
 		(*j)++;
-		if (raw_cmd_no_space[*j] && raw_cmd_no_space[*j] == '<')
+		if (unspace_cmd[*j] && unspace_cmd[*j] == '<')
 		{
 			(*j)++;
 			return (13);
@@ -186,10 +186,10 @@ int	ft_is_redir(char *raw_cmd_no_space, int *j)
 		else
 			return (12);
 	}
-	else if (raw_cmd_no_space[*j] == '>')
+	else if (unspace_cmd[*j] == '>')
 	{
 		(*j)++;
-		if (raw_cmd_no_space[*j] && raw_cmd_no_space[*j] == '>')
+		if (unspace_cmd[*j] && unspace_cmd[*j] == '>')
 		{
 			(*j)++;
 			return (11);
@@ -200,7 +200,7 @@ int	ft_is_redir(char *raw_cmd_no_space, int *j)
 	return (0);
 }
 
-int	ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir)
+int	ft_get_redir_list(char *unspace_cmd, t_token **tok_redir)
 {
 	int		i;
 	int		j;
@@ -210,35 +210,35 @@ int	ft_get_redir_list(char *raw_cmd_no_space, t_token **tok_redir)
 	i = 0;
 	j = 0;
 	type = 0;
-	while(raw_cmd_no_space[i])
+	while(unspace_cmd[i])
 	{
-		if (raw_cmd_no_space[i] == 34 || raw_cmd_no_space[i] == 39)
+		if (unspace_cmd[i] == 34 || unspace_cmd[i] == 39)
 		{
-			c = raw_cmd_no_space[i];
+			c = unspace_cmd[i];
 			i++;
-			while (raw_cmd_no_space[i] && raw_cmd_no_space[i] != c)
+			while (unspace_cmd[i] && unspace_cmd[i] != c)
 				i++;
 		}
-		else //if (raw_cmd_no_space[i] == '>' || raw_cmd_no_space[i] == '<')// ajout possible
+		else //if (unspace_cmd[i] == '>' || unspace_cmd[i] == '<')// ajout possible
 		{
-			type = ft_is_redir(raw_cmd_no_space, &j);
+			type = ft_is_redir(unspace_cmd, &j);
 			if (type)
 			{
-				if (ft_lstadd_token(tok_redir, type, ft_substr(raw_cmd_no_space, i, (j - i))))
+				if (ft_lstadd_token(tok_redir, type, ft_substr(unspace_cmd, i, (j - i))))
 					return (1); //free tout ce qu'il y a à free
 				i = j;
-				while (raw_cmd_no_space[j] && raw_cmd_no_space[j] != ' ' && raw_cmd_no_space[j] != '>' && raw_cmd_no_space[j] != '<')
+				while (unspace_cmd[j] && unspace_cmd[j] != ' ' && unspace_cmd[j] != '>' && unspace_cmd[j] != '<')
 				{
-					if (raw_cmd_no_space[j] && (raw_cmd_no_space[j] == 34 || raw_cmd_no_space[j] == 39))
+					if (unspace_cmd[j] && (unspace_cmd[j] == 34 || unspace_cmd[j] == 39))
 					{
-						c = raw_cmd_no_space[j];
+						c = unspace_cmd[j];
 						j++;
-						while (raw_cmd_no_space[j] != c)
+						while (unspace_cmd[j] != c)
 							j++;
 					}
 					j++;
 				}
-				if (ft_lstadd_token(tok_redir, type + 10, ft_substr(raw_cmd_no_space, i, j - i)))
+				if (ft_lstadd_token(tok_redir, type + 10, ft_substr(unspace_cmd, i, j - i)))
 					return (1); //free tout ce qu'il y a à free
 				i = j - 1;
 			}
@@ -272,17 +272,14 @@ int	ft_get_redir(t_data *data)
 	len = 0;
 	while (cmd)
 	{
-		//dprintf(2, "passe dans get redir avant calcul len = %d\n", len);
-		len = ft_len_no_redir(cmd->raw_cmd_no_space);
-		//dprintf(2, "passe dans get redir apres calcul len = %d\n", len);
-		trim_cmd = ft_fill_no_redir(cmd->raw_cmd_no_space, len);
+		len = ft_len_no_redir(cmd->unspace_cmd);
+		trim_cmd = ft_fill_no_redir(cmd->unspace_cmd, len);
 		if (!trim_cmd)
 			return (1); // FREE tout ce qu'il y a à free
-		dprintf(2, "cmd sans redir = %s\n", cmd->no_redir_cmd);
-		dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(cmd->no_redir_cmd));
 		cmd->no_redir_cmd = ft_strtrim(trim_cmd, " ");
 		free(trim_cmd);
-		if (ft_get_redir_list(cmd->raw_cmd_no_space, &cmd->tok_redir))
+		dprintf(2, "no redir cmd   = %s --> len = %d vs. strlen = %ld\n", cmd->no_redir_cmd, len, ft_strlen(cmd->no_redir_cmd));
+		if (ft_get_redir_list(cmd->unspace_cmd, &cmd->tok_redir))
 			return (1); // FREE tout ce qu'il y a à free
 		ft_clean_redir(cmd, data);
 		cmd = cmd->next;
