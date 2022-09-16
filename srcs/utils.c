@@ -45,3 +45,15 @@ void	*ft_free_tabstr(char **tab_str)
 	}
 	return (NULL);
 }
+
+void	*ft_free_tabint(int **tab_int, int size)
+{
+	while (size >= 0)
+	{
+		free(tab_int[size]);
+		size--;
+	}
+	free(tab_int);
+	tab_int = NULL;
+	return (NULL);
+}

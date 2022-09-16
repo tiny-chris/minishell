@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/16 14:12:24 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/16 17:58:20 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_cmd
 	t_token			*tok_redir;
 	int				infile;//
 	int				outfile;//
+	char			**cmd_opt;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -78,9 +79,9 @@ typedef struct s_data
 	int				nb_pipes;
 	t_cmd			*cmd;
 	char			**built_in;
-	// int				*pid;//
-	// int				**pipe;//nb de fd[][]
-	// char			**env_path;//
+	int				*pid;//
+	int				**pipe_fd;//nb de fd[][]
+	t_env			*env_path;
 }	t_data;
 
 /*	***** INIT *****	*/
@@ -203,12 +204,18 @@ void	ft_free_token(t_token **token);
 
 void	*ft_free_tabstr(char **tab_str);
 int		ft_new_strchr(const char *s, int c);
+void	*ft_free_tabint(int **tab_int, int size);
 
 /*	***** EXEC *****	*/
 /*	****************	*/
 
 char	*ft_echo(t_cmd *cmd, t_data *data);
 int		ft_exec(t_data *data);
+int		*ft_init_pid(t_data *data);
+int		**ft_init_pipe(t_data *data);
+void	ft_get_env_path(t_data *data, char **envp);
+t_env	*ft_lst_env_path(char **tab_path);
+int		ft_lstadd_env2(t_env **env, char *tab_path);
 
 // ***** ex-del_quotes *****
 

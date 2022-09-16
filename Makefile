@@ -25,26 +25,29 @@ SRC_DIR     := srcs
 SRCS 		:= 	\
             minishell.c \
 			utils.c \
-			env.c \
-			lexer.c \
-			get_commands.c \
-			cmd_list.c \
-			built_in.c \
-			del_spaces.c \
-			get_redir.c \
-			token_list.c \
-			del_dolls.c \
-			expand_2.c \
-			token_2.c \
-			clean_token_3.c \
-			type_token.c \
-			clean_redir.c \
-			clean_heredoc.c \
-			del_empty_token.c \
-			space_quotes.c \
-			del_nwords.c \
+			parser/env.c \
+			parser/lexer.c \
+			parser/get_commands.c \
+			parser/cmd_list.c \
+			parser/built_in.c \
+			parser/del_spaces.c \
+			parser/get_redir.c \
+			parser/token_list.c \
+			parser/del_dolls.c \
+			parser/expand_2.c \
+			parser/token_2.c \
+			parser/clean_token_3.c \
+			parser/type_token.c \
+			parser/clean_redir.c \
+			parser/clean_heredoc.c \
+			parser/del_empty_token.c \
+			parser/space_quotes.c \
+			parser/del_nwords.c \
 			built_in/echo.c \
-			built_in/exec.c 
+			exec/exec.c \
+			exec/env_path.c \
+			exec/init.c
+
 SRCS        := $(addprefix $(SRC_DIR)/,$(SRCS))
 
 OBJ_DIR     := obj
@@ -53,7 +56,7 @@ OBJS        := $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
-CPPFLAGS    := -I lib/libft -I includes 
+CPPFLAGS    := -I lib/libft -I includes
 LDFLAGS     := -L lib/libft
 LDLIBS      := -l ft -l readline
 
@@ -109,4 +112,4 @@ re:
 #------------------------------------------------#
 
 .PHONY: clean fclean re
-.SILENT: 
+.SILENT:
