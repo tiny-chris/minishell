@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/15 22:25:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /*	FUNCTIONS FOR LINKED LIST 'cmd'
 **	- int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)

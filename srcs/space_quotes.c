@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   space_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 15:30:55 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/15 16:21:45 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int	ft_space_quotes(char *tmp_token, t_token *token)
 {

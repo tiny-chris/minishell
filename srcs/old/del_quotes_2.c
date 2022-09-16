@@ -10,7 +10,7 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
+// #include "minishell.h"
 
 // int	ft_is_allspace(char *str, int i, char c)
 // {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   del_spaces.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 09:13:35 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /*	***** PARSING | unspace_cmd - LEN *****
 **	<SUMMARY>

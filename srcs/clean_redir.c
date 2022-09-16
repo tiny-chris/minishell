@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   clean_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 11:11:08 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/15 23:00:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /*
 - undoll + neg doll (diff pour heredoc)

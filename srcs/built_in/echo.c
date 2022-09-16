@@ -6,11 +6,11 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 10:53:43 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/16 12:18:45 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/16 14:13:30 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char	*ft_echo(t_cmd *cmd, t_data *data)
 {

@@ -1,26 +1,29 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/09/16 12:00:37 by lmelard          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME        := minishell
 
-NAME	=	minishell
+#------------------------------------------------#
+#   INGREDIENTS                                  #
+#------------------------------------------------#
+# LIBFT     libft
+#
+# INCS      include directories
+#
+# SRC_DIR   source directory
+# SRCS      source files
+#
+# OBJ_DIR   build directory
+# OBJS      object files
+#
+# CC        compiler
+# CFLAGS    compiler flags
+# CPPFLAGS  preprocessor flags
+# LDFLAGS   linker flags
+# LDLIBS    library names
 
-#CC		=	clang
-CC		=	gcc
-RM		=	rm -rf
-#INC		=	-I./includes -I./libft
-CFLAGS	=	-Wall -Werror -Wextra
-#CFLAGS	=	-Wall -Wextra
-LIBFLAGS =	-L./libft -lft
+LIBFT       := lib/libft/libft.a
 
-SRCS 	= 	minishell.c \
+SRC_DIR     := srcs
+SRCS 		:= 	\
+            minishell.c \
 			utils.c \
 			env.c \
 			lexer.c \
@@ -40,43 +43,70 @@ SRCS 	= 	minishell.c \
 			del_empty_token.c \
 			space_quotes.c \
 			del_nwords.c \
-			echo.c \
-			exec.c \
+			built_in/echo.c \
+			built_in/exec.c 
+SRCS        := $(addprefix $(SRC_DIR)/,$(SRCS))
 
-SRCDIR	=	srcs
-OBJDIR	=	objs
+OBJ_DIR     := obj
+OBJS        := $(subst .c,.o,$(SRCS))
+OBJS        := $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
-SOURCES	:=	${addprefix ${SRCDIR}/, ${SRCS}}
-OBJS	:=	${SOURCES:${SRCDIR}/%.c=${OBJDIR}/%.o}
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
+CPPFLAGS    := -I lib/libft -I includes 
+LDFLAGS     := -L lib/libft
+LDLIBS      := -l ft -l readline
 
-${OBJDIR}/%.o: ${SRCDIR}/%.c
-			@[ ! -d ${OBJDIR} ] && mkdir -p ${OBJDIR} || true
-			@${CC} ${CFLAGS} -c $< -o $@
-#			@${CC} ${CFLAGS} -c ${INC} $< -o $@
+#------------------------------------------------#
+#   UTENSILS                                     #
+#------------------------------------------------#
+# RM        cleaning command
 
-all: ${NAME}
+RM          := rm -f
+MAKE        := $(MAKE) --silent --jobs --no-print-directory
+DIR_DUP		= mkdir -p $(@D)
 
-$(NAME): ${OBJS}
-			@echo "Compiling the libft..."
-			@make -C libft
-			@echo "Compiling the mandatory part..."
-#			${CC} ${CFLAGS} -g3 -lreadline -o ${NAME} ${OBJS} ${LIBFLAGS}
-			${CC} ${CFLAGS} -g3 -o ${NAME} ${OBJS} ${LIBFLAGS} -lreadline
-			@echo "---> minishell is ready to be used <---"
+#------------------------------------------------#
+#   RECIPES                                      #
+#------------------------------------------------#
+# all       default goal
+# %.o       compilation .c -> .o
+# $(NAME)   link .o -> archive
+# clean     remove .o
+# fclean    remove .o + binary
+# re        remake default goal
+# run		run the program
+# info		print the default goal recipe
+
+all: $(NAME)
+
+$(LIBFT):
+	$(MAKE) -C $(dir $(LIBFT))
+
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(info CREATED $(NAME))
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(DIR_DUP)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+	$(info CREATED $@)
 
 clean:
-			@echo "Removing libft's object files..."
-			@make clean -C libft
-			@echo "Removing minishell mandatory's object files..."
-			${RM} ${OBJS}
-			${RM} ${OBJDIR}
+	$(MAKE) -C $(dir $(LIBFT)) clean
+	$(RM) -r $(OBJ_DIR)
 
-fclean: 	clean
-			@echo "Removing libft's archive..."
-			@make fclean -C libft
-			@echo "Removing binary files..."
-			${RM} ${NAME}
+fclean: clean
+	$(MAKE) -C $(dir $(LIBFT)) fclean
+	$(RM) $(NAME)
 
-re: 		fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
-.PHONY: 	all clean fclean re
+#------------------------------------------------#
+#   SPEC                                         #
+#------------------------------------------------#
+
+.PHONY: clean fclean re
+.SILENT: 

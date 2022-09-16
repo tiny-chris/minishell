@@ -10,7 +10,7 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
+// #include "minishell.h"
 
 // t_token	*ft_lstlast_tok(t_token *lst)
 // {

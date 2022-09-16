@@ -10,7 +10,7 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
+// #include "minishell.h"
 
 // int	ft_check_built_in(char *clean_cmd, t_data *data, int i)
 // {
