@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+         #
+#    By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/17 16:02:06 by lmelard           #+#    #+#              #
-#    Updated: 2022/09/15 17:27:14 by cgaillag         ###   ########.fr        #
+#    Updated: 2022/09/16 12:00:37 by lmelard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,8 @@ SRCS 	= 	minishell.c \
 			del_empty_token.c \
 			space_quotes.c \
 			del_nwords.c \
+			echo.c \
+			exec.c \
 
 SRCDIR	=	srcs
 OBJDIR	=	objs

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/16 09:12:37 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 11:46:57 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,9 @@ int		ft_new_strchr(const char *s, int c);
 
 /*	***** EXEC *****	*/
 /*	****************	*/
+
+char	*ft_echo(t_cmd *cmd, t_data *data);
+int		ft_exec(t_data *data);
 
 // ***** ex-del_quotes *****
 

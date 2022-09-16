@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/15 16:19:09 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 11:37:14 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,11 @@ void	ft_echo_join_words_fill(t_token *token)
 		tmp = tmp->next;
 	}
 	tmp = token;
-
+	if (tmp->next)
+		tmp->type = WORD;
 	while (tmp && tmp->next)
 	{
-		char_tmp1 = ft_strjoin(token->token," ");
+		char_tmp1 = ft_strjoin(token->token, " ");
 		free(token->token);
 		char_tmp2 = ft_strjoin(char_tmp1, tmp->next->token);
 		free(char_tmp1);
@@ -109,8 +110,10 @@ void	ft_echo_join_words_fill(t_token *token)
 	}
 	if (token)
 		//printf("last clean token = %s, type =%d \n", token->token, token->type);
-	ft_lstclear_token(token->next);
-	token->next = NULL;
+	{
+		ft_lstclear_token(token->next);
+		token->next = NULL;
+	}
 }
 
 int	ft_type_token(t_cmd *cmd, t_data *data)

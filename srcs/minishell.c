@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/14 16:38:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/16 12:13:04 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 		data.prompt = ft_strdup("minishell> ");
 		data.built_in = ft_built_in();
 		data.str_exit = NULL;
-//		while (1)
+		while (1)
 		{
 			data.line = readline(data.prompt);
 			data.str_exit = NULL;
@@ -64,6 +64,7 @@ int	main(int argc, char **argv, char **envp)
 					ft_del_dolls(&data);
 					ft_expand(&data);
 					ft_tokenizer(&data);
+					ft_exec(&data);
 					ft_free_cmd(&(data.cmd));
 				}
 				free(data.line);
