@@ -46,7 +46,9 @@ SRCS 		:= 	\
 			built_in/echo.c \
 			exec/exec.c \
 			exec/env_path.c \
-			exec/init.c
+			exec/init.c \
+			exec/cmd_path.c \
+			exec/clean.c
 
 SRCS        := $(addprefix $(SRC_DIR)/,$(SRCS))
 

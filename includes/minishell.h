@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 17:23:26 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/19 17:34:19 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,12 @@ int		ft_lstadd_env2(t_env **env, char *tab_path);
 void	ft_child_process(t_data *data, int i);
 int		ft_get_files_io(t_data *data);
 int		ft_redirect_inout(t_data *data, t_cmd *cmd, int i);
+char	**ft_get_str_env_path(t_data *data);
+char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
+char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
+int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
+void	ft_close_fd(t_data *data);
+void	ft_exit_exec(t_data *data, int val_exit);
 
 // ***** ex-del_quotes *****
 
