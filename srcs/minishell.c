@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 10:45:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:02:54 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int argc, char **argv, char **envp)
 		data.built_in = ft_built_in();
 		data.str_exit = NULL;
 		data.env_path = NULL;
+		data.s_env_path = NULL;
 		ft_get_env_path(&data, envp);
 		while (1)
 		{
@@ -78,6 +79,7 @@ int	main(int argc, char **argv, char **envp)
 		rl_clear_history();
 		free(data.prompt);
 		ft_free_env(&(data.env));
+		ft_free_env(&(data.env_path));
 		return (0);
 	}
 	// penser à faire un message d'erreur si nb d'arg incorrect

@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 15:42:56 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/19 17:23:26 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <errno.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define ERRSTX "syntax error"
 # define ERRMAL "memory allocation error"
 # define ERRCMD "command not found"
 # define ERRDIR "is a directory"
 # define ERRFOD "no such file or directory"
+# define ERRMSG "Error: "
 
 typedef enum s_type
 {
@@ -89,6 +93,7 @@ typedef struct s_data
 	int				*pid;//
 	int				**pipe_fd;//nb de fd[][]
 	t_env			*env_path;
+	char			**s_env_path;
 }	t_data;
 
 /*	***** INIT *****	*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 18:01:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:11:52 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,37 @@ void	ft_get_env_path(t_data *data, char **envp)
 		return ;
 	free(ptr_path);
 	data->env_path = ft_lst_env_path(tab_path);
+}
+
+char	**ft_get_str_env_path(t_data *data)
+{
+	t_env	*env_path;
+	char	**s_env_path;
+	int		i;
+
+	env_path = data->env_path;
+	i = 0;
+	while (env_path)
+	{
+		i++;
+		env_path = env_path->next;
+	}
+	s_env_path = malloc (sizeof(char *) * (i + 1));
+	if (!s_env_path)
+		return (NULL);
+	i = 0;
+	env_path = data->env_path;
+	while (env_path)
+	{
+		s_env_path[i] = ft_strdup(env_path->content);
+		if (!s_env_path)
+		{
+			ft_free_tabstr(s_env_path);
+			return (NULL);
+		}
+		i++;
+		env_path = env_path->next;
+	}
+	s_env_path[i] = ft_strdup("\0");
+	return (s_env_path);
 }

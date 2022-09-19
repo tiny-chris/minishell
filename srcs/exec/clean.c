@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 14:48:25 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/19 17:16:10 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	ft_exit_exec(t_data *data, int val_exit)
 			free (data->pid);
 		if (data->pipe_fd != NULL)
 			ft_free_tabint(data->pipe_fd, data->nb_pipes);
-		data->val_exit = val_exit;
+		if (data->s_env_path != NULL)
+			ft_free_tabstr(data->s_env_path);
+		if (val_exit != -1)
+			data->val_exit = val_exit;
 	}
 }
 

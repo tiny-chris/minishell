@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 15:26:16 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/19 17:24:30 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,22 @@ void	ft_child_process(t_data *data, int i)
 			return ;
 		}
 		cmd->cmd_path = ft_find_cmd_path(cmd, data);
+		if (!cmd->cmd_path)
+		{
+			ft_exit_exec(data, -1);
+			return ;
+		}
+		data->s_env_path = ft_get_str_env_path(data);
+		if (!data->s_env_path)
+		{
+			ft_exit_exec(data, ft_msg(1, "", "", ERRMAL));
+			return ;
+		}
+		if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env_path) == -1)
+		{
+			ft_exit_exec(data, ft_msg(126, cmd->token->token, ": ", strerror(errno)));
+			return ;
+		}
 	}
 }
 
@@ -160,7 +176,7 @@ int	ft_exec(t_data *data)
 	{
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
-			printf("pid error\n"); // modif val_exit free + exit
+			data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
 		else if (data->pid[i] == 0)
 			ft_child_process(data, i);
 	}
