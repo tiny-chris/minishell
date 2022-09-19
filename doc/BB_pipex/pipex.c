@@ -43,7 +43,7 @@ void	ft_child_process(t_data *data, int i)
 		ft_exit_pp(ft_msg(errno, "", "", ERMSG_UE), data);
 	data->cmd_path = ft_find_cmd_path(data, data->cmd_opt[0]);
 	if (data->cmd_path == NULL)
-		ft_exit_pp(errno, data);
+		ft_exit_pp(errno, data); 
 	if (execve(data->cmd_path, data->cmd_opt, data->envp) == -1)
 	{
 		ft_exit_pp(ft_msg(126, data->cmd_opt[0], ": ", strerror(errno)), \

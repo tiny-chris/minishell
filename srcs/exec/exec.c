@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 12:05:58 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/19 15:26:16 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-int		ft_redirect_inout(t_data *data, t_cmd *cmd, int i)
+int	ft_redirect_inout(t_data *data, t_cmd *cmd, int i)
 {
 	if (i == 0)
 	{
@@ -77,6 +76,39 @@ int		ft_redirect_inout(t_data *data, t_cmd *cmd, int i)
 	return (0);
 }
 
+char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
+{
+	char	**cmd_opt;
+	t_token	*token;
+	int		i;
+
+	token = cmd->token;
+	i = 0;
+	while (token->next)
+	{
+		token = token->next;
+		i++;
+	}
+	cmd_opt = malloc(sizeof(char *) * (i + 1));
+	if (!cmd_opt)
+		return (NULL);
+	i = 0;
+	token = cmd->token->next;
+	while (token)
+	{
+		cmd_opt[i] = ft_strdup(token->token);
+		if (!cmd_opt[i])
+		{
+			ft_free_tabstr(cmd_opt);
+			return (NULL);
+		}
+		i++;
+		token = token->next;
+	}
+	cmd_opt[i] = ft_strdup("\0");
+	return (cmd_opt);
+}
+
 void	ft_child_process(t_data *data, int i)
 {
 	t_cmd	*cmd;
@@ -91,7 +123,29 @@ void	ft_child_process(t_data *data, int i)
 		j--;
 	}
 	res = ft_redirect_inout(data, cmd, i);
-
+	ft_close_fd(data);
+	if (res == -1)
+	{
+		ft_exit_exec(data, 1);
+		return ;
+	}
+	if (cmd->token->type == BUILTIN)
+		ft_exec_built_in(cmd, data); // A CREER
+	else
+	{
+		if (cmd->token->type == SP_QUOTES)
+		{
+			ft_exit_exec(data, ft_msg(127, "''", ": ", ERRCMD));
+			return ;
+		}
+		cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
+		if (cmd->cmd_opt == NULL)
+		{
+			ft_exit_exec(data, ft_msg(1, "", "", ERRMAL));
+			return ;
+		}
+		cmd->cmd_path = ft_find_cmd_path(cmd, data);
+	}
 }
 
 int	ft_exec(t_data *data)

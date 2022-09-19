@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 12:04:03 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/19 15:42:56 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 
 # define ERRSTX "syntax error"
 # define ERRMAL "memory allocation error"
+# define ERRCMD "command not found"
+# define ERRDIR "is a directory"
+# define ERRFOD "no such file or directory"
 
 typedef enum s_type
 {
@@ -46,6 +49,7 @@ typedef struct s_token
 {
 	char			*token;
 	int				type;
+	int				fd;
 	struct s_token	*next;
 }	t_token;
 
@@ -68,6 +72,7 @@ typedef struct s_cmd
 	int				infile;//
 	int				outfile;//
 	char			**cmd_opt;
+	char			*cmd_path;
 	struct s_cmd	*next;
 }	t_cmd;
 

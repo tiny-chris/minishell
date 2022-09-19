@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:29:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/19 13:54:52 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 	//dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
 	new->type = type;
 	//dprintf(2, "type %d\n", new->type);
+	new->fd = -1;
 	new->next = NULL;
 	if (ft_lstlast_tok(*tok) == 0)
 	{

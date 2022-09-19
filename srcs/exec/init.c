@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/19 11:36:07 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/19 13:58:30 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,34 @@ int	ft_get_files_io(t_data *data)
 			if (tok_redir->type == GREAT)
 			{
 				tok_redir = tok_redir->next;
-				cmd->outfile = open(tok_redir->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
-				if (cmd->outfile < 0)
-					printf("outfile error\n"); // afficher error avec erno + strerror	
+				tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
+				if (tok_redir->fd < 0)
+					printf("outfile error\n"); // afficher error avec erno + strerror
+				cmd->outfile = tok_redir->fd;
 			}
 			else if (tok_redir->type == D_GREAT)
 			{
 				tok_redir = tok_redir->next;
-				cmd->outfile = open(tok_redir->token, O_CREAT | O_RDWR | O_APPEND);
-				if (cmd->outfile < 0)
+				tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_APPEND);
+				if (tok_redir->fd < 0)
 					printf("outfile error\n"); // afficher error avec erno + strerror
+				cmd->outfile = tok_redir->fd;
 			}
 			else if (tok_redir->type == LESS)
 			{
 				tok_redir = tok_redir->next;
-				cmd->infile = open(tok_redir->token, O_RDONLY);
-				if (cmd->infile < 0)
+				tok_redir->fd = open(tok_redir->token, O_RDONLY);
+				if (tok_redir->fd < 0)
 					printf("infile error\n"); // afficher error avec erno + strerror
+				cmd->infile = tok_redir->fd;
 			}
 			else if (tok_redir->type == D_LESS)
 			{
 				tok_redir = tok_redir->next;
-				cmd->infile = open(tok_redir->token, O_RDONLY);
-				if (cmd->infile < 0)
+				tok_redir->fd = open(tok_redir->token, O_RDONLY);
+				if (tok_redir->fd < 0)
 					printf("infile error\n"); // afficher error avec erno + strerror
+				cmd->infile = tok_redir->fd;
 			}
 			tok_redir = tok_redir->next;
 		}
