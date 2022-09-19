@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/16 17:58:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/19 10:45:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	main(int argc, char **argv, char **envp)
 		rl_clear_history();
 		free(data.prompt);
 		ft_free_env(&(data.env));
+		return (0);
 	}
 	// penser à faire un message d'erreur si nb d'arg incorrect
 	return (1);

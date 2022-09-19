@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/16 17:58:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:04:03 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# include <unistd.h>
 
 # define ERRSTX "syntax error"
 # define ERRMAL "memory allocation error"
@@ -216,6 +218,9 @@ int		**ft_init_pipe(t_data *data);
 void	ft_get_env_path(t_data *data, char **envp);
 t_env	*ft_lst_env_path(char **tab_path);
 int		ft_lstadd_env2(t_env **env, char *tab_path);
+void	ft_child_process(t_data *data, int i);
+int		ft_get_files_io(t_data *data);
+int		ft_redirect_inout(t_data *data, t_cmd *cmd, int i);
 
 // ***** ex-del_quotes *****
 
