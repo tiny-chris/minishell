@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/20 15:51:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/20 17:25:34 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,8 @@
 
 int	ft_redirect_inout(t_data *data, t_cmd *cmd, int i)
 {
-	// int	res;
-
-	// res = -2;
-	//dprintf(2, "child %d --> in function redirect inout\n", i);
 	if (i == 0)
 	{
-		//dprintf(2, "child (i=0) %d --> on va checker les files\n", i);
-		//dprintf(2, "child (i=0) %d --> cmd->infile = %d\n", i, cmd->infile);
-		//dprintf(2, "child (i=0) %d --> cmd->outfile = %d\n", i, cmd->outfile);
-		//dprintf(2, "child (i=0) %d --> data->nb_pipes = %d\n", i, data->nb_pipes);
 		if (cmd->infile != 0)
 		{
 			if (dup2(cmd->infile, STDIN_FILENO) == -1)
@@ -53,9 +45,6 @@ int	ft_redirect_inout(t_data *data, t_cmd *cmd, int i)
 	}
 	else if (i > 0 && i == data->nb_pipes)
 	{
-		//dprintf(2, "child (i=last) %d --> on va checker les files\n", i);
-		//dprintf(2, "child (i=last) %d --> cmd->infile = %d\n", i, cmd->infile);
-		//dprintf(2, "child (i=last) %d --> cmd->outfile = %d\n", i, cmd->outfile);
 		if (cmd->infile != 0)
 		{
 			if (dup2(cmd->infile, STDIN_FILENO) == -1)
@@ -65,12 +54,6 @@ int	ft_redirect_inout(t_data *data, t_cmd *cmd, int i)
 		{
 			if (dup2(data->pipe_fd[i - 1][0], STDIN_FILENO) == -1)
 				return (-1);
-			// res = dup2(data->pipe_fd[i - 1][0], STDIN_FILENO);
-			// if (res == -1)
-			// {
-			// 	dprintf(2, "child (i=last) %d --> si cmd->infile = 0 alors file in = %d\n", i, res);
-			// 	return (-1);
-			// }
 		}
 		if (cmd->outfile != 1)
 		{
@@ -122,19 +105,22 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 	if (!cmd_opt)
 		return (NULL);
 	i = 0;
-	token = cmd->token->next;
-	while (token)
+	if (cmd->token->next)
 	{
-		cmd_opt[i] = ft_strdup(token->token);
-		if (!cmd_opt[i])
+		token = cmd->token->next;
+		while (token)
 		{
-			ft_free_tabstr(cmd_opt);
-			return (NULL);
+			cmd_opt[i] = ft_strdup(token->token);
+			if (!cmd_opt[i])
+			{
+				ft_free_tabstr(cmd_opt);
+				return (NULL);
+			}
+			i++;
+			token = token->next;
 		}
-		i++;
-		token = token->next;
 	}
-	cmd_opt[i] = ft_strdup("\0");
+	cmd_opt[i] = ft_strdup("");
 	return (cmd_opt);
 }
 
@@ -241,6 +227,8 @@ int	ft_exec(t_data *data)
 {
 	int	i;
 
+	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
+		return (ft_exec_builtin(data));
 	if (data->nb_pipes > 0)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);

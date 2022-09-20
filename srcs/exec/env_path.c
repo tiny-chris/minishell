@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/20 15:24:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/20 17:22:04 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,6 @@ char	**ft_get_str_env_path(t_data *data)
 		i++;
 		env_path = env_path->next;
 	}
-	s_env_path[i] = ft_strdup("\0");
+	s_env_path[i] = ft_strdup("");
 	return (s_env_path);
 }

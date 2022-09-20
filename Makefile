@@ -44,11 +44,12 @@ SRCS 		:= 	\
 			parser/space_quotes.c \
 			parser/del_nwords.c \
 			built_in/echo.c \
+			built_in/built_in.c \
 			exec/exec.c \
 			exec/env_path.c \
 			exec/init.c \
 			exec/cmd_path.c \
-			exec/clean.c
+			exec/clean.c \
 
 SRCS        := $(addprefix $(SRC_DIR)/,$(SRCS))
 

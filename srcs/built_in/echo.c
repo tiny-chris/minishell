@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 10:53:43 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:30 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/20 17:14:10 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_echo(t_cmd *cmd, t_data *data)
+int	ft_echo(t_cmd *cmd, t_data *data)
 {
 	t_token	*token;
 	char	*tmp;
@@ -28,17 +28,25 @@ char	*ft_echo(t_cmd *cmd, t_data *data)
 			{
 				free(token->token);
 				token->token = ft_strdup("\n");
+				if (!token->token)
+					return (ft_msg(1, "", "", ERRMAL));
 			}
 			else
 			{
 				tmp = ft_strdup(token->token);
 				if (!tmp)
-					return (NULL); // FREEE + EXIT
+					return (ft_msg(1, "", "", ERRMAL)); // FREEE + EXIT
 				free(token->token);
 				token->token = ft_strjoin(tmp, "\n");
+				if (!token->token)
+				{
+					free(tmp);
+					return (ft_msg(1, "", "", ERRMAL));
+				}
 				free(tmp);
 			}
-			return (token->token);
+			printf("%s", token->token);
+			return (0);
 		}
 		if (token->next)
 		{
@@ -46,9 +54,13 @@ char	*ft_echo(t_cmd *cmd, t_data *data)
 			{
 				free(token->next->token);
 				token->next->token = ft_strdup("");
+				if (!token->next->token)
+					return (ft_msg(1, "", "", ERRMAL));
 			}
-			return (token->next->token);
+			printf("%s", token->next->token);
+			return (0);
 		}
 	}
-	return ("");
+	printf("");
+	return (0);
 }
