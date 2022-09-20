@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/20 17:25:34 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/20 18:55:43 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 	(void) data;
 	token = cmd->token;
 	i = 0;
-	while (token->next)
+	while (token)
 	{
 		token = token->next;
 		i++;
@@ -105,9 +105,9 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 	if (!cmd_opt)
 		return (NULL);
 	i = 0;
-	if (cmd->token->next)
+	if (cmd->token)
 	{
-		token = cmd->token->next;
+		token = cmd->token;
 		while (token)
 		{
 			cmd_opt[i] = ft_strdup(token->token);
@@ -120,7 +120,8 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 			token = token->next;
 		}
 	}
-	cmd_opt[i] = ft_strdup("");
+	//cmd_opt[i] = ft_strdup("");
+	cmd_opt[i] = NULL;
 	return (cmd_opt);
 }
 
@@ -155,6 +156,8 @@ void	ft_child_process(t_data *data, int i)
 			exit(ft_msg(127, "''", ": ", ERRCMD));
 		}
 		cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
+		// printf("cmd_opt = %s\n", cmd->cmd_opt[0]);
+		// printf("cmd_opt = %s\n", cmd->cmd_opt[1]);
 		if (cmd->cmd_opt == NULL)
 		{
 			ft_exit_exec(data);
