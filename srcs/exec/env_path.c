@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/19 17:11:52 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/20 15:24:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ t_env	*ft_lst_env_path(char **tab_path)
 	int		i;
 
 	i = 0;
-	env_path = malloc(sizeof(t_env));
-	if (!env_path)
-		return (NULL);// FREE TOUT ET EXIT
+	env_path = NULL;
 	while (tab_path[i])
 	{
 		if (ft_lstadd_env2(&env_path, tab_path[i]))
@@ -71,6 +69,7 @@ void	ft_get_env_path(t_data *data, char **envp)
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			ptr_path = ft_strdup(envp[i] + 5);
+		//	printf("ptrpath = %s\n", ptr_path);
 			break ;
 		}
 		i++;
@@ -78,6 +77,9 @@ void	ft_get_env_path(t_data *data, char **envp)
 	if (!ptr_path)
 		return ;
 	tab_path = ft_split(ptr_path, ':');
+	// printf("tabpath 1 = %s\n", tab_path[0]);
+	// printf("tabpath 2 = %s\n", tab_path[1]);
+	// printf("tabpath 3 = %s\n", tab_path[2]);
 	if (!tab_path)
 		return ;
 	free(ptr_path);

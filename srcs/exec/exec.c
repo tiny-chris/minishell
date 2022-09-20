@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 17:24:30 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/20 15:51:44 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,63 @@
 
 int	ft_redirect_inout(t_data *data, t_cmd *cmd, int i)
 {
+	// int	res;
+
+	// res = -2;
+	//dprintf(2, "child %d --> in function redirect inout\n", i);
 	if (i == 0)
 	{
+		//dprintf(2, "child (i=0) %d --> on va checker les files\n", i);
+		//dprintf(2, "child (i=0) %d --> cmd->infile = %d\n", i, cmd->infile);
+		//dprintf(2, "child (i=0) %d --> cmd->outfile = %d\n", i, cmd->outfile);
+		//dprintf(2, "child (i=0) %d --> data->nb_pipes = %d\n", i, data->nb_pipes);
 		if (cmd->infile != 0)
 		{
 			if (dup2(cmd->infile, STDIN_FILENO) == -1)
 				return (-1);
 		}
-		if (cmd->outfile != 1)
+		if (data->nb_pipes > 0)
 		{
-			if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
-				return (-1);
+			if (cmd->outfile != 1)
+			{
+				if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
+					return (-1);
+			}
+			else
+			{
+				if (dup2(data->pipe_fd[i][1], STDOUT_FILENO) == -1)
+					return (-1);
+			}
 		}
 		else
 		{
-			if (dup2(data->pipe_fd[i][1], STDOUT_FILENO) == -1)
-				return (-1);
+			if (cmd->outfile != 1)
+			{
+				if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
+					return (-1);
+			}
 		}
 	}
-	else if (i == data->nb_pipes)
+	else if (i > 0 && i == data->nb_pipes)
 	{
+		//dprintf(2, "child (i=last) %d --> on va checker les files\n", i);
+		//dprintf(2, "child (i=last) %d --> cmd->infile = %d\n", i, cmd->infile);
+		//dprintf(2, "child (i=last) %d --> cmd->outfile = %d\n", i, cmd->outfile);
 		if (cmd->infile != 0)
 		{
 			if (dup2(cmd->infile, STDIN_FILENO) == -1)
-				return (-1);
+			return (-1);
 		}
 		else
 		{
 			if (dup2(data->pipe_fd[i - 1][0], STDIN_FILENO) == -1)
 				return (-1);
+			// res = dup2(data->pipe_fd[i - 1][0], STDIN_FILENO);
+			// if (res == -1)
+			// {
+			// 	dprintf(2, "child (i=last) %d --> si cmd->infile = 0 alors file in = %d\n", i, res);
+			// 	return (-1);
+			// }
 		}
 		if (cmd->outfile != 1)
 		{
@@ -82,6 +110,7 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 	t_token	*token;
 	int		i;
 
+	(void) data;
 	token = cmd->token;
 	i = 0;
 	while (token->next)
@@ -126,61 +155,120 @@ void	ft_child_process(t_data *data, int i)
 	ft_close_fd(data);
 	if (res == -1)
 	{
-		ft_exit_exec(data, 1);
-		return ;
+		ft_exit_exec(data);
+		exit(EXIT_FAILURE);
 	}
-	if (cmd->token->type == BUILTIN)
-		ft_exec_built_in(cmd, data); // A CREER
-	else
+//	dprintf(2, "child %d: res(redirect inout) = %d\n", i, res);
+	// if (cmd->token->type == BUILTIN)
+	// 	ft_exec_built_in(cmd, data); // A CREER
+	// else
 	{
 		if (cmd->token->type == SP_QUOTES)
 		{
-			ft_exit_exec(data, ft_msg(127, "''", ": ", ERRCMD));
-			return ;
+			ft_exit_exec(data);
+			exit(ft_msg(127, "''", ": ", ERRCMD));
 		}
 		cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
 		if (cmd->cmd_opt == NULL)
 		{
-			ft_exit_exec(data, ft_msg(1, "", "", ERRMAL));
-			return ;
+			ft_exit_exec(data);
+			exit(ft_msg(1, "", "", ERRMAL));
 		}
+	//	printf("cmd->cmd_opt = %s\n", cmd->cmd_opt[0]);
 		cmd->cmd_path = ft_find_cmd_path(cmd, data);
+		//printf("cmd_path = %s\n", cmd->cmd_path);
 		if (!cmd->cmd_path)
 		{
-			ft_exit_exec(data, -1);
-			return ;
+			ft_exit_exec(data);
+			exit(ft_msg(EXIT_FAILURE, "", "", ERRMAL));
 		}
 		data->s_env_path = ft_get_str_env_path(data);
 		if (!data->s_env_path)
 		{
-			ft_exit_exec(data, ft_msg(1, "", "", ERRMAL));
-			return ;
+			ft_exit_exec(data);
+			exit(ft_msg(EXIT_FAILURE, "", "", ERRMAL));
 		}
 		if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env_path) == -1)
 		{
-			ft_exit_exec(data, ft_msg(126, cmd->token->token, ": ", strerror(errno)));
-			return ;
+			ft_exit_exec(data);
+			exit(ft_msg(126, cmd->token->token, ": ", strerror(errno)));
 		}
 	}
+}
+
+/*	<SUMMARY>
+**	Manages the parent process:
+**	- waits for the children processes to terminate
+**	- gets the error status code from child processes (exit with last child)
+**	<PARAM>		{char *} no_redir_cmd --> from get_redir.c
+**	<RETURNS>	the size of the new string to be copied unspace_cmd (int)
+*/
+/*	Function that manages the parent process
+**	--> waits for the children processes to terminate 
+**	and gets the error status code from child processes (exit with last child)
+**	Parameters: 
+**	- ref structure that contains couall key data for pipex prog, 
+**	- the exit status code (initially set at 1 in main function) and to be 
+**		updated here
+**	Return value: the exit status (when error) of the last child process
+*/
+int	ft_parent_process(t_data *data)
+{
+	pid_t	wpid;
+	int		i;
+	int		status;
+
+	ft_close_fd(data);
+	i = 0;
+	while (i < data->nb_pipes + 1)
+	{
+		wpid = waitpid(data->pid[i], &status, 0);
+		i++;
+	}
+	if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	ft_exit_exec(data);
+	// i = 3;
+	// while (i < 1000)
+	// {
+	// 	close(i);
+	// 	i++;
+	// }
+	return (status);
 }
 
 int	ft_exec(t_data *data)
 {
 	int	i;
 
-	data->pipe_fd = ft_init_pipe(data);
+	if (data->nb_pipes > 0)
+		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);
 	ft_get_files_io(data);
+	//dprintf(2, "init ok\n");
+	i = 0;
+	while (i < data->nb_pipes)
+	{
+		if (pipe(data->pipe_fd[i]) == -1)
+		{
+			data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+			ft_exit_exec(data);
+			return (1);
+		}
+		i++;
+	}
 	i = 0;
 	while (i < (data->nb_pipes + 1))
 	{
 		data->pid[i] = fork();
+		//dprintf(2, "data->pid[i] = %d\n", data->pid[i]);
 		if (data->pid[i] == -1)
 			data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
 		else if (data->pid[i] == 0)
 			ft_child_process(data, i);
+		i++;
 	}
-	//data->val_exit = ft_parent_process(data);
+	data->val_exit = ft_parent_process(data);
 	return (0);
 }
 

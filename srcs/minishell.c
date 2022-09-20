@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 17:02:54 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/20 15:43:37 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ int	main(int argc, char **argv, char **envp)
 		data.str_exit = NULL;
 		data.env_path = NULL;
 		data.s_env_path = NULL;
+		data.pipe_fd = NULL;
+		data.pid = NULL;
 		ft_get_env_path(&data, envp);
-		while (1)
+		//while (1)
 		{
 			data.line = readline(data.prompt);
 			data.str_exit = NULL;

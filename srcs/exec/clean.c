@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/19 17:16:10 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/20 11:06:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_exit_exec(t_data *data, int val_exit)
+void	ft_exit_exec(t_data *data)//, int val_exit)
 {
 	if (data != NULL)
 	{
@@ -22,8 +22,8 @@ void	ft_exit_exec(t_data *data, int val_exit)
 			ft_free_tabint(data->pipe_fd, data->nb_pipes);
 		if (data->s_env_path != NULL)
 			ft_free_tabstr(data->s_env_path);
-		if (val_exit != -1)
-			data->val_exit = val_exit;
+		// if (val_exit != -1)
+		// 	data->val_exit = val_exit;
 	}
 }
 

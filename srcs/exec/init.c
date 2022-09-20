@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/19 13:58:30 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/20 15:33:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	**ft_init_pipe(t_data *data)
 	int	**tab_int;
 	int	i;
 
+	//dprintf(2, "entre dans init pipe\n");
 	tab_int = (int **) malloc(sizeof(int *) * data->nb_pipes);
 	if (tab_int == NULL)
 		return (free(tab_int), NULL);
@@ -42,6 +43,7 @@ int	*ft_init_pid(t_data *data)
 	int	i;
 
 	i = 0;
+	//dprintf(2, "entre dans init pid\n");
 	pid = malloc(sizeof(int) * (data->nb_pipes + 1));
 	if (!pid)
 		return (NULL);//FREE TOUT ET EXIT
@@ -60,6 +62,7 @@ int	ft_get_files_io(t_data *data)
 
 	cmd = data->cmd;
 	tok_redir = NULL;
+	//dprintf(2, "entre dans get files io\n");
 	while (cmd)
 	{
 		tok_redir = cmd->tok_redir;
@@ -99,6 +102,9 @@ int	ft_get_files_io(t_data *data)
 			}
 			tok_redir = tok_redir->next;
 		}
+	//	dprintf(2, "pour cmd->token = %s\n", cmd->token->token);
+	//	dprintf(2, "cmd->infile = %d et cmd->outfile = %d\n", cmd->infile, cmd->outfile);
+		cmd = cmd->next;
 	}
 	return (0);
 }
