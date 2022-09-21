@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/21 02:46:41 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:02:58 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_free_cmd(t_cmd **cmd)
 
 	if (!*cmd)
 		return ;
-	while (*cmd != NULL)
+	while ((*cmd) != NULL)
 	{
 		tmp = (*cmd)->next;
 		ft_lstdelone_cmd(*cmd);

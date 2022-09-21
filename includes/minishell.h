@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/21 04:26:57 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/21 13:37:26 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,11 @@ int		ft_check_built_in(char *token, t_data *data, int tok_len);
 t_token	*ft_get_token_echo(t_token **token);
 void	ft_echo_join_words_fill(t_token *token);
 int		ft_del_nword(t_cmd *cmd);
+
+/*	Step 7 del_empty_cmd */
+
+int		ft_get_cmd_lst_size(t_data *data);
+int		ft_del_empty_cmd(t_data *data);
 
 	/*	env_list */
 
