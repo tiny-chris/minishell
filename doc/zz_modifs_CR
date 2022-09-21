@@ -1,4 +1,41 @@
 
+--------------------------------------------------
+----- Mail pour prise en compte bugs (21/09) -----
+--------------------------------------------------
+
+Enregistré dans /doc
+Bug pour pas de token / free data dans child...
+
+
+$USER | $USTER | echo $?	--> OK quand le token vide est en 1er
+								bash :	0
+										tiny_chris: command not found
+
+
+$USdddER | $USTER | echo $?	--> PAS OK - pas d'affichage
+								bash :	0
+
+--------------------------------------------------
+----- Modifs préparées (18/09) mais pas push -----
+--------------------------------------------------
+
+> Création d'un dossier "init"
+	-->	création d'un fichier "init_data.c"
+		- pour initialiser toutes les données de data
+		- pour découper l'initialisation (obj réduire la fonction 'main')
+
+> Création d'un dossier "clean"
+	--> à compléter
+
+> Dans le folder "parser" : création d'un fichier 'parser.c' pour regrouper toutes les fonctions parcourues du parsing
+	--> déplacement des fonctions de minishell.c dans ce fichier parser.c sous le nom de fonction 'ft_parser(t_data *data)'
+	?? ou les mettre dans la fonction ft_parser() qui reste dans minishell.c
+
+
+----------------------------------------------------
+----- modifs ci-dessous - COMMITED + PUSHED OK -----
+----------------------------------------------------
+
 > Création d'un autre file "cmd_list.c" pour y rassembler les fonctions de liste chainée:
 	- int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
 	- t_cmd	*ft_lstlast_cmd(t_cmd *lst)

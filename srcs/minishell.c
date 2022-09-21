@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/20 16:56:36 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/21 04:46:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,20 @@ int	main(int argc, char **argv, char **envp)
 		data.val_exit = 0;
 		data.env = ft_get_env(envp);
 		data.prompt = ft_strdup("minishell> ");
+		if (data.prompt == NULL)
+		{
+			ft_free_env(&(data.env));
+			free(data.prompt);
+			return (1);//on peut mettre un message de pb de malloc car strdup
+		}
 		data.built_in = ft_built_in();
+		if (data.built_in == NULL)
+		{
+			ft_free_env(&(data.env));
+			free(data.prompt);
+			ft_free_tabstr(data.built_in);
+			return (1);//on peut mettre un message de pb de malloc car strdup
+		}
 		data.str_exit = NULL;
 		data.env_path = NULL;
 		data.s_env_path = NULL;
@@ -63,6 +76,7 @@ int	main(int argc, char **argv, char **envp)
 				else
 				{
 					data.nb_pipes = ft_count_pipe(data.line);
+					printf("nb_pipes = %d\n", data.nb_pipes);
 					data.cmd = ft_get_commands(&data);//separation des commandes en fonction du nb de pipes
 					ft_del_spaces(&data);
 					ft_get_redir(&data);
@@ -77,11 +91,14 @@ int	main(int argc, char **argv, char **envp)
 					free(data.str_exit);
 			}
 		}
-		ft_free_tabstr(data.built_in);
+		if (data.built_in != NULL)
+			ft_free_tabstr(data.built_in);
 		rl_clear_history();
 		free(data.prompt);
-		ft_free_env(&(data.env));
-		ft_free_env(&(data.env_path));
+		if (data.env != NULL)
+			ft_free_env(&(data.env));
+		if (data.env_path)
+			ft_free_env(&(data.env_path));
 		return (0);
 	}
 	// penser à faire un message d'erreur si nb d'arg incorrect

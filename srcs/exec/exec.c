@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/20 18:55:43 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/21 11:37:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,20 +105,17 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 	if (!cmd_opt)
 		return (NULL);
 	i = 0;
-	if (cmd->token)
+	token = cmd->token;
+	while (token)
 	{
-		token = cmd->token;
-		while (token)
+		cmd_opt[i] = ft_strdup(token->token);
+		if (!cmd_opt[i])
 		{
-			cmd_opt[i] = ft_strdup(token->token);
-			if (!cmd_opt[i])
-			{
-				ft_free_tabstr(cmd_opt);
-				return (NULL);
-			}
-			i++;
-			token = token->next;
+			ft_free_tabstr(cmd_opt);
+			return (NULL);
 		}
+		i++;
+		token = token->next;
 	}
 	//cmd_opt[i] = ft_strdup("");
 	cmd_opt[i] = NULL;
@@ -138,11 +135,17 @@ void	ft_child_process(t_data *data, int i)
 		cmd = cmd->next;
 		j--;
 	}
+	if (cmd->token == NULL)
+	{
+		ft_free_data_child(data);
+		exit(EXIT_FAILURE);
+	}
 	res = ft_redirect_inout(data, cmd, i);
 	ft_close_fd(data);
 	if (res == -1)
 	{
-		ft_exit_exec(data);
+		//ft_exit_exec(data);
+		ft_free_data_child(data);
 		exit(EXIT_FAILURE);
 	}
 //	dprintf(2, "child %d: res(redirect inout) = %d\n", i, res);
@@ -152,35 +155,45 @@ void	ft_child_process(t_data *data, int i)
 	{
 		if (cmd->token->type == SP_QUOTES)
 		{
-			ft_exit_exec(data);
-			exit(ft_msg(127, "''", ": ", ERRCMD));
+			//ft_exit_exec(data);
+			res = ft_msg(127, "''", ": ", ERRCMD);
+			ft_free_data_child(data);
+			exit(res);
 		}
 		cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
 		// printf("cmd_opt = %s\n", cmd->cmd_opt[0]);
 		// printf("cmd_opt = %s\n", cmd->cmd_opt[1]);
 		if (cmd->cmd_opt == NULL)
 		{
-			ft_exit_exec(data);
-			exit(ft_msg(1, "", "", ERRMAL));
+			//ft_exit_exec(data);
+			res = ft_msg(1, "", "", ERRMAL);
+			ft_free_data_child(data);
+			exit(res);
 		}
 	//	printf("cmd->cmd_opt = %s\n", cmd->cmd_opt[0]);
 		cmd->cmd_path = ft_find_cmd_path(cmd, data);
 		//printf("cmd_path = %s\n", cmd->cmd_path);
 		if (!cmd->cmd_path)
 		{
-			ft_exit_exec(data);
-			exit(ft_msg(EXIT_FAILURE, "", "", ERRMAL));
+			//ft_exit_exec(data);
+			res = ft_msg(EXIT_FAILURE, "", "", ERRMAL);
+			ft_free_data_child(data);
+			exit(res);
 		}
 		data->s_env_path = ft_get_str_env_path(data);
 		if (!data->s_env_path)
 		{
-			ft_exit_exec(data);
-			exit(ft_msg(EXIT_FAILURE, "", "", ERRMAL));
+			//ft_exit_exec(data);
+			res = ft_msg(EXIT_FAILURE, "", "", ERRMAL);
+			ft_free_data_child(data);
+			exit(res);
 		}
 		if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env_path) == -1)
 		{
-			ft_exit_exec(data);
-			exit(ft_msg(126, cmd->token->token, ": ", strerror(errno)));
+			//ft_exit_exec(data);
+			res = ft_msg(126, cmd->token->token, ": ", strerror(errno));
+			ft_free_data_child(data);
+			exit(res);
 		}
 	}
 }
@@ -193,17 +206,17 @@ void	ft_child_process(t_data *data, int i)
 **	<RETURNS>	the size of the new string to be copied unspace_cmd (int)
 */
 /*	Function that manages the parent process
-**	--> waits for the children processes to terminate 
+**	--> waits for the children processes to terminate
 **	and gets the error status code from child processes (exit with last child)
-**	Parameters: 
-**	- ref structure that contains couall key data for pipex prog, 
-**	- the exit status code (initially set at 1 in main function) and to be 
+**	Parameters:
+**	- ref structure that contains couall key data for pipex prog,
+**	- the exit status code (initially set at 1 in main function) and to be
 **		updated here
 **	Return value: the exit status (when error) of the last child process
 */
 int	ft_parent_process(t_data *data)
 {
-	pid_t	wpid;
+	// pid_t	wpid;
 	int		i;
 	int		status;
 
@@ -211,7 +224,8 @@ int	ft_parent_process(t_data *data)
 	i = 0;
 	while (i < data->nb_pipes + 1)
 	{
-		wpid = waitpid(data->pid[i], &status, 0);
+		// wpid = waitpid(data->pid[i], &status, 0);
+		waitpid(data->pid[i], &status, 0);
 		i++;
 	}
 	if (WIFEXITED(status))
@@ -231,7 +245,7 @@ int	ft_exec(t_data *data)
 	int	i;
 
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
-		return (ft_exec_builtin(data));
+		return (ft_exec_uniq_builtin(data));
 	if (data->nb_pipes > 0)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);

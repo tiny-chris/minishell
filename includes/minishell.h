@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/20 16:52:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/21 04:26:57 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ void	*ft_free_tabint(int **tab_int, int size);
 /*	****************	*/
 
 int		ft_echo(t_cmd *cmd, t_data *data);
-int		ft_exec_builtin(t_data *data);
+int		ft_exec_uniq_builtin(t_data *data);
 int		ft_exec(t_data *data);
 int		*ft_init_pid(t_data *data);
 int		**ft_init_pipe(t_data *data);
@@ -239,6 +239,7 @@ int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
 void	ft_close_fd(t_data *data);
 void	ft_exit_exec(t_data *data);//, int val_exit);
 int		ft_parent_process(t_data *data);
+void	ft_free_data_child(t_data *data);
 
 // ***** ex-del_quotes *****
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/19 15:24:57 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/21 02:46:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,17 @@ void	ft_lstdelone_cmd(t_cmd *node)
 	node->no_redir_cmd = NULL;
 	free(node->undoll_cmd);
 	node->undoll_cmd = NULL;
-	// free(node->unquote_cmd);
-	// node->unquote_cmd = NULL;
 	free(node->clean_cmd);
 	node->clean_cmd = NULL;
 	// free(node->clean_cmd_no_redir);
 	// node->clean_cmd_no_redir = NULL;
 	ft_free_token(&(node->tok_redir));
 	ft_free_token(&(node->token));
+	if (node->cmd_opt != NULL)
+		ft_free_tabstr(node->cmd_opt);
+	if (node->cmd_path)
+		free(node->cmd_path);
+	node->cmd_path = NULL;
 	node->next = NULL;
 	free(node);
 }

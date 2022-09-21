@@ -6,20 +6,58 @@
 # //////////////////////// BEWARE
 
 
->	14/09/2022 :
-	résultat de la commande à corriger (fonction : del_empty_token)
-	$tutu $toto <youpla pwd
-	$tutu $toto <youpla pwd $tut <<$$$$bou super $?
+>	** tests non concluants **
 
+	$tutu $toto <youpla pwd
+		--> bash: youpla: No such file or directory
+	=> PAS OK sur notre minishell
+
+	!attention une variable expand qui ne donne rien passe la main à l'argument suivant pour la commande:
+	Exemple:
+		$UxSER blabla 'abcd $? eee'
+
+>	** à tester **
+	$tutu $toto <youpla pwd $tut <<$$$$bou super $?
+	-->
+	> ""
+	>
+	> $bou
+	> $$$bou
+	> $$$$bou
+	bash: youpla: No such file or directory
 
 >		check pour les clean token
 		echo "-nnnn  -n coucou"
 		vs.
 		echo "-nnnn" " n" "coucou"
 
->	!attention une variable expand qui ne donne rien passe la main à l'argument suivant pour la commande:
-	Exemple:
-		$UxSER blabla 'abcd $? eee'
+>	14/09/2022 :
+	résultat de la commande à corriger (fonction : del_empty_token)
+	$tutu $toto <youpla pwd
+	$tutu $toto <youpla pwd $tut <<$$$$bou super $?
+
+
+
+# //////////////////////// LENA
+
+
+# //////////////////////// CHRISTEL
+
+# //////////////////////// TO DO
+
+>		create a function to init t_data
+>		create function(s) to free all mallocs (garbage collector?)
+>		reset the compilator to 'clang' !! (modified to gcc for valgrind use)
+>		a re-tester avec les $ et espaces : $USER $$USER $'coucou' $$$$$$$$$'USER' "$$  "
+>		free clean_cmd_no_redir; token; tok_redir in ft_free_cmd
+>		bien penser modifier val exit dans data en cas d'erreurs de malloc
+>		pour les redirections : 1ère étape de l'exec (avant execve) et mettre "ambiguous redirect" sans nécessairement faire référence au token concerné
+
+##  WTF
+
+
+
+##  OK
 
 >	problemes d'espaces si on retire les redirections
 	--> mieux vaut ne pas enlever les espaces lors de get_redir et nettoyer par la suite les espaces
@@ -28,10 +66,6 @@
 	tests:
 		"coucou">"tut""tot">>test 'abcd $? eee'
 		"coucou" >'tut' >> test 'youpi'
-
-
-
-
 
 >		***** Cas additionnel de $ entre double quotes avec texte qui n'est pas une variable *****
 		check "$tata" --> must return "" (command not found)
@@ -77,8 +111,6 @@
 
 
 
-
-
 		Invalid read of size 1:
 >		< file cmd '$USER' '' | "$youhou" << dd << dd | " $    'youpi"
 
@@ -94,22 +126,3 @@
 		si ca existe ?
 		--> si non on sort --> si pas une string avec une vraie adresse
 		--> si oui, on regarde si la len vaut 0 --> renvoie le prompt (probablement readline enlève le \n)
-
-# //////////////////////// LENA
-
-
-# //////////////////////// CHRISTEL
-
-# //////////////////////// TO DO
-
->		create a function to init t_data
->		create function(s) to free all mallocs (garbage collector?)
->		reset the compilator to 'clang' !! (modified to gcc for valgrind use)
->		a re-tester avec les $ et espaces : $USER $$USER $'coucou' $$$$$$$$$'USER' "$$  "
->		free clean_cmd_no_redir; token; tok_redir in ft_free_cmd
->		bien penser modifier val exit dans data en cas d'erreurs de malloc
->		pour les redirections : 1ère étape de l'exec (avant execve) et mettre "ambiguous redirect" sans nécessairement faire référence au token concerné
-
-##  WTF
-
-
