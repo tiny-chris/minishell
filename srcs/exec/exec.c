@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 12:32:06 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/22 16:17:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,14 @@ void	ft_child_process(t_data *data, int i)
 		exit(EXIT_FAILURE);
 	}
 //	dprintf(2, "child %d: res(redirect inout) = %d\n", i, res);
-	// if (cmd->token->type == BUILTIN)
-	// 	ft_exec_built_in(cmd, data); // A CREER
-	// else
+	if (cmd->token->type == BUILTIN)
+	{
+		dprintf(2, "passe dans les builtin\n");
+	 	data->val_exit = ft_exec_built_in(cmd, data);
+		ft_free_data_child(data);
+		exit(data->val_exit);// A CORRIGER
+	}
+	else
 	{
 		if (cmd->token->type == SP_QUOTES)
 		{
@@ -255,12 +260,15 @@ int	ft_exec(t_data *data)
 
 	// if (data->cmd == NULL)
 	// 	return (0);
-	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
-		return (ft_exec_uniq_builtin(data));
 	if (data->nb_pipes > 0)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);
 	ft_get_files_io(data);
+	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
+	{
+		printf("passe dans builin unique\n");
+		return (ft_exec_uniq_builtin(data));
+	}
 	//dprintf(2, "init ok\n");
 	i = 0;
 	while (i < data->nb_pipes)

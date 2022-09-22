@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 12:04:14 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/22 15:20:05 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_data
 	char			*line;
 	char			*prompt;
 	t_env			*env;
+	char			*cwd;//current work directory
 	int				val_exit;
 	char			*str_exit;
 	int				nb_pipes;
@@ -102,6 +103,7 @@ typedef struct s_data
 t_env	*ft_get_env(char **envp);
 char	**ft_built_in(void);
 int		ft_only_space(char *line);
+int		ft_init_data_1(t_data *data, char **envp);
 
 
 /*	***** LEXER *****	*/
@@ -117,6 +119,8 @@ int		ft_check_redir(char *line, int i);
 
 /*	***** PARSER *****	*/
 /*	******************	*/
+
+int		ft_parser(t_data *data);
 
 /*	Step 1	get_commands */
 
@@ -246,6 +250,12 @@ void	ft_close_std(void);
 void	ft_exit_exec(t_data *data);//, int val_exit);
 int		ft_parent_process(t_data *data);
 void	ft_free_data_child(t_data *data);
+
+int		ft_clean_cmdline(t_data *data);
+int		ft_clean_loop(t_data *data);
+
+int		ft_pwd(t_data *data);
+int		ft_exec_built_in(t_cmd *cmd, t_data *data);
 
 // ***** ex-del_quotes *****
 

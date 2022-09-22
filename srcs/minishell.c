@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 14:14:34 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/22 16:27:06 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,77 +28,123 @@ int	ft_only_space(char *line)
 	return (0);
 }
 
+static void ft_init_data_0(t_data *data)
+{
+	data->line = NULL;
+	data->prompt = NULL;
+	data->env = NULL;
+	data->cwd = NULL;
+	data->val_exit = 0;
+	data->str_exit = NULL;
+	data->nb_pipes = -1;
+	data->cmd = NULL;
+	data->built_in = NULL;
+	data->pid = NULL;
+	data->pipe_fd = NULL;
+	data->env_path = NULL;
+	data->s_env_path = NULL;
+	//TO CHECK : que toutes les variables de t_data sont init_0
+}
+
+int	ft_init_data_1(t_data *data, char **envp)
+{
+	ft_init_data_0(data);
+	data->env = ft_get_env(envp);
+	data->prompt = ft_strdup("minishell> ");
+	if (data->prompt == NULL)
+	{
+		ft_free_env(&(data->env));
+		free(data->prompt);
+		return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
+	}
+	data->built_in = ft_built_in();
+	if (data->built_in == NULL)
+	{
+		ft_free_env(&(data->env));
+		free(data->prompt);
+		ft_free_tabstr(data->built_in);
+		return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
+	}
+	data->cwd = getcwd(NULL, 0);// sera mise à jour dans cd
+	if (!data->cwd)
+	{
+		ft_free_env(&(data->env));
+		free(data->prompt);
+		ft_free_tabstr(data->built_in);
+		return (1);//could not initialise minishell
+	}
+	ft_get_env_path(data, envp);
+	return (0);
+}
+
+/*	Clean data->cmd
+*/
+int	ft_clean_cmdline(t_data *data)
+{
+	if (data != NULL)
+	{
+		if (data->line)
+		{
+			free(data->line);
+			data->line = NULL;
+		}
+		if (data->str_exit)
+		{
+			free(data->str_exit);
+			data->str_exit = NULL;
+		}
+	}
+	return (0);
+}
+
+int	ft_clean_loop(t_data *data)
+{
+	if (data->built_in != NULL)
+		ft_free_tabstr(data->built_in);
+	if (data->cwd != NULL)
+		free(data->cwd);
+	free(data->prompt);
+	if (data->env != NULL)
+		ft_free_env(&(data->env));
+	if (data->env_path)
+		ft_free_env(&(data->env_path));
+	return (0);
+}
+
+void	ft_minishell(t_data *data)
+{
+	if (ft_lexer(data->line))
+	{//dprintf(2, "ft_lexer = %d\n", ft_lexer(data.line));
+		data->val_exit = ft_msg(2, "", "", ERRSTX);
+	}
+	else
+	{
+		ft_parser(data);// peut etre faire un if == 0 ou 1
+		ft_exec(data);// peut etre faire un if == 0 ou 1
+		ft_free_cmd(&(data->cmd));// A AJUSTER
+	}
+	ft_clean_cmdline(data);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
 
 	if (argc == 1 && !argv[1])
 	{
-		data.env = NULL;
-		data.val_exit = 0;
-		data.env = ft_get_env(envp);
-		data.prompt = ft_strdup("minishell> ");
-		if (data.prompt == NULL)
-		{
-			ft_free_env(&(data.env));
-			free(data.prompt);
-			return (1);//on peut mettre un message de pb de malloc car strdup
-		}
-		data.built_in = ft_built_in();
-		if (data.built_in == NULL)
-		{
-			ft_free_env(&(data.env));
-			free(data.prompt);
-			ft_free_tabstr(data.built_in);
-			return (1);//on peut mettre un message de pb de malloc car strdup
-		}
-		data.str_exit = NULL;
-		data.env_path = NULL;
-		data.s_env_path = NULL;
-		data.pipe_fd = NULL;
-		data.pid = NULL;
-		ft_get_env_path(&data, envp);
-		//while (1)
+		if (ft_init_data_1(&data, envp))
+			return (1);
+		while (1)
 		{
 			data.line = readline(data.prompt);
-			data.str_exit = NULL;
 			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
 			{
 				add_history(data.line);
-				//printf("nb pipes = %d\n", data.nb_pipes);
-				if (ft_lexer(data.line))
-				{// msg : syntax error et exit status = 2
-					//printf("ft_lexer = %d\n", ft_lexer(data.line));
-					ft_putendl_fd(ERRSTX, 2);
-					data.val_exit = 2;
-					//printf("exit status %d\n", data.val_exit);
-				}
-				else
-				{
-					data.nb_pipes = ft_count_pipe(data.line);
-					printf("nb_pipes = %d\n", data.nb_pipes);
-					data.cmd = ft_get_commands(&data);//separation des commandes en fonction du nb de pipes
-					ft_del_spaces(&data);
-					ft_get_redir(&data);
-					ft_del_dolls(&data);
-					ft_expand(&data);
-					ft_tokenizer(&data);
-					ft_exec(&data);
-					ft_free_cmd(&(data.cmd));
-				}
-				free(data.line);
-				if (data.str_exit)
-					free(data.str_exit);
+				ft_minishell(&data);
 			}
 		}
-		if (data.built_in != NULL)
-			ft_free_tabstr(data.built_in);
 		rl_clear_history();
-		free(data.prompt);
-		if (data.env != NULL)
-			ft_free_env(&(data.env));
-		if (data.env_path)
-			ft_free_env(&(data.env_path));
+		ft_clean_loop(&data);
 		return (0);
 	}
 	// penser à faire un message d'erreur si nb d'arg incorrect

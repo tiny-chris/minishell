@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 14:10:33 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/22 16:25:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,20 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 	if (data != NULL)
 	{
 		if (data->pid != NULL)
+		{
 			free (data->pid);
+			data->pid = NULL;
+		}
 		if (data->pipe_fd != NULL)
+		{
 			ft_free_tabint(data->pipe_fd, data->nb_pipes);
+			data->pipe_fd = NULL;
+		}
 		if (data->s_env_path != NULL)
+		{
 			ft_free_tabstr(data->s_env_path);
+			data->s_env_path = NULL;
+		}
 		// if (val_exit != -1)
 		// 	data->val_exit = val_exit;
 	}
@@ -37,25 +46,61 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 void	ft_free_data_child(t_data *data)
 {
 	if (data->line != NULL)
+	{
 		free(data->line);
+		data->line = NULL;
+	}
 	if (data->prompt != NULL)
+	{
 		free(data->prompt);
+		data->prompt = NULL;
+	}
 	if (data->env != NULL)
+	{
 		ft_free_env(&(data->env));
+		data->env = NULL;
+	}
+	if (data->cwd != NULL)
+	{
+		free(data->cwd);
+		data->cwd = NULL;
+	}
 	if (data->str_exit != NULL)
+	{
 		free(data->str_exit);
+		data->str_exit = NULL;
+	}
 	if (data->cmd != NULL)
+	{
 		ft_free_cmd(&(data->cmd));
+		data->cmd = NULL;
+	}
 	if (data->built_in != NULL)
+	{
 		ft_free_tabstr(data->built_in);
+		data->built_in = NULL;
+	}
 	if (data->pid != NULL)
+	{
 		free (data->pid);
+		data->pid = NULL;
+	}
 	if (data->pipe_fd != NULL)
+	{
 		ft_free_tabint(data->pipe_fd, data->nb_pipes);
+		data->pipe_fd = NULL;
+	}
 	if (data->env_path != NULL)
+	{
 		ft_free_env(&(data->env_path));
+		data->env_path = NULL;
+	}
 	if (data->s_env_path != NULL)
+	{
 		ft_free_tabstr(data->s_env_path);
+		data->s_env_path = NULL;
+	}
+		
 }
 
 void	ft_close_fd(t_data *data)

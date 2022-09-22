@@ -25,6 +25,7 @@ SRC_DIR     := srcs
 SRCS 		:= 	\
             minishell.c \
 			utils.c \
+			parser/parser.c \
 			parser/env.c \
 			parser/lexer.c \
 			parser/get_commands.c \
@@ -43,8 +44,9 @@ SRCS 		:= 	\
 			parser/del_empty_token.c \
 			parser/space_quotes.c \
 			parser/del_nwords.c \
-			built_in/echo.c \
 			built_in/built_in.c \
+			built_in/echo.c \
+			built_in/pwd.c \
 			exec/exec.c \
 			exec/env_path.c \
 			exec/init.c \
