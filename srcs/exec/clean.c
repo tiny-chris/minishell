@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/21 04:03:36 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/22 14:10:33 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_close_std(void)
+{
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+}
 
 void	ft_exit_exec(t_data *data)//, int val_exit)
 {
@@ -83,8 +90,22 @@ void	ft_close_fd(t_data *data)
 
 int	ft_msg(int val_exit, char *msg1, char *msg2, char *msg3)
 {
-	ft_putstr_fd(msg1, 2);
-	ft_putstr_fd(msg2, 2);
-	ft_putendl_fd(msg3, 2);
+	char	*tmp;
+	char	*tmp2;
+	char	*msg;
+
+	tmp = ft_strjoin(msg1, msg2);
+	if (!tmp)
+		return (1); // FREE QUIT
+	tmp2 = ft_strjoin(tmp, msg3);
+	if (!tmp2)
+		return (1); // FREE QUIT
+	free(tmp);
+	msg = ft_strjoin(tmp2, "\n");
+	if (!msg)
+		return (1); // FREE QUIT
+	free(tmp2);
+	ft_putstr_fd(msg, 2);
+	free(msg);
 	return (val_exit);
 }

@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/21 16:07:13 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/22 14:14:34 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ int	main(int argc, char **argv, char **envp)
 					ft_del_dolls(&data);
 					ft_expand(&data);
 					ft_tokenizer(&data);
-					ft_del_empty_cmd(&data);
-					data.nb_pipes = ft_get_cmd_lst_size(&data) - 1;
 					ft_exec(&data);
 					ft_free_cmd(&(data.cmd));
 				}

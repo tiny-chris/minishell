@@ -41,7 +41,6 @@ SRCS 		:= 	\
 			parser/clean_redir.c \
 			parser/clean_heredoc.c \
 			parser/del_empty_token.c \
-			parser/del_empty_cmd.c \
 			parser/space_quotes.c \
 			parser/del_nwords.c \
 			built_in/echo.c \

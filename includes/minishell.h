@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/21 13:37:26 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/22 12:04:14 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
 int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
 void	ft_close_fd(t_data *data);
+void	ft_close_std(void);
 void	ft_exit_exec(t_data *data);//, int val_exit);
 int		ft_parent_process(t_data *data);
 void	ft_free_data_child(t_data *data);
