@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/20 18:30:33 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/22 16:43:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	ft_lstadd_env2(t_env **env, char *tab_path)
 	// si equal == NULL ?
 	new->var = NULL;
 	new->content = ft_strdup(tab_path);
+	new->envp = NULL;
 	new->next = NULL;
 	if (ft_lstlast_env(*env) == 0)
 	{

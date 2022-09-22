@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 15:20:05 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:41:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_env
 {
 	char			*var;
 	char			*content;
+	char			*envp;
 	struct s_env	*next;
 }	t_env;
 
