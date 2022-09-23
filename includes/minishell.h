@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/23 12:27:26 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:34:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_token
 	int				type;
 	int				fd;
 	int				env;
+	int				printed;//pour env - init à 0 et passe à 1 si printé dans built-in env
 	struct s_token	*next;
 }	t_token;
 
@@ -260,6 +261,9 @@ int		ft_clean_loop(t_data *data);
 
 int		ft_pwd(t_data *data);
 int		ft_exec_built_in(t_cmd *cmd, t_data *data);
+
+int		ft_env(t_cmd *cmd, t_data *data);
+void	ft_display_env(t_data *data, t_token *token);
 
 // ***** ex-del_quotes *****
 

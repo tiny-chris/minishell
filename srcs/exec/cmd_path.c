@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/21 03:10:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:59:50 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,10 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		env_path = env_path->next;
 	}
 	//ft_exit_exec(data);
-	res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
+	if (cmd->token->env == 1)
+		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
+	else
+		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
 	ft_free_data_child(data);
 	exit(res);
 }

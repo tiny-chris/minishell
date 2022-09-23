@@ -47,6 +47,7 @@ SRCS 		:= 	\
 			built_in/built_in.c \
 			built_in/echo.c \
 			built_in/pwd.c \
+			built_in/env.c \
 			exec/exec.c \
 			exec/env_path.c \
 			exec/init.c \
