@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/23 11:26:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 12:27:26 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,14 @@ typedef struct s_token
 	char			*token;
 	int				type;
 	int				fd;
+	int				env;
 	struct s_token	*next;
 }	t_token;
 
 typedef struct s_env
 {
 	char			*var;
+	char			*var_equal;
 	char			*content;
 	char			*envp;
 	struct s_env	*next;

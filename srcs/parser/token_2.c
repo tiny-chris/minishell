@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/21 14:47:50 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/23 12:57:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ int	ft_tokenizer(t_data *data)
 		ft_clean_token(cmd, data);
 //		ft_del_empty_token(&cmd, data);
 		ft_del_empty_token(cmd, data);
-		ft_print_token(cmd);//A SUPPRIMER
 		if (cmd->token)
 		{
 			dprintf(2, "passe avant type token\n");
 			ft_type_token(cmd, data);
 		}
 		ft_del_nword(cmd);
+		ft_print_token(cmd);//A SUPPRIMER
 		cmd = cmd->next;
 	}
 

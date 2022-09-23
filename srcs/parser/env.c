@@ -39,6 +39,7 @@ int	ft_lstadd_env(t_env **env, char *envp)
 	equal = ft_new_strchr(envp, '=');
 	// si equal == NULL ?
 	new->var = ft_substr(envp, 0, equal);
+	new->var_equal = ft_substr(envp, 0, equal + 1);
 	new->content = ft_substr(envp, equal + 1, (ft_strlen(envp) - equal + 1));
 	new->envp = ft_strdup(envp);
 	new->next = NULL;
@@ -74,6 +75,8 @@ void	ft_lstdelone_env(t_env *node)
 		return ;
 	free(node->var);
 	node->var = NULL;
+	free(node->var_equal);
+	node->var_equal = NULL;
 	free(node->content);
 	node->content = NULL;
 	free(node->envp);

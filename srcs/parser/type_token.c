@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/23 13:02:11 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,17 +116,85 @@ void	ft_echo_join_words_fill(t_token *token)
 	}
 }
 
+int	ft_check_var_equal(t_data *data, t_token *token)
+{
+	t_env *env;
+
+	env = data->env;
+	while (env)
+	{
+		if ((ft_strncmp(token->token, env->var_equal, ft_strlen(env->var_equal)) == 0))
+			return (1);
+		env = env->next;
+	}
+	return (0);
+}
+
 int	ft_type_token(t_cmd *cmd, t_data *data)
 {
 	t_token		*token;
 	t_token		*n_token;
+	t_token		*todel;
+	t_token		*tmp;
 
 	token = cmd->token;
 	n_token = NULL;
+	todel = NULL;
 	if (ft_check_built_in(token->token, data, ft_strlen(token->token)))
 		token->type = BUILTIN;
 	else
 		token->type = COMMAND;
+	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0) && data->env != NULL)
+	{
+		token = token->next;
+		while (token)
+		{
+			if (token && ft_strncmp(token->token, "env", 3) == 0)
+			{
+				todel = token;
+				tmp = token->next;
+				ft_lstdelone_tok(todel);
+				cmd->token->next = tmp;
+				token = cmd->token->next;
+			}
+			else
+				break;
+		}
+		if (token && ft_check_var_equal(data, token))
+		{
+			while (token)
+			{
+				if (ft_check_var_equal(data, token))
+				{
+					todel = token;
+					tmp = token->next;
+					ft_lstdelone_tok(todel);
+					cmd->token->next = tmp;
+					token = cmd->token->next;
+				}
+				else
+					break;
+			}
+			if (token)
+				token->env = 1;
+		}
+		else if (token)
+		{
+			// CMD ou BUILTIN
+			// change env a 1
+			// supprimer env
+			if (ft_check_built_in(token->token, data, ft_strlen(token->token)))
+				token->type = BUILTIN;
+			else
+				token->type = COMMAND;
+			token->env = 1;
+			todel = cmd->token;
+			tmp = token;
+			ft_lstdelone_tok(todel);
+			cmd->token = tmp;
+		}
+	}
+	token = cmd->token;
 	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "echo", 4) == 0))
 	{
 		//printf("rentre dans condition -n pour echo avec quotes\n");
