@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/22 16:43:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 23:57:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	ft_lstadd_env2(t_env **env, char *tab_path)
 	//equal = ft_new_strchr(tab_path, '=');
 	// si equal == NULL ?
 	new->var = NULL;
+	new->var_equal = NULL;
 	new->content = ft_strdup(tab_path);
 	new->envp = NULL;
 	new->next = NULL;
@@ -56,6 +57,7 @@ t_env	*ft_lst_env_path(char **tab_path)
 	return (env_path);
 }
 
+//MODIFIER ET UTILISER LA LISTE CHAINEE ENV AU LIEU DE **ENVP
 void	ft_get_env_path(t_data *data, char **envp)
 {
 	char	*ptr_path;

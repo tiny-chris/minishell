@@ -1,40 +1,42 @@
 
---------------------------------------------------
------ Mail pour prise en compte bugs (21/09) -----
---------------------------------------------------
+----------------------------------------
+----- Modifs en cours - A PARTAGER -----
+----------------------------------------
 
-Enregistré dans /doc
-Bug pour pas de token / free data dans child...
+> Correction de la fonction ft_export
+	- pour le check du 'name' de la variable (avant le =)
+	- pour la data->val_exit
+	+ raccourcissement de la fonction
 
+> Ajout dans le fichier 'env_path.c' : de la variable 'var_equal' pour t_env env_path (fait dans env mais pas ici)
+	- dans lstadd2
 
-$USER | $USTER | echo $?	--> OK quand le token vide est en 1er
-								bash :	0
-										tiny_chris: command not found
+> Il semble qu'un char ** équivalent à s_env_path soit déjà créé avant : tab_path
+	peut-être revoir la nécessité de faire une fonction en +
 
+> Dans type_token.c (parser) au niveau de la fonction 'ft_type_token()'
+	- modification du paramètre "3" par "ft_strlen(token->token)" dans la fonction "ft_strncmp" de la condition de la boucle while, dans le cas où il s'agit d'un built-in 'env' (vers la ligne 138)
 
-$USdddER | $USTER | echo $?	--> PAS OK - pas d'affichage
-								bash :	0
-
---------------------------------------------------
------ Modifs préparées (18/09) mais pas push -----
---------------------------------------------------
-
-> Création d'un dossier "init"
-	-->	création d'un fichier "init_data.c"
-		- pour initialiser toutes les données de data
-		- pour découper l'initialisation (obj réduire la fonction 'main')
-
-> Création d'un dossier "clean"
-	--> à compléter
-
-> Dans le folder "parser" : création d'un fichier 'parser.c' pour regrouper toutes les fonctions parcourues du parsing
-	--> déplacement des fonctions de minishell.c dans ce fichier parser.c sous le nom de fonction 'ft_parser(t_data *data)'
-	?? ou les mettre dans la fonction ft_parser() qui reste dans minishell.c
-
+> Pour "EXPORT", PROPOSITION:
+	--> util de ft_strncmp
+	--> si PATH= ==> free le env_path et rappeler la fonction ft_get_env_path
+	/!\ pour ft_get_env_path : MODIFIER ET UTILISER LA LISTE CHAINEE ENV AU LIEU DE CHAR *ENVP
+	/!\ récupérer s_env_path dans ft_get_env_path (= tab_path)
+		--> cela évite une redite (fonction 'ft_get_str_env_path' inutile)
+			et permet de mettre à jour en même temps s_env_path
 
 ----------------------------------------------------
 ----- modifs ci-dessous - COMMITED + PUSHED OK -----
 ----------------------------------------------------
+
+> Création de fonctions 'init' dans le fichier 'minishell.c'
+	- pour initialiser toutes les données de data par défaut
+	- puis pour découper, regrouper & protéger l'initialisation (obj réduire la fonction 'main')
+
+	--> en regard de la partie 'init': création de fonctions pour la partie 'clean/free' de data (toujours dans minishell)
+
+> Dans le folder "parser" : création d'un fichier 'parser.c' pour regrouper toutes les fonctions parcourues du parsing
+	--> déplacement des fonctions de minishell.c dans ce fichier parser.c sous le nom de fonction 'ft_parser(t_data *data)'
 
 > Création d'un autre file "cmd_list.c" pour y rassembler les fonctions de liste chainée:
 	- int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)

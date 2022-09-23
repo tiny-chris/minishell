@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 14:40:40 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 23:46:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 		token = token->next;
 		while (token)
 		{
-			if (token && ft_strncmp(token->token, "env", 3) == 0)
+			if (token && ft_strncmp(token->token, "env", ft_strlen(token->token)) == 0)
 			{
 				todel = token;
 				tmp = token->next;

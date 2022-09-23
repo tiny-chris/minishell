@@ -8,6 +8,18 @@
 
 >	** tests non concluants **
 
+	/***********/
+	A DISCUTER
+	/***********/
+	export $USER=pouet
+		--> bash: dans env
+				tinychris=pouet
+
+	--> le '=' est un séparateur de expand...
+		choisit-on de l'inclure comme séparateur
+		OU bien choisit-on de le considérer comme un caractère quelconque - donc expand de $USER=toto est empty ??
+	/***********/
+
 
 	/*********************/
 	A TESTER QUAND HERE-DOC CODE
@@ -22,7 +34,7 @@
 	> $$$$bou
 	bash: youpla: No such file or directory
 	/*********************/
-	
+
 
 # //////////////////////// BEWARE
 
@@ -30,18 +42,16 @@
 >	tests corrigés - A RETESTER avant la fin
 
 
-
 	/***********/
 	FIXED !
 	/***********/
 	$tutu $toto <youplaboom pwd $tut super $? | wc
 		--> OK - fonctionne (quand le file n'existe pas, pas de pwd)
-	
+
 	PAR CONTRE:
 	$tutu $toto <youplaboom pwd $tut super $?
 		--> PAS OK - NE fonctionne PAS:quand le file n'existe pas, affiche de pwd car une seule commande
 	/***********/
-
 
 	/***********/
 	FIXED !
@@ -54,11 +64,10 @@
 				snap install toto
 
 				Exception ignored in: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
-				BrokenPipeError: [Errno 32] Broken pipe	
+				BrokenPipeError: [Errno 32] Broken pipe
 	=> on ne va pas àla ligne dans notre minishell --> s'explique... mais une ligne par commande ?
 		en soi, c'est ok (test : si dans un outfile, on a bien la bonne info)
 	/**********/
-
 
 	/***********/
 	FIXED !
@@ -72,7 +81,16 @@
 			$UxSER blabla 'abcd $? eee'
 	/**********/
 
+	/***********/
+	FIXED !
+	/***********/
+	$USER | $USTER | echo $?	--> OK quand le token vide est en 1er
+								bash :	0
+										tiny_chris: command not found
 
+	$USdddER | $USTER | echo $?	--> PAS OK - pas d'affichage
+								bash :	0
+	/***********/
 
 >		check pour les clean token
 		echo "-nnnn  -n coucou"

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 12:57:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 23:32:35 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ static void	ft_print_token(t_cmd *cmd)//  A SUPPRIMER
 	token = cmd->token;
 	while (token)
 	{
-		dprintf(2, "print del empty token[%d] = %s, type = %d, size = %ld\n", nb, token->token, token->type, ft_strlen(token->token));
+		dprintf(2, "print token[%d] = %s, type = %d, size = %ld, env = %d\n", \
+		nb, token->token, token->type, ft_strlen(token->token), token->type);
 		token = token->next;
 		nb++;
 	}
