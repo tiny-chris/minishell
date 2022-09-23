@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 13:02:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:40:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,20 +116,6 @@ void	ft_echo_join_words_fill(t_token *token)
 	}
 }
 
-int	ft_check_var_equal(t_data *data, t_token *token)
-{
-	t_env *env;
-
-	env = data->env;
-	while (env)
-	{
-		if ((ft_strncmp(token->token, env->var_equal, ft_strlen(env->var_equal)) == 0))
-			return (1);
-		env = env->next;
-	}
-	return (0);
-}
-
 int	ft_type_token(t_cmd *cmd, t_data *data)
 {
 	t_token		*token;
@@ -160,18 +146,12 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 			else
 				break;
 		}
-		if (token && ft_check_var_equal(data, token))
+		if (token && ft_new_strchr(token->token, '='))
 		{
 			while (token)
 			{
-				if (ft_check_var_equal(data, token))
-				{
-					todel = token;
-					tmp = token->next;
-					ft_lstdelone_tok(todel);
-					cmd->token->next = tmp;
-					token = cmd->token->next;
-				}
+				if (ft_new_strchr(token->token, '='))
+					token = token->next;
 				else
 					break;
 			}
@@ -180,9 +160,6 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 		}
 		else if (token)
 		{
-			// CMD ou BUILTIN
-			// change env a 1
-			// supprimer env
 			if (ft_check_built_in(token->token, data, ft_strlen(token->token)))
 				token->type = BUILTIN;
 			else

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 16:39:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/22 15:57:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:42:31 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	ft_exec_uniq_builtin(t_data *data)
 		ft_exit_exec(data);
 		return (ft_pwd(data));
 	}
+	if (ft_strncmp(token->token, "env", 3) == 0)
+		return (ft_env(data->cmd, data));
 	// if (ft_strncmp(token->token, "export", 6) == 0)
 	// 	return (ft_export(data->cmd, data));
 	// if (ft_strncmp(token->token, "unset", 5) == 0)
 	// 	return (ft_unset(data->cmd, data));
-	// if (ft_strncmp(token->token, "env", 3) == 0)
-	// 	return (ft_env(data->cmd, data));
 	// if (ft_strncmp(token->token, "exit", 4) == 0)
 	// 	return (ft_exit(data->cmd, data));
 
