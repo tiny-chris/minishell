@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/23 15:34:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 17:51:21 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define ERRDIR "is a directory"
 # define ERRFOD "no such file or directory"
 # define ERRMSG "Error: "
+# define ERRARG "too few arguments"
+# define ERRNAM "not a valid identifier"
 
 typedef enum s_type
 {
@@ -264,6 +266,9 @@ int		ft_exec_built_in(t_cmd *cmd, t_data *data);
 
 int		ft_env(t_cmd *cmd, t_data *data);
 void	ft_display_env(t_data *data, t_token *token);
+
+int		ft_export(t_cmd *cmd, t_data *data);
+int		ft_check_export(t_token *token, t_data *data);
 
 // ***** ex-del_quotes *****
 
