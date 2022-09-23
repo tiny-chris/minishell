@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/20 15:33:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 11:26:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ int	ft_get_files_io(t_data *data)
 				tok_redir = tok_redir->next;
 				tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
 				if (tok_redir->fd < 0)
+				{
+					cmd->file_err = 1;
 					printf("outfile error\n"); // afficher error avec erno + strerror
+				}
 				cmd->outfile = tok_redir->fd;
 			}
 			else if (tok_redir->type == D_GREAT)
@@ -81,7 +84,10 @@ int	ft_get_files_io(t_data *data)
 				tok_redir = tok_redir->next;
 				tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_APPEND);
 				if (tok_redir->fd < 0)
+				{
+					cmd->file_err = 1;
 					printf("outfile error\n"); // afficher error avec erno + strerror
+				}
 				cmd->outfile = tok_redir->fd;
 			}
 			else if (tok_redir->type == LESS)
@@ -89,7 +95,10 @@ int	ft_get_files_io(t_data *data)
 				tok_redir = tok_redir->next;
 				tok_redir->fd = open(tok_redir->token, O_RDONLY);
 				if (tok_redir->fd < 0)
+				{
+					cmd->file_err = 1;
 					printf("infile error\n"); // afficher error avec erno + strerror
+				}
 				cmd->infile = tok_redir->fd;
 			}
 			else if (tok_redir->type == D_LESS)
@@ -97,7 +106,10 @@ int	ft_get_files_io(t_data *data)
 				tok_redir = tok_redir->next;
 				tok_redir->fd = open(tok_redir->token, O_RDONLY);
 				if (tok_redir->fd < 0)
+				{
+					cmd->file_err = 1;
 					printf("infile error\n"); // afficher error avec erno + strerror
+				}
 				cmd->infile = tok_redir->fd;
 			}
 			tok_redir = tok_redir->next;

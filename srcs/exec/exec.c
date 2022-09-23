@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 16:17:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 11:28:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,11 @@ int	ft_exec(t_data *data)
 	ft_get_files_io(data);
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
 	{
+		if (data->cmd->file_err == 1)
+		{
+			data->val_exit = 1;
+			return (1);
+		}
 		printf("passe dans builin unique\n");
 		return (ft_exec_uniq_builtin(data));
 	}

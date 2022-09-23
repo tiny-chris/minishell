@@ -3,20 +3,16 @@
 
 >       help
 
-# //////////////////////// BEWARE
-
+>	Attention dans le history
+	Quand on a un echo -n (pas de retour à la ligne), lorsqu'on veut sélectionner de précédentes commandes, la prompt line 'minishell>' s'efface... (ou ne s'affiche plus)
 
 >	** tests non concluants **
 
-	$tutu $toto <youpla pwd
-		--> bash: youpla: No such file or directory
-	=> PAS OK sur notre minishell
 
-	!attention une variable expand qui ne donne rien passe la main à l'argument suivant pour la commande:
-	Exemple:
-		$UxSER blabla 'abcd $? eee'
-
->	** à tester **
+	/*********************/
+	A TESTER QUAND HERE-DOC CODE
+	/*********************/
+	>	** à tester **
 	$tutu $toto <youpla pwd $tut <<$$$$bou super $?
 	-->
 	> ""
@@ -25,6 +21,58 @@
 	> $$$bou
 	> $$$$bou
 	bash: youpla: No such file or directory
+	/*********************/
+	
+
+# //////////////////////// BEWARE
+
+
+>	tests corrigés - A RETESTER avant la fin
+
+
+
+	/***********/
+	FIXED !
+	/***********/
+	$tutu $toto <youplaboom pwd $tut super $? | wc
+		--> OK - fonctionne (quand le file n'existe pas, pas de pwd)
+	
+	PAR CONTRE:
+	$tutu $toto <youplaboom pwd $tut super $?
+		--> PAS OK - NE fonctionne PAS:quand le file n'existe pas, affiche de pwd car une seule commande
+	/***********/
+
+
+	/***********/
+	FIXED !
+	/***********/
+	toto | $tutu >outfile |echo -nnn -nnnn -nnnnnnnnnnnnnnn --n youpi
+		--> bash:
+				--n youpi
+				Command 'toto' not found, but can be installed with:
+
+				snap install toto
+
+				Exception ignored in: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+				BrokenPipeError: [Errno 32] Broken pipe	
+	=> on ne va pas àla ligne dans notre minishell --> s'explique... mais une ligne par commande ?
+		en soi, c'est ok (test : si dans un outfile, on a bien la bonne info)
+	/**********/
+
+
+	/***********/
+	FIXED !
+	/***********/
+		$tutu $toto <youpla pwd
+			--> bash: youpla: No such file or directory
+		=> PAS OK sur notre minishell
+
+		!attention une variable expand qui ne donne rien passe la main à l'argument suivant pour la commande:
+		Exemple:
+			$UxSER blabla 'abcd $? eee'
+	/**********/
+
+
 
 >		check pour les clean token
 		echo "-nnnn  -n coucou"

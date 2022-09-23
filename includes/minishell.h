@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 16:41:27 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/23 11:26:56 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_cmd
 	t_token			*tok_redir;
 	int				infile;//
 	int				outfile;//
+	int				file_err;
 	char			**cmd_opt;
 	char			*cmd_path;
 	struct s_cmd	*next;
