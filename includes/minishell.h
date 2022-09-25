@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/23 17:51:21 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 00:30:14 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,25 @@ char	**ft_built_in(void);
 int		ft_only_space(char *line);
 int		ft_init_data_1(t_data *data, char **envp);
 
+/*	env_path */
+
+/* 1ere partie - à désactiver pour tester export y.c. pour PATH*/
+
+	void	ft_get_env_path(t_data *data, char **envp);
+	t_env	*ft_lst_env_path(char **tab_path);
+	char	**ft_get_str_env_path(t_data *data);
+	int		ft_lstadd_env2(t_env **env, char *tab_path);
+
+/* 2e partie - à activer pour tester export y.c. pour PATH*/
+
+	// void 	ft_get_env_path(t_data *data);
+	// int		ft_lstadd_env2(t_env **env, char *s_env_path_i);
 
 /*	***** LEXER *****	*/
 /*	*****************	*/
 
 int		ft_lexer(char *line);
+
 int		ft_quote(char *line);
 int		ft_pipe(char *line);
 int		ft_count_pipe(char *line);
@@ -237,32 +251,43 @@ void	*ft_free_tabint(int **tab_int, int size);
 /*	***** EXEC *****	*/
 /*	****************	*/
 
-int		ft_echo(t_cmd *cmd, t_data *data);
-int		ft_exec_uniq_builtin(t_data *data);
 int		ft_exec(t_data *data);
-int		*ft_init_pid(t_data *data);
+
+/*	exec MAIN */
+
 int		**ft_init_pipe(t_data *data);
-void	ft_get_env_path(t_data *data, char **envp);
-t_env	*ft_lst_env_path(char **tab_path);
-int		ft_lstadd_env2(t_env **env, char *tab_path);
-void	ft_child_process(t_data *data, int i);
+int		*ft_init_pid(t_data *data);
 int		ft_get_files_io(t_data *data);
+int		ft_exec_uniq_builtin(t_data *data);
+void	ft_child_process(t_data *data, int i);
+int		ft_parent_process(t_data *data);
+
+/*	exec CHILD */
+
 int		ft_redirect_inout(t_data *data, t_cmd *cmd, int i);
-char	**ft_get_str_env_path(t_data *data);
+int		ft_exec_built_in(t_cmd *cmd, t_data *data);
+char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
+
+/*	exec CLEAN */
+
 int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
 void	ft_close_fd(t_data *data);
 void	ft_close_std(void);
 void	ft_exit_exec(t_data *data);//, int val_exit);
-int		ft_parent_process(t_data *data);
 void	ft_free_data_child(t_data *data);
+
+
 
 int		ft_clean_cmdline(t_data *data);
 int		ft_clean_loop(t_data *data);
 
+/*	built-ins */
+
+int		ft_echo(t_cmd *cmd, t_data *data);
+
 int		ft_pwd(t_data *data);
-int		ft_exec_built_in(t_cmd *cmd, t_data *data);
 
 int		ft_env(t_cmd *cmd, t_data *data);
 void	ft_display_env(t_data *data, t_token *token);

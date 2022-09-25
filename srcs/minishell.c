@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 16:27:06 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 00:37:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int	ft_init_data_1(t_data *data, char **envp)
 		ft_free_tabstr(data->built_in);
 		return (1);//could not initialise minishell
 	}
-	ft_get_env_path(data, envp);
+	ft_get_env_path(data, envp);// à commenter pour export - PATH
+	//ft_get_env_path(data);// à activer pour export - PATH
 	return (0);
 }
 

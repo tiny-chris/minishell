@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/24 00:03:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 00:29:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,13 @@ int	ft_check_export(t_token *token, t_data *data)
 			if (!env->envp)
 				return (1);//FREE + EXIT (MALLOC)
 			free(var_tmp);
+			// /* modif pour mettre à jour PATH (s'il s'agit de PATH= */
 			// if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal))  == 0)
 			// {
 			// 	ft_free_env(&(data->env_path));
 			// 	ft_get_env_path(data);//ne plus prendre char **envp
 			// }
+			// /* fin de modif */
 			return (0);
 		}
 		env = env->next;
@@ -70,6 +72,8 @@ int	ft_check_export(t_token *token, t_data *data)
 	free(var_tmp);
 	return (0);
 }
+
+/*	ANCIENNE VERSION - modification ci-dessous */
 
 // //check si premier char = digit si ou erreur
 // //check si contient un =
@@ -102,7 +106,7 @@ int	ft_check_export(t_token *token, t_data *data)
 // 		printf("0 res token->token[0] == '_' = %d\n", token->token[0] == '_');
 // 		//if (ft_isdigit(token->token[0]))
 // 		if ((ft_isalpha(token->token[0]) == 0) && (token->token[0] != '_'))
-// 			res = ft_msg(1, token->token, ": 111", ERRNAM);
+// 			res = ft_msg(1, token->token, ": (1st char)", ERRNAM);
 // 		else
 // 		{
 // 			i = 1;
@@ -119,7 +123,7 @@ int	ft_check_export(t_token *token, t_data *data)
 // 					printf("res ft alnum token[%d] = %d\n", i, ft_isalnum(token->token[i]));
 // 					if ((ft_isalnum(token->token[i]) == 0) && (token->token[i] != '_'))
 // 					{
-// 						res = ft_msg(1, token->token, ": 222", ERRNAM);
+// 						res = ft_msg(1, token->token, ": (other char)", ERRNAM);
 // 						dprintf(2, "erreur de nom (!isalnum et !_)\n");
 // 						break;
 // 					}
@@ -161,12 +165,12 @@ int	ft_check_export(t_token *token, t_data *data)
 // 		else
 // 			res2 = 1;
 // 		token = token->next;
-// 		i = 0;
+// 		//i = 0;
 // 	}
 // 	return (res2);
 // }
 
-/*	version simplifiée :
+/*	***** version simplifiée *****
 	s'il n'y a pas de token après export
 		alors : erreur --> message ERRARG
 	sinon on avance au token suivant
@@ -207,6 +211,8 @@ int	ft_export(t_cmd *cmd, t_data *data)
 	{
 		if ((ft_isalpha(token->token[0]) == 0) && (token->token[0] != '_'))
 			res = ft_msg(1, token->token, ": ", ERRNAM);
+		else if ((token->token[0] == '_') && (token->token[1] == '='))
+			res = 0;
 		else
 		{
 			while (token->token[i] && token->token[i] != '=')

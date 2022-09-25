@@ -6,12 +6,31 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 23:57:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 00:35:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* cf. version modifiée en bas (en comment) :
+	Pour tester :
+	1. dans le fichier export.c (dossier built-in) :
+		- activer la partie de mise à jour du PATH (ligne 58 et suiv.)
+	2. dans le fichier env_path.c (dossier exec - ICI)
+		- commenter toute la première partie (les 4 fonctins)
+		+ "dé-commenter" les fonctions réécrites tout en bas (2e partie)
+			--> plus que 2 fonctions ^^
+	3. dans le fichier .h :
+		- mettre à jour la partie env_path (ligne 115 et suiv.)
+	4. dans la fonction ft_child_process du ficher exec.c :
+		- commenter la partie s_env_path (ligne 193 et suiv.)
+	5. dans la fonction ft_init_data_1 du fichier minishell.c :
+		- modifier le prototype ft_get_env_path(data), sans le envp (lignes 77-78)
+*/
+
+/*	1ERE PARTIE : A DESACTIVER pour tester les modifs opérationnelles pour export
+	4 fonctions
+*/
 int	ft_lstadd_env2(t_env **env, char *tab_path)
 {
 	t_env	*new;
@@ -122,3 +141,68 @@ char	**ft_get_str_env_path(t_data *data)
 	s_env_path[i] = NULL;
 	return (s_env_path);
 }
+
+
+/*	********** 2E PARTIE : A ACTIVER POUR LA MODIF EXPORT **********
+*/
+/*	modif du 2e paramètre du prototype uniquement */
+
+// int	ft_lstadd_env2(t_env **env, char *s_env_path_i)
+// {
+// 	t_env	*new;
+// 	t_env	*last;
+
+// 	new = malloc(sizeof(t_env));
+// 	if (!new)
+// 	{
+// 		ft_free_env(env);
+// 		return (1);
+// 	}
+// 	new->var = NULL;
+// 	new->var_equal = NULL;
+// 	new->content = ft_strdup(s_env_path_i);
+// 	new->envp = NULL;
+// 	new->next = NULL;
+// 	if (ft_lstlast_env(*env) == 0)
+// 	{
+// 		*env = new;
+// 		return (0);
+// 	}
+// 	last = ft_lstlast_env(*env);
+// 	last->next = new;
+// 	return (0);
+// }
+
+// /*	Version modifiee pour etre utilisee aussi dans le built in export
+// 	dans le cas où la variable à export est "PATH"
+// */
+// void	ft_get_env_path(t_data *data)
+// {
+// 	t_env	*env;
+// 	int		i;
+
+// 	env = data->env;
+// 	i = 0;
+// 	if (env == NULL || env->var[0] == '\0')
+// 		return ;// on ne met pas à jour env_path donc pas de free ou autre
+// 	dprintf(2, "*****fill ou update PATH*****\n");
+// 	while (env != NULL && env->var[0] != '\0')
+// 	{
+// 		if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal)) == 0)
+// 			break;
+// 		env = env->next;
+// 	}
+// 	if (!env->content)
+// 		return ;//nettoyer : free / exit malloc
+// 	if (data->env_path)
+// 		ft_free_tabstr(data->s_env_path);
+// 	data->s_env_path = ft_split(env->content, ':');
+// 	if (!data->s_env_path)
+// 		return ;//nettoyer : free / exit malloc
+// 	while (data->s_env_path[i])
+// 	{
+// 		if (ft_lstadd_env2(&(data->env_path), data->s_env_path[i]))
+// 			return ;// FREE TOUT ET EXIT
+// 		i++;
+// 	}
+// }

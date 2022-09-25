@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/23 11:28:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 00:35:50 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,8 @@ void	ft_child_process(t_data *data, int i)
 			ft_close_std();
 			exit(res);
 		}
+		/*	*****
+			partie à commenter pour tester export y.c. pour PATH */
 		data->s_env_path = ft_get_str_env_path(data);
 		if (!data->s_env_path)
 		{
@@ -199,6 +201,8 @@ void	ft_child_process(t_data *data, int i)
 			ft_close_std();
 			exit(res);
 		}
+		/*	*****
+			fin de la partie à commenter*/
 		if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env_path) == -1)
 		{
 			//ft_exit_exec(data);

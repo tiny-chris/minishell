@@ -35,6 +35,17 @@
 	bash: youpla: No such file or directory
 	/*********************/
 
+	Retours de corrections minishell - à regarder !!!
+
+	Probleme sur les fds (3 d'ouverts en plus), a export avec le _ au debut ou avec des chiffres dans le nom le += (pas obligatoire). Soucis d'expand : "$USER"$USER'$USER' , le echo avec -nnnnnt ne fonctionne pas correctement. Le chemin relatif ne fonctionne pas, si on enleve le path et qu'on est dans /usr/bin il faut que la commande fonctionne. Les redirections : ls < ok > ok cree ls alors que ca ne devrait pas. Probleme de heredoc cat << ok << salut doit afficher ce qu'on a place dans le heredoc. Probleme Pipe avec les leaks de fds (valgrind --track=fds=yes., Cat | cat | ls ne marche pas ainsi que yes | head, a cause d'un probleme au niveau des pipes. Du coup les variables d'env petit soucis a cause de l'expand (explique plus haut)
+
+	echo ".../n...." exit ne retourne pas les valeurs ctrl-c avec bcp de texte : probleme d'affichage echo "..." > test : erreur (is a directory) Petites erreurs restantes a regler. bon courage pour le reste.
+
+	Exit: Limite négative, - et + à gérer sur le premier caractère Valeur de retour: Command not found -> 127 et pas 13 CTRL + \: leave la commande bloquante + print message (optionnel) CTRL + C: pas oublier \n Redirection input: argv[0] = argv[1] Bon projet dans l'ensemble, dommage pour les petites erreurs par ci et par là, bon courage pour la suite
+
+	Tres bon projet, super propre pour un 1er push! La defense est tres bonne. Un `unset` de `SHLVL` et un `./minishell` fait crash minishell. `cat << EOF >> log.txt` fait `exit`le programme de maniere involontaire. Le code est clean, les explications sont completes et le projet est compris. Gentilles, curieuses et interessees par la correction. Merci pour votre bonne humeur et bon courage par la suite!
+
+	Bon proje ayant couvert beaucoup de cas. Pas de crash, de fuites de memoire ou de fd ouverts quel que soit l'exit via commande ou signal. Bravo pour ce dernier push qui est le bon.
 
 # //////////////////////// BEWARE
 
