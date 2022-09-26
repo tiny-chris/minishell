@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 11:52:54 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/26 14:44:41 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int	ft_export(t_cmd *cmd, t_data *data)
 {
 	t_token	*token;
 	int		i;
-	int 	res;
+	int		res;
 	int		res2;
 
 	token = cmd->token;
@@ -218,10 +218,10 @@ int	ft_export(t_cmd *cmd, t_data *data)
 			while (token->token[i] && token->token[i] != '=')
 			{
 				printf("token->token[%d] = %c\n", i, token->token[i]);
-				if ((ft_isalnum(token->token[i]) == 0) && (token->token[i] != '_'))
+				if ((ft_isalnum(token->token[i]) == 0))
 				{
 					res = ft_msg(1, token->token, ": ", ERRNAM);
-					break;
+					break ;
 				}
 				else
 				{

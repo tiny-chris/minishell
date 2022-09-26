@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 12:01:15 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/26 14:08:07 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (ft_init_data_1(&data, envp))
 			return (1);
-		//while (1)
+		while (1)
 		{
 			data.line = readline(data.prompt);
 			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)

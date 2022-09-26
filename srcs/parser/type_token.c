@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 12:17:01 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/26 14:01:23 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,25 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 		token->type = BUILTIN;
 	else
 		token->type = COMMAND;
+	//check pour unset
+	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "unset", 3 == 0)))
+	{
+		token = token->next;
+		while (token)
+		{
+			if (token && ft_strncmp(token->token, "unset", ft_strlen(token->token)) == 0)
+			{
+				todel = token;
+				tmp = token->next;
+				ft_lstdelone_tok(todel);
+				cmd->token->next = tmp;
+				token = cmd->token->next;
+			}
+			else
+				break ;
+		}
+	}
+	//check pour env
 	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0)) // && data->env != NULL)
 	{
 		token = token->next;
@@ -144,7 +163,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 				token = cmd->token->next;
 			}
 			else
-				break;
+				break ;
 		}
 		if (token && ft_new_strchr(token->token, '='))
 		{
@@ -153,7 +172,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 				if (ft_new_strchr(token->token, '='))
 					token = token->next;
 				else
-					break;
+					break ;
 			}
 			if (token)
 				token->env = 1;

@@ -49,6 +49,7 @@ SRCS 		:= 	\
 			built_in/pwd.c \
 			built_in/env.c \
 			built_in/export.c \
+			built_in/unset.c \
 			exec/exec.c \
 			exec/env_path.c \
 			exec/init.c \

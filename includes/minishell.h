@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 11:36:51 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/26 14:05:38 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,8 +278,6 @@ void	ft_close_std(void);
 void	ft_exit_exec(t_data *data);//, int val_exit);
 void	ft_free_data_child(t_data *data);
 
-
-
 int		ft_clean_cmdline(t_data *data);
 int		ft_clean_loop(t_data *data);
 
@@ -294,6 +292,8 @@ void	ft_display_env(t_data *data, t_token *token);
 
 int		ft_export(t_cmd *cmd, t_data *data);
 int		ft_check_export(t_token *token, t_data *data);
+
+int		ft_unset(t_cmd *cmd, t_data *data);
 
 // ***** ex-del_quotes *****
 

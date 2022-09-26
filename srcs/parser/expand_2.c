@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/26 14:42:37 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ int	ft_get_expand_size(char *undoll_cmd, int *i, t_data *data)
 	len = 0;
 	j = *i;
 	env = data->env;
-	while (undoll_cmd[j] && (undoll_cmd[j] > 0) && undoll_cmd[j] != '\0' \
-		&& undoll_cmd[j] != '$' && undoll_cmd[j] != '<' && undoll_cmd[j] != ' ' \
-		&& undoll_cmd[j] != '>' && undoll_cmd[j] != 34 && undoll_cmd[j] != 39
-		&& undoll_cmd[j] != '?')
+	// while (undoll_cmd[j] && (undoll_cmd[j] > 0) \
+	// 	&& undoll_cmd[j] != '$' && undoll_cmd[j] != '<' && undoll_cmd[j] != ' ' \
+	// 	&& undoll_cmd[j] != '>' && undoll_cmd[j] != 34 && undoll_cmd[j] != 39
+	// 	&& undoll_cmd[j] != '?' && undoll_cmd[j] != '=')
+	while (undoll_cmd[j] && (undoll_cmd[j] > 0) && ft_isalnum(undoll_cmd[j]))
 		j++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (j - *i));
 	//printf("var to expand = %s, size = %ld\n", var_to_expand, ft_strlen(var_to_expand));
@@ -99,9 +100,10 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 	env = data->env;
 	k = *i;
 	l = 0;
-	while (undoll_cmd[k] > 0 && undoll_cmd[k] != '\0' && undoll_cmd[k] != '$' \
-		&& undoll_cmd[k] != '<' && undoll_cmd[k] != '>' && undoll_cmd[k] != 34 \
-		&& undoll_cmd[k] != 39 && undoll_cmd[k] != ' ' && undoll_cmd[k] != '?')
+	// while (undoll_cmd[k] > 0 && undoll_cmd[k] != '\0' && undoll_cmd[k] != '$' \
+	// 	&& undoll_cmd[k] != '<' && undoll_cmd[k] != '>' && undoll_cmd[k] != 34 \
+	// 	&& undoll_cmd[k] != 39 && undoll_cmd[k] != ' ' && undoll_cmd[k] != '?')
+	while (undoll_cmd[k] && (undoll_cmd[k] > 0) && ft_isalnum(undoll_cmd[k]))
 		k++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (k - *i));
 	if (!var_to_expand)
