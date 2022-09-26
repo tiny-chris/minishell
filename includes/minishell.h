@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 00:30:14 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 11:36:51 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,15 +116,15 @@ int		ft_init_data_1(t_data *data, char **envp);
 
 /* 1ere partie - à désactiver pour tester export y.c. pour PATH*/
 
-	void	ft_get_env_path(t_data *data, char **envp);
-	t_env	*ft_lst_env_path(char **tab_path);
-	char	**ft_get_str_env_path(t_data *data);
-	int		ft_lstadd_env2(t_env **env, char *tab_path);
+	// void	ft_get_env_path(t_data *data, char **envp);
+	// t_env	*ft_lst_env_path(char **tab_path);
+	// char	**ft_get_str_env_path(t_data *data);
+	// int		ft_lstadd_env2(t_env **env, char *tab_path);
 
 /* 2e partie - à activer pour tester export y.c. pour PATH*/
 
-	// void 	ft_get_env_path(t_data *data);
-	// int		ft_lstadd_env2(t_env **env, char *s_env_path_i);
+	void 	ft_get_env_path(t_data *data);
+	int		ft_lstadd_env2(t_env **env, char *s_env_path_i);
 
 /*	***** LEXER *****	*/
 /*	*****************	*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 16:39:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 20:06:15 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 12:03:28 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	ft_exec_uniq_builtin(t_data *data)
 	{
 		data->val_exit = ft_export(data->cmd, data);
 		printf("data val exit export = %d\n", data->val_exit);
+		ft_exit_exec(data);
 		return (data->val_exit);
 	}
 	// if (ft_strncmp(token->token, "unset", 5) == 0)

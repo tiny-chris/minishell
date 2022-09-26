@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 23:46:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 12:17:01 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 		token->type = BUILTIN;
 	else
 		token->type = COMMAND;
-	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0) && data->env != NULL)
+	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0)) // && data->env != NULL)
 	{
 		token = token->next;
 		while (token)

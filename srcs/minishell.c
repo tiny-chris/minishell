@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 00:37:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 12:01:15 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	ft_init_data_1(t_data *data, char **envp)
 		ft_free_tabstr(data->built_in);
 		return (1);//could not initialise minishell
 	}
-	ft_get_env_path(data, envp);// à commenter pour export - PATH
-	//ft_get_env_path(data);// à activer pour export - PATH
+	// ft_get_env_path(data, envp);// à commenter pour export - PATH
+	ft_get_env_path(data);// à activer pour export - PATH
 	return (0);
 }
 
@@ -109,6 +109,8 @@ int	ft_clean_loop(t_data *data)
 		ft_free_env(&(data->env));
 	if (data->env_path)
 		ft_free_env(&(data->env_path));
+	if (data->s_env_path)
+		ft_free_tabstr(data->s_env_path);
 	return (0);
 }
 
@@ -135,7 +137,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (ft_init_data_1(&data, envp))
 			return (1);
-		while (1)
+		//while (1)
 		{
 			data.line = readline(data.prompt);
 			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
