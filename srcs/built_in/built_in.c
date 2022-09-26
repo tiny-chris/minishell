@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 16:39:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 12:28:16 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/26 16:18:47 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,13 @@ int	ft_exec_uniq_builtin(t_data *data)
 		return (data->val_exit);
 	}
 	if (ft_strncmp(token->token, "unset", 5) == 0)
-		return (ft_unset(data->cmd, data));
+	{
+		data->val_exit = ft_unset(data->cmd, data);
+		ft_exit_exec(data);
+		return (data->val_exit);
+	}
 	// if (ft_strncmp(token->token, "exit", 4) == 0)
 	// 	return (ft_exit(data->cmd, data));
-
 	return (1);
 }
 

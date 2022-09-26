@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 14:01:23 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/26 14:59:33 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,13 +131,14 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 	else
 		token->type = COMMAND;
 	//check pour unset
-	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "unset", 3 == 0)))
+	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "unset", 5) == 0))
 	{
 		token = token->next;
 		while (token)
 		{
 			if (token && ft_strncmp(token->token, "unset", ft_strlen(token->token)) == 0)
 			{
+				printf("test\n");
 				todel = token;
 				tmp = token->next;
 				ft_lstdelone_tok(todel);
@@ -149,7 +150,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 		}
 	}
 	//check pour env
-	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0)) // && data->env != NULL)
+	else if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0)) // && data->env != NULL)
 	{
 		token = token->next;
 		while (token)

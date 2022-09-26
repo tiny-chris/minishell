@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 14:05:38 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/26 15:39:07 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,7 @@ int		ft_export(t_cmd *cmd, t_data *data);
 int		ft_check_export(t_token *token, t_data *data);
 
 int		ft_unset(t_cmd *cmd, t_data *data);
+int		ft_check_unset(t_token *token, t_data *data);
 
 // ***** ex-del_quotes *****
 
