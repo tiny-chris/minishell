@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 11:37:33 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/27 17:52:37 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	ft_child_process(t_data *data, int i)
 	{
 		ft_free_data_child(data);
 		ft_close_std();
-		exit(EXIT_FAILURE);
+		exit(EXIT_SUCCESS);
 	}
 //	dprintf(2, "child %d: res(redirect inout) = %d\n", i, res);
 	if (cmd->token->type == BUILTIN)
@@ -268,6 +268,12 @@ int	ft_exec(t_data *data)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);
 	ft_get_files_io(data);
+	if (data->nb_pipes == 0 && data->cmd->token == NULL)
+	{
+		data->val_exit = EXIT_SUCCESS;
+		ft_exit_exec(data);
+		return (EXIT_SUCCESS);
+	}
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
 	{
 		if (data->cmd->file_err == 1)

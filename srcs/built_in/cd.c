@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/27 14:26:20 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/27 17:47:05 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,17 @@
 void	ft_update_pwd(t_cmd *cmd, t_data *data)
 {
 	t_env	*env;
-	t_token	*token;
+//	t_token	*token;
 	char	*oldpwd;
 
+	(void) cmd;// voir si on enlève le paramètre
 	env = data->env;
-	token = cmd->token->next;
+//	token = cmd->token->next;
 	oldpwd = NULL;
 	while (env)
 	{
 		if (ft_strncmp(env->var_equal, "PWD=", ft_strlen(env->var_equal)) == 0)
-		{	
+		{
 			oldpwd = ft_strdup(env->content);
 			if (!oldpwd)
 				return ; //free malloc!!
@@ -54,7 +55,7 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data)
 	while (env)
 	{
 		if (ft_strncmp(env->var_equal, "OLDPWD=", ft_strlen(env->var_equal)) == 0)
-		{	
+		{
 			free(env->content);
 			env->content = ft_strdup(oldpwd);
 			free(env->envp);
@@ -81,10 +82,8 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data)
 int	ft_cd(t_cmd *cmd, t_data *data)
 {
 	t_token	*token;
-	int		res;
 	DIR		*directory;
 
-	res = 0;
 	directory = NULL;
 	token = cmd->token;
 	token = token->next;
