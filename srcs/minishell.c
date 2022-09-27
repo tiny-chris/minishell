@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 16:00:33 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/27 12:19:05 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void ft_init_data_0(t_data *data)
 	data->prompt = NULL;
 	data->env = NULL;
 	data->cwd = NULL;
+	data->oldpwd = NULL;
 	data->val_exit = 0;
 	data->str_exit = NULL;
 	data->nb_pipes = -1;
@@ -104,6 +105,8 @@ int	ft_clean_loop(t_data *data)
 		ft_free_tabstr(data->built_in);
 	if (data->cwd != NULL)
 		free(data->cwd);
+	if (data->oldpwd != NULL)
+		free(data->oldpwd);
 	free(data->prompt);
 	if (data->env != NULL)
 		ft_free_env(&(data->env));

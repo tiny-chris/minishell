@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 15:39:07 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/27 12:29:04 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <errno.h>
+# include <dirent.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 
@@ -29,10 +30,13 @@
 # define ERRMAL "memory allocation error"
 # define ERRCMD "command not found"
 # define ERRDIR "is a directory"
+# define ERRNDR "not a directory"
 # define ERRFOD "no such file or directory"
 # define ERRMSG "Error: "
-# define ERRARG "too few arguments"
+# define ERRFEW "too few arguments"
 # define ERRNAM "not a valid identifier"
+# define ERRARG "too many arguments"
+
 
 typedef enum s_type
 {
@@ -93,6 +97,7 @@ typedef struct s_data
 	char			*prompt;
 	t_env			*env;
 	char			*cwd;//current work directory
+	char			*oldpwd;
 	int				val_exit;
 	char			*str_exit;
 	int				nb_pipes;
@@ -295,6 +300,11 @@ int		ft_check_export(t_token *token, t_data *data);
 
 int		ft_unset(t_cmd *cmd, t_data *data);
 int		ft_check_unset(t_token *token, t_data *data);
+
+int		ft_cd(t_cmd *cmd, t_data *data);
+void	ft_update_pwd(t_cmd *cmd, t_data *data);
+
+
 
 // ***** ex-del_quotes *****
 

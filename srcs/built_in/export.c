@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 15:52:40 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/27 11:25:19 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	ft_check_export(t_token *token, t_data *data)
 // 	res = 0;
 // 	res2 = 0;
 // 	if (token->next == NULL)
-// 		return (ft_msg(EXIT_FAILURE, token->token, ": ", ERRARG));
+// 		return (ft_msg(EXIT_FAILURE, token->token, ": ", ERRFEW));
 // 	token = token->next;//
 // 	while (token)
 // 	{
@@ -172,7 +172,7 @@ int	ft_check_export(t_token *token, t_data *data)
 
 /*	***** version simplifiée *****
 	s'il n'y a pas de token après export
-		alors : erreur --> message ERRARG
+		alors : erreur --> message ERRFEW
 	sinon on avance au token suivant
 	boucle tant que le token existe
 	1.	si 1er char n'est pas alpha ou '_' (val ASCII 95)
@@ -205,7 +205,7 @@ int	ft_export(t_cmd *cmd, t_data *data)
 	res = 0;
 	res2 = 0;
 	if (token->next == NULL)
-		return (ft_msg(EXIT_FAILURE, token->token, ": ", ERRARG));
+		return (ft_msg(EXIT_FAILURE, token->token, ": ", ERRFEW));
 	token = token->next;
 	while (token)
 	{
