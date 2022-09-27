@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/27 12:29:04 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/27 21:11:51 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define ERRFEW "too few arguments"
 # define ERRNAM "not a valid identifier"
 # define ERRARG "too many arguments"
+# define ERRHOM "HOME not set"
 
 
 typedef enum s_type
@@ -98,6 +99,7 @@ typedef struct s_data
 	t_env			*env;
 	char			*cwd;//current work directory
 	char			*oldpwd;
+	char			*home;
 	int				val_exit;
 	char			*str_exit;
 	int				nb_pipes;
@@ -116,6 +118,7 @@ t_env	*ft_get_env(char **envp);
 char	**ft_built_in(void);
 int		ft_only_space(char *line);
 int		ft_init_data_1(t_data *data, char **envp);
+void	ft_get_home(t_data *data);
 
 /*	env_path */
 

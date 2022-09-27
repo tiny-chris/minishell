@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/27 11:25:19 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/27 21:27:22 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,9 @@ int	ft_check_export(t_token *token, t_data *data)
 			free(var_tmp);
 			/* modif pour mettre à jour PATH (s'il s'agit de PATH= */
 			if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal))  == 0)
-			{
-				//ft_free_env(&(data->env_path));
 				ft_get_env_path(data);//ne plus prendre char **envp
-			}
+			else if (ft_strncmp(env->var_equal, "HOME=", ft_strlen(env->var_equal))  == 0)
+				ft_get_home(data);
 			/* fin de modif */
 			return (0);
 		}
