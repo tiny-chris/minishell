@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/28 01:28:23 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/29 01:50:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,101 @@ void	ft_update_cwd(t_data *data)
 	data->cwd = getcwd(NULL, 0);
 	if (!data->cwd)
 		return ;//free malloc !!
-	dprintf(2, "val de cwd updated = %s\n", data->cwd);//
+	dprintf(2, "updated: data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);//
 }
 
+/*	t_env *env et env = data->env
+	char *oldpwd = NULL
+	int	pwd_null = 0
+
+	- mise à jour des variables dans data : data->cwd et data->oldpwd
+	puis
+	1. mise à jour PWD
+	  si PWD existe
+		a)	si (env->content) existe
+				--> var oldpwd = ft_strdup(env->content); avec protection malloc
+			sinon
+				--> var oldpwd == NULL
+		b) mise à jour de PWD env->content :
+			si (env->content) existe / n'est pas NULL
+				--> on nettoie env->content : free(env->content)
+					+ on alimente env->content : env->content = getcwd(NULL, 0)
+			sinon
+				--> on alimente env->content : env->content = getcwd(NULL, 0)
+		c) mise à jour de PWD env->envp :
+			si (env->envp) existe / n'est pas NULL
+				--> on nettoie env->envp : free(env->envp)
+					+ on alimente env->envp : env->envp = ft_strjoin(env->var_equal, env->content) avec malloc check
+			sinon
+				--> on alimente env->envp : env->envp = ft_strjoin(env->var_equal, env->content) avec malloc check
+	  sinon (si PWD n'existe pas, i.e. unset)
+		--> mettre var oldpwd == NULL (laisser à NULL)
+			mettre var pwd = 1
+			+ ne rien faire d'autre, i.e. le maillon est supprimé via unset PWD
+
+	2. mise à jour OLDPWD
+	  si OLDPWD existe
+	  	si PWD existe
+			a) mise à jour de OLPDWD env->content
+				si (env->content) existe / n'est pas NULL
+					--> on nettoie env->content : free(env->content)
+						+ on alimente env->content : env->content = var oldpwd (NULL ou non)
+				sinon
+					--> on alimente env->content : env->content = var oldpwd (NULL ou non)
+			b) mise à jour de OLDPWD env->envp
+				i (env->envp) existe / n'est pas NULL
+					--> on nettoie env->envp : free(env->envp)
+						+ on alimente env->envp : env->envp = ft_strjoin(env->var_equal, env->content) avec malloc check
+				sinon
+					--> on alimente env->envp : env->envp = ft_strjoin(env->var_equal, env->content) avec malloc check
+		sinon (si PWD n'existe pas, i.e. unset) : si var pwd_null = 1
+			si OLDPWD == NULL et var pwd_null = 1
+				--> on alimente env->content avec data->oldpwd : env->content = ft_strdup(data->oldpwd)
+			sinon (si OLDPWD != NULL et pwd_null = 1)
+				--> on nettoie env->content : free(env->content)
+					mise à jour de OLDPWD env->content à NULL (vide)
+	  sinon (OLDPWD n'existe pas = unset)
+	  	si PWD existe
+			--> on ne fait rien car le maillon est supprimé via unset PWD
+		sinon (si PWD n'existe pas, i.e. unset) : si var pwd_null = 1
+			--> on ne fait rien car le maillon est supprimé via unset PWD
+
+*/
 void	ft_update_pwd(t_cmd *cmd, t_data *data)
 {
 	t_env	*env;
 	char	*oldpwd;
+	int		pwd_null;
 
 	(void) cmd;// voir si on enlève le paramètre
 	env = data->env;
 	oldpwd = NULL;
+	pwd_null = 0;
+//	(void) pwd_null;
 	ft_update_cwd(data);
+	//mise à jour PWD
 	while (env)
 	{
 		if (ft_strncmp(env->var_equal, "PWD=", ft_strlen(env->var_equal)) == 0)
 		{
-			oldpwd = ft_strdup(env->content);
-			if (!oldpwd)
-			{
-				printf("pwd est vide\n");
-				return ; //free malloc!!
-			}
 			if (env->content)
+			{
+				oldpwd = ft_strdup(env->content);
+				if (!oldpwd)
+					return ; //free malloc!!
 				free(env->content);
-			env->content = NULL;
+				env->content = NULL;
+			}
+			// else
+			// 	oldpwd = NULL;
 			env->content = getcwd(NULL, 0);
 			if (!env->content)
 				return ; //free malloc!!
-			free(env->envp);
+			if (env->envp)
+			{
+				free(env->envp);
+				env->envp = NULL;
+			}
 			env->envp = ft_strjoin(env->var_equal, env->content);
 			if (!env->envp)
 				return ;//free malloc !!
@@ -72,30 +138,70 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data)
 		}
 		env = env->next;
 	}
-	//ajout d'une condition si oldpwd == NULL
+	if (env == NULL)//on ne trouve pas PWD --> unset
+	{
+		oldpwd = NULL;
+		pwd_null = 1;
+	}
+	//mise à jour OLDPWD
 	env = data->env;
 	while (env)
 	{
 		if (ft_strncmp(env->var_equal, "OLDPWD=", ft_strlen(env->var_equal)) == 0)
 		{
-			if (env->content)
+			if (pwd_null == 1)//si PWD n'existe pas
 			{
-				free(env->content);
-				env->content = NULL;
+				if (env->content)// i.e. 'OLDPWD=content' dans env
+				{
+					free(env->content);
+					env->content = NULL;
+					if (env->envp)
+						free(env->envp);
+					env->envp = ft_strdup("OLDPWD=");//ft_strdup(env->var_equal);
+					if (!env->envp)
+						return ; //free malloc !!
+				}
+				else// (!env->content), si OLDPWD est vide 'OLDPWD=' dans env
+				{
+					dprintf(2, "on est dans le cas PWD unset et OLDPWD=\n");
+					env->content = ft_strdup(data->oldpwd);
+					if (!env->content)
+						return ; //free malloc!!
+					if (env->envp)
+						free(env->envp);
+					env->envp = ft_strjoin(env->var_equal, env->content);
+					if (!env->envp)
+						return ; //free malloc !!
+				}
 			}
-			if (oldpwd)
+			else// (pwd_null == 0) i.e. si PWD existe
 			{
-				env->content = ft_strdup(oldpwd);
-				if (!env->content)
-					return ; //free malloc !!
+				if (!oldpwd)//si PWD est vide i.e. 'PWD=' dans env
+				{
+					if (env->content)
+						free(env->content);
+					env->content = NULL;
+					if (env->envp)
+						free(env->envp);
+					env->envp = ft_strdup("OLDPWD=");//ft_strdup(env->var_equal);
+					if (!env->envp)
+						return ; //free malloc !!
+				}
+				else//if (oldpwd)
+				{
+					if (env->content)
+						free(env->content);
+					env->content = ft_strdup(oldpwd);
+					if (!env->content)
+						return ; //free malloc!!
+					//free(oldpwd);
+					if (env->envp)
+						free(env->envp);
+					env->envp = ft_strjoin(env->var_equal, env->content);
+					if (!env->envp)
+						return ; //free malloc !!
+				}
 			}
-			if (env->envp)
-				free(env->envp);
-			printf("env car equal %s\n", env->var_equal);
-			env->envp = ft_strjoin(env->var_equal, env->content);
-			printf("env envp de OLDPWD qd pwd est vide %s\n", env->envp);
-			if (!env->envp)
-				return ; //free malloc !!
 			break ;
 		}
 		env = env->next;
@@ -103,6 +209,7 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data)
 	if (oldpwd)
 		free(oldpwd);
 	return ;
+	// //***mise à jour de data->cwd et data->oldpwd --> mis au tout début***
 	// if (data->oldpwd)
 	// 	free(data->oldpwd);
 	// data->oldpwd = ft_strdup(data->cwd);

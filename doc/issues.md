@@ -8,6 +8,40 @@
 
 >	** tests non concluants **
 
+	/*******************************/
+	TESTS DU G-DOC ligne 224 à 381
+	/*******************************/
+
+	l. 230 :	env ./Makefile
+		→ res minishell : ./Makefile: no such file or directory
+		→ bash : env: ‘./Makefile’: Permission denied
+
+	l. 234-237 : export…
+		→ apparemment, les infos existent dans export (stockées cachées)
+		→ res minishell : nous n’avons pas géré ce cas
+
+	l. 255-256 : export HOL\\\$A=bonjour
+		→ \ pas géré comme caractère spécial
+		→ choix dans minishell de ne gérer que les caractères spéciaux mentionnés ($, quotes, chevrons)
+
+	l. 296 :
+		$> export HOLA='"'
+		$> echo " $HOLA " | cat -e
+		→ bash :  " $
+		→ res minishell : on n’ a pas le résultat attendu
+	==> autres exemples :
+		export test='"youpi'
+		puis echo $test
+		--> SOUCI DANS PARSING : csquotes token = "youpi" --> len = 6 vs. strlen = 7
+
+	l. 338	corrigé
+		$> pwd
+		$> unset PWD
+		$> env | grep PWD
+		$> cd $PWD
+		$> pwd
+		--> put update of data->cwd & data->oldpwd on top in ft_cd.c
+	/*******************************/
 
 	/*********************/
 	A TESTER QUAND HERE-DOC CODE

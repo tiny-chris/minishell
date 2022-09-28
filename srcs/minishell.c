@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/27 22:22:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/29 01:53:57 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,7 @@ void	ft_get_home(t_data *data)
 		while (env)
 		{
 			if (ft_strncmp(env->var_equal, "HOME=", ft_strlen(env->var_equal)) == 0)
-			{
-				printf("var HOME = %s\n", env->content);
 				break ;
-			}
 			env = env->next;
 		}
 	}

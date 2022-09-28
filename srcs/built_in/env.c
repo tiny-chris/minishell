@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/28 01:20:18 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/29 01:52:10 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,34 @@ void	ft_display_env(t_data *data, t_token *token)
 			printf("%s\n", token->token);
 		token = token->next;
 	}
+	//ajout pour réinitialiser tous les printed à 0
+	tmp = token;
+	while (tmp)
+	{
+		tmp->printed = 0;
+		tmp = tmp->next;
+	}
 }
 
+/*
+	token = 'env'
+	si env est vide
+		--> check token->next
+		si token->next est vide
+			--> rien - pas d'erreur / juste vide
+		sinon (si token->next non NULL)
+			--> message d'erreur (no such file or directory)
+	sinon (env non vide)
+		si token->next == NULL // juste 'env' dans la commande
+			--> on affiche le contenu de l'env
+		sinon (si token->next non vide)
+			si le token contient un '=' ==> uniquement cette situation (car traité dans parsing)
+				--> tant que ce sont des tokens contenant au moins 1 =, alors on avance
+					s'il existe un autre token après (sans =)
+						--> message d'erreur
+					sinon (pas de token sans =)
+						--> on affiche le contenu de l'env
+*/
 int	ft_env(t_cmd *cmd, t_data *data)
 {
 	t_token	*token;
@@ -81,6 +107,8 @@ int	ft_env(t_cmd *cmd, t_data *data)
 		return (0);
 	}
 	token = token->next;
+	dprintf(2, "val de token->next pour env = %s\n", token->token);
+	dprintf(2, "val de ft_new_strchr(token->token, '=') = %d\n", ft_new_strchr(token->token, '='));
 	if (ft_new_strchr(token->token, '='))
 	{
 		tmp = token;

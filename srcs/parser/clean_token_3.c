@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_token_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/29 00:29:08 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_consec_quotes_len(char *token)
 					if (token[i + 2] != ' ')
 					{
 						i += 2;
-						while (token[i] && (token[i] == 34 || token[i] == 39)
+						while ((token[i] && (token[i] == 34 || token[i] == 39))
 						&& (token[i + 1] && token[i + 1] == token[i]))
 							i += 2;
 						if (token[i] == '\0')
@@ -50,7 +50,7 @@ int	ft_consec_quotes_len(char *token)
 				{
 					j = i;
 					j += 2;
-					while (token[j] && (token[j] == 34 || token[j] == 39)
+					while ((token[j] && (token[j] == 34 || token[j] == 39))
 						&& (token[j + 1] && token[j + 1] == token[j]))
 						j += 2;
 					len -= (j - i);
