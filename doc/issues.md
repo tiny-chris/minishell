@@ -8,18 +8,6 @@
 
 >	** tests non concluants **
 
-	/***********/
-	A DISCUTER
-	/***********/
-	export $USER=pouet
-		--> bash: dans env
-				tinychris=pouet
-
-	--> le '=' est un séparateur de expand...
-		choisit-on de l'inclure comme séparateur
-		OU bien choisit-on de le considérer comme un caractère quelconque - donc expand de $USER=toto est empty ??
-	/***********/
-
 
 	/*********************/
 	A TESTER QUAND HERE-DOC CODE
@@ -51,6 +39,23 @@
 
 
 >	tests corrigés - A RETESTER avant la fin
+
+
+
+
+	/***********/
+	FIXED
+	/***********/
+	export $USER=pouet
+		--> bash: dans env
+				tinychris=pouet
+
+	--> le '=' est un séparateur de expand...
+		choisit-on de l'inclure comme séparateur
+		OU bien choisit-on de le considérer comme un caractère quelconque - donc expand de $USER=toto est empty ??
+	==> tous les caractères hors alpha, num et _ sont des séparateurs pour un nom de variable --> mise à jour le 26/09
+
+	/***********/
 
 
 	/***********/
