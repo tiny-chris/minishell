@@ -8,6 +8,7 @@
 
 >	** tests non concluants **
 
+
 	/*******************************/
 	TESTS DU G-DOC from ligne 640 : redir
 	/*******************************/
@@ -86,6 +87,15 @@
 
 
 
+	
+	/***********/
+	FIXED
+	/***********/
+	si HOME unset --> et export HOME= (vide)
+	gérer le cd ou cd $HOME qui ne fait rien dans bash...
+
+	=> fixed : ajout d'une condition si data->home[0] = '\0' --> return (0) 
+	/***********/
 
 	/***********/
 	FIXED
