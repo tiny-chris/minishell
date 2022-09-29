@@ -9,7 +9,17 @@
 >	** tests non concluants **
 
 	/*******************************/
-	TESTS DU G-DOC ligne 224 à 381
+	TESTS DU G-DOC from ligne 640 : redir
+	/*******************************/
+
+	l. 640 :	echo hola > bonjour
+		→ devrait mettre hola dans fichier 'bonjour', mais l'affiche dans le prompt
+	... idem la suite
+
+	ex:  echo hola > hello >> hello >> hello
+
+	/*******************************/
+	TESTS DU G-DOC lignes 224 à 381 : built-ins
 	/*******************************/
 
 	l. 230 :	env ./Makefile
