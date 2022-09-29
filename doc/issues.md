@@ -8,18 +8,51 @@
 
 >	** tests non concluants **
 
-	/***********/
-	A DISCUTER
-	/***********/
-	export $USER=pouet
-		--> bash: dans env
-				tinychris=pouet
 
-	--> le '=' est un séparateur de expand...
-		choisit-on de l'inclure comme séparateur
-		OU bien choisit-on de le considérer comme un caractère quelconque - donc expand de $USER=toto est empty ??
-	/***********/
+	/*******************************/
+	TESTS DU G-DOC from ligne 640 : redir
+	/*******************************/
 
+	l. 640 :	echo hola > bonjour
+		→ devrait mettre hola dans fichier 'bonjour', mais l'affiche dans le prompt
+	... idem la suite
+
+	ex:  echo hola > hello >> hello >> hello
+
+	/*******************************/
+	TESTS DU G-DOC lignes 224 à 381 : built-ins
+	/*******************************/
+
+	l. 230 :	env ./Makefile
+		→ res minishell : ./Makefile: no such file or directory
+		→ bash : env: ‘./Makefile’: Permission denied
+
+	l. 234-237 : export…
+		→ apparemment, les infos existent dans export (stockées cachées)
+		→ res minishell : nous n’avons pas géré ce cas
+
+	l. 255-256 : export HOL\\\$A=bonjour
+		→ \ pas géré comme caractère spécial
+		→ choix dans minishell de ne gérer que les caractères spéciaux mentionnés ($, quotes, chevrons)
+
+	l. 296 :
+		$> export HOLA='"'
+		$> echo " $HOLA " | cat -e
+		→ bash :  " $
+		→ res minishell : on n’ a pas le résultat attendu
+	==> autres exemples :
+		export test='"youpi'
+		puis echo $test
+		--> SOUCI DANS PARSING : csquotes token = "youpi" --> len = 6 vs. strlen = 7
+
+	l. 338	corrigé
+		$> pwd
+		$> unset PWD
+		$> env | grep PWD
+		$> cd $PWD
+		$> pwd
+		--> put update of data->cwd & data->oldpwd on top in ft_cd.c
+	/*******************************/
 
 	/*********************/
 	A TESTER QUAND HERE-DOC CODE
@@ -51,6 +84,32 @@
 
 
 >	tests corrigés - A RETESTER avant la fin
+
+
+
+	
+	/***********/
+	FIXED
+	/***********/
+	si HOME unset --> et export HOME= (vide)
+	gérer le cd ou cd $HOME qui ne fait rien dans bash...
+
+	=> fixed : ajout d'une condition si data->home[0] = '\0' --> return (0) 
+	/***********/
+
+	/***********/
+	FIXED
+	/***********/
+	export $USER=pouet
+		--> bash: dans env
+				tinychris=pouet
+
+	--> le '=' est un séparateur de expand...
+		choisit-on de l'inclure comme séparateur
+		OU bien choisit-on de le considérer comme un caractère quelconque - donc expand de $USER=toto est empty ??
+	==> tous les caractères hors alpha, num et _ sont des séparateurs pour un nom de variable --> mise à jour le 26/09
+
+	/***********/
 
 
 	/***********/

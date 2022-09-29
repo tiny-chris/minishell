@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/27 12:19:05 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/29 01:53:57 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void ft_init_data_0(t_data *data)
 	data->env = NULL;
 	data->cwd = NULL;
 	data->oldpwd = NULL;
+	data->home = NULL;
 	data->val_exit = 0;
 	data->str_exit = NULL;
 	data->nb_pipes = -1;
@@ -45,6 +46,38 @@ static void ft_init_data_0(t_data *data)
 	data->env_path = NULL;
 	data->s_env_path = NULL;
 	//TO CHECK : que toutes les variables de t_data sont init_0
+}
+
+void	ft_get_home(t_data *data)
+{
+	(void) data;
+	t_env	*env;
+
+	env = data->env;
+	if (data->home)
+		free(data->home);
+	data->home = NULL;
+	if (env != NULL)
+	{
+		while (env)
+		{
+			if (ft_strncmp(env->var_equal, "HOME=", ft_strlen(env->var_equal)) == 0)
+				break ;
+			env = env->next;
+		}
+	}
+	if (env == NULL)
+	{
+		data->home = NULL;
+		return ;
+	}
+	if (env->content)
+	{
+		data->home = ft_strdup(env->content);
+		if (!data->home)
+			return ;//malloc free
+	}
+	return ;
 }
 
 int	ft_init_data_1(t_data *data, char **envp)
@@ -74,6 +107,8 @@ int	ft_init_data_1(t_data *data, char **envp)
 		ft_free_tabstr(data->built_in);
 		return (1);//could not initialise minishell
 	}
+	ft_get_home(data);
+	dprintf(2, "val data home = %s\n", data->home);
 	// ft_get_env_path(data, envp);// à commenter pour export - PATH
 	ft_get_env_path(data);// à activer pour export - PATH
 	return (0);
@@ -107,6 +142,8 @@ int	ft_clean_loop(t_data *data)
 		free(data->cwd);
 	if (data->oldpwd != NULL)
 		free(data->oldpwd);
+	if (data->home != NULL)
+		free(data->home);
 	free(data->prompt);
 	if (data->env != NULL)
 		ft_free_env(&(data->env));

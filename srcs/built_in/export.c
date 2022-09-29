@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/27 11:25:19 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/29 01:28:04 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	ft_check_export(t_token *token, t_data *data)
 	var_tmp = NULL;
 	i = ft_new_strchr(token->token, '=');
 	var_tmp = ft_substr(token->token, 0, i + 1);
-	dprintf(2, "var_tmp = %s\n", var_tmp);
 	if (!var_tmp)
 		return (1);//FREE + EXIT (MALLOC)
 	while (env)
@@ -55,13 +54,10 @@ int	ft_check_export(t_token *token, t_data *data)
 			if (!env->envp)
 				return (1);//FREE + EXIT (MALLOC)
 			free(var_tmp);
-			/* modif pour mettre à jour PATH (s'il s'agit de PATH= */
 			if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal))  == 0)
-			{
-				//ft_free_env(&(data->env_path));
 				ft_get_env_path(data);//ne plus prendre char **envp
-			}
-			/* fin de modif */
+			else if (ft_strncmp(env->var_equal, "HOME=", ft_strlen(env->var_equal))  == 0)
+				ft_get_home(data);
 			return (0);
 		}
 		env = env->next;
@@ -73,7 +69,81 @@ int	ft_check_export(t_token *token, t_data *data)
 	return (0);
 }
 
-/*	ANCIENNE VERSION - modification ci-dessous */
+/*	***** version simplifiée *****
+	s'il n'y a pas de token après export
+		alors : erreur --> message ERRFEW
+	sinon on avance au token suivant
+	boucle tant que le token existe
+	1.	si 1er char n'est pas alpha ou '_' (val ASCII 95)
+			alors : erreur --> message ERRNAM
+	2.	sinon (1er char est un alpha ou '_')
+			alors :	tant que char + 1 existe  ET  char + 1 différent de '=' (boucle)
+						alors :	si char n'est pas alpha num ou '_'
+									alors : erreur --> message ERRNAM
+								sinon on avance (jusqu'à la fin du token)
+					si le char suivant (hors boucle) est un '='
+					alors : GROS CHECK
+						si le char * de token (texte jusqu'au '=') est équiv à un des env->var
+							alors : on remplace env->var, content... par les data de token
+						sinon (pas dans env) on crée le maillon env contenant les infos token
+							et on l'ajoute à la liste chainee t_env env
+						si la modification concerne la var PATH
+							alors on met t_env env_path à jour
+	3. on met à jour val_exit
+		et on change de token
+*/
+int	ft_export(t_cmd *cmd, t_data *data)
+{
+	t_token	*token;
+	int		i;
+	int		res;
+	int		res2;
+
+	token = cmd->token;
+	i = 0;
+	res = 0;
+	res2 = 0;
+	if (token->next == NULL)
+		return (ft_msg(EXIT_FAILURE, token->token, ": ", ERRFEW));
+	token = token->next;
+	while (token)
+	{
+		if ((ft_isalpha(token->token[0]) == 0) && (token->token[0] != '_'))
+			res = ft_msg(1, token->token, ": ", ERRNAM);
+		else if ((token->token[0] == '_') && (token->token[1] == '='))
+			res = 0;
+		else
+		{
+			while (token->token[i] && token->token[i] != '=')
+			{
+				printf("token->token[%d] = %c\n", i, token->token[i]);
+				if ((ft_isalnum(token->token[i]) == 0))
+				{
+					res = ft_msg(1, token->token, ": ", ERRNAM);
+					break ;
+				}
+				else
+				{
+					i++;
+					res = 0;
+				}
+			}
+			if (token->token[i] == '=')
+				res = ft_check_export(token, data);
+		}
+		if (res == 0 && res2 == 0)
+			res2 = 0;
+		else
+			res2 = 1;
+		token = token->next;
+		i = 0;
+	}
+	return (res2);
+}
+
+
+
+/*	ANCIENNE VERSION - modification ci-dessus */
 
 // //check si premier char = digit si ou erreur
 // //check si contient un =
@@ -169,75 +239,3 @@ int	ft_check_export(t_token *token, t_data *data)
 // 	}
 // 	return (res2);
 // }
-
-/*	***** version simplifiée *****
-	s'il n'y a pas de token après export
-		alors : erreur --> message ERRFEW
-	sinon on avance au token suivant
-	boucle tant que le token existe
-	1.	si 1er char n'est pas alpha ou '_' (val ASCII 95)
-			alors : erreur --> message ERRNAM
-	2.	sinon (1er char est un alpha ou '_')
-			alors :	tant que char + 1 existe  ET  char + 1 différent de '=' (boucle)
-						alors :	si char n'est pas alpha num ou '_'
-									alors : erreur --> message ERRNAM
-								sinon on avance (jusqu'à la fin du token)
-					si le char suivant (hors boucle) est un '='
-					alors : GROS CHECK
-						si le char * de token (texte jusqu'au '=') est équiv à un des env->var
-							alors : on remplace env->var, content... par les data de token
-						sinon (pas dans env) on crée le maillon env contenant les infos token
-							et on l'ajoute à la liste chainee t_env env
-						si la modification concerne la var PATH
-							alors on met t_env env_path à jour
-	3. on met à jour val_exit
-		et on change de token
-*/
-int	ft_export(t_cmd *cmd, t_data *data)
-{
-	t_token	*token;
-	int		i;
-	int		res;
-	int		res2;
-
-	token = cmd->token;
-	i = 0;
-	res = 0;
-	res2 = 0;
-	if (token->next == NULL)
-		return (ft_msg(EXIT_FAILURE, token->token, ": ", ERRFEW));
-	token = token->next;
-	while (token)
-	{
-		if ((ft_isalpha(token->token[0]) == 0) && (token->token[0] != '_'))
-			res = ft_msg(1, token->token, ": ", ERRNAM);
-		else if ((token->token[0] == '_') && (token->token[1] == '='))
-			res = 0;
-		else
-		{
-			while (token->token[i] && token->token[i] != '=')
-			{
-				printf("token->token[%d] = %c\n", i, token->token[i]);
-				if ((ft_isalnum(token->token[i]) == 0))
-				{
-					res = ft_msg(1, token->token, ": ", ERRNAM);
-					break ;
-				}
-				else
-				{
-					i++;
-					res = 0;
-				}
-			}
-			if (token->token[i] == '=')
-				res = ft_check_export(token, data);
-		}
-		if (res == 0 && res2 == 0)
-			res2 = 0;
-		else
-			res2 = 1;
-		token = token->next;
-		i = 0;
-	}
-	return (res2);
-}

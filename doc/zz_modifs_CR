@@ -3,6 +3,12 @@
 ----- Modifs en cours - A PARTAGER -----
 ----------------------------------------
 
+cf. branch CR_27sept
+
+----------------------------------------------------
+----- modifs ci-dessous - COMMITED + PUSHED OK -----
+----------------------------------------------------
+
 > Pour "EXPORT" la variable PATH, PROPOSITION:
 	--> util de ft_strncmp
 	--> si PATH= ==> free le env_path et rappeler la fonction ft_get_env_path
@@ -25,9 +31,6 @@
 	5. dans la fonction ft_init_data_1 du fichier minishell.c :
 		- modifier le prototype ft_get_env_path(data), sans le envp (lignes 77-78)
 
-----------------------------------------------------
------ modifs ci-dessous - COMMITED + PUSHED OK -----
-----------------------------------------------------
 
 > Correction de la fonction ft_export
 	- pour le check du 'name' de la variable (avant le =)

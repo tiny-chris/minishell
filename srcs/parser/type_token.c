@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 14:59:33 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/28 23:45:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,14 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 		}
 	}
 	//check pour env
+	//on retire les doublons de token-token 'env'
+	//si le token suivant 'env' (2) contient un '=', c'est une variable qu'il faudra afficher/modifier
+	//	avec les éléments après le '='
+	//	et pareil pour les consécutifs qui contiennent '='
+	//	si un token ne contient pas '=', alors il sera typé "token->env=1 pour erreur dans exec"
+	//sinon, si le token suivant 'env' (2) ne contient pas de '='
+	//	--> alors on supprimer le token 'env' (1) et on modifie le token (2) en commande ou builtin
+	//		et "token->env=1 pour erreur dans exec"
 	else if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0)) // && data->env != NULL)
 	{
 		token = token->next;
@@ -191,6 +199,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 			cmd->token = tmp;
 		}
 	}
+	//check pour echo
 	token = cmd->token;
 	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "echo", 4) == 0))
 	{

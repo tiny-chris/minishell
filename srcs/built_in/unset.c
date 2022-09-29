@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/26 16:23:56 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/27 22:13:56 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 	{
 		if (ft_strncmp(env->var, token->token, ft_strlen(env->var)) == 0 && ft_strlen(env->var) == ft_strlen(token->token))
 		{
-			if (ft_strncmp(token->token, "PATH", ft_strlen(token->token)) == 0 && ft_strlen(token->token) == 4)
+			if (ft_strncmp(token->token, "PATH", 4) == 0 && ft_strlen(token->token) == 4)
 			{
 				if (data->env_path)
 				{
@@ -36,6 +36,16 @@ int	ft_check_unset(t_token *token, t_data *data)
 				{
 					ft_free_tabstr(data->s_env_path);
 					data->s_env_path = NULL;
+				}
+			}
+			else if (ft_strncmp(token->token, "HOME", 4) == 0 && ft_strlen(token->token) == 4)
+			{
+				printf("check le HOME unset\n");//
+				if (data->home)
+				{
+					printf("data->home = %s\n", data->home);//
+					free(data->home);
+					data->home = NULL;
 				}
 			}
 			if (env == data->env)
@@ -57,7 +67,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 				env = tmp;
 			}
 		}
-		if (env != data->env)
+		if (env != data->env || tmp != env)//ajout de la 2e condition
 			tmp = tmp->next;
 		env = env->next;
 	}

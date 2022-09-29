@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/22 16:25:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/27 20:54:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,16 @@ void	ft_free_data_child(t_data *data)
 		free(data->cwd);
 		data->cwd = NULL;
 	}
+	if (data->oldpwd != NULL)
+	{
+		free(data->oldpwd);
+		data->oldpwd = NULL;
+	}
+	if (data->home != NULL)
+	{
+		free(data->home);
+		data->home = NULL;
+	}
 	if (data->str_exit != NULL)
 	{
 		free(data->str_exit);
@@ -100,7 +110,7 @@ void	ft_free_data_child(t_data *data)
 		ft_free_tabstr(data->s_env_path);
 		data->s_env_path = NULL;
 	}
-		
+
 }
 
 void	ft_close_fd(t_data *data)
