@@ -3,11 +3,68 @@
 ----- Modifs en cours - A PARTAGER -----
 ----------------------------------------
 
-cf. branch CR_27sept
+> base pour branch CR_ft_malloc2
+
+	WIP - penser à mettre des ** et pas des * ?!?!
+
+  Dans minishell.h :
+	[x] Création d'un enum additionnel pour lister les types de sizeof
+	[x] Création d'une nouvelle variable "struct t_bin"
+	[x] Ajout de cette nouvelle variable 'bin' dans t_data *data pour ce "garbage collector" en liste chainée (init à NULL)
+	[ ] Ajout de la liste des fonctions crées ci-dessous dans le prototypes
+
+  Sous le dossie srcs :
+	[x] Création d'un dossier "bin_collect" contenant les fichiers :
+		[x] "bin_coll.c" qui va contenir :
+			[ ] la fonction 'ft_malloc': qui malloc selon les données transmises + ajoute 1 maillon à chaque malloc OK
+			[ ] la fonction 'ft_get_sizeof: pour récupérer le bon sizeof qui sera utilisé dans ft_malloc
+		[x] "bin_list.c" qui regroupe les fonctions usuelles de listes chainées :
+			[ ] ft_lstadd_bin
+			[ ] ft_lstlast_bin
+			[ ] ft_lstclear_bin
+			[ ] ft_lstdelone_bin
+			[ ] ft_free_bin
+
+  Dans le Makefile :
+	[x] Ajout des fichiers/folders
+
+  Dans minishell.c :
+	[x] Ajout dans la fonction qui initialise data (ft_init_data_0) de minishell.c : une init de bin à NULL
+
+
+
+A REVOIR / RELIRE
+
+		--> /!\ /!\ /!\ /!\ /!\ /!\ /!\
+		A AJUSTER POUR CHAQUE MALLOC !!
+		+ CHECKER POUR CHAQUE PROCESS (fork()), quand on exit (surtout pour les child) ou on return...
+
+Check des mallocs dans l'ordre des fonctions :
+- 	ft_get_env(char **envp) dans parser/env.c
+		--> modif des paramètres, ajout de data
+		==> A FINALISER pour la sortie (pb de malloc donc on ne continue pas)
+-	ft_lstadd_env(t_env **env, char *envp)
+		--> modif des paramètres, ajout de data
+		==> A FINALISER pour la sortie (pb de malloc donc on ne continue pas)
+-	ft_substr()
+		--> ajout dans utils2.c d'une fonction ft_substr_malloc
+			pour modifier les malloc/check
+-	ft_strdup()
+		--> ajout dans utils2.c d'une fonction ft_strdup_malloc
+			pour modifier les malloc/check
+-	ft_built_in()
+		--> modif des paramètres et de la fonction
+		--> quitte directement si erreur
+		==> A FINALISER pour la sortie (pb de malloc donc on ne continue pas)
+-	ft_split()
+		==> /!\ A FINALISER (WIP) /!\
+
 
 ----------------------------------------------------
 ----- modifs ci-dessous - COMMITED + PUSHED OK -----
 ----------------------------------------------------
+
+> cf. branch CR_27sept
 
 > Pour "EXPORT" la variable PATH, PROPOSITION:
 	--> util de ft_strncmp

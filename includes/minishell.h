@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/29 01:27:14 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/29 22:02:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 # define ERRARG "too many arguments"
 # define ERRHOM "HOME not set"
 
-
 typedef enum s_type
 {
 	COMMAND 		= 0,
@@ -55,6 +54,33 @@ typedef enum s_type
 	D_LESS			= 13,
 	HERE_DOC 		= 23,
 }	t_type;
+
+// /* **************************** */
+// /* début - branch CR_ft_malloc2 */
+
+// typedef enum s_sizetype
+// {
+// 	TAB_INT1		= 100,
+// 	TAB_INTS		= 101,
+// 	TAB_STR1		= 102,
+// 	TAB_STRS		= 103,
+// 	LST_ENV			= 104,
+// 	LST_CMD			= 105,
+// 	LST_TOK			= 106,
+// }	t_sizetype;
+
+// typedef struct s_bin
+// {
+// 	void			*ptr;
+// 	int				type;// ou un void ??? tester pour les listes chainees
+// 	int				size;
+// 	struct s_bin	*next;
+// }	t_bin;
+
+// // cf. suite dans la liste des fonctions en-dessous
+
+// /*	fin - branch CR_ft_malloc2 */
+// /* *************************** */
 
 typedef struct s_token
 {
@@ -109,6 +135,7 @@ typedef struct s_data
 	int				**pipe_fd;//nb de fd[][]
 	t_env			*env_path;
 	char			**s_env_path;
+	//t_bin			*bin;//ajoutée pour le bin collector
 }	t_data;
 
 /*	***** INIT *****	*/
@@ -308,6 +335,25 @@ int		ft_cd(t_cmd *cmd, t_data *data);
 void	ft_update_pwd(t_cmd *cmd, t_data *data);
 void	ft_update_cwd(t_data *data);
 
+// /* **************************** */
+// /* début - branch CR_ft_malloc2 */
+
+// /*	bin collector */
+
+// void	*ft_malloc(t_data *data, void *ptr, int type, int size);
+// int		ft_get_sizeof(int type);
+
+// int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
+// t_bin	*ft_lstlast_bin(t_bin *bin);
+// void	ft_lstclear_bin(t_bin *bin);
+// void	ft_lstdelone_bin(t_bin *node);
+// void	ft_free_bin(void *ptr, int type, int size);
+
+// char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
+// char	*ft_strdup_malloc(void *data, const char *s1);
+
+// /*	fin - branch CR_ft_malloc2 */
+// /* *************************** */
 
 // ***** ex-del_quotes *****
 

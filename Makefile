@@ -1,29 +1,29 @@
-NAME        := minishell
+NAME		:= minishell
 
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# LIBFT     libft
+# LIBFT		libft
 #
-# INCS      include directories
+# INCS		include directories
 #
-# SRC_DIR   source directory
-# SRCS      source files
+# SRC_DIR	source directory
+# SRCS		source files
 #
-# OBJ_DIR   build directory
-# OBJS      object files
+# OBJ_DIR	build directory
+# OBJS		object files
 #
-# CC        compiler
-# CFLAGS    compiler flags
-# CPPFLAGS  preprocessor flags
-# LDFLAGS   linker flags
-# LDLIBS    library names
+# CC		compiler
+# CFLAGS	compiler flags
+# CPPFLAGS	preprocessor flags
+# LDFLAGS	linker flags
+# LDLIBS	library names
 
-LIBFT       := lib/libft/libft.a
+LIBFT		:= lib/libft/libft.a
 
-SRC_DIR     := srcs
-SRCS 		:= 	\
-            minishell.c \
+SRC_DIR		:= srcs
+SRCS 		:= \
+			minishell.c \
 			utils.c \
 			parser/parser.c \
 			parser/env.c \
@@ -56,37 +56,39 @@ SRCS 		:= 	\
 			exec/init.c \
 			exec/cmd_path.c \
 			exec/clean.c \
+#			bin_collect/bin_coll.c \
+			bin_collect/bin_list.c \
 
-SRCS        := $(addprefix $(SRC_DIR)/,$(SRCS))
+SRCS		:= $(addprefix $(SRC_DIR)/,$(SRCS))
 
-OBJ_DIR     := obj
-OBJS        := $(subst .c,.o,$(SRCS))
-OBJS        := $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
+OBJ_DIR		:= obj
+OBJS		:= $(subst .c,.o,$(SRCS))
+OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
-CC          := clang
-CFLAGS      := -Wall -Wextra -Werror
-CPPFLAGS    := -I lib/libft -I includes
-LDFLAGS     := -L lib/libft
-LDLIBS      := -l ft -l readline
+CC			:= clang
+CFLAGS		:= -Wall -Wextra -Werror
+CPPFLAGS	:= -I lib/libft -I includes
+LDFLAGS		:= -L lib/libft
+LDLIBS		:= -l ft -l readline
 
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
+# RM		cleaning command
 
-RM          := rm -f
-MAKE        := $(MAKE) --silent --jobs --no-print-directory
+RM			:= rm -f
+MAKE		:= $(MAKE) --silent --jobs --no-print-directory
 DIR_DUP		= mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# all       default goal
-# %.o       compilation .c -> .o
-# $(NAME)   link .o -> archive
-# clean     remove .o
-# fclean    remove .o + binary
-# re        remake default goal
+# all		default goal
+# %.o		compilation .c -> .o
+# $(NAME)	link .o -> archive
+# clean		remove .o
+# fclean	remove .o + binary
+# re		remake default goal
 # run		run the program
 # info		print the default goal recipe
 
