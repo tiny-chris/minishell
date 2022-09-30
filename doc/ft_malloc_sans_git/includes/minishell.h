@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/30 14:05:05 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/26 02:25:32 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <errno.h>
-# include <dirent.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 
@@ -30,13 +29,10 @@
 # define ERRMAL "memory allocation error"
 # define ERRCMD "command not found"
 # define ERRDIR "is a directory"
-# define ERRNDR "not a directory"
 # define ERRFOD "no such file or directory"
 # define ERRMSG "Error: "
-# define ERRFEW "too few arguments"
+# define ERRARG "too few arguments"
 # define ERRNAM "not a valid identifier"
-# define ERRARG "too many arguments"
-# define ERRHOM "HOME not set"
 
 typedef enum s_type
 {
@@ -55,8 +51,8 @@ typedef enum s_type
 	HERE_DOC 		= 23,
 }	t_type;
 
-/* **************************** */
-/* début - branch CR_ft_malloc2 */
+/* *************************** */
+/* début - branch CR_ft_malloc */
 
 typedef enum s_sizetype
 {
@@ -79,8 +75,8 @@ typedef struct s_bin
 
 // cf. suite dans la liste des fonctions en-dessous
 
-/*	fin - branch CR_ft_malloc2 */
-/* *************************** */
+/*	fin - branch CR_ft_malloc */
+/* ************************** */
 
 typedef struct s_token
 {
@@ -124,8 +120,6 @@ typedef struct s_data
 	char			*prompt;
 	t_env			*env;
 	char			*cwd;//current work directory
-	char			*oldpwd;
-	char			*home;
 	int				val_exit;
 	char			*str_exit;
 	int				nb_pipes;
@@ -141,25 +135,26 @@ typedef struct s_data
 /*	***** INIT *****	*/
 /*	*****************	*/
 
-t_env	*ft_get_env(char **envp);
-char	**ft_built_in(void);
+//t_env	*ft_get_env(char **envp);
+t_env	*ft_get_env(t_data *data, char **envp);// pour ft_malloc
+//char	**ft_built_in(void);
+char	**ft_built_in(t_data *data);
 int		ft_only_space(char *line);
 int		ft_init_data_1(t_data *data, char **envp);
-void	ft_get_home(t_data *data);
 
 /*	env_path */
 
 /* 1ere partie - à désactiver pour tester export y.c. pour PATH*/
 
-	// void	ft_get_env_path(t_data *data, char **envp);
-	// t_env	*ft_lst_env_path(char **tab_path);
-	// char	**ft_get_str_env_path(t_data *data);
-	// int		ft_lstadd_env2(t_env **env, char *tab_path);
+	void	ft_get_env_path(t_data *data, char **envp);
+	t_env	*ft_lst_env_path(char **tab_path);
+	char	**ft_get_str_env_path(t_data *data);
+	int		ft_lstadd_env2(t_env **env, char *tab_path);
 
 /* 2e partie - à activer pour tester export y.c. pour PATH*/
 
-	void 	ft_get_env_path(t_data *data);
-	int		ft_lstadd_env2(t_env **env, char *s_env_path_i);
+	// void 	ft_get_env_path(t_data *data);
+	// int		ft_lstadd_env2(t_env **env, char *s_env_path_i);
 
 /*	***** LEXER *****	*/
 /*	*****************	*/
@@ -239,7 +234,7 @@ int		ft_clean_token(t_cmd *cmd, t_data *data);
 int		ft_consec_quotes_len(char *token);
 char	*ft_fill_consec_quotes(char *token, int len);
 int		ft_space_quotes(char *tmp_token, t_token *token);
-int		ft_clean_len(char *token);00
+int		ft_clean_len(char *token);
 char	*ft_fill_clean_token(char *tmp_token, int len);
 void	ft_positive_token(t_token *token);
 //int		ft_del_empty_token(t_cmd **cmd, t_data *data);
@@ -258,7 +253,8 @@ int		ft_del_empty_cmd(t_data *data);
 	/*	env_list */
 
 t_env	*ft_lstlast_env(t_env *lst);
-int		ft_lstadd_env(t_env **env, char *envp);
+// int		ft_lstadd_env(t_env **env, char *envp);
+int		ft_lstadd_env(t_data *data, t_env **env, char *envp);
 void	ft_lstdelone_env(t_env *node);
 void	ft_free_env(t_env **env);
 
@@ -305,17 +301,6 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
 
-/*	exec CLEAN */
-
-int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
-void	ft_close_fd(t_data *data);
-void	ft_close_std(void);
-void	ft_exit_exec(t_data *data);//, int val_exit);
-void	ft_free_data_child(t_data *data);
-
-int		ft_clean_cmdline(t_data *data);
-int		ft_clean_loop(t_data *data);
-
 /*	built-ins */
 
 int		ft_echo(t_cmd *cmd, t_data *data);
@@ -328,32 +313,30 @@ void	ft_display_env(t_data *data, t_token *token);
 int		ft_export(t_cmd *cmd, t_data *data);
 int		ft_check_export(t_token *token, t_data *data);
 
-int		ft_unset(t_cmd *cmd, t_data *data);
-int		ft_check_unset(t_token *token, t_data *data);
+/*	exec CLEAN */
 
-int		ft_cd(t_cmd *cmd, t_data *data);
-void	ft_update_pwd(t_cmd *cmd, t_data *data);
-void	ft_update_cwd(t_data *data);
+int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
+void	ft_close_fd(t_data *data);
+void	ft_close_std(void);
+void	ft_exit_exec(t_data *data);//, int val_exit);
+void	ft_free_data_child(t_data *data);
+int		ft_clean_cmdline(t_data *data);
+int		ft_clean_loop(t_data *data);
 
-// /* **************************** */
-// /* début - branch CR_ft_malloc2 */
+/*	bin collector */
 
-// /*	bin collector */
+void	*ft_malloc(t_data *data, void *ptr, int type, int size);
+int		ft_get_sizeof(int type);
 
-// void	*ft_malloc(t_data *data, void *ptr, int type, int size);
-// int		ft_get_sizeof(int type);
+int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
+t_bin	*ft_lstlast_bin(t_bin *bin);
+void	ft_lstclear_bin(t_bin *bin);
+void	ft_lstdelone_bin(t_bin *node);
+void	ft_free_bin(void *ptr, int type, int size);
 
-// int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
-// t_bin	*ft_lstlast_bin(t_bin *bin);
-// void	ft_lstclear_bin(t_bin *bin);
-// void	ft_lstdelone_bin(t_bin *node);
-// void	ft_free_bin(void *ptr, int type, int size);
+char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
+char	*ft_strdup_malloc(void *data, const char *s1);
 
-// char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
-// char	*ft_strdup_malloc(void *data, const char *s1);
-
-// /*	fin - branch CR_ft_malloc2 */
-// /* *************************** */
 
 // ***** ex-del_quotes *****
 
