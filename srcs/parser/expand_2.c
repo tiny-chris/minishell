@@ -6,11 +6,13 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 14:42:37 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/30 20:56:16 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_val_exit;
 
 int	ft_get_error_size(t_data *data)
 {
@@ -18,7 +20,8 @@ int	ft_get_error_size(t_data *data)
 	int		len;
 
 	len = 0;
-	str_exit = ft_itoa(data->val_exit);
+	//str_exit = ft_itoa(data->val_exit);
+	str_exit = ft_itoa(g_val_exit);
 	if (!str_exit)
 		return (-1); ///free tout ce qu'il y a à free + exit
 	len = ft_strlen(str_exit);

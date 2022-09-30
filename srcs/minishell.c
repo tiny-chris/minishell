@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/29 22:18:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/30 21:06:50 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_val_exit;
 
 int	ft_only_space(char *line)
 {
@@ -159,7 +161,9 @@ void	ft_minishell(t_data *data)
 {
 	if (ft_lexer(data->line))
 	{//dprintf(2, "ft_lexer = %d\n", ft_lexer(data.line));
-		data->val_exit = ft_msg(2, "", "", ERRSTX);
+		//data->val_exit = ft_msg(2, "", "", ERRSTX);
+		//g_val_exit = data->val_exit;
+		g_val_exit = ft_msg(2, "", "", ERRSTX);
 	}
 	else
 	{
@@ -180,6 +184,8 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		while (1)
 		{
+			signal(SIGINT, sig_int);
+			signal(SIGQUIT, FTQUIT);
 			data.line = readline(data.prompt);
 			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
 			{

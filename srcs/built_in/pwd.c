@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:12:40 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/22 15:13:34 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/30 20:58:33 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern int	g_val_exit;
 /*	<SUMMARY> pwd built-in
 **	Returns the current work directory absolute path
 **	<PARAM>		{t_data *}	data --> to get the char *cwd (initialised at
@@ -21,7 +22,8 @@
 */
 int	ft_pwd(t_data *data)
 {
-	data->val_exit = 0;
+	//data->val_exit = 0;
+	g_val_exit = 0;
 	printf("%s\n", data->cwd);
 	return (0);
 }

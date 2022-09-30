@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/29 01:25:06 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/30 20:55:29 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_val_exit;
 
 int	ft_redirect_inout(t_data *data, t_cmd *cmd, int i)
 {
@@ -154,9 +156,10 @@ void	ft_child_process(t_data *data, int i)
 	if (cmd->token->type == BUILTIN)
 	{
 		dprintf(2, "passe dans les builtin\n");
-	 	data->val_exit = ft_exec_built_in(cmd, data);
+	 	//data->val_exit = ft_exec_built_in(cmd, data);
+		g_val_exit = ft_exec_built_in(cmd, data);
 		ft_free_data_child(data);
-		exit(data->val_exit);// A CORRIGER
+		exit(g_val_exit);// A CORRIGER
 	}
 	else
 	{
@@ -270,7 +273,8 @@ int	ft_exec(t_data *data)
 	ft_get_files_io(data);
 	if (data->nb_pipes == 0 && data->cmd->token == NULL)
 	{
-		data->val_exit = EXIT_SUCCESS;
+		//data->val_exit = EXIT_SUCCESS;
+		g_val_exit = EXIT_SUCCESS;
 		ft_exit_exec(data);
 		return (EXIT_SUCCESS);
 	}
@@ -286,14 +290,18 @@ int	ft_exec(t_data *data)
 		//
 		// //***** nouvelle version - fusion ft_exec_builtin:
 		if (data->cmd->file_err == 1)
-			data->val_exit = 1;
+		{
+			//data->val_exit = 1;
+			g_val_exit = 1;
+		}
 		else
 		{
 			printf("passe dans builin unique\n");//
-			data->val_exit = ft_exec_built_in(data->cmd, data);
+			//data->val_exit = ft_exec_built_in(data->cmd, data);
+			g_val_exit = ft_exec_built_in(data->cmd, data);
 			ft_exit_exec(data);
 		}
-		return (data->val_exit);
+		return (g_val_exit);
 		// //***** fin nouvelle version
 	}
 	//dprintf(2, "init ok\n");
@@ -302,7 +310,8 @@ int	ft_exec(t_data *data)
 	{
 		if (pipe(data->pipe_fd[i]) == -1)
 		{
-			data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+			//data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));;
 			ft_exit_exec(data);
 			return (1);
 		}
@@ -314,12 +323,16 @@ int	ft_exec(t_data *data)
 		data->pid[i] = fork();
 		//dprintf(2, "data->pid[i] = %d\n", data->pid[i]);
 		if (data->pid[i] == -1)
-			data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+		{
+			//data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+		}
 		else if (data->pid[i] == 0)
 			ft_child_process(data, i);
 		i++;
 	}
-	data->val_exit = ft_parent_process(data);
+	//data->val_exit = ft_parent_process(data);
+	g_val_exit = ft_parent_process(data);
 	return (0);
 }
 

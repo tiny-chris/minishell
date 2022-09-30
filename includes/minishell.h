@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/29 22:02:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/09/30 21:06:23 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <dirent.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 # define ERRSTX "syntax error"
 # define ERRMAL "memory allocation error"
@@ -37,6 +38,8 @@
 # define ERRNAM "not a valid identifier"
 # define ERRARG "too many arguments"
 # define ERRHOM "HOME not set"
+
+#define	FTQUIT (void (*)(int))1
 
 typedef enum s_type
 {
@@ -140,6 +143,11 @@ typedef struct s_data
 
 /*	***** INIT *****	*/
 /*	*****************	*/
+
+int		main(int argc, char **argv, char **envp);
+void	ft_minishell(t_data *data);
+int		ft_clean_loop(t_data *data);
+int		ft_clean_cmdline(t_data *data);
 
 t_env	*ft_get_env(char **envp);
 char	**ft_built_in(void);
@@ -334,6 +342,10 @@ int		ft_check_unset(t_token *token, t_data *data);
 int		ft_cd(t_cmd *cmd, t_data *data);
 void	ft_update_pwd(t_cmd *cmd, t_data *data);
 void	ft_update_cwd(t_data *data);
+
+/* signaux */
+
+void	sig_int(int sig);
 
 // /* **************************** */
 // /* début - branch CR_ft_malloc2 */
