@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 05:59:08 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/02 11:47:15 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,39 +157,39 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 
 */
 
-char	*ft_relative_path(t_data *data, char *token)
-{
-	int		i;
-	char	*cwd_update;
+// char	*ft_relative_path(t_data *data, char *token)
+// {
+// 	int		i;
+// 	char	*cwd_update;
 
-	i = 0;
-	cwd_update = ft_strdup(data->cwd);
-	if (!data->cwd)
-		return (NULL);//tout nettoyer !!
-	while (token[i])
-	{
-		if (token[i] && token[i] == '.')
-		{
-			if(token[i + 1] && token[i + 1] == '.')
-			{
-				if (token[i + 2] == '\0')
-					return (ft_get_dir_parent(cwd_update));
-				else if (token[ i + 2] && token[i + 2] == '/')
-				{
-					while (token[i + 2] & token[i + 2] == '/')
-						i++;
-					if (token[i + 2] == '\0')
-						return (ft_get_dir_parent(cwd_update));
-				}
-				i++;
-			}
-		}
-		i++;
-	}
+// 	i = 0;
+// 	cwd_update = ft_strdup(data->cwd);
+// 	if (!data->cwd)
+// 		return (NULL);//tout nettoyer !!
+// 	while (token[i])
+// 	{
+// 		if (token[i] && token[i] == '.')
+// 		{
+// 			if(token[i + 1] && token[i + 1] == '.')
+// 			{
+// 				if (token[i + 2] == '\0')
+// 					return (ft_get_dir_parent(cwd_update));
+// 				else if (token[ i + 2] && token[i + 2] == '/')
+// 				{
+// 					while (token[i + 2] & token[i + 2] == '/')
+// 						i++;
+// 					if (token[i + 2] == '\0')
+// 						return (ft_get_dir_parent(cwd_update));
+// 				}
+// 				i++;
+// 			}
+// 		}
+// 		i++;
+// 	}
 
-	/*
-		Tant que
-	*/
+// 	/*
+// 		Tant que
+// 	*/
 
 
-}
+// }
