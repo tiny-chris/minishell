@@ -1,3 +1,0 @@
-[submodule "lib/libft_42"]
-	path = lib/libft
-	url = git@github.com:clemedon/libft_42.git
