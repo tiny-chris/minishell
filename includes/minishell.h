@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 13:33:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/02 15:51:08 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define ERRNAM "not a valid identifier"
 # define ERRARG "too many arguments"
 # define ERRHOM "HOME not set"
+# define ERRFAR "filename argument required"
 
 typedef enum s_type
 {
@@ -284,6 +285,7 @@ void	*ft_free_tabstr(char **tab_str);
 int		ft_new_strchr(const char *s, int c);
 void	*ft_free_tabint(int **tab_int, int size);
 int		ft_is_in_set(const char *set, char c);
+int		ft_new_strrchr(const char *s, int c);
 
 /*	***** EXEC *****	*/
 /*	****************	*/

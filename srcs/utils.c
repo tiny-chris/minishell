@@ -84,3 +84,21 @@ int	ft_is_in_set(const char *set, char c)
 	}
 	return (0);
 }
+
+int	ft_new_strrchr(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+		i++;
+	while (i > 0)
+	{
+		if (s[i] == (char)c)
+			return (i);
+		i--;
+	}
+	return (0);
+}

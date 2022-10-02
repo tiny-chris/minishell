@@ -1,4 +1,9 @@
+A FAIRE
 
+echo -->built in
+l 53	remplacer 	printf("");
+		par : 		write(1, "", 0);
+		
 ----------------------------------------
 ----- Modifs en cours - A PARTAGER -----
 ----------------------------------------
