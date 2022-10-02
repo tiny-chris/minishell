@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 04:19:41 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/02 13:33:33 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,7 @@ void	ft_free_token(t_token **token);
 void	*ft_free_tabstr(char **tab_str);
 int		ft_new_strchr(const char *s, int c);
 void	*ft_free_tabint(int **tab_int, int size);
+int		ft_is_in_set(const char *set, char c);
 
 /*	***** EXEC *****	*/
 /*	****************	*/

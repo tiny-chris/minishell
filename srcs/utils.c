@@ -64,3 +64,23 @@ void	*ft_free_tabint(int **tab_int, int size)
 	tab_int = NULL;
 	return (NULL);
 }
+
+/*  Checks if there is a char 'c' is in the defined 'set' string
+**	- if yes    --> return 1
+**  - if no     --> return 0
+*/
+int	ft_is_in_set(const char *set, char c)
+{
+	int	i;
+
+	if (!set)
+		return (0);
+	i = 0;
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (1);
+		i ++;
+	}
+	return (0);
+}
