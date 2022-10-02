@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/29 01:25:06 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/02 11:55:33 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ void	ft_child_process(t_data *data, int i)
 		// }
 		/*	*****
 			fin de la partie à commenter*/
+		printf("val cmd path = %s\n", cmd->cmd_path);
 		if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env_path) == -1)
 		{
 			//ft_exit_exec(data);

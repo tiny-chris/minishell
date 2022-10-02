@@ -19,7 +19,6 @@ int	ft_new_strchr(const char *s, int c)
 	i = 0;
 	while (s[i] != '\0')
 	{
-		printf("s[%d] = %c\n", i, s[i]);//
 		if (s[i] == (char)c)
 		{
 			if (i == 0 && s[i + 1] == '\0')
