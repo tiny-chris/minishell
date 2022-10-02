@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 01:55:55 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 03:02:34 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/02 00:10:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t l
 		return (ft_strdup(""));
 	if (len + start > str_len)
 		// new_str = malloc(sizeof(char) * (str_len - start));
-		new_str = ft_malloc(data, new_str, TAB_STR1, (str_len - start));
+		new_str = ft_malloc(data, (char *)new_str, TAB_STR1, (str_len - start));
 	else
 		// new_str = malloc(sizeof(char) * (len + 1));
 		new_str = ft_malloc(data, new_str, TAB_STR1, (len + 1));

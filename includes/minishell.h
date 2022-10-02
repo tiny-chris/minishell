@@ -6,25 +6,25 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/30 14:05:05 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/02 04:19:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include "libft.h"
+# include <dirent.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <errno.h>
-# include <dirent.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <unistd.h>
 
 # define ERRSTX "syntax error"
 # define ERRMAL "memory allocation error"
@@ -67,6 +67,7 @@ typedef enum s_sizetype
 	LST_ENV			= 104,
 	LST_CMD			= 105,
 	LST_TOK			= 106,
+	LST_BIN			= 107,
 }	t_sizetype;
 
 typedef struct s_bin
@@ -239,7 +240,7 @@ int		ft_clean_token(t_cmd *cmd, t_data *data);
 int		ft_consec_quotes_len(char *token);
 char	*ft_fill_consec_quotes(char *token, int len);
 int		ft_space_quotes(char *tmp_token, t_token *token);
-int		ft_clean_len(char *token);00
+int		ft_clean_len(char *token);
 char	*ft_fill_clean_token(char *tmp_token, int len);
 void	ft_positive_token(t_token *token);
 //int		ft_del_empty_token(t_cmd **cmd, t_data *data);
@@ -335,25 +336,28 @@ int		ft_cd(t_cmd *cmd, t_data *data);
 void	ft_update_pwd(t_cmd *cmd, t_data *data);
 void	ft_update_cwd(t_data *data);
 
-// /* **************************** */
-// /* début - branch CR_ft_malloc2 */
+/* **************************** */
+/* début - branch CR_ft_malloc2 */
 
-// /*	bin collector */
+/*	bin collector */
 
-// void	*ft_malloc(t_data *data, void *ptr, int type, int size);
-// int		ft_get_sizeof(int type);
+void	*ft_malloc(t_data *data, int type, int size);
+void	*ft_malloc2(t_data *data, int type, int size);
 
-// int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
-// t_bin	*ft_lstlast_bin(t_bin *bin);
-// void	ft_lstclear_bin(t_bin *bin);
-// void	ft_lstdelone_bin(t_bin *node);
-// void	ft_free_bin(void *ptr, int type, int size);
+int		ft_lstadd_bin(t_data *data, void *ptr, int type, int size);
+t_bin	*ft_lstlast_bin(t_bin *bin);
+void	ft_lstclear_bin(t_bin *bin);
+void	ft_lstdelone_bin(t_bin *node);
+void	ft_free_bin(void *ptr, int type, int size);
 
-// char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
-// char	*ft_strdup_malloc(void *data, const char *s1);
+char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
+char	*ft_strdup_malloc(void *data, const char *s1);
+char	*ft_itoa_malloc(void *data, int n);
+char	*ft_strjoin_malloc(void *data, char const *s1, char const *s2);
+char	**ft_split_malloc(void *data, char const *s, char c);
 
-// /*	fin - branch CR_ft_malloc2 */
-// /* *************************** */
+/*	fin - branch CR_ft_malloc2 */
+/* *************************** */
 
 // ***** ex-del_quotes *****
 

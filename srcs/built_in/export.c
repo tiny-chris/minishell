@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/29 01:28:04 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/02 04:55:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	ft_check_export(t_token *token, t_data *data)
 	env = data->env;
 	var_tmp = NULL;
 	i = ft_new_strchr(token->token, '=');
+	printf("val de i new strchr export = dans tokentoken : %d\n", i);
 	var_tmp = ft_substr(token->token, 0, i + 1);
 	if (!var_tmp)
 		return (1);//FREE + EXIT (MALLOC)

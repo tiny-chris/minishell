@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/29 22:18:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/02 04:02:26 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void ft_init_data_0(t_data *data)
 	data->pipe_fd = NULL;
 	data->env_path = NULL;
 	data->s_env_path = NULL;
-	//data->bin = NULL;
+	data->bin = NULL;
 	//TO CHECK : que toutes les variables de t_data sont init_0
 }
 

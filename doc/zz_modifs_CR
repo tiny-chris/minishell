@@ -3,6 +3,15 @@
 ----- Modifs en cours - A PARTAGER -----
 ----------------------------------------
 
+> sort the headers in alphabetical order in minishell.h
+	+ ajout de LST_BIN
+	+ code de ft_malloc pour chaque sizeof
+	+ fonctions lists pour
+		- lstadd_front
+		- lstfree
+		...
+> ft_new_strchr --> car incorrect pour / tout seul et toto/ ...
+
 > base pour branch CR_ft_malloc2
 
 	WIP - penser à mettre des ** et pas des * ?!?!

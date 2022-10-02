@@ -25,6 +25,7 @@ SRC_DIR		:= srcs
 SRCS 		:= \
 			minishell.c \
 			utils.c \
+			utils2.c \
 			parser/parser.c \
 			parser/env.c \
 			parser/lexer.c \
@@ -56,7 +57,7 @@ SRCS 		:= \
 			exec/init.c \
 			exec/cmd_path.c \
 			exec/clean.c \
-#			bin_collect/bin_coll.c \
+			bin_collect/bin_coll.c \
 			bin_collect/bin_list.c \
 
 SRCS		:= $(addprefix $(SRC_DIR)/,$(SRCS))
