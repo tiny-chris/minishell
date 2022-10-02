@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:12:08 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/30 21:17:11 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/02 23:07:49 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ extern int  g_val_exit;
     rl_redisplay() Change what’s displayed on the screen to reflect the current contents of rl_line_buffer (le texte qu'on a mis dans rl_replace_line). 
         -> permet de reafficher le prompt directement (sinon il ne s'affiche que lorsque l'on commence à tapper une nouvelle commande)*/
 
+/* interractive mode signal handling */
+
 void	sig_int(int sig)
 {
 	(void)sig;
@@ -31,32 +33,31 @@ void	sig_int(int sig)
     g_val_exit = 1;
 }
 
-void    sig_quit(int sig)
+void	ft_signal(t_data *data, int signum, t_sighandler handler)
 {
-    
+	if (signal(signum, handler) == SIG_ERR)
+	{
+		g_val_exit = errno;
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("error: ", 2);
+		ft_putendl_fd(strerror(errno), 2);
+		//ft_exitmsg(data, "");
+        ft_msg(g_val_exit, "minishell: ", "", "error\n");
+        ft_free_cmd(&(data->cmd));// A AJUSTER
+        ft_clean_cmdline(data);
+        ft_clean_cmdline(data);
+        rl_clear_history();
+        ft_clean_loop(data);
+	}
 }
 
-// static void	display_for_blocking_cmd(int num)
-// {
-// 	num++;
-// 	write(1, "\n", 1);
-// }
-
-// static void	quit_process(int num)
-// {
-// 	num++;
-// 	printf("Quit (core dumped)\n");
-// }
-
-// void	signal_for_blocking_cmd(void)
-// {
-// 	signal(SIGINT, display_for_blocking_cmd);
-// 	signal(SIGQUIT, quit_process);
-// }
-
-// void	interrupt_here_document(int signal)
-// {
-// 	(void)signal;
-// 	write(1, "\n", 1);
-// 	exit(errno);
-// }
+void	ft_init_signals(t_data *data)
+{
+    // ft_w_signal(data, SIGHUP, SIG_IGN);
+	// ft_w_signal(data, SIGTERM, SIG_IGN);
+	// ft_w_signal(data, SIGTTIN, SIG_IGN);
+	// ft_w_signal(data, SIGTTOU, SIG_IGN);
+	// ft_w_signal(data, SIGTSTP, SIG_IGN);
+	ft_signal(data, SIGQUIT, SIG_IGN); // SIG_IGN = signal ignore (macro de la lib signal.h)
+	ft_signal(data, SIGINT, sig_int);
+}

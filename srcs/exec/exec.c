@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/30 20:55:29 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/02 23:39:31 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,6 +251,20 @@ int	ft_parent_process(t_data *data)
 	}
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+		{
+			status = 128 + WTERMSIG(status);
+			ft_putstr_fd("Quit (core dumped)\n", 1);
+		}
+		if (WTERMSIG(status) == SIGINT)
+		{
+			status = 128 + WTERMSIG(status);
+			ft_putstr_fd("\n", 1);
+		}
+		errno = EINTR; 	
+	}
 	ft_exit_exec(data);
 	// i = 3;
 	// while (i < 1000)
@@ -328,10 +342,16 @@ int	ft_exec(t_data *data)
 			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
 		}
 		else if (data->pid[i] == 0)
+		{
+			ft_signal(data, SIGTTIN, SIG_IGN); // ignore signal
+			ft_signal(data, SIGQUIT, SIG_DFL); // default action 
 			ft_child_process(data, i);
+		}
 		i++;
 	}
 	//data->val_exit = ft_parent_process(data);
+	ft_signal(data, SIGTTIN, SIG_IGN);
+	ft_signal(data, SIGQUIT, SIG_DFL);
 	g_val_exit = ft_parent_process(data);
 	return (0);
 }

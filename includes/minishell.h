@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/30 21:06:23 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/02 23:08:23 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define ERRARG "too many arguments"
 # define ERRHOM "HOME not set"
 
-#define	FTQUIT (void (*)(int))1
+typedef void	(*t_sighandler)(int);
 
 typedef enum s_type
 {
@@ -346,6 +346,9 @@ void	ft_update_cwd(t_data *data);
 /* signaux */
 
 void	sig_int(int sig);
+void	ft_init_signals(t_data *data);
+void	ft_signal(t_data *data, int signum, t_sighandler handler);
+
 
 // /* **************************** */
 // /* début - branch CR_ft_malloc2 */
