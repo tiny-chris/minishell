@@ -1,11 +1,52 @@
+A FAIRE
+
+echo -->built in
+l 53	remplacer 	printf("");
+		par : 		write(1, "", 0);
+
+finalisation de cmd_path --> ok + ajout dans PATH (cas ..)
+
+A push (03/10);
+> ft_new_strchr --> car incorrect pour / tout seul et toto/ ...
+> sort the headers in alphabetical order in minishell.h
+> pour cmd_path :
+	> define
+		# define ERRSTX "syntax error"
+		# define ERRMAL "memory allocation error"
+		# define ERRCMD "command not found"
+		# define ERRDIR "is a directory"
+		# define ERRNDR "not a directory"
+		# define ERRFOD "no such file or directory"
+		# define ERRMSG "Error: "
+		# define ERRFEW "too few arguments"
+		# define ERRNAM "not a valid identifier"
+		# define ERRARG "too many arguments"
+		# define ERRHOM "HOME not set"
+	X	# define ERRFAR ".: filename argument required"
+	X	# define ERRFAU ".: usage: . filename [arguments]"
+	X	# define ERRPRD "permission denied"
+
+	> cmd_path : 
+		- full change ft_find_cmd_path
+		- ajout cas '..' ft_find_cmd_path2
+		- ajout fonctions
+
+
 
 ----------------------------------------
 ----- Modifs en cours - A PARTAGER -----
 ----------------------------------------
 
-> base pour branch CR_ft_malloc2
 
-	WIP - penser à mettre des ** et pas des * ?!?!
+	+ ajout de LST_BIN
+	+ code de ft_malloc pour chaque sizeof
+	+ fonctions lists pour
+		- lstadd_front
+		- lstfree
+		...
+
+
+> base pour branch CR_ft_malloc2
 
   Dans minishell.h :
 	[x] Création d'un enum additionnel pour lister les types de sizeof

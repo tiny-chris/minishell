@@ -25,6 +25,7 @@ SRC_DIR		:= srcs
 SRCS 		:= \
 			minishell.c \
 			utils.c \
+			utils2.c \
 			parser/parser.c \
 			parser/env.c \
 			parser/lexer.c \

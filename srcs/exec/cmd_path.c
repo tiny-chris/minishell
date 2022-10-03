@@ -6,52 +6,278 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/23 15:59:50 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/03 17:00:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+// fonction à déployer
+// cas :
+/*	./		--> ./: Is a directory
+	..		--> ..: command not found
+	..///	--> ..///: Is a directory
+	///		--> ///: Is a directory
+	.//.	--> ././: Is a directory
+	././c	--> ././c: No such file or directory
+
+
+	./a.out	--> Hello Hello !
+
+	utiliser data->cwd (+ / + texte)
+	revoir les . et ..
+
+
+*/
+char	*ft_get_path_parent(char *cwd_update)
+{
+	char	*new_cwd;
+	char	*tmp_cwd;
+	int		i;
+
+	new_cwd = NULL;
+	tmp_cwd = NULL;
+	i = 0;
+	if (ft_strlen(cwd_update) == 1 && cwd_update[0] == '/')
+	{
+		new_cwd = ft_strdup(cwd_update);
+		if (!new_cwd)
+			return (NULL);//tout nettoyer car pb de malloc
+	}
+	else
+	{
+		i = ft_strlen(cwd_update) - 1;
+		if (cwd_update[i] == '/')
+		{
+			tmp_cwd = ft_substr(cwd_update, 0, i);
+			if (!tmp_cwd)
+				return (NULL);//tout nettoyer car pb de malloc
+		}
+		else
+		{
+			tmp_cwd = ft_strdup(cwd_update);
+			if (!tmp_cwd)
+				return (NULL);//tout nettoyer car pb de malloc
+		}
+		i = ft_new_strrchr(tmp_cwd, '/');
+		free(tmp_cwd);//ft_free_str(tmp_cwd);// pour tout mettre a NULL
+		tmp_cwd = NULL;
+		if (i == 0)
+		{
+			new_cwd = ft_strdup("/");
+			if (!new_cwd)
+				return (NULL);//tout nettoyer car pb de malloc
+		}
+		else
+			new_cwd = ft_substr(cwd_update, 0, i);//sans le slash
+	}
+	return (new_cwd);
+}
+
+/*	<SUMMARY> Updates the cmd_
+	Next step will be to check it (acces & opendir)
+*/
+void	ft_update_path(char **cmd_path, char *token, int i, int j)
+{
+	char	*tmp_path;
+	char	*tmp_path2;
+	char	*cwd_update;
+	char	*check;
+
+	tmp_path = NULL;
+	tmp_path2 = NULL;
+	cwd_update = ft_strdup((*cmd_path));
+	if (!cwd_update)
+		return ;//malloc / exit
+	check = ft_substr(token, i, (j - i + 1));
+	if (!check)
+		return ;//malloc / exit
+	if (ft_strncmp(check, "./", ft_strlen(check)) == 0)
+		return ;
+	else if (ft_strncmp(check, "../", ft_strlen(check)) == 0)
+		tmp_path = ft_get_path_parent(cwd_update);
+	else
+	//j'ajoute la partie
+	{
+		i = ft_strlen(cwd_update) - 1;
+		if (cwd_update[ft_strlen(cwd_update) - 1] != '/')
+		{
+			tmp_path2 = ft_strjoin(cwd_update, "/");//a proteger
+			tmp_path = ft_strjoin(tmp_path2, check);//a proteger
+			free(tmp_path2);
+		}
+		else
+			tmp_path = ft_strjoin(cwd_update, check);//a proteger
+	}
+	free (cwd_update);
+	cwd_update = NULL;
+	free(check);
+	check = NULL;
+	// je free cmd_path
+	// je recup tmp
+	free((*cmd_path));
+	(*cmd_path) = NULL;
+	(*cmd_path) = tmp_path;
+}
+
+/*	<SUMMARY> Gets full path (absolute path) from a potential relative path by:
+	- cleaning ./ & ../
+	- using strjoin to gather root part to cmd part
+	Next step will be to check it (acces & opendir)
+*/
+char	*ft_get_full_path(char *token, t_data *data)
+{
+	char	*cmd_path;
+	int		i;
+	int		j;
+	int		k;
+
+	cmd_path = ft_strdup(data->cwd);
+	if (!cmd_path)
+		return (NULL);//nettoyer tout les malloc & exit (new prompt)
+	i = 0;
+	j = 0;
+	k = 0;
+	while (token[i])
+	{
+		if (token[i] && token[i] != '/')
+		{
+			j = i;
+			while (token[j] && token[j] != '/')
+				j++;
+			if (token[j] && token[j] == '/')
+			{
+				k = j;
+				while (token[k] && token[k] == '/')
+					k++;
+				//je récupère un 'directory' ('./' ou '..////' ou 'usr/'...)
+				//je mets à jour mon cwd_update
+				ft_update_path(&cmd_path, token, i, j);
+				i = k - 1;
+			}
+			else// (token[j] == '\0')
+			{
+				ft_update_path(&cmd_path, token, i, j - 1);
+				break ;
+			}
+		}
+		i++;
+	}
+	return (cmd_path);
+}
+
+/*
+check 'is directory'
+	- if directory : is a directory, 126
+	- if not a directory : check 'last character of token is a / (slash)'
+		- if not a '/' : check 'access F_OK'
+			- if yes : check 'access X_OK'
+				- if yes : return token
+				- it not : permission denied, 126
+			- if no : no such file or directory, 127
+		- if a '/' : check 'access F_OK'
+			- if yes : not a directory, 126
+			- if no : no such file or directory, 127
+*/
+char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
+{
+	DIR		*directory;
+	char	*tmp;
+
+	directory = NULL;
+	tmp = NULL;
+	if (!token)
+		return (NULL);
+	directory = opendir(full_path);
+	printf("val de directory = %p\n", directory);
+	if (directory != NULL)// c'est un directory
+	{
+		closedir(directory);
+		data->val_exit = ft_msg(126, token, ": isdir 126", ERRDIR);//enlever 'test'
+		ft_free_data_child(data);
+		free(full_path);
+		exit (data->val_exit);
+	}
+	else
+	{
+		if (token[len - 1] != '/')
+		{
+			if (access((const char *)full_path, F_OK) == 0)
+			{
+				if (access((const char *)full_path, X_OK) == 0)
+					return (ft_strdup(full_path));
+				else
+				{
+					data->val_exit = ft_msg(126, token, ": notdir-notx 126 ", ERRPRD);//enlever 'test'
+					ft_free_data_child(data);
+					free(full_path);
+					exit (data->val_exit);
+				}
+			}
+			printf("full path n'est PAS F_OK\n");
+		}
+		else//se termine par un '/'
+		{
+			tmp = ft_substr(full_path, 0, ft_strlen(full_path) - 1);
+			if (access((const char *)tmp, F_OK) == 0)
+			{
+				free(tmp);
+				data->val_exit = ft_msg(126, token, ": notdir-FOKsans/ 126 ", ERRNDR);//enlever 'test'
+				ft_free_data_child(data);
+				free(full_path);
+				exit (data->val_exit);
+			}
+			if (tmp)
+				free(tmp);
+			free(full_path);
+		}
+		data->val_exit = ft_msg(127, token, ": notdir-notF 127 ", ERRFOD);//enlever 'test
+		ft_free_data_child(data);
+		free(full_path);
+		exit (data->val_exit);
+	}
+	return (NULL);
+}
+
+/*	<SUMMARY> Gets the correct command path
+**	- check #1:	if token = .
+**	- check #2:	if token contains a '/'
+**		1. token starts with a '/' --> absolute path 
+**			--> check absolute path (function)
+**		2. token does not start with a '/' but has a slash --> relative path
+**			a. reconstitute absolute path (function)
+**			b. check absolute path (function)
+**	- check #3:	if token has no /
+**		- on check direct si cette commande existe (access / execve)
+**			notre 'ft_find_cmd_path2'
+*/
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 {
 	char	*cmd_path;
-	int		res;
+	char	*full_path;
+	int		len;
 
 	cmd_path = NULL;
-	res = -2;
-	if (ft_new_strchr(cmd->token->token, '/'))
+	full_path = NULL;
+	len = ft_strlen(cmd->token->token);
+	//peut-on avoir cmd->token-token == empty ??
+	if (len == 1 && cmd->token->token[0] == '.')
+		exit(ft_msg(2, ERRFAR, "\n", ERRFAU));
+	if (ft_is_in_set(cmd->token->token, '/'))
 	{
-		if (ft_strlen(cmd->token->token) == 1)
+		if (cmd->token->token[0] == '/')
+			cmd_path = ft_check_abs_path(cmd->token->token, cmd->token->token, data, len);
+		else
 		{
-			//ft_exit_exec(data);
-			ft_free_data_child(data);
-			exit(ft_msg(126, "/", ": ", ERRDIR)); // A AJUSTER POUR NE PAS AVOIR 2 MSG D'ERREUR
+			full_path = ft_get_full_path(cmd->token->token, data);
+			if (!full_path)
+				return (NULL);//tout nettoyer malloc et exit
+			cmd_path = ft_check_abs_path(cmd->token->token, full_path, data, len);
 		}
-		else if (cmd->token->token[0] == '/')
-		{
-			if (access((const char *)cmd->token->token, F_OK | X_OK) == 0)
-				return (cmd->token->token);
-			//ft_exit_exec(data);
-			res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
-			ft_free_data_child(data);
-			exit(res);
-		}
-		cmd_path = ft_strjoin("./", cmd->token->token);
-		if (!cmd_path)
-		{
-			//ft_exit_exec(data);
-			ft_free_data_child(data);
-			exit(ft_msg(1, "", "", ERRMAL));
-		}
-		if (access((const char *)cmd_path, F_OK | X_OK) == 0)
-			return (cmd_path);
-		free(cmd_path);
-		//ft_exit_exec(data);
-		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
-		ft_free_data_child(data);
-		exit(res);
 	}
-	cmd_path = ft_find_cmd_path2(cmd, data);
+	else
+		cmd_path = ft_find_cmd_path2(cmd, data);
 	return (cmd_path);
 }
 
@@ -63,7 +289,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 	int		j;
 	int		res;
 
-	//printf("debut env_path2\n");
+	printf("debut env_path2\n");
 	cmd_path = NULL;
 	new_path = NULL;
 	env_path = data->env_path;
@@ -76,10 +302,16 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		ft_free_data_child(data);
 		exit(res);
 	}
+	if (ft_strncmp(cmd->token->token, "..", ft_strlen(cmd->token->token)) == 0)
+	{
+		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
+		ft_free_data_child(data);
+		exit(res);
+	}
 	while (env_path)
 	{
 		j = ft_strlen(env_path->content) - 1;
-		//printf("env pathe content = %s\n", env_path->content);
+		//printf("env path content = %s\n", env_path->content);
 		if (env_path->content[j] != '/')
 		{
 			new_path = ft_strjoin(env_path->content, "/");
@@ -103,6 +335,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		env_path = env_path->next;
 	}
 	//ft_exit_exec(data);
+	printf("check je suis là\n");
 	if (cmd->token->env == 1)
 		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
 	else

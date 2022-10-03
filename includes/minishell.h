@@ -6,25 +6,25 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/29 22:02:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:04:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include "libft.h"
+# include <dirent.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <errno.h>
-# include <dirent.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <unistd.h>
 
 # define ERRSTX "syntax error"
 # define ERRMAL "memory allocation error"
@@ -37,6 +37,9 @@
 # define ERRNAM "not a valid identifier"
 # define ERRARG "too many arguments"
 # define ERRHOM "HOME not set"
+# define ERRFAR ".: filename argument required"
+# define ERRFAU ".: usage: . filename [arguments]"
+# define ERRPRD "permission denied"
 
 typedef enum s_type
 {
@@ -55,32 +58,33 @@ typedef enum s_type
 	HERE_DOC 		= 23,
 }	t_type;
 
-// /* **************************** */
-// /* début - branch CR_ft_malloc2 */
+/* **************************** */
+/* début - branch CR_ft_malloc2 */
 
-// typedef enum s_sizetype
-// {
-// 	TAB_INT1		= 100,
-// 	TAB_INTS		= 101,
-// 	TAB_STR1		= 102,
-// 	TAB_STRS		= 103,
-// 	LST_ENV			= 104,
-// 	LST_CMD			= 105,
-// 	LST_TOK			= 106,
-// }	t_sizetype;
+typedef enum s_sizetype
+{
+	TAB_INT1		= 100,
+	TAB_INTS		= 101,
+	TAB_STR1		= 102,
+	TAB_STRS		= 103,
+	LST_ENV			= 104,
+	LST_CMD			= 105,
+	LST_TOK			= 106,
+	LST_BIN			= 107,
+}	t_sizetype;
 
-// typedef struct s_bin
-// {
-// 	void			*ptr;
-// 	int				type;// ou un void ??? tester pour les listes chainees
-// 	int				size;
-// 	struct s_bin	*next;
-// }	t_bin;
+typedef struct s_bin
+{
+	void			*ptr;
+	int				type;// ou un void ??? tester pour les listes chainees
+	int				size;
+	struct s_bin	*next;
+}	t_bin;
 
-// // cf. suite dans la liste des fonctions en-dessous
+// cf. suite dans la liste des fonctions en-dessous
 
-// /*	fin - branch CR_ft_malloc2 */
-// /* *************************** */
+/*	fin - branch CR_ft_malloc2 */
+/* *************************** */
 
 typedef struct s_token
 {
@@ -135,7 +139,6 @@ typedef struct s_data
 	int				**pipe_fd;//nb de fd[][]
 	t_env			*env_path;
 	char			**s_env_path;
-	//t_bin			*bin;//ajoutée pour le bin collector
 }	t_data;
 
 /*	***** INIT *****	*/
@@ -282,6 +285,8 @@ void	ft_free_token(t_token **token);
 void	*ft_free_tabstr(char **tab_str);
 int		ft_new_strchr(const char *s, int c);
 void	*ft_free_tabint(int **tab_int, int size);
+int		ft_is_in_set(const char *set, char c);
+int		ft_new_strrchr(const char *s, int c);
 
 /*	***** EXEC *****	*/
 /*	****************	*/
@@ -335,15 +340,15 @@ int		ft_cd(t_cmd *cmd, t_data *data);
 void	ft_update_pwd(t_cmd *cmd, t_data *data);
 void	ft_update_cwd(t_data *data);
 
-// /* **************************** */
-// /* début - branch CR_ft_malloc2 */
+/* **************************** */
+/* début - branch CR_ft_malloc2 */
 
-// /*	bin collector */
+/*	bin collector */
 
-// void	*ft_malloc(t_data *data, void *ptr, int type, int size);
-// int		ft_get_sizeof(int type);
+// void	*ft_malloc(t_data *data, int type, int size);
+// void	*ft_malloc2(t_data *data, int type, int size);
 
-// int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
+// int		ft_lstadd_bin(t_data *data, void *ptr, int type, int size);
 // t_bin	*ft_lstlast_bin(t_bin *bin);
 // void	ft_lstclear_bin(t_bin *bin);
 // void	ft_lstdelone_bin(t_bin *node);
@@ -351,9 +356,12 @@ void	ft_update_cwd(t_data *data);
 
 // char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
 // char	*ft_strdup_malloc(void *data, const char *s1);
+// char	*ft_itoa_malloc(void *data, int n);
+// char	*ft_strjoin_malloc(void *data, char const *s1, char const *s2);
+// char	**ft_split_malloc(void *data, char const *s, char c);
 
-// /*	fin - branch CR_ft_malloc2 */
-// /* *************************** */
+/*	fin - branch CR_ft_malloc2 */
+/* *************************** */
 
 // ***** ex-del_quotes *****
 
