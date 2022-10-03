@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:12:08 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/03 01:47:42 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/03 18:48:19 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ void	ft_signal(t_data *data, int signum, t_sighandler handler)
 
 void	ft_init_signals(t_data *data)
 {
-    // ft_w_signal(data, SIGHUP, SIG_IGN);
-	// ft_w_signal(data, SIGTERM, SIG_IGN);
-	// ft_w_signal(data, SIGTTIN, SIG_IGN);
-	// ft_w_signal(data, SIGTTOU, SIG_IGN);
-	// ft_w_signal(data, SIGTSTP, SIG_IGN);
+    ft_signal(data, SIGHUP, SIG_IGN);
+	ft_signal(data, SIGTERM, SIG_IGN);
+	ft_signal(data, SIGTTIN, SIG_IGN);
+	ft_signal(data, SIGTTOU, SIG_IGN);
+	ft_signal(data, SIGTSTP, SIG_IGN);
 	ft_signal(data, SIGQUIT, SIG_IGN); // SIG_IGN = signal ignore (macro de la lib signal.h)
 	ft_signal(data, SIGINT, sig_int);
 }
