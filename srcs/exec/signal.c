@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:12:08 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/03 16:52:36 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/03 01:47:42 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ void	sig_int(int sig)
 void	sig_quit(int sig)
 {
 	(void)sig;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	ft_putstr_fd("Quit (core dumped)\n", 1);
 	g_val_exit = 131;
 }
 

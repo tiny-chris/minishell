@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/03 16:58:25 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/03 02:06:19 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,7 +344,7 @@ int	ft_exec(t_data *data)
 		else if (data->pid[i] == 0)
 		{
 			//ft_signal(data, SIGINT, SIG_IGN); // pas besoin car meme action que dans init signals
-			//ft_signal(data, SIGQUIT, SIG_DFL); // default action ca va pas car quitte le minishell avec des leaks en plus
+			ft_signal(data, SIGQUIT, sig_quit); // default action ca va pas car quitte le minishell avec des leaks en plus
 			//ft_sigquit_child(data, SIGQUIT, sig_quit_child);
 			ft_child_process(data, i);
 		}
@@ -352,7 +352,7 @@ int	ft_exec(t_data *data)
 	}
 	//data->val_exit = ft_parent_process(data);
 	ft_signal(data, SIGINT, SIG_IGN); // pour eviter d'avoir 2 prompts.
-	//ft_signal(data, SIGQUIT, SIG_IGN);
+	ft_signal(data, SIGQUIT, SIG_IGN);
 	g_val_exit = ft_parent_process(data);
 	return (0);
 }
