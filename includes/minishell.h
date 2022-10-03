@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 23:08:23 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/03 16:52:58 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ int		main(int argc, char **argv, char **envp);
 void	ft_minishell(t_data *data);
 int		ft_clean_loop(t_data *data);
 int		ft_clean_cmdline(t_data *data);
+void	ft_exit_ctrl_d(t_data *data);
 
 t_env	*ft_get_env(char **envp);
 char	**ft_built_in(void);
@@ -348,7 +349,8 @@ void	ft_update_cwd(t_data *data);
 void	sig_int(int sig);
 void	ft_init_signals(t_data *data);
 void	ft_signal(t_data *data, int signum, t_sighandler handler);
-
+void	ft_sigquit_child(t_data *data, int signum, t_sighandler handler);
+void	sig_quit(int sig);
 
 // /* **************************** */
 // /* début - branch CR_ft_malloc2 */

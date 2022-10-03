@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 22:04:50 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/03 16:33:26 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,17 @@ void	ft_minishell(t_data *data)
 	ft_clean_cmdline(data);
 }
 
+void	ft_exit_ctrl_d(t_data *data)
+{
+	write(2, "exit\n", 5);
+	ft_free_cmd(&(data->cmd));// A AJUSTER
+	ft_clean_cmdline(data);
+	ft_clean_cmdline(data);
+	rl_clear_history();
+	ft_clean_loop(data);
+	exit(0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
@@ -182,10 +193,12 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (ft_init_data_1(&data, envp))
 			return (1);
-		ft_init_signals(&data);
 		while (1)
 		{
+			ft_init_signals(&data);
 			data.line = readline(data.prompt);
+			if (!data.line)
+				ft_exit_ctrl_d(&data);
 			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
 			{
 				add_history(data.line);

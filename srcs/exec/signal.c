@@ -6,13 +6,23 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:12:08 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 23:07:49 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/03 16:52:36 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int  g_val_exit;
+
+/* 
+** typedef void (*sighandler_t)(int);
+** sighandler_t signal(int signum, sighandler_t handler);
+
+** signal() installe le gestionnaire handler pour le signal signum. 
+** handler peut être SIG_IGN, SIG_DFL 
+** ou l'adresse d'une fonction définie par le programmeur 
+** (un « gestionnaire de signal »).
+*/
 
 /*  rl_replace_line(const char *text, int clear_undo) Replace the contents of rl_line_buffer with text. The point and mark are preserved, if possible. If clear_undo is non-zero, the undo list associated with the current line is cleared.
         -> en gros si on ne replace pas line par "" ca redisplay la commande qu'on avait (éventuellement) commencé à taper
@@ -23,6 +33,14 @@ extern int  g_val_exit;
 
 /* interractive mode signal handling */
 
+// void	sig_int_child(int sig)
+// {
+// 	(void)sig;
+// 	ft_free_data_child(data);
+// 	ft_close_std();
+// 	exit(130);
+// }
+
 void	sig_int(int sig)
 {
 	(void)sig;
@@ -30,7 +48,17 @@ void	sig_int(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-    g_val_exit = 1;
+	g_val_exit = 1;
+}
+
+void	sig_quit(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	g_val_exit = 131;
 }
 
 void	ft_signal(t_data *data, int signum, t_sighandler handler)

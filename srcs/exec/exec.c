@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 23:39:31 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/03 16:58:25 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ int	ft_parent_process(t_data *data)
 	}
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
+	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGQUIT)
 		{
@@ -261,9 +261,9 @@ int	ft_parent_process(t_data *data)
 		if (WTERMSIG(status) == SIGINT)
 		{
 			status = 128 + WTERMSIG(status);
-			ft_putstr_fd("\n", 1);
+			write(1, "\n", 1);
 		}
-		errno = EINTR; 	
+		//status = EINTR;
 	}
 	ft_exit_exec(data);
 	// i = 3;
@@ -343,15 +343,16 @@ int	ft_exec(t_data *data)
 		}
 		else if (data->pid[i] == 0)
 		{
-			ft_signal(data, SIGTTIN, SIG_IGN); // ignore signal
-			ft_signal(data, SIGQUIT, SIG_DFL); // default action 
+			//ft_signal(data, SIGINT, SIG_IGN); // pas besoin car meme action que dans init signals
+			//ft_signal(data, SIGQUIT, SIG_DFL); // default action ca va pas car quitte le minishell avec des leaks en plus
+			//ft_sigquit_child(data, SIGQUIT, sig_quit_child);
 			ft_child_process(data, i);
 		}
 		i++;
 	}
 	//data->val_exit = ft_parent_process(data);
-	ft_signal(data, SIGTTIN, SIG_IGN);
-	ft_signal(data, SIGQUIT, SIG_DFL);
+	ft_signal(data, SIGINT, SIG_IGN); // pour eviter d'avoir 2 prompts.
+	//ft_signal(data, SIGQUIT, SIG_IGN);
 	g_val_exit = ft_parent_process(data);
 	return (0);
 }
