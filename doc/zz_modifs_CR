@@ -3,7 +3,13 @@ A FAIRE
 echo -->built in
 l 53	remplacer 	printf("");
 		par : 		write(1, "", 0);
-		
+
+finalisation de cmd_path --> ok + ajout dans PATH (cas ..)
+
+// !!!!!!!!!!!!!! \\
+essayer d'inverser directory et access
+
+
 ----------------------------------------
 ----- Modifs en cours - A PARTAGER -----
 ----------------------------------------

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 17:44:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/03 02:05:25 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,110 +30,143 @@
 
 
 */
+char	*ft_get_path_parent(char *cwd_update)
+{
+	char	*new_cwd;
+	char	*tmp_cwd;
+	int		i;
 
-// char *tmp_path = NULL;//
-// 		int	j = 0;//
-// 		int i = 0;//
-// 		//ajuster la fonction cf. ci-desssous
-// 		if (cmd->token->token[0] == '.' && cmd->token->token[1] && cmd->token->token[1] == '/')
-// 		{
-// 			j = 1;
-// 			while (cmd->token->token[j] && cmd->token->token[j] == '/')
-// 				j++;
-// 			i = ft_strlen(data->cwd) - 1;
-// 			if (data->cwd[i] != '/')
-// 			{
-// 				tmp_path = ft_strjoin(data->cwd, "/");
-// 				if (!tmp_path)
-// 					return (NULL);
-// 				printf("tmp_path = %s\n", tmp_path);
-// 			}
-// 			else
-// 			{
-// 				tmp_path = ft_strdup(data->cwd);
-// 				if (!tmp_path)
-// 					return (NULL);
-// 			}
-// 		}
+	new_cwd = NULL;
+	tmp_cwd = NULL;
+	i = 0;
+	if (ft_strlen(cwd_update) == 1 && cwd_update[0] == '/')
+	{
+		new_cwd = ft_strdup(cwd_update);
+		if (!new_cwd)
+			return (NULL);//tout nettoyer car pb de malloc
+	}
+	else
+	{
+		i = ft_strlen(cwd_update) - 1;
+		if (cwd_update[i] == '/')
+		{
+			tmp_cwd = ft_substr(cwd_update, 0, i);
+			if (!tmp_cwd)
+				return (NULL);//tout nettoyer car pb de malloc
+		}
+		else
+		{
+			tmp_cwd = ft_strdup(cwd_update);
+			if (!tmp_cwd)
+				return (NULL);//tout nettoyer car pb de malloc
+		}
+		i = ft_new_strrchr(tmp_cwd, '/');
+		free(tmp_cwd);//ft_free_str(tmp_cwd);// pour tout mettre a NULL
+		tmp_cwd = NULL;
+		if (i == 0)
+		{
+			new_cwd = ft_strdup("/");
+			if (!new_cwd)
+				return (NULL);//tout nettoyer car pb de malloc
+		}
+		else
+			new_cwd = ft_substr(cwd_update, 0, i);//sans le slash
+	}
+	return (new_cwd);
+}
 
+/*	<SUMMARY> Updates the cmd_
+	Next step will be to check it (acces & opendir)
+*/
+void	ft_update_path(char **cmd_path, char *token, int i, int j)
+{
+	char	*tmp_path;
+	char	*tmp_path2;
+	char	*cwd_update;
+	char	*check;
+	//int		k;
 
-// char	*ft_get_path_parent(char *cwd_update)
-// {
-// 	char	*new_cwd;
-// 	char	*tmp_cwd;
-// 	int		i;
+	tmp_path = NULL;
+	tmp_path2 = NULL;
+	cwd_update = ft_strdup((*cmd_path));
+	if (!cwd_update)
+		return ;//malloc / exit
+	check = ft_substr(token, i, (j - i + 1));
+	if (!check)
+		return ;//malloc / exit
+	if (ft_strncmp(check, "./", ft_strlen(check)) == 0)
+		return ;
+	else if (ft_strncmp(check, "../", ft_strlen(check)) == 0)
+		tmp_path = ft_get_path_parent(cwd_update);
+	else
+	//j'ajoute la partie
+	{
+		i = ft_strlen(cwd_update) - 1;
+		if (cwd_update[ft_strlen(cwd_update) - 1] != '/')
+		{
+			tmp_path2 = ft_strjoin(cwd_update, "/");
+			tmp_path = ft_strjoin(tmp_path2, check);
+			free(tmp_path2);
+		}
+		else
+			tmp_path = ft_strjoin(cwd_update, check);
+	}
+	free (cwd_update);
+	cwd_update = NULL;
+	free(check);
+	check = NULL;
+	// je free cmd_path
+	// je recup tmp
+	free((*cmd_path));
+	(*cmd_path) = NULL;
+	(*cmd_path) = tmp_path;
+}
 
-// 	new_cwd = NULL;
-// 	tmp_cwd = NULL;
-// 	i = 0;
-// 	if (ft_strlen(cwd_update) == 1 && cwd_update[0] == '/')
-// 	{
-// 		new_cwd = ft_strdup(cwd_update);
-// 		if (!new_cwd)
-// 			return (NULL);//tout nettoyer car pb de malloc
-// 	}
-// 	else
-// 	{
-// 		i = ft_strlen(cwd_update) - 1;
-// 		if (cwd_update[i] == '/')
-// 		{
-// 			tmp_cwd = ft_substr(cwd_update, 0, i);
-// 			if (!tmp_cwd)
-// 			return (NULL);//tout nettoyer car pb de malloc
-// 		}
-// 		else
-// 		{
-// 			tmp_cwd = ft_strdup(cwd_update);
-// 			if (!tmp_cwd)
-// 			return (NULL);//tout nettoyer car pb de malloc
-// 		}
-// 		i = ft_new_strrchr(tmp_cwd, '/');
-// 		free(tmp_cwd);//ft_free_str(tmp_cwd);// pour tout mettre a NULL
-// 		if (i == 0)
-// 		{
-// 			new_cwd = ft_strdup("/");
-// 			if (!new_cwd)
-// 				return (NULL);//tout nettoyer car pb de malloc
-// 		}
-// 		else
-// 			new_cwd = ft_substr(cwd_update, 0, i);//sans le slash
-// 	}
-// 	return (new_cwd);
-// }
+/*	<SUMMARY> Gets full path (absolute path) from a potential relative path by:
+	- cleaning ./ & ../
+	- using strjoin to gather root part to cmd part
+	Next step will be to check it (acces & opendir)
+*/
+char	*ft_get_full_path(char *token, t_data *data)
+{
+	char	*cmd_path;
+	int		i;
+	int		j;
+	int		k;
 
-// char	*ft_relative_path(char *token, t_data *data)
-// {
-// 	int		i;
-// 	char	*cwd_update;
-
-// 	i = 0;
-// 	cwd_update = ft_strdup(data->cwd);
-// 	if (!data->cwd)
-// 		return (NULL);//tout nettoyer !!
-// 	while (token[i])
-// 	{
-// 		if (token[i] && token[i] == '.')
-// 		{
-// 			if(token[i + 1] && token[i + 1] == '.')
-// 			{
-// 				// if (token[i + 2] == '\0')// il y a toujours au moins 1 slash
-// 				// 	return (ft_get_path_parent(cwd_update));
-// 				if (token[ i + 2] && token[i + 2] == '/')
-// 				{
-// 					while (token[i + 2] & token[i + 2] == '/')
-// 						i++;
-// 					if (token[i + 2] == '\0')
-// 						return (ft_get_dir_parent(cwd_update));
-// 				}
-// 				i++;
-// 			}
-// 		}
-// 		i++;
-// 	}
-
-
-// }
-
+	cmd_path = ft_strdup(data->cwd);
+	if (!cmd_path)
+		return (NULL);//nettoyer tout les malloc & exit (new prompt)
+	i = 0;
+	j = 0;
+	k = 0;
+	while (token[i])
+	{
+		if (token[i] && token[i] != '/')
+		{
+			j = i;
+			while (token[j] && token[j] != '/')
+				j++;
+			if (token[j] && token[j] == '/')
+			{
+				k = j;
+				while (token[k] && token[k] == '/')
+					k++;
+				//je récupère un 'directory' ('./' ou '..////' ou 'usr/'...)
+				//je mets à jour mon cwd_update
+				ft_update_path(&cmd_path, token, i, j);
+				i = k - 1;
+			}
+			else// (token[j] == '\0')
+			{
+				ft_update_path(&cmd_path, token, i, j - 1);
+				break ;
+			}
+		}
+		i++;
+	}
+	return (cmd_path);
+}
 
 /*	<SUMMARY> Gets the correct command path
 **	- check #1:	if token = .
@@ -167,6 +200,7 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 	directory = NULL;
 	//res = -2;
 	len = ft_strlen(cmd->token->token);
+	//peut-on avoir cmd->token-token == empty ??
 	if (len == 1 && cmd->token->token[0] == '.')
 		exit(ft_msg(2, cmd->token->token, ": ", ERRFAR));
 	printf("slash is in set = %d\n", ft_is_in_set(cmd->token->token, '/'));
@@ -174,82 +208,89 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 	{
 		if (cmd->token->token[0] == '/')
 		{
-			printf("passe ici\n");
-			if (access((const char *)cmd->token->token, F_OK | X_OK) == 0)
+			printf("passe ici : 1er caractere est un slash\n");
+			directory = opendir(cmd->token->token);
+			if (directory != NULL)
 			{
-				printf("passe aussi ici\n");
-				directory = opendir(cmd->token->token);
-				if (directory == NULL)
+				closedir(directory);
+				data->val_exit = ft_msg(126, cmd->token->token, ": testisdir ", ERRDIR);//enlever 'test'
+				ft_free_data_child(data);
+				exit (data->val_exit);
+			}
+			else
+			{
+				if (cmd->token->token[len - 1] == '/')
 				{
-					if (cmd->token->token[len - 1] == '/')
-						data->val_exit = ft_msg(126, cmd->token->token, ": test11", ERRNDR);//enlever 'test'
-					else
-						return (cmd->token->token);
+					data->val_exit = ft_msg(126, cmd->token->token, ": testnotdir/ ", ERRNDR);//enlever 'test
+					ft_free_data_child(data);
+					exit (data->val_exit);
 				}
 				else
 				{
-					closedir(directory);
-					data->val_exit = ft_msg(126, cmd->token->token, ": test13", ERRDIR);//enlever 'test'
+					if (access((const char *)cmd->token->token, F_OK | X_OK) == 0)
+						return (cmd->token->token);
+					data->val_exit = ft_msg(127, cmd->token->token, ": testnotdir- ", ERRFOD);//enlever 'test
+					ft_free_data_child(data);
+					exit (data->val_exit);
 				}
 			}
-			// else if (access((const char *)cmd->token->token, F_OK) == 0)
-			// {
-			// 	directory = opendir(cmd->token->token);
-			// 	if (directory == NULL)
-			// 	{
-			// 		if (cmd->token->token[len - 1] == '/')
-			// 			res = ft_msg(126, cmd->token->token, ": test21", ERRNDR);//enlever 'test'
-			// 		else
-			// 			return (cmd->token->token);
-			// 		// 	res = ft_msg(126, cmd->token->token, ": test22", ERRFOD);//enlever 'test'
-			// 	}
-			// 	else
-			// 	{
-			// 		closedir(directory);
-			// 		res = ft_msg(126, cmd->token->token, ": test23", ERRDIR);//enlever 'test'
-			// 	}
-			// }
-			else
-				data->val_exit = ft_msg(errno, cmd->token->token, ": test auto access", strerror(errno));
-			ft_free_data_child(data);
-			exit (data->val_exit);
-			// if (access((const char *)cmd->token->token, F_OK) == 0)
-			// {
-			// 	if (access((const char *)cmd->token->token, F_OK | X_OK) == 0)
-			// 		return (cmd->token->token);
-			// 	directory = opendir(cmd->token->token);
-			// 	if (directory == NULL)
-			// 		res = ft_msg(126, cmd->token->token, ": test1", ERRNDR);
-			// 	else
-			// 	{
-			// 		closedir(directory);
-			// 		res = ft_msg(127, cmd->token->token, ": test1", ERRFOD);
-			// 	}
-			// 	ft_free_data_child(data);
-			// 	exit (res);
-			// }
-			// directory = opendir(cmd->token->token);
-			// if (directory == NULL)
-			// 	res = ft_msg(126, cmd->token->token, ": test2 - pas F_OK", ERRNDR);
-			// else
-			// {
-			// 	closedir(directory);
-			// 	res = ft_msg(127, cmd->token->token, ": test2 - pas F_OK", ERRFOD);
-			// }
-			// ft_free_data_child(data);
-			// exit (res);
 		}
-		// //else// ne commence pas par '/' mais en contient
-		// cmd_path = ft_relative_path(cmd->token->token, data);
-		// if (access((const char *)cmd_path, F_OK | X_OK) == 0)
-		// 	return (cmd_path);
-		// free(cmd_path);
-		// //ft_exit_exec(data);
-		// res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
-		// ft_free_data_child(data);
-		// exit(res);
+		else// ne commence pas par '/' mais en contient
+		{
+			printf("passe là : 1er caractere n'est pas un slash mais il y a un slash\n");
+			/*
+				1. je reconstitue le path absolu
+				2. je vérifie dir/access
+			*/
+			//step 1: je reconstitue le path absolu
+			cmd_path = ft_get_full_path(cmd->token->token, data);
+			if (!cmd_path)
+				return (NULL);//tout nettoyer malloc et exit
+			//step 2: je vérifie dir/access
+			directory = opendir(cmd_path);
+			if (directory != NULL)
+			{
+				closedir(directory);
+				data->val_exit = ft_msg(126, cmd->token->token, ": testisdir2 ", ERRDIR);//enlever 'test'
+				ft_free_data_child(data);
+				exit (data->val_exit);
+			}
+			else
+			{
+				if (cmd->token->token[len - 1] == '/')
+				{
+					data->val_exit = ft_msg(126, cmd->token->token, ": testnotdir2/ ", ERRNDR);//enlever 'test
+					ft_free_data_child(data);
+					exit (data->val_exit);
+				}
+				else
+				{
+					if (access((const char *)cmd_path, F_OK | X_OK) == 0)
+						return (cmd_path);
+				//	data->val_exit = ft_msg(127, cmd->token->token, ": testnotdir- ", ERRFOD);//enlever 'test
+					data->val_exit = ft_msg(126, cmd->token->token, ": testnotdir- ", strerror(errno));
+					/// BUG FORCE A LA MAIN : 126 au lieu de errno (13???) mais faute si 127...
+					/// essayer d'inverser directory et access
+					ft_free_data_child(data);
+					exit (data->val_exit);
+				}
+			}
+			// //else// ne commence pas par '/' mais en contient
+			// cmd_path = ft_relative_path(cmd->token->token, data);
+			// if (access((const char *)cmd_path, F_OK | X_OK) == 0)
+			// 	return (cmd_path);
+			// free(cmd_path);
+			// //ft_exit_exec(data);
+			// res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
+			// ft_free_data_child(data);
+			// exit(res);
+
+			// printf("passe là : 1er caractere n'est pas un slash mais il y a un slash\n");
+			// return (NULL);
+		}
 	}
-	cmd_path = ft_find_cmd_path2(cmd, data);
+	else
+		cmd_path = ft_find_cmd_path2(cmd, data);
 	return (cmd_path);
 }
 
@@ -261,7 +302,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 	int		j;
 	int		res;
 
-	//printf("debut env_path2\n");
+	printf("debut env_path2\n");
 	cmd_path = NULL;
 	new_path = NULL;
 	env_path = data->env_path;
@@ -274,10 +315,16 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		ft_free_data_child(data);
 		exit(res);
 	}
+	if (ft_strncmp(cmd->token->token, "..", ft_strlen(cmd->token->token)) == 0)
+	{
+		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
+		ft_free_data_child(data);
+		exit(res);
+	}
 	while (env_path)
 	{
 		j = ft_strlen(env_path->content) - 1;
-		//printf("env pathe content = %s\n", env_path->content);
+		//printf("env path content = %s\n", env_path->content);
 		if (env_path->content[j] != '/')
 		{
 			new_path = ft_strjoin(env_path->content, "/");
@@ -301,6 +348,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		env_path = env_path->next;
 	}
 	//ft_exit_exec(data);
+	printf("check je suis là\n");
 	if (cmd->token->env == 1)
 		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
 	else
