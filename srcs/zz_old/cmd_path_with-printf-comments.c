@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/03 17:00:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:59:22 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	ft_update_path(char **cmd_path, char *token, int i, int j)
 	char	*tmp_path2;
 	char	*cwd_update;
 	char	*check;
+	//int		k;
 
 	tmp_path = NULL;
 	tmp_path2 = NULL;
@@ -103,12 +104,12 @@ void	ft_update_path(char **cmd_path, char *token, int i, int j)
 		i = ft_strlen(cwd_update) - 1;
 		if (cwd_update[ft_strlen(cwd_update) - 1] != '/')
 		{
-			tmp_path2 = ft_strjoin(cwd_update, "/");//a proteger
-			tmp_path = ft_strjoin(tmp_path2, check);//a proteger
+			tmp_path2 = ft_strjoin(cwd_update, "/");
+			tmp_path = ft_strjoin(tmp_path2, check);
 			free(tmp_path2);
 		}
 		else
-			tmp_path = ft_strjoin(cwd_update, check);//a proteger
+			tmp_path = ft_strjoin(cwd_update, check);
 	}
 	free (cwd_update);
 	cwd_update = NULL;
@@ -183,9 +184,11 @@ check 'is directory'
 char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 {
 	DIR		*directory;
+	char	*cmd_path;
 	char	*tmp;
 
 	directory = NULL;
+	cmd_path = NULL;
 	tmp = NULL;
 	if (!token)
 		return (NULL);
@@ -193,20 +196,26 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 	printf("val de directory = %p\n", directory);
 	if (directory != NULL)// c'est un directory
 	{
+		printf("c'est un directory\n");
 		closedir(directory);
-		data->val_exit = ft_msg(126, token, ": isdir 126", ERRDIR);//enlever 'test'
+		data->val_exit = ft_msg(126, token, ": isdir 126 ", ERRDIR);//enlever 'test'
 		ft_free_data_child(data);
 		free(full_path);
 		exit (data->val_exit);
 	}
-	else
+	else//ce n'est pas un directory
 	{
 		if (token[len - 1] != '/')
 		{
+			printf("on n'a pas de slash à la fin\n");
 			if (access((const char *)full_path, F_OK) == 0)
 			{
+				printf("full path est F_OK\n");
 				if (access((const char *)full_path, X_OK) == 0)
-					return (ft_strdup(full_path));
+				{
+					cmd_path = ft_strdup(full_path);
+					return (cmd_path);
+				}	
 				else
 				{
 					data->val_exit = ft_msg(126, token, ": notdir-notx 126 ", ERRPRD);//enlever 'test'
@@ -237,7 +246,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 		free(full_path);
 		exit (data->val_exit);
 	}
-	return (NULL);
+	return (cmd_path);
 }
 
 /*	<SUMMARY> Gets the correct command path
@@ -264,17 +273,28 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 	//peut-on avoir cmd->token-token == empty ??
 	if (len == 1 && cmd->token->token[0] == '.')
 		exit(ft_msg(2, ERRFAR, "\n", ERRFAU));
+	printf("slash is in set = %d\n", ft_is_in_set(cmd->token->token, '/'));
 	if (ft_is_in_set(cmd->token->token, '/'))
 	{
 		if (cmd->token->token[0] == '/')
-			cmd_path = ft_check_abs_path(cmd->token->token, cmd->token->token, data, len);
-		else
 		{
-			full_path = ft_get_full_path(cmd->token->token, data);
-			if (!full_path)
-				return (NULL);//tout nettoyer malloc et exit
+			printf("passe ici : 1er caractere est un slash\n");
+			full_path = ft_strdup(cmd->token->token);
+			printf("val de full path = %s\n", full_path);
 			cmd_path = ft_check_abs_path(cmd->token->token, full_path, data, len);
 		}
+		else// ne commence pas par '/' mais en contient
+		{
+			printf("passe là : 1er caractere n'est pas un slash mais il y a un slash\n");
+			//step 1: je reconstitue le path absolu
+			full_path = ft_get_full_path(cmd->token->token, data);
+			printf("val de full path = %s\n", full_path);
+			if (!full_path)
+				return (NULL);//tout nettoyer malloc et exit
+			//step 2: je vérifie dir/access
+			cmd_path = ft_check_abs_path(cmd->token->token, full_path, data, len);
+		}
+		printf("val de cmd path = %s 7 size = %ld\n", cmd_path, ft_strlen(cmd_path));
 	}
 	else
 		cmd_path = ft_find_cmd_path2(cmd, data);

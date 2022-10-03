@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/02 15:51:08 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:33:45 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@
 # define ERRNAM "not a valid identifier"
 # define ERRARG "too many arguments"
 # define ERRHOM "HOME not set"
-# define ERRFAR "filename argument required"
+# define ERRFAR ".: filename argument required"
+# define ERRFAU ".: usage: . filename [arguments]"
+# define ERRPRD "permission denied"
 
 typedef enum s_type
 {
