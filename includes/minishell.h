@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/03 15:33:45 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:04:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -139,7 +139,6 @@ typedef struct s_data
 	int				**pipe_fd;//nb de fd[][]
 	t_env			*env_path;
 	char			**s_env_path;
-	t_bin			*bin;//ajoutée pour le bin collector
 }	t_data;
 
 /*	***** INIT *****	*/
@@ -346,20 +345,20 @@ void	ft_update_cwd(t_data *data);
 
 /*	bin collector */
 
-void	*ft_malloc(t_data *data, int type, int size);
-void	*ft_malloc2(t_data *data, int type, int size);
+// void	*ft_malloc(t_data *data, int type, int size);
+// void	*ft_malloc2(t_data *data, int type, int size);
 
-int		ft_lstadd_bin(t_data *data, void *ptr, int type, int size);
-t_bin	*ft_lstlast_bin(t_bin *bin);
-void	ft_lstclear_bin(t_bin *bin);
-void	ft_lstdelone_bin(t_bin *node);
-void	ft_free_bin(void *ptr, int type, int size);
+// int		ft_lstadd_bin(t_data *data, void *ptr, int type, int size);
+// t_bin	*ft_lstlast_bin(t_bin *bin);
+// void	ft_lstclear_bin(t_bin *bin);
+// void	ft_lstdelone_bin(t_bin *node);
+// void	ft_free_bin(void *ptr, int type, int size);
 
-char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
-char	*ft_strdup_malloc(void *data, const char *s1);
-char	*ft_itoa_malloc(void *data, int n);
-char	*ft_strjoin_malloc(void *data, char const *s1, char const *s2);
-char	**ft_split_malloc(void *data, char const *s, char c);
+// char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
+// char	*ft_strdup_malloc(void *data, const char *s1);
+// char	*ft_itoa_malloc(void *data, int n);
+// char	*ft_strjoin_malloc(void *data, char const *s1, char const *s2);
+// char	**ft_split_malloc(void *data, char const *s, char c);
 
 /*	fin - branch CR_ft_malloc2 */
 /* *************************** */
