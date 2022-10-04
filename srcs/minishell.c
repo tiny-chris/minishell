@@ -6,11 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/03 19:01:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:37:21 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_val_exit;
 
 int	ft_only_space(char *line)
 {
@@ -193,3 +195,30 @@ int	main(int argc, char **argv, char **envp)
 	// penser à faire un message d'erreur si nb d'arg incorrect
 	return (1);
 }
+
+// int	main(void)
+// {
+// 	char	*str;
+// 	char	*s_malloc;
+// 	int		i;
+
+// 	i = 0;
+// 	str = ft_strdup("coucou");
+// 	printf("val str = %s\n", str);
+// 	printf("str = %p\n", str);
+// 	ft_handle_malloc(ADD, str, TAB_STR1, 6);
+
+// 	s_malloc = ft_handle_malloc(MALLOC, NULL, TAB_STR1, 7);
+// 	while (i < 6)
+// 	{
+// 		s_malloc[i] = 'c';
+// 		i++;
+// 	}
+// 	s_malloc[i] = '\0';
+
+// 	ft_handle_malloc(DELONE, s_malloc, 0, 0);
+// 	ft_handle_malloc(DELONE, str, 0, 0);
+// 	printf("val exit %d\n", g_val_exit);
+
+// 	return (1);
+// }

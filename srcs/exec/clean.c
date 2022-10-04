@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 03:25:25 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:20:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,9 @@ int	ft_msg(int val_exit, char *msg1, char *msg2, char *msg3)
 	return (val_exit);
 }
 
-int	ft_free_exit(int val_exit)
-{
-	//faire un message d'erreur --> selon message d'erreur ??
-	ft_handle_malloc(val_exit, NULL, NULL, NULL);
-	exit(val_exit);
-}
+// int	ft_free_exit(int val_exit)
+// {
+// 	//faire un message d'erreur --> selon message d'erreur ??
+// 	ft_handle_malloc(val_exit, NULL, NULL, NULL);
+// 	exit(val_exit);
+// }

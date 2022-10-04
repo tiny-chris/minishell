@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:29 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/04 02:17:10 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:30:49 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ int	ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size)
 {
 	t_bin	*new;
 
-	new = NULL;
-	new = ft_handle_malloc(1000, NULL, LST_BIN, size);
-
+	new = malloc(sizeof(t_bin));
+	if (!new)
+		return (1);
 	printf("test - lstadd_bin début\n");
 	new->ptr = ptr;
 	new->type = type;
 	new->size = size;
-	new->next = NULL;
-	if ((*bin) != NULL)
+	// new->next = NULL;
+	// if ((*bin) != NULL)
 		new->next = (*bin);
 	(*bin) = new;
 	return (0);
@@ -39,21 +39,36 @@ void	ft_lstdelone_bin(t_bin *node)
 {
 	if (!node)
 		return ;
-	if (node->type == TAB_STR1 && (char *)node)// peut-être pas nécessaire de caster
-		free((char *)node);
-	else if (node->type == TAB_INT1 && (int *)node)
-		free((int *)node);
-	else if (node->type == TAB_STRS && (char **)node)
-		ft_free_tabstr((char **)node);
-	else if (node->type == TAB_INTS && (int **)node)
-		ft_free_tabint((int **)node, node->size);
-	else if (node->type == LST_ENV && (t_env *)node)
-		ft_free_env((t_env **)node);
-	else if (node->type == LST_CMD && (t_cmd *)node)
-		ft_free_cmd((t_cmd **)node);
-	else if (node->type == LST_TOK && (t_token *)node)
-		ft_free_token((t_token **)node);
-	node->next = NULL;//vérifier si déjà dans les fonctions de ft_free_bon
+	if (node->ptr && node->type == TAB_INT1)
+	{
+		free((int *)node->ptr);
+		node->ptr = NULL;
+	}	
+	
+	
+	
+
+	else if (node->ptr && node->type == TAB_STR1)
+	{
+		printf("rentre dans if free tabstr1\n");
+		free((char *)node->ptr);
+		node->ptr = NULL;
+	}	
+	else if (node->ptr && node->type == TAB_STRS)
+		ft_free_tabstr((char **)node->ptr);
+	else if (node->ptr && node->type == TAB_INTS)
+		ft_free_tabint((int **)node->ptr, node->size);
+	else if (node->ptr && node->type == LST_ENV)
+		ft_free_env((t_env **)node->ptr);
+	else if (node->ptr && node->type == LST_CMD)
+		ft_free_cmd((t_cmd **)node->ptr);
+	else if (node->ptr && node->type == LST_TOK)
+		ft_free_token((t_token **)node->ptr);
+	// else if (node && node->type == LST_BIN)
+	// 	ft_free_bin((t_bin **)node);// mettre qch pour UN node
+	node->type = 0;
+	node->size = 0;
+	node->next = NULL;//vérifier si déjà dans les fonctions de ft_free
 	free(node);
 	node = NULL;
 }
@@ -70,7 +85,7 @@ void	ft_lstclearone_bin(t_bin **bin_head, void *ptr)
 	todel = NULL;
 	tmp = NULL;
 	// comment comparer des pointeurs ?
-	if (bin->ptr = ptr)
+	if (bin->ptr == ptr)
 	{
 		todel = bin;
 		tmp = (*bin_head)->next;
@@ -106,9 +121,9 @@ void	ft_free_bin(t_bin **bin)
 {
 	t_bin	*tmp;
 
-	if (!*bin)
+	if (!(*bin))
 		return ;
-	while (*bin != NULL)
+	while ((*bin) != NULL)
 	{
 		tmp = (*bin)->next;
 		ft_lstdelone_bin(*bin);

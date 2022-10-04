@@ -6,19 +6,17 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/04 02:50:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:36:00 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern int	g_val_exit;
+
 /* <SUMMARY> Function that gets the consistent 'sizeof' for ft_handle_malloc
 ** function
 */
-
-
-//Fonction qui permet de récupérer le bon sizeof à utiliser dans ft_malloc
-
 static size_t	ft_get_sizeof(int type)
 {
 	if (type == TAB_STR1)
@@ -41,43 +39,59 @@ static size_t	ft_get_sizeof(int type)
 		return (sizeof(t_cmd));
 	else if (type == LST_TOK)
 		return (sizeof(t_token));
+	else if (type == LST_BIN)
+		return (sizeof(t_bin));
 	return (0);
 }
 
-/*	Handles malloc
-**	protéger le size en indiquant un size_t ????
-
-**	<SUMMARY> Allocates memory depending on variable type (to malloc) & its size
-*/
-void	*ft_handle_malloc(int val_exit, void *ptr, int type, int size)
+static void	ft_failed_malloc(t_bin **bin_head)
 {
-	static t_bin	*bin_head = NULL;
+	g_val_exit = ft_msg(42, "", "", ERRMAL);
+	ft_free_bin(bin_head);
+	exit (g_val_exit);
+}
 
-	if (val_exit == 1000)//faire un malloc
-		return (malloc(ft_get_sizeof(type) * size));
-	else if (val_exit == 2000)//add malloc to 'bin' linked list
+/*	<SUMMARY> Allocates memory depending on variable type (to malloc) & its size
+**		- val_exit = 1000	--> malloc + protect + add to 't_bin' linked list
+**		- val_exit = 2000	--> protect + add to 't_bin'
+**		- val_exit = 3000	--> free and delete a specific node of 't_bin'
+**		- other val_exit	--> free and delete all nodes of 't_bin'
+*/
+void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
+{
+	static t_bin	*bin_head;
+	void			*tmp;
+
+	tmp = NULL;
+//	printf("ptr = %p\n", ptr);
+	if (flag == MALLOC)
 	{
+		tmp = malloc(ft_get_sizeof(type) * size);
+		if (tmp == NULL)
+			ft_failed_malloc(&bin_head);
+		if (ft_lstadd_bin(&bin_head, tmp, type, size) == 1)
+			ft_failed_malloc(&bin_head);
+		return (tmp);
+	}
+	if (flag == ADD)
+	{
+		printf("rentre dans ADD\n");
 		if (ptr == NULL)
 		{
-			exit (val_exit);
-			/*faire une fonction (pour tout supprimer et quitter) :
-				- free ptr.../// A REVOIR !!! (exp : ft_split)
-				- message d'erreur de malloc
-				- ft_free_bin(&bin);
-				- exit;// fonction à écrire pour
-			*/
+			printf("rentre dans ADD - NULL\n");
+			ft_failed_malloc(&bin_head);
 		}
 		ft_lstadd_bin(&bin_head, ptr, type, size);
-		return (NULL);
 	}
-	else if (val_exit = 3000)//supprime un maillon quand on veut libérer un malloc
+	else if (flag == DELONE)
 	{
+		printf("rentre dans DELONE\n");
 		ft_lstclearone_bin(&bin_head, ptr);
-		return (NULL);
 	}
-	else//tout free
+	else
 	{
+		printf("rentre dans else\n");
 		ft_free_bin(&bin_head);
-		return (NULL);//exit
 	}
+	return (NULL);
 }

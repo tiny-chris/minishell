@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 03:29:41 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:23:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	ft_update_path(char **cmd_path, char *token, int i, int j)
 			tmp_path = ft_strjoin(cwd_update, check);//a proteger
 	}
 	// je free cmd_path
-	ft_free_1(cwd_update, check);
+	ft_free_strs(cwd_update, check, NULL);
 	// je recup tmp
 	free((*cmd_path));
 	(*cmd_path) = NULL;
@@ -181,7 +181,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 	if (directory != NULL)// c'est un directory
 	{
 		closedir(directory);
-		data->val_exit = ft_msg(126, token, ": ", ERRDIR);//enlever 'test'
+		data->val_exit = ft_msg(126, token, ": ", ERRDIR);
 		ft_free_data_child(data);
 		if (full_path)
 		{

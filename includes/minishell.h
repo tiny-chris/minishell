@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 03:23:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:06:44 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,13 @@ typedef enum s_sizetype
 	LST_TOK			= 106,
 	LST_BIN			= 107,
 }	t_sizetype;
+
+typedef enum s_flag
+{
+	MALLOC		= 1000,
+	ADD			= 2000,
+	DELONE		= 3000,
+}	t_flag;
 
 typedef struct s_bin
 {
@@ -287,7 +294,9 @@ int		ft_new_strchr(const char *s, int c);
 void	*ft_free_tabint(int **tab_int, int size);
 int		ft_is_in_set(const char *set, char c);
 int		ft_new_strrchr(const char *s, int c);
-void	ft_free_1(char *str1, char *str2);
+//void	ft_free_1(char *str1, char *str2);
+void	ft_free_strs(char *str1, char *str2, char **str3);
+void	*ft_free_tabstr_rev(char **tab_str, int lines);
 
 /*	***** EXEC *****	*/
 /*	****************	*/
@@ -348,14 +357,14 @@ void	ft_update_cwd(t_data *data);
 
 /*	bin collector */
 
-// void	*ft_handle_malloc(int val_exit, void *ptr, int type, int size);
+void	*ft_handle_malloc(int flag, void *ptr, int type, int size);
 
 /*	bin list */
 
-// int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size)
-// void	ft_lstdelone_bin(t_bin *node);
-// void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
-// void	ft_free_bin(t_bin **bin);
+int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
+void	ft_lstdelone_bin(t_bin *node);
+void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
+void	ft_free_bin(t_bin **bin);
 
 /*	fin - for ft_handle_malloc */
 /* *************************** */

@@ -107,7 +107,7 @@ int	ft_new_strrchr(const char *s, int c)
 
 
 // A DEVELOPPER SELON BESOIN
-void	ft_free_1(char *str1, char *str2)
+void	ft_free_strs(char *str1, char *str2, char **str3)
 {
 	if (str1)
 	{
@@ -119,4 +119,21 @@ void	ft_free_1(char *str1, char *str2)
 		free(str2);
 		str2 = NULL;
 	}
+	if (str3)
+		ft_free_tabstr(str3);
+}
+
+/*	Frees each string of the table char** from the last line to the 1st one
+**	and then free the table of strings 
+*/
+void	*ft_free_tabstr_rev(char **tab_str, int lines)
+{
+	while (lines >= 0)
+	{
+		free(tab_str[lines]);
+		lines--;
+	}
+	free(tab_str);
+	tab_str = NULL;
+	return (NULL);
 }
