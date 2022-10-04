@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 11:27:09 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 01:26:05 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_lstdelone_cmd(t_cmd *node)
 		return ;
 	free(node->raw_cmd);
 	node->raw_cmd = NULL;
-	free(node->unspace_cmd);//raw_cmd_no_space);
+	free(node->unspace_cmd);
 	node->unspace_cmd = NULL;
 	free(node->no_redir_cmd);
 	node->no_redir_cmd = NULL;
@@ -79,8 +79,6 @@ void	ft_lstdelone_cmd(t_cmd *node)
 	node->undoll_cmd = NULL;
 	free(node->clean_cmd);
 	node->clean_cmd = NULL;
-	// free(node->clean_cmd_no_redir);
-	// node->clean_cmd_no_redir = NULL;
 	ft_free_token(&(node->tok_redir));
 	ft_free_token(&(node->token));
 	if (node->cmd_opt != NULL)

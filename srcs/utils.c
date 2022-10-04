@@ -102,3 +102,21 @@ int	ft_new_strrchr(const char *s, int c)
 	}
 	return (0);
 }
+
+//
+
+
+// A DEVELOPPER SELON BESOIN
+void	ft_free_1(char *str1, char *str2)
+{
+	if (str1)
+	{
+		free(str1);
+		str1 = NULL;
+	}
+	if (str2)
+	{
+		free(str2);
+		str2 = NULL;
+	}
+}

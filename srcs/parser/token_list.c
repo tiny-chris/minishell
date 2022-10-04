@@ -6,37 +6,11 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:29:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 15:31:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 02:44:49 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_lstdelone_tok(t_token *node)
-{
-	if (!node)
-		return ;
-	free(node->token);
-	node->token = NULL;
-	node->next = NULL;
-	free(node);
-}
-
-void	ft_free_token(t_token **token)
-{
-	t_token	*tmp;
-
-	if (!*token)
-		return ;
-	while (*token != NULL)
-	{
-		tmp = (*token)->next;
-		//dprintf(2, "token val = %s\n", (*token)->token);
-		ft_lstdelone_tok(*token);
-		(*token) = tmp;
-	}
-	(token) = NULL;
-}
 
 t_token	*ft_lstlast_tok(t_token *lst)
 {
@@ -77,6 +51,42 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 	last = ft_lstlast_tok(*tok);
 	last->next = new;
 	return (0);
+}
+
+void	ft_lstdelone_tok(t_token *node)
+{
+	if (!node)
+		return ;
+	if (node->token != NULL)
+	{
+		free(node->token);
+		node->token = NULL;
+	}
+	node->next = NULL;
+	free(node);
+	node = NULL;
+}
+
+// ft_free_token et ft_lstclear_token sont presques semblables
+// (param différents: ** vs *)
+
+
+// !!!! voir si les 2 peuvent être regroupées selon les utilisations
+
+void	ft_free_token(t_token **token)
+{
+	t_token	*tmp;
+
+	if (!*token)
+		return ;
+	while (*token != NULL)
+	{
+		tmp = (*token)->next;
+		//dprintf(2, "token val = %s\n", (*token)->token);
+		ft_lstdelone_tok(*token);
+		(*token) = tmp;
+	}
+	(token) = NULL;
 }
 
 void	ft_lstclear_token(t_token *token)

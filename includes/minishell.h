@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/03 19:04:39 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 03:23:22 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef enum s_type
 }	t_type;
 
 /* **************************** */
-/* début - branch CR_ft_malloc2 */
+/* début - for ft_handle_malloc */
 
 typedef enum s_sizetype
 {
@@ -83,7 +83,7 @@ typedef struct s_bin
 
 // cf. suite dans la liste des fonctions en-dessous
 
-/*	fin - branch CR_ft_malloc2 */
+/*	fin - for ft_handle_malloc */
 /* *************************** */
 
 typedef struct s_token
@@ -287,6 +287,7 @@ int		ft_new_strchr(const char *s, int c);
 void	*ft_free_tabint(int **tab_int, int size);
 int		ft_is_in_set(const char *set, char c);
 int		ft_new_strrchr(const char *s, int c);
+void	ft_free_1(char *str1, char *str2);
 
 /*	***** EXEC *****	*/
 /*	****************	*/
@@ -321,6 +322,8 @@ void	ft_free_data_child(t_data *data);
 int		ft_clean_cmdline(t_data *data);
 int		ft_clean_loop(t_data *data);
 
+int		ft_free_exit(int val_exit);
+
 /*	built-ins */
 
 int		ft_echo(t_cmd *cmd, t_data *data);
@@ -341,26 +344,20 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data);
 void	ft_update_cwd(t_data *data);
 
 /* **************************** */
-/* début - branch CR_ft_malloc2 */
+/* début - for ft_handle_malloc */
 
 /*	bin collector */
 
-// void	*ft_malloc(t_data *data, int type, int size);
-// void	*ft_malloc2(t_data *data, int type, int size);
+// void	*ft_handle_malloc(int val_exit, void *ptr, int type, int size);
 
-// int		ft_lstadd_bin(t_data *data, void *ptr, int type, int size);
-// t_bin	*ft_lstlast_bin(t_bin *bin);
-// void	ft_lstclear_bin(t_bin *bin);
+/*	bin list */
+
+// int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size)
 // void	ft_lstdelone_bin(t_bin *node);
-// void	ft_free_bin(void *ptr, int type, int size);
+// void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
+// void	ft_free_bin(t_bin **bin);
 
-// char	*ft_substr_malloc(void *data, const char *str, unsigned int start, size_t len);
-// char	*ft_strdup_malloc(void *data, const char *s1);
-// char	*ft_itoa_malloc(void *data, int n);
-// char	*ft_strjoin_malloc(void *data, char const *s1, char const *s2);
-// char	**ft_split_malloc(void *data, char const *s, char c);
-
-/*	fin - branch CR_ft_malloc2 */
+/*	fin - for ft_handle_malloc */
 /* *************************** */
 
 // ***** ex-del_quotes *****
