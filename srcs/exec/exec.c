@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 16:33:38 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/04 16:41:47 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,7 +239,7 @@ int	ft_parent_process(t_data *data)
 	}
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
+	else if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGQUIT)
 		{
