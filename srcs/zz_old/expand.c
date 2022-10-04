@@ -6,11 +6,13 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 11:27:05 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/09/30 20:57:04 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_val_exit;
 
 int	ft_get_expand_size(char *unquote_cmd, int *i, t_data *data)
 {
@@ -55,7 +57,8 @@ int	ft_get_error_size(t_data *data)
 	int		len;
 
 	len = 0;
-	str_exit = ft_itoa(data->val_exit);
+	//str_exit = ft_itoa(data->val_exit);
+	str_exit = ft_itoa(g_val_exit);
 	if (!str_exit)
 		return (-1); ///free tout ce qu'il y a à free + exit
 	len = ft_strlen(str_exit);

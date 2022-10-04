@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 15:06:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/04 16:32:45 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include <unistd.h>
 
 # define ERRSTX "syntax error"
@@ -40,6 +41,8 @@
 # define ERRFAR ".: filename argument required"
 # define ERRFAU ".: usage: . filename [arguments]"
 # define ERRPRD "permission denied"
+
+typedef void	(*t_sighandler)(int);
 
 typedef enum s_type
 {
@@ -150,6 +153,12 @@ typedef struct s_data
 
 /*	***** INIT *****	*/
 /*	*****************	*/
+
+int		main(int argc, char **argv, char **envp);
+void	ft_minishell(t_data *data);
+int		ft_clean_loop(t_data *data);
+int		ft_clean_cmdline(t_data *data);
+void	ft_exit_ctrl_d(t_data *data);
 
 t_env	*ft_get_env(char **envp);
 char	**ft_built_in(void);
@@ -351,6 +360,14 @@ int		ft_check_unset(t_token *token, t_data *data);
 int		ft_cd(t_cmd *cmd, t_data *data);
 void	ft_update_pwd(t_cmd *cmd, t_data *data);
 void	ft_update_cwd(t_data *data);
+
+/* signaux */
+
+void	sig_int(int sig);
+void	ft_init_signals(t_data *data);
+void	ft_signal(t_data *data, int signum, t_sighandler handler);
+void	ft_sigquit_child(t_data *data, int signum, t_sighandler handler);
+void	sig_quit(int sig);
 
 /* **************************** */
 /* début - for ft_handle_malloc */
