@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 14:00:28 by lmelard           #+#    #+#             */
-/*   Updated: 2021/12/16 10:20:59 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/05 15:07:59 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static int	ft_plusmin(char c)
 	return (0);
 }
 
-int	ft_atoi(const char *str)
+long long	ft_atoi(const char *str)
 {
-	int	n;
-	int	nb;	
+	long long int	n;
+	long long int	nb;
 
 	n = 1;
 	nb = 0;

@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 16:32:45 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/05 14:45:14 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <unistd.h>
+# include <limits.h>
 
 # define ERRSTX "syntax error"
 # define ERRMAL "memory allocation error"
@@ -360,6 +361,8 @@ int		ft_check_unset(t_token *token, t_data *data);
 int		ft_cd(t_cmd *cmd, t_data *data);
 void	ft_update_pwd(t_cmd *cmd, t_data *data);
 void	ft_update_cwd(t_data *data);
+
+int		ft_exit(t_cmd *cmd, t_data *data);
 
 /* signaux */
 

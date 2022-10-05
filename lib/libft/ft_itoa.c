@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:15:07 by lmelard           #+#    #+#             */
-/*   Updated: 2021/12/10 16:29:23 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/05 16:01:13 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "libft.h"
 
-static size_t	ft_count(int n)
+static size_t	ft_count(long long int n)
 {
-	int				c;
-	unsigned int	nb;
+	int						c;
+	unsigned long long int	nb;
 
 	c = 1;
 	nb = 0;
@@ -40,9 +41,9 @@ static size_t	ft_count(int n)
 	return (c);
 }
 
-static unsigned int	ft_define_nb(int n)
+static unsigned long long int	ft_define_nb(long long int n)
 {
-	unsigned int	nb;
+	unsigned long long int	nb;
 
 	nb = 0;
 	if (n >= 0)
@@ -52,11 +53,11 @@ static unsigned int	ft_define_nb(int n)
 	return (nb);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long long int n)
 {
-	char			*str;
-	int				len;
-	unsigned int	nb;
+	char					*str;
+	int						len;
+	unsigned long long int	nb;
 
 	nb = 0;
 	str = (char *)malloc(sizeof(char) * (ft_count(n) + 1));

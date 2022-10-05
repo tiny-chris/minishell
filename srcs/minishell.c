@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 16:29:31 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/05 13:51:41 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ void	ft_minishell(t_data *data)
 	}
 	else
 	{
-		ft_parser(data);// peut etre faire un if == 0 ou 1
-		ft_exec(data);// peut etre faire un if == 0 ou 1
-		ft_free_cmd(&(data->cmd));// A AJUSTER
+		ft_parser(data); // peut etre faire un if == 0 ou 1
+		ft_exec(data); // peut etre faire un if == 0 ou 1
+		ft_free_cmd(&(data->cmd)); // A AJUSTER
 	}
 	ft_clean_cmdline(data);
 }
@@ -176,7 +176,7 @@ void	ft_minishell(t_data *data)
 void	ft_exit_ctrl_d(t_data *data)
 {
 	write(2, "exit\n", 5);
-	ft_free_cmd(&(data->cmd));// A AJUSTER
+	ft_free_cmd(&(data->cmd)); // A AJUSTER
 	ft_clean_cmdline(data);
 	ft_clean_cmdline(data);
 	rl_clear_history();

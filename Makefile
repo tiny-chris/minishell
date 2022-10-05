@@ -52,6 +52,7 @@ SRCS 		:= \
 			built_in/export.c \
 			built_in/unset.c \
 			built_in/cd.c \
+			built_in/exit.c \
 			exec/exec.c \
 			exec/env_path.c \
 			exec/init.c \
@@ -67,9 +68,9 @@ OBJ_DIR		:= obj
 OBJS		:= $(subst .c,.o,$(SRCS))
 OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
-# CC			:= clang
-CC			:= gcc
-#CFLAGS		:= -Wall -Wextra -Werror
+CC			:= clang
+# CC			:= gcc
+CFLAGS		:= -Wall -Wextra -Werror
 CPPFLAGS	:= -I lib/libft -I includes
 LDFLAGS		:= -L lib/libft
 LDLIBS		:= -l ft -l readline
