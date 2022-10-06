@@ -6,11 +6,13 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 11:41:59 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/05 16:06:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:46:42 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_val_exit;
 
 static int	ft_check_digit(char *token)
 {
@@ -57,17 +59,26 @@ int	ft_exit(t_cmd *cmd, t_data *data)
 	{
 		// ft_handle_malloc(0, NULL, 0, 0); // a uncomment
 		// rl_clear_history(); // a uncomment
+		ft_putstr_fd("exit\n", 1);
 		ft_tmp_free(data); // free temporaire
 		exit(EXIT_SUCCESS);
 	}
 	if (ft_check_digit(token->token) == 0)
-		return (ft_msg(2, "exit: ", "numeric argument required", ""));
+	{
+		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
+		exit(g_val_exit);
+	}
 	if (token->next)
-		return (ft_msg(1, "exit: ", "too many arguments", ""));
+		return (ft_msg(1, "exit\n", "exit: ", "too many arguments"));
 	ret = ft_atoi(token->token);
 	check = ft_itoa(ret);
 	if (ft_strncmp(check, token->token, ft_strlen(check)))
-		return (ft_msg(2, "exit: ", "numeric argument required", ""));
+	{
+		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
+		ft_tmp_free(data); // free temporaire
+		free(check); // a ajuster avec ft_handle malloc
+		exit(g_val_exit);
+	}
 	// ft_handle_malloc(0, NULL, 0, 0);
 	// rl_clear_history(); // a uncomment
 	ft_tmp_free(data); // free temporaire

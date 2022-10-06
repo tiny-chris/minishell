@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 16:39:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/05 11:45:23 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:59:26 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ int	ft_exec_built_in(t_cmd *cmd, t_data *data)
 		g_val_exit = ft_env(cmd, data);
 	else if (ft_strncmp(token->token, "exit", 4) == 0)
 		g_val_exit = ft_exit(cmd, data);
-	else
-		return (ft_msg(1, token->token, ": ", "/!\\ is not a builtin!!!!!"));//A REVOIR
 	return (g_val_exit);
 }
 
