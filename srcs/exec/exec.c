@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 16:41:47 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/06 16:32:33 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ void	ft_child_process(t_data *data, int i)
 	if (cmd->token->type == BUILTIN)
 	{
 		dprintf(2, "passe dans les builtin\n");
-	 	//data->val_exit = ft_exec_built_in(cmd, data);
 		g_val_exit = ft_exec_built_in(cmd, data);
 		ft_free_data_child(data);
 		exit(g_val_exit);// A CORRIGER
@@ -225,7 +224,6 @@ void	ft_child_process(t_data *data, int i)
 */
 int	ft_parent_process(t_data *data)
 {
-	// pid_t	wpid;
 	int		i;
 	int		status;
 
@@ -233,7 +231,6 @@ int	ft_parent_process(t_data *data)
 	i = 0;
 	while (i < data->nb_pipes + 1)
 	{
-		// wpid = waitpid(data->pid[i], &status, 0);
 		waitpid(data->pid[i], &status, 0);
 		i++;
 	}
@@ -251,7 +248,7 @@ int	ft_parent_process(t_data *data)
 			status = 128 + WTERMSIG(status);
 			write(1, "\n", 1);
 		}
-		//status = EINTR;
+		status = EINTR;
 	}
 	ft_exit_exec(data);
 	// i = 3;
@@ -267,44 +264,27 @@ int	ft_exec(t_data *data)
 {
 	int	i;
 
-	// if (data->cmd == NULL)
-	// 	return (0);
 	if (data->nb_pipes > 0)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);
 	ft_get_files_io(data);
 	if (data->nb_pipes == 0 && data->cmd->token == NULL)
 	{
-		//data->val_exit = EXIT_SUCCESS;
 		g_val_exit = EXIT_SUCCESS;
 		ft_exit_exec(data);
 		return (EXIT_SUCCESS);
 	}
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
 	{
-		// if (data->cmd->file_err == 1)
-		// {
-		// 	data->val_exit = 1;
-		// 	return (1);
-		// }
-		// printf("passe dans builin unique\n");
-		// return (ft_exec_uniq_builtin(data));
-		//
-		// //***** nouvelle version - fusion ft_exec_builtin:
 		if (data->cmd->file_err == 1)
-		{
-			//data->val_exit = 1;
 			g_val_exit = 1;
-		}
 		else
 		{
 			printf("passe dans builin unique\n");//
-			//data->val_exit = ft_exec_built_in(data->cmd, data);
 			g_val_exit = ft_exec_built_in(data->cmd, data);
 			ft_exit_exec(data);
 		}
 		return (g_val_exit);
-		// //***** fin nouvelle version
 	}
 	//dprintf(2, "init ok\n");
 	i = 0;
@@ -312,8 +292,7 @@ int	ft_exec(t_data *data)
 	{
 		if (pipe(data->pipe_fd[i]) == -1)
 		{
-			//data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
-			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));;
+			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
 			ft_exit_exec(data);
 			return (1);
 		}
@@ -323,39 +302,17 @@ int	ft_exec(t_data *data)
 	while (i < (data->nb_pipes + 1))
 	{
 		data->pid[i] = fork();
-		//dprintf(2, "data->pid[i] = %d\n", data->pid[i]);
 		if (data->pid[i] == -1)
-		{
-			//data->val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
 			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
-		}
 		else if (data->pid[i] == 0)
 		{
-			//ft_signal(data, SIGINT, SIG_IGN); // pas besoin car meme action que dans init signals
 			ft_signal(data, SIGQUIT, sig_quit); // default action ca va pas car quitte le minishell avec des leaks en plus
-			//ft_sigquit_child(data, SIGQUIT, sig_quit_child);
 			ft_child_process(data, i);
 		}
 		i++;
 	}
-	//data->val_exit = ft_parent_process(data);
 	ft_signal(data, SIGINT, SIG_IGN); // pour eviter d'avoir 2 prompts.
 	ft_signal(data, SIGQUIT, SIG_IGN);
 	g_val_exit = ft_parent_process(data);
 	return (0);
 }
-
-//Test echo
-// int	ft_exec(t_data *data)
-// {
-// 	t_cmd	*cmd;
-
-// 	cmd = data->cmd;
-// 	while (cmd)
-// 	{
-// 		if (cmd->token->type == BUILTIN && (ft_strncmp(cmd->token->token, "echo", 4) == 0))
-// 			printf("%s", ft_echo(cmd, data));
-// 		cmd = cmd->next;
-// 	}
-// 	return (0);
-// }

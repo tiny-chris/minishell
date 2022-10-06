@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 11:26:39 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/06 16:30:47 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ int	ft_get_files_io(t_data *data)
 				if (tok_redir->fd < 0)
 				{
 					cmd->file_err = 1;
-					printf("outfile error\n"); // afficher error avec erno + strerror
+					//printf("outfile error\n"); // afficher error avec erno + strerror
+					ft_msg(errno, ERRMSG, "", strerror(errno));
 				}
 				cmd->outfile = tok_redir->fd;
 			}
@@ -86,7 +87,8 @@ int	ft_get_files_io(t_data *data)
 				if (tok_redir->fd < 0)
 				{
 					cmd->file_err = 1;
-					printf("outfile error\n"); // afficher error avec erno + strerror
+					//printf("outfile error\n"); // afficher error avec erno + strerror
+					ft_msg(errno, ERRMSG, "", strerror(errno));
 				}
 				cmd->outfile = tok_redir->fd;
 			}
@@ -97,7 +99,8 @@ int	ft_get_files_io(t_data *data)
 				if (tok_redir->fd < 0)
 				{
 					cmd->file_err = 1;
-					printf("infile error\n"); // afficher error avec erno + strerror
+					//printf("infile error\n"); // afficher error avec erno + strerror
+					ft_msg(errno, ERRMSG, "", strerror(errno));
 				}
 				cmd->infile = tok_redir->fd;
 			}
@@ -108,7 +111,8 @@ int	ft_get_files_io(t_data *data)
 				if (tok_redir->fd < 0)
 				{
 					cmd->file_err = 1;
-					printf("infile error\n"); // afficher error avec erno + strerror
+					//printf("infile error\n"); // afficher error avec erno + strerror
+					ft_msg(errno, ERRMSG, "", strerror(errno));
 				}
 				cmd->infile = tok_redir->fd;
 			}
