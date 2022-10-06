@@ -54,6 +54,8 @@ SRCS 		:= \
 			built_in/cd.c \
 			built_in/exit.c \
 			exec/exec.c \
+			exec/child_process.c\
+			exec/parent_process.c\
 			exec/env_path.c \
 			exec/init.c \
 			exec/cmd_path.c \

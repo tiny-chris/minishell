@@ -6,11 +6,48 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/06 16:30:47 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/06 17:33:40 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_val_exit;
+
+char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
+{
+	char	**cmd_opt;
+	t_token	*token;
+	int		i;
+
+	(void) data;
+	token = cmd->token;
+	i = 0;
+	while (token)
+	{
+		token = token->next;
+		i++;
+	}
+	cmd_opt = malloc(sizeof(char *) * (i + 1));
+	if (!cmd_opt)
+		return (NULL);
+	i = 0;
+	token = cmd->token;
+	while (token)
+	{
+		cmd_opt[i] = ft_strdup(token->token);
+		if (!cmd_opt[i])
+		{
+			ft_free_tabstr(cmd_opt);
+			return (NULL);
+		}
+		i++;
+		token = token->next;
+	}
+	//cmd_opt[i] = ft_strdup("");
+	cmd_opt[i] = NULL;
+	return (cmd_opt);
+}
 
 int	**ft_init_pipe(t_data *data)
 {
