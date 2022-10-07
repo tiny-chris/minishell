@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/07 17:26:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/08 00:57:15 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	ft_init_data_1(t_data *data, char **envp)
 {
 	ft_init_data_0(data);
 	data->env = ft_get_env(envp);
-	data->prompt = ft_strdup("-----minishell> ");//à ajuster
+	data->prompt = ft_strdup("--minishell> ");//à ajuster
 	if (data->prompt == NULL)
 	{
 		ft_free_env(&(data->env));
@@ -102,6 +102,7 @@ int	ft_init_data_1(t_data *data, char **envp)
 		return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
 	}
 	data->cwd = getcwd(NULL, 0);// sera mise à jour dans cd
+	//http://manpagesfr.free.fr/man/man3/getcwd.3.html : ok pour buf NULL et size 0 (POSIX)
 	if (!data->cwd)
 	{
 		ft_free_env(&(data->env));
@@ -183,73 +184,76 @@ void	ft_exit_ctrl_d(t_data *data)
 	exit(0);
 }
 
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	t_data	data;
-
-// 	if (argc == 1 && !argv[1])
-// 	{
-// 		if (ft_init_data_1(&data, envp))
-// 			return (1);
-// 		while (1)
-// 		{
-// 			ft_init_signals(&data);
-// 			data.line = readline(data.prompt);
-// 			if (!data.line)
-// 				ft_exit_ctrl_d(&data);
-// 			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
-// 			{
-// 				add_history(data.line);
-// 				ft_minishell(&data);
-// 			}
-// 		}
-// 		rl_clear_history();
-// 		ft_clean_loop(&data);
-// 		return (0);
-// 	}
-// 	ft_msg(1, "minishell", ": ", ERRARC);
-// 	return (1);
-// }
-
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	char	*str;
-	char	*str2;
-	char	*s_malloc;
-	int		i;
-	int		*t_int;
+	t_data	data;
 
-
-	i = 0;
-	str = ft_strdup("coucou");
-	printf("val str = %s\n", str);
-	printf("str = %p\n", str);
-	ft_handle_malloc(ADD_M, str, TAB_STR1, 6);
-
-	str2 = ft_substr(str, 0, 4);
-	ft_handle_malloc(ADD_M, str2, TAB_STR1, (4 + 1));
-
-	s_malloc = ft_handle_malloc(MALLOC_C, NULL, TAB_STR1, 7);
-	while (i < 6)
+	if (argc == 1 && !argv[1])
 	{
-		s_malloc[i] = 'c';
-		i++;
+		if (ft_init_data_1(&data, envp))
+			return (1);
+		// while (1)
+		{
+			ft_init_signals(&data);
+			data.line = readline(data.prompt);
+			if (!data.line)
+				ft_exit_ctrl_d(&data);
+			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
+			{
+				add_history(data.line);
+				ft_minishell(&data);
+			}
+		}
+		rl_clear_history();
+		ft_clean_loop(&data);
+		ft_handle_malloc(0, NULL, 0, 0);
+		return (0);
 	}
-	s_malloc[i] = '\0';
-
-	ft_handle_malloc(DELONE, str, 0, 0);
-
-	t_int = ft_handle_malloc(MALLOC_M, NULL, TAB_INT1, 5);
-	i = 0;
-	while (i < 5)
-	{
-		t_int[i] = i;
-		i++;
-	}
-
-	ft_handle_malloc(DELONE, s_malloc, 0, 0);
-	// ft_handle_malloc(0, NULL, 0, 0);
-	printf("val exit %d\n", g_val_exit);
-
+	ft_msg(1, "minishell", ": ", ERRARC);
 	return (1);
 }
+
+// int	main(void)
+// {
+// 	char	*str;
+// 	char	*str2;
+// 	char	*s_malloc;
+// 	int		i;
+// 	int		*t_int;
+
+
+// 	i = 0;
+// 	str = ft_strdup("coucou");
+// 	printf("val str = %s\n", str);
+// 	printf("str = %p\n", str);
+// 	ft_handle_malloc(ADD_M, str, TAB_STR1, 6);
+
+// 	str2 = ft_substr(str, 0, 4);
+// 	ft_handle_malloc(ADD_M, str2, TAB_STR1, (4 + 1));
+
+// 	s_malloc = ft_handle_malloc(MALLOC_C, NULL, TAB_STR1, (6 + 1));
+// 	while (i < 6)
+// 	{
+// 		s_malloc[i] = 'c';
+// 		i++;
+// 	}
+// 	s_malloc[i] = '\0';
+// 	printf("s_malloc = %s\n", s_malloc);
+
+// 	ft_handle_malloc(DELONE, str, 0, 0);
+
+// 	t_int = ft_handle_malloc(MALLOC_M, NULL, TAB_INT1, 5);
+// 	i = 0;
+// 	while (i < 5)
+// 	{
+// 		t_int[i] = i;
+// 		i++;
+// 	}
+
+// 	ft_handle_malloc(DELONE, s_malloc, 0, 0);
+// 	ft_handle_malloc(0, NULL, 0, 0);
+
+// 	printf("val exit %d\n", g_val_exit);
+
+// 	return (1);
+// }

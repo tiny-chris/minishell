@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:29 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/07 17:16:23 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/07 20:08:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,31 @@ int	ft_lstadd_bin(t_bin **bin_head, void *ptr, int type, int size)
 	new = malloc(sizeof(t_bin));
 	if (!new)
 		return (1);
-	dprintf(2, "test - lstadd_bin début\n");
+	printf("test - lstadd_bin début\n");
 	new->ptr = ptr;
 	new->type = type;
 	new->size = size;
 	new->next = (*bin_head);
 	(*bin_head) = new;
+	/* affichage de bin_head */
+	printf("affichage APRES lstadd_bin :\n");
+	t_bin *tmp;
+	tmp = (*bin_head);
+	if (tmp != NULL)
+	{
+		printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+		tmp = tmp->next;
+		if (tmp != NULL)
+		{
+			printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+			tmp = tmp->next;
+			if (tmp != NULL)
+				printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+		}
+	}
+	else
+		printf("vide --> plus de bin_head\n");
+	/* fin d'affichage */
 	return (0);
 }
 

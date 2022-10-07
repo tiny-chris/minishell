@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/02 04:55:41 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/08 00:58:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	ft_check_export(t_token *token, t_data *data)
 	}
 	if (env == NULL)
 		ft_lstadd_env(&(data->env), token->token);
+		//ft_lstadd_env(&(data->env), token->token, ADD_M);// à revoir ADD_M
 	env = data->env;
 	free(var_tmp);
 	return (0);
@@ -117,7 +118,7 @@ int	ft_export(t_cmd *cmd, t_data *data)
 		{
 			while (token->token[i] && token->token[i] != '=')
 			{
-				printf("token->token[%d] = %c\n", i, token->token[i]);
+				// printf("token->token[%d] = %c\n", i, token->token[i]);
 				if ((ft_isalnum(token->token[i]) == 0))
 				{
 					res = ft_msg(1, token->token, ": ", ERRNAM);

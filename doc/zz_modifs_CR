@@ -1,18 +1,4 @@
 
-*** EN COURS ***
-
-- Adding the error message when inital arguments are incorrect (launch of minishell)
-- Updating 'garbage collector' (bin_collect folder) - on framework:
-	- modifying minishell.h: new/modified enums & functions
-		(incl. ft_free_ptr_type())
-	- modifying 'bin_collect' functions
-		- bin_list.c: norm OK
-		- bin_coll.c: with many printf to test... to be cleaned up later
-	- main function is replaced by 'main test' below
-- Adding functions in 'utils.c' to free multi-char * or multi-int *
-
-
-
 *** A FAIRE ***
 
 - messages 'erreur de syntax'
@@ -20,109 +6,63 @@
 
 	--> bin collector : pour le nettoyage, vérifier s'il faut ajouter une fonction de nettoyage ou all good... (ft_malloc)
 
-
-
-
-
 echo -->built in
 l 53	remplacer 	printf("");
 		par : 		write(1, "", 0);
 
-finalisation de cmd_path --> ok + ajout dans PATH (cas ..)
+> revoir pour lancer minishell dans minishell
 
-A push (03/10);
-> ft_new_strchr --> car incorrect pour / tout seul et toto/ ...
-> sort the headers in alphabetical order in minishell.h
-> pour cmd_path :
-	> define
-		# define ERRSTX "syntax error"
-		# define ERRMAL "memory allocation error"
-		# define ERRCMD "command not found"
-		# define ERRDIR "is a directory"
-		# define ERRNDR "not a directory"
-		# define ERRFOD "no such file or directory"
-		# define ERRMSG "Error: "
-		# define ERRFEW "too few arguments"
-		# define ERRNAM "not a valid identifier"
-		# define ERRARG "too many arguments"
-		# define ERRHOM "HOME not set"
-	X	# define ERRFAR ".: filename argument required"
-	X	# define ERRFAU ".: usage: . filename [arguments]"
-	X	# define ERRPRD "permission denied"
+> revoir la valeur de getcwd... bug???
 
-	> cmd_path :
-		- full change ft_find_cmd_path
-		- ajout cas '..' ft_find_cmd_path2
-		- ajout fonctions
+> revoir l'affichage de minishell parfois quand on veut retourner dans l'historique (cf. issues)
 
+> revoir les messages "erreur de syntaxe" du lexer...
+
+BIN COLLECT:
+- ft_lstadd_env(..., int flag)
+	- adding the flag in :
+		[] minishell.h
+		[] export.c
+		[] env.c for ft_lstadd_env & ft_get_env
+	- adding ft_handle_malloc() for substr & strdup functions
+	- what about the new (???) --> add to bin coll ?
+	/!\ what if 'equal' is 0 ?
 
 
 ----------------------------------------
 ----- Modifs en cours - A PARTAGER -----
 ----------------------------------------
 
+  --> on branch CR_ft_malloc
+	Modifying following files:
+	- parser/env.c: norm almost done (1 remaining comment to handle)
+	- utils.c: adding char * or int * = NULL in ft_free_tabstr & ft_free_tabint
+	- Makefile: suppress utils2.C
+	- bin_collect files:
+		- fixing bug on uninitialised ptr/tmp for MALLOC
+		- ft_lstdelone_env(): use ft_free_strs (free of 3 char*) + 'node = NULL'
+	- other modifications for tests purpose: bin_collect files, minishell.c, export.c
 
-	+ ajout de LST_BIN
-	+ code de ft_malloc pour chaque sizeof
-	+ fonctions lists pour
-		- lstadd_front
-		- lstfree
-		...
 
-
-> base pour branch CR_ft_malloc2
-
-  Dans minishell.h :
-	[x] Création d'un enum additionnel pour lister les types de sizeof
-	[x] Création d'une nouvelle variable "struct t_bin"
-	[x] Ajout de cette nouvelle variable 'bin' dans t_data *data pour ce "garbage collector" en liste chainée (init à NULL)
-	[ ] Ajout de la liste des fonctions crées ci-dessous dans le prototypes
-
-  Sous le dossie srcs :
-	[x] Création d'un dossier "bin_collect" contenant les fichiers :
-		[x] "bin_coll.c" qui va contenir :
-			[ ] la fonction 'ft_malloc': qui malloc selon les données transmises + ajoute 1 maillon à chaque malloc OK
-			[ ] la fonction 'ft_get_sizeof: pour récupérer le bon sizeof qui sera utilisé dans ft_malloc
-		[x] "bin_list.c" qui regroupe les fonctions usuelles de listes chainées :
-			[ ] ft_lstadd_bin
-			[ ] ft_lstlast_bin
-			[ ] ft_lstclear_bin
-			[ ] ft_lstdelone_bin
-			[ ] ft_free_bin
-
-  Dans le Makefile :
-	[x] Ajout des fichiers/folders
-
-  Dans minishell.c :
-	[x] Ajout dans la fonction qui initialise data (ft_init_data_0) de minishell.c : une init de bin à NULL
+-------------------------------------------
+----- modifs ci-dessous - COMMITED OK -----
+-------------------------------------------
 
 
 
-A REVOIR / RELIRE
+> Fri Oct 7 17:38:53 2022 +0200
+  --> on branch CR_ft_malloc
+	Mainly updating 'garbage collector' (bin_collect folder) on framework side + additional actions detailed
 
-		--> /!\ /!\ /!\ /!\ /!\ /!\ /!\
-		A AJUSTER POUR CHAQUE MALLOC !!
-		+ CHECKER POUR CHAQUE PROCESS (fork()), quand on exit (surtout pour les child) ou on return...
-
-Check des mallocs dans l'ordre des fonctions :
-- 	ft_get_env(char **envp) dans parser/env.c
-		--> modif des paramètres, ajout de data
-		==> A FINALISER pour la sortie (pb de malloc donc on ne continue pas)
--	ft_lstadd_env(t_env **env, char *envp)
-		--> modif des paramètres, ajout de data
-		==> A FINALISER pour la sortie (pb de malloc donc on ne continue pas)
--	ft_substr()
-		--> ajout dans utils2.c d'une fonction ft_substr_malloc
-			pour modifier les malloc/check
--	ft_strdup()
-		--> ajout dans utils2.c d'une fonction ft_strdup_malloc
-			pour modifier les malloc/check
--	ft_built_in()
-		--> modif des paramètres et de la fonction
-		--> quitte directement si erreur
-		==> A FINALISER pour la sortie (pb de malloc donc on ne continue pas)
--	ft_split()
-		==> /!\ A FINALISER (WIP) /!\
+    - Regarding 'bin_collect' folder (for malloc management):
+            - modifying minishell.h: new/modified enums & functions
+                    (incl. ft_free_ptr_type())
+            - modifying 'bin_collect' functions
+                    - bin_list.c: norm OK
+                    - bin_coll.c: with many printf to test... to be cleaned up later
+            - main function is temporarily replaced by 'main test'
+    - Adding the error message when inital arguments are incorrect (launch of minishell)
+    - Adding functions in 'utils.c' to free multi-char * or multi-int *
 
 
 ----------------------------------------------------

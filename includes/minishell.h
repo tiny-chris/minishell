@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/07 17:30:50 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/08 01:00:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ typedef struct s_data
 /*	*****************	*/
 
 //int		main(int argc, char **argv, char **envp);
-int		main(void);//
+//int		main(void);//
 void	ft_minishell(t_data *data);
 int		ft_clean_loop(t_data *data);
 int		ft_clean_cmdline(t_data *data);
@@ -237,7 +237,7 @@ int		ft_get_error_size(t_data *data);
 char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data);//modifier le nom de la fonction
 void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data);
 
-/*	Step 6	to_tokens */
+/*	Step 6	tokens */
 
 int		ft_tokenizer(t_data *data);
 int		ft_get_token(t_cmd *cmd);
@@ -264,6 +264,7 @@ int		ft_del_empty_cmd(t_data *data);
 	/*	env_list */
 
 t_env	*ft_lstlast_env(t_env *lst);
+//int		ft_lstadd_env(t_env **env, char *envp, int flag);///
 int		ft_lstadd_env(t_env **env, char *envp);
 void	ft_lstdelone_env(t_env *node);
 void	ft_free_env(t_env **env);

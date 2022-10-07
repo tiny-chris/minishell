@@ -42,6 +42,7 @@ void	*ft_free_tabstr(char **tab_str)
 		while (tab_str[i])
 		{
 			free(tab_str[i]);
+			tab_str[i] = NULL;
 			i++;
 		}
 		free(tab_str);
@@ -58,6 +59,7 @@ void	*ft_free_tabint(int **tab_int, int size)
 	while (i < size)
 	{
 		free(tab_int[i]);
+		tab_int[i] = NULL;
 		i++;
 	}
 	free(tab_int);
