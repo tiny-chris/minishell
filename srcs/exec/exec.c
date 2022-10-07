@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/06 18:49:14 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/07 17:50:40 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ extern int	g_val_exit;
 
 static int	ft_redirect_builtin(t_cmd *cmd)
 {
+	cmd->stin = dup(STDIN_FILENO);
+	cmd->stout = dup(STDOUT_FILENO);
 	if (cmd->infile != 0)
 	{
 		if (dup2(cmd->infile, STDIN_FILENO) == -1)
@@ -40,25 +42,31 @@ static int	ft_redirect_builtin(t_cmd *cmd)
 	}
 	if (cmd->outfile != 1)
 	{
-		printf("testoutfile \n");
 		if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
 			return (-1);
 	}
 	return (0);
 }
 
-static void	ft_redirect_std(void)
+int	ft_redirect_std(t_cmd *cmd)
 {
-	dup2(0, STDIN_FILENO);
-	dup2(1, STDOUT_FILENO);
+	dup2(cmd->stin, STDIN_FILENO);
+	dup2(cmd->stout, STDOUT_FILENO);
+	close(cmd->stin);
+	close(cmd->stout);
 }
 
-static void	ft_close_builtin_fd(t_data *data)
+static void	ft_close_builtin_fd(t_cmd *cmd)
 {
-	if (data->cmd->infile != 0)
-		close (data->cmd->infile);
-	if (data->cmd->outfile != 1)
-		close (data->cmd->outfile);
+	t_token *tok_redir;
+
+	tok_redir = cmd->tok_redir;
+	while (tok_redir)
+	{
+		if (tok_redir->fd != -1)
+			close(tok_redir->fd);
+		tok_redir = tok_redir->next;
+	}
 }
 
 int	ft_exec(t_data *data)
@@ -83,23 +91,25 @@ int	ft_exec(t_data *data)
 		else
 		{
 			printf("passe dans builin unique\n"); //
-			res = ft_redirect_builtin(data->cmd);
-			dprintf(2, "test\n");
-			ft_close_builtin_fd(data);
-			if (res == -1 || data->cmd->token == NULL)
+			if (data->cmd->tok_redir)
 			{
-				ft_exit_exec(data);
-				ft_redirect_std();
-				return (EXIT_FAILURE);
+				res = ft_redirect_builtin(data->cmd);
+				ft_close_builtin_fd(data->cmd);
+				if (res == -1 || data->cmd->token == NULL)
+				{
+					ft_redirect_std(data->cmd);
+					ft_exit_exec(data);
+					g_val_exit = 1;
+					return (g_val_exit);
+				}
 			}
 			g_val_exit = ft_exec_built_in(data->cmd, data);
+			if (data->cmd->tok_redir)
+				ft_redirect_std(data->cmd);
 			ft_exit_exec(data);
-			printf("stdin %d\n", STDERR_FILENO);
-			ft_redirect_std();
 		}
 		return (g_val_exit);
 	}
-	//dprintf(2, "init ok\n");
 	i = 0;
 	while (i < data->nb_pipes)
 	{

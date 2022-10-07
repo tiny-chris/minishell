@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 11:41:59 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/06 14:46:42 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/07 18:07:29 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static void	ft_tmp_free(t_data *data) // fonction a supprimer remplacee par ft_h
 	rl_clear_history();
 	ft_clean_loop(data);
 	free(data->pid);
+	if (data->pipe_fd)
+		ft_free_tabint(data->pipe_fd, data->nb_pipes);
 }
 
 int	ft_exit(t_cmd *cmd, t_data *data)
@@ -60,12 +62,17 @@ int	ft_exit(t_cmd *cmd, t_data *data)
 		// ft_handle_malloc(0, NULL, 0, 0); // a uncomment
 		// rl_clear_history(); // a uncomment
 		ft_putstr_fd("exit\n", 1);
+		if (data->nb_pipes == 0 && data->cmd->tok_redir)
+			ft_redirect_std(data->cmd);
 		ft_tmp_free(data); // free temporaire
 		exit(EXIT_SUCCESS);
 	}
 	if (ft_check_digit(token->token) == 0)
 	{
 		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
+		if (data->nb_pipes == 0 && data->cmd->tok_redir)
+			ft_redirect_std(data->cmd);
+		ft_tmp_free(data);
 		exit(g_val_exit);
 	}
 	if (token->next)
@@ -75,12 +82,20 @@ int	ft_exit(t_cmd *cmd, t_data *data)
 	if (ft_strncmp(check, token->token, ft_strlen(check)))
 	{
 		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
+		if (data->nb_pipes == 0 && data->cmd->tok_redir)
+			ft_redirect_std(data->cmd);
 		ft_tmp_free(data); // free temporaire
 		free(check); // a ajuster avec ft_handle malloc
 		exit(g_val_exit);
 	}
 	// ft_handle_malloc(0, NULL, 0, 0);
 	// rl_clear_history(); // a uncomment
+	printf("test avant \n");
+	if (data->nb_pipes == 0 && data->cmd->tok_redir)
+	{
+		printf("test rentre dans le if\n");
+		ft_redirect_std(data->cmd);
+	}
 	ft_tmp_free(data); // free temporaire
 	free(check); // a ajuster avec ft_handle malloc
 	exit(ret);

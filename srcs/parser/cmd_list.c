@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/04 01:26:05 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/07 17:04:51 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
 	new->tok_redir = NULL;
 	new->infile = 0;
 	new->outfile = 1;
+	new->stin = 0;
+	new->stout = 1;
 	new->file_err = 0;
 	new->cmd_opt = NULL;
 	new->cmd_path = NULL;
