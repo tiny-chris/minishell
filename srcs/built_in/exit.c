@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 11:41:59 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/07 18:07:29 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/07 18:52:15 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,42 @@ int	ft_exit(t_cmd *cmd, t_data *data)
 	check = NULL;
 	if (token == NULL) // exit sans argument
 	{
-		// ft_handle_malloc(0, NULL, 0, 0); // a uncomment
-		// rl_clear_history(); // a uncomment
 		ft_putstr_fd("exit\n", 1);
 		if (data->nb_pipes == 0 && data->cmd->tok_redir)
-			ft_redirect_std(data->cmd);
+		{
+			if (ft_redirect_std(data->cmd) == -1)
+			{
+				g_val_exit = errno;
+				ft_msg(errno, ERRMSG, "", strerror(errno));
+				//tout free
+				//ft_handle_malloc(0, NULL, 0, 0);
+				exit(errno);
+			}
+			
+		}
 		ft_tmp_free(data); // free temporaire
+		// ft_handle_malloc(0, NULL, 0, 0); // a uncomment
+		// rl_clear_history(); // a uncomment
 		exit(EXIT_SUCCESS);
 	}
 	if (ft_check_digit(token->token) == 0)
 	{
 		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
 		if (data->nb_pipes == 0 && data->cmd->tok_redir)
-			ft_redirect_std(data->cmd);
+		{
+			if (ft_redirect_std(data->cmd) == -1)
+			{
+				g_val_exit = errno;
+				ft_msg(errno, ERRMSG, "", strerror(errno));
+				//tout free
+				//ft_handle_malloc(0, NULL, 0, 0);
+				exit(errno);
+			}
+			
+		}
 		ft_tmp_free(data);
+		// ft_handle_malloc(0, NULL, 0, 0); // a uncomment
+		// rl_clear_history(); // a uncomment
 		exit(g_val_exit);
 	}
 	if (token->next)
@@ -83,20 +105,36 @@ int	ft_exit(t_cmd *cmd, t_data *data)
 	{
 		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
 		if (data->nb_pipes == 0 && data->cmd->tok_redir)
-			ft_redirect_std(data->cmd);
+		{
+			if (ft_redirect_std(data->cmd) == -1)
+			{
+				g_val_exit = errno;
+				ft_msg(errno, ERRMSG, "", strerror(errno));
+				//tout free
+				//ft_handle_malloc(0, NULL, 0, 0);
+				exit(errno);
+			}
+		}
 		ft_tmp_free(data); // free temporaire
 		free(check); // a ajuster avec ft_handle malloc
+		// ft_handle_malloc(0, NULL, 0, 0); // a uncomment
+		// rl_clear_history(); // a uncomment
 		exit(g_val_exit);
 	}
-	// ft_handle_malloc(0, NULL, 0, 0);
-	// rl_clear_history(); // a uncomment
-	printf("test avant \n");
 	if (data->nb_pipes == 0 && data->cmd->tok_redir)
 	{
-		printf("test rentre dans le if\n");
-		ft_redirect_std(data->cmd);
+		if (ft_redirect_std(data->cmd) == -1)
+		{
+			g_val_exit = errno;
+			ft_msg(errno, ERRMSG, "", strerror(errno));
+			//tout free
+			//ft_handle_malloc(0, NULL, 0, 0);
+			exit(errno);
+		}
 	}
 	ft_tmp_free(data); // free temporaire
 	free(check); // a ajuster avec ft_handle malloc
+	// ft_handle_malloc(0, NULL, 0, 0);
+	// rl_clear_history(); // a uncomment
 	exit(ret);
 }
