@@ -106,34 +106,40 @@ int	ft_new_strrchr(const char *s, int c)
 //
 
 
-// A DEVELOPPER SELON BESOIN
-void	ft_free_strs(char *str1, char *str2, char **str3)
+void	ft_free_strs(char *str1, char *str2, char *str3)
 {
-	if (str1)
+	if (str1 != NULL)
 	{
 		free(str1);
 		str1 = NULL;
 	}
-	if (str2)
+	if (str2 != NULL)
 	{
 		free(str2);
 		str2 = NULL;
 	}
-	if (str3)
-		ft_free_tabstr(str3);
+	if (str3 != NULL)
+	{
+		free(str3);
+		str3 = NULL;
+	}
 }
 
-/*	Frees each string of the table char** from the last line to the 1st one
-**	and then free the table of strings 
-*/
-void	*ft_free_tabstr_rev(char **tab_str, int lines)
+void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3)
 {
-	while (lines >= 0)
+	if (t_int1 != NULL)
 	{
-		free(tab_str[lines]);
-		lines--;
+		free(t_int1);
+		t_int1 = NULL;
 	}
-	free(tab_str);
-	tab_str = NULL;
-	return (NULL);
+	if (t_int2 != NULL)
+	{
+		free(t_int2);
+		t_int2 = NULL;
+	}
+	if (t_int3 != NULL)
+	{
+		free(t_int3);
+		t_int3 = NULL;
+	}
 }

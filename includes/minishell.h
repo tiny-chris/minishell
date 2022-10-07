@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/05 14:45:14 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/07 17:30:50 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <signal.h>
 # include <unistd.h>
-# include <limits.h>
 
 # define ERRSTX "syntax error"
-# define ERRMAL "memory allocation error"
+# define ERRMAL "memory allocation failure"
 # define ERRCMD "command not found"
 # define ERRDIR "is a directory"
 # define ERRNDR "not a directory"
@@ -42,6 +42,7 @@
 # define ERRFAR ".: filename argument required"
 # define ERRFAU ".: usage: . filename [arguments]"
 # define ERRPRD "permission denied"
+# define ERRARC "invalid number of arguments"
 
 typedef void	(*t_sighandler)(int);
 
@@ -62,9 +63,6 @@ typedef enum s_type
 	HERE_DOC 		= 23,
 }	t_type;
 
-/* **************************** */
-/* début - for ft_handle_malloc */
-
 typedef enum s_sizetype
 {
 	TAB_INT1		= 100,
@@ -74,28 +72,24 @@ typedef enum s_sizetype
 	LST_ENV			= 104,
 	LST_CMD			= 105,
 	LST_TOK			= 106,
-	LST_BIN			= 107,
 }	t_sizetype;
 
 typedef enum s_flag
 {
-	MALLOC		= 1000,
-	ADD			= 2000,
-	DELONE		= 3000,
+	ADD_C			= 1000,
+	MALLOC_C		= 1001,
+	ADD_M			= 2000,
+	MALLOC_M		= 2001,
+	DELONE			= 3000,
 }	t_flag;
 
 typedef struct s_bin
 {
 	void			*ptr;
-	int				type;// ou un void ??? tester pour les listes chainees
+	int				type;
 	int				size;
 	struct s_bin	*next;
 }	t_bin;
-
-// cf. suite dans la liste des fonctions en-dessous
-
-/*	fin - for ft_handle_malloc */
-/* *************************** */
 
 typedef struct s_token
 {
@@ -119,14 +113,14 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			*raw_cmd;
-	char			*unspace_cmd;//raw_cmd_no_space;//modifié
+	char			*unspace_cmd;
 	char			*no_redir_cmd;
 	char			*undoll_cmd;
 	char			*clean_cmd;//modifier par expand_cmd ??
 	t_token			*token;
 	t_token			*tok_redir;
-	int				infile;//
-	int				outfile;//
+	int				infile;
+	int				outfile;
 	int				file_err;
 	char			**cmd_opt;
 	char			*cmd_path;
@@ -146,8 +140,8 @@ typedef struct s_data
 	int				nb_pipes;
 	t_cmd			*cmd;
 	char			**built_in;
-	int				*pid;//
-	int				**pipe_fd;//nb de fd[][]
+	int				*pid;
+	int				**pipe_fd;
 	t_env			*env_path;
 	char			**s_env_path;
 }	t_data;
@@ -155,7 +149,8 @@ typedef struct s_data
 /*	***** INIT *****	*/
 /*	*****************	*/
 
-int		main(int argc, char **argv, char **envp);
+//int		main(int argc, char **argv, char **envp);
+int		main(void);//
 void	ft_minishell(t_data *data);
 int		ft_clean_loop(t_data *data);
 int		ft_clean_cmdline(t_data *data);
@@ -169,17 +164,8 @@ void	ft_get_home(t_data *data);
 
 /*	env_path */
 
-/* 1ere partie - à désactiver pour tester export y.c. pour PATH*/
-
-	// void	ft_get_env_path(t_data *data, char **envp);
-	// t_env	*ft_lst_env_path(char **tab_path);
-	// char	**ft_get_str_env_path(t_data *data);
-	// int		ft_lstadd_env2(t_env **env, char *tab_path);
-
-/* 2e partie - à activer pour tester export y.c. pour PATH*/
-
-	void 	ft_get_env_path(t_data *data);
-	int		ft_lstadd_env2(t_env **env, char *s_env_path_i);
+void 	ft_get_env_path(t_data *data);
+int		ft_lstadd_env2(t_env **env, char *s_env_path_i);
 
 /*	***** LEXER *****	*/
 /*	*****************	*/
@@ -305,8 +291,8 @@ void	*ft_free_tabint(int **tab_int, int size);
 int		ft_is_in_set(const char *set, char c);
 int		ft_new_strrchr(const char *s, int c);
 //void	ft_free_1(char *str1, char *str2);
-void	ft_free_strs(char *str1, char *str2, char **str3);
-void	*ft_free_tabstr_rev(char **tab_str, int lines);
+void	ft_free_strs(char *str1, char *str2, char *str3);
+void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3);
 
 /*	***** EXEC *****	*/
 /*	****************	*/
@@ -372,12 +358,10 @@ void	ft_signal(t_data *data, int signum, t_sighandler handler);
 void	ft_sigquit_child(t_data *data, int signum, t_sighandler handler);
 void	sig_quit(int sig);
 
-/* **************************** */
-/* début - for ft_handle_malloc */
-
 /*	bin collector */
 
 void	*ft_handle_malloc(int flag, void *ptr, int type, int size);
+void	ft_free_ptr_type(void *ptr, int type, int size);
 
 /*	bin list */
 
@@ -385,33 +369,5 @@ int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
 void	ft_lstdelone_bin(t_bin *node);
 void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
 void	ft_free_bin(t_bin **bin);
-
-/*	fin - for ft_handle_malloc */
-/* *************************** */
-
-// ***** ex-del_quotes *****
-
-//int		ft_del_quotes(t_data *data);
-//int		ft_unquote_cmd_len(char *undoll_cmd);
-//int		ft_is_allspace(char *str, int i, char c);
-//char	*ft_fill_unquote_cmd(char *undoll_cmd, int len);
-//int		ft_contains_doll(char *undoll_cmd, int i, char c);
-
-// ***** doublon expand *****
-
-// int		ft_expand(t_data *data);
-// int		ft_expand_cmd_len(char *unquote_cmd, t_data *data);
-// int		ft_get_expand_size(char *unquote_cmd, int *i, t_data *data);
-// char	*ft_fill_clean_cmd(char *unquote_cmd, int len, t_data *data);
-
-// ***** old token & redir management *****
-
-//int		ft_check_word_n(char *clean_cmd_no_redir, int *i, t_token **token);
-//int		ft_first_token(t_token *token, int len);
-//int		ft_is_redir(char *clean_cmd, int *i);
-//int		ft_get_redir(t_cmd *cmd);
-//void	ft_fill_no_redir(char *clean_cmd, char *clean_cmd_no_redir);
-//int		ft_get_redir_list(char *clean_cmd, t_token **tok_redir);
-//int		ft_len_no_redir(char *clean_cmd);
 
 #endif

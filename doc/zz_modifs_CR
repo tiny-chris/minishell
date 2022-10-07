@@ -1,4 +1,28 @@
-A FAIRE
+
+*** EN COURS ***
+
+- Adding the error message when inital arguments are incorrect (launch of minishell)
+- Updating 'garbage collector' (bin_collect folder) - on framework:
+	- modifying minishell.h: new/modified enums & functions
+		(incl. ft_free_ptr_type())
+	- modifying 'bin_collect' functions
+		- bin_list.c: norm OK
+		- bin_coll.c: with many printf to test... to be cleaned up later
+	- main function is replaced by 'main test' below
+- Adding functions in 'utils.c' to free multi-char * or multi-int *
+
+
+
+*** A FAIRE ***
+
+- messages 'erreur de syntax'
+- messages 'exit' avec les token
+
+	--> bin collector : pour le nettoyage, vérifier s'il faut ajouter une fonction de nettoyage ou all good... (ft_malloc)
+
+
+
+
 
 echo -->built in
 l 53	remplacer 	printf("");
@@ -26,7 +50,7 @@ A push (03/10);
 	X	# define ERRFAU ".: usage: . filename [arguments]"
 	X	# define ERRPRD "permission denied"
 
-	> cmd_path : 
+	> cmd_path :
 		- full change ft_find_cmd_path
 		- ajout cas '..' ft_find_cmd_path2
 		- ajout fonctions

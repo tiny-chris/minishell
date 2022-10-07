@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/26 11:55:31 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/07 13:58:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ void	ft_get_env_path(t_data *data)
 		env = env->next;
 	}
 	if (!env->content)
-		return ;//nettoyer : free / exit malloc
+		return ;//le contenu est vide...
 	if (data->s_env_path)
 		ft_free_tabstr(data->s_env_path);
 	data->s_env_path = ft_split(env->content, ':');
