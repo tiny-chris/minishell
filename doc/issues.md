@@ -36,6 +36,7 @@
 		export test='"youpi'
 		puis echo $test
 		--> SOUCI DANS PARSING : csquotes token = "youpi" --> len = 6 vs. strlen = 7
+	==> solution envisagee : si les expands sont des quotes -> les passer en negatif pour eviter qu'on la prenne pour une closing quote.
 
 	/*******************************/
 

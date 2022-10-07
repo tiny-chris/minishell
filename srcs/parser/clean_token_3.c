@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_token_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/29 00:29:08 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/07 22:37:34 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void	ft_positive_token(t_token *token)
 	int	i;
 
 	i = 0;
-	while (token->token[i])
+	while (token->token[i] != '\0')
 	{
 		if(token->token[i] < 0)
 			token->token[i] = (-1) * token->token[i];

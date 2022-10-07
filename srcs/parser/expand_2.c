@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/30 20:56:16 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/07 22:16:28 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,10 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 		{
 			while (env->content[l])
 			{
-				clean_cmd[*j] = env->content[l];
+				if (env->content[l] == 34 || env->content[l] == 39)
+					clean_cmd[*j] = env->content[l] * (-1);
+				else
+					clean_cmd[*j] = env->content[l];
 				(*j)++;
 				l++;
 			}
