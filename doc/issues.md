@@ -27,17 +27,6 @@
 		→ res minishell : ./Makefile: no such file or directory
 		→ bash : env: ‘./Makefile’: Permission denied
 
-	l. 296 :
-		$> export HOLA='"'
-		$> echo " $HOLA " | cat -e
-		→ bash :  " $
-		→ res minishell : on n’ a pas le résultat attendu
-	==> autres exemples :
-		export test='"youpi'
-		puis echo $test
-		--> SOUCI DANS PARSING : csquotes token = "youpi" --> len = 6 vs. strlen = 7
-	==> solution envisagee : si les expands sont des quotes -> les passer en negatif pour eviter qu'on la prenne pour une closing quote.
-
 	/*******************************/
 
 	/*********************/
@@ -71,7 +60,19 @@
 
 >	tests corrigés - A RETESTER avant la fin
 
-
+	/***********/
+	FIXED
+	/***********/
+	l. 296 :
+		$> export HOLA='"'
+		$> echo " $HOLA " | cat -e
+		→ bash :  " $
+		→ res minishell : on n’ a pas le résultat attendu
+	==> autres exemples :
+		export test='"youpi'
+		puis echo $test
+		--> SOUCI DANS PARSING : csquotes token = "youpi" --> len = 6 vs. strlen = 7
+	==> solution envisagee : si les expands sont des quotes -> les passer en negatif pour eviter qu'on la prenne pour une closing quote.
 
 
 	/***********/

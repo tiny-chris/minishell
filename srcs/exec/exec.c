@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/07 18:53:38 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/08 13:41:28 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	ft_redirect_std(t_cmd *cmd)
 		return (-1);
 	close(cmd->stin);
 	close(cmd->stout);
+	return (0);
 }
 
 static void	ft_close_builtin_fd(t_cmd *cmd)
