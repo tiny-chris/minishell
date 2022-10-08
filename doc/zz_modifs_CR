@@ -1,4 +1,16 @@
 
+
+à Léna
+
+ligne 63 -
+int	ft_redirect_std(t_cmd *cmd)
+--> mettre un return (0);
+
+quelles modifications pour echo?
+expliquer stp
+
+
+
 *** A FAIRE ***
 
 - messages 'erreur de syntax'
@@ -33,6 +45,14 @@ BIN COLLECT:
 ----- Modifs en cours - A PARTAGER -----
 ----------------------------------------
 
+> only zz_modifs_CR
+
+-------------------------------------------
+----- modifs ci-dessous - COMMITED OK -----
+-------------------------------------------
+
+
+> Sat Oct 8 01:13:46 2022 +0200
   --> on branch CR_ft_malloc
 	Modifying following files:
 	- parser/env.c: norm almost done (1 remaining comment to handle)
@@ -42,12 +62,6 @@ BIN COLLECT:
 		- fixing bug on uninitialised ptr/tmp for MALLOC
 		- ft_lstdelone_env(): use ft_free_strs (free of 3 char*) + 'node = NULL'
 	- other modifications for tests purpose: bin_collect files, minishell.c, export.c
-
-
--------------------------------------------
------ modifs ci-dessous - COMMITED OK -----
--------------------------------------------
-
 
 
 > Fri Oct 7 17:38:53 2022 +0200
