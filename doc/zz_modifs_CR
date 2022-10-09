@@ -2,13 +2,10 @@
 
 à Léna
 
-ligne 63 -
-int	ft_redirect_std(t_cmd *cmd)
---> mettre un return (0);
-
 quelles modifications pour echo?
 expliquer stp
 
+pour les signaux - quid des messages "coupés"? les join ou non (si on peut éviter... faire une string)
 
 
 *** A FAIRE ***
@@ -24,9 +21,12 @@ l 53	remplacer 	printf("");
 
 > revoir pour lancer minishell dans minishell
 
-> revoir la valeur de getcwd... bug???
+> revoir la valeur de getcwd... bug??? --> OK dans POSIX
+	http://manpagesfr.free.fr/man/man3/getcwd.3.html : ok pour buf NULL et size 0 (POSIX)
 
 > revoir l'affichage de minishell parfois quand on veut retourner dans l'historique (cf. issues)
+
+>
 
 > revoir les messages "erreur de syntaxe" du lexer...
 
@@ -46,6 +46,8 @@ BIN COLLECT:
 ----------------------------------------
 
 > only zz_modifs_CR
+	--> list of all mallocs
+
 
 -------------------------------------------
 ----- modifs ci-dessous - COMMITED OK -----
