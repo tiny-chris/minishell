@@ -57,10 +57,10 @@ int	ft_lstadd_env(t_env **env, char *envp, int flag)
 	int		equal;
 
 	new = ft_handle_malloc(flag + 1, NULL, LST_ENV, 1);
-	printf("test ici 1\n");
+	// printf("test ici 1\n");
 	equal = ft_new_strchr(envp, '=');
 	// QUID si equal == NULL ?
-	printf("test ici\n");
+	// printf("test ici\n");
 	new->var = ft_substr(envp, 0, equal);
 	ft_handle_malloc(flag, new->var, TAB_STR1, equal + 1);
 	new->var_equal = ft_substr(envp, 0, equal + 1);

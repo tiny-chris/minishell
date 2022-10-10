@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 11:53:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:12:56 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 		env = env->next;
 	}
 	// si ce n'est pas le cas, on retourne (les 2 var sont nulles)
-	if (env == NULL || env->var_equal || env->content)
+	if (env == NULL || env->var_equal == NULL || env->content == NULL)
 		return ;
 	// autrement, je recup les char * de content dans data:
 	data->s_env_path = ft_split(env->content, ':');

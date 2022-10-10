@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 12:39:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 15:05:15 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	ft_init_data_1(t_data *data, char **envp)
 	// ft_handle_malloc(0, NULL, 0, 0);
 	// exit (1);
 	data->prompt = ft_strdup("--minishell> ");//à ajuster
-		// //TEST2 :
+		//TEST2 :
 		// free(data->prompt);//test2
 		// data->prompt = NULL;//test2
 	ft_handle_malloc(ADD_M, data->prompt, TAB_STR1, ft_strlen(data->prompt) + 1);
@@ -169,7 +169,7 @@ int	ft_init_data_1(t_data *data, char **envp)
 	// 	return (1);//could not initialise minishell
 	// }
 	ft_get_home(data, ADD_M);
-	// //TEST3 :
+	// //TEST4 :
 	// ft_handle_malloc(0, NULL, 0, 0);//
 	// exit (1);//
 	dprintf(2, "val data home = %s\n", data->home);
@@ -200,6 +200,7 @@ int	ft_clean_cmdline(t_data *data)
 int	ft_clean_loop(t_data *data)
 {
 	int	i;
+	t_env	*tmp;
 
 	i = 0;
 	dprintf(2, "je rentre dans clean loop\n");
@@ -233,8 +234,6 @@ int	ft_clean_loop(t_data *data)
 	dprintf(2, "--------------------------------clean-loop : suppr env\n");
 	if (data->env != NULL)
 	{
-		t_env	*tmp;
-
 		tmp = NULL;
 		while (data->env)
 		{
@@ -255,11 +254,23 @@ int	ft_clean_loop(t_data *data)
 			data->env = tmp;
 		}
 	}
-		ft_free_env(&(data->env));
+	//	ft_free_env(&(data->env));
 	dprintf(2, "--------------------------------clean-loop : suppr env done\n");
 	dprintf(2, "--------------------------------clean-loop : suppr env_PATH\n");
 	if (data->env_path)
-		ft_free_env(&(data->env_path));
+	{
+		tmp = NULL;
+		while (data->env_path)
+		{
+			tmp = data->env_path->next;
+			while (data->env->content)
+			{
+				ft_handle_malloc(DELONE, data->env->content, 0, 0);
+				data->env_path = tmp;
+			}
+		}
+	}
+		// ft_free_env(&(data->env_path));
 	dprintf(2, "--------------------------------clean-loop : suppr env_PATH done\n");
 	if (data->s_env_path)
 		ft_handle_malloc(DELONE, data->s_env_path, 0, 0);
@@ -317,7 +328,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		rl_clear_history();
 		ft_clean_loop(&data);
-		ft_handle_malloc(0, NULL, 0, 0);
+	//	ft_handle_malloc(0, NULL, 0, 0);
 		return (0);
 	}
 	ft_msg(1, "minishell", ": ", ERRARC);

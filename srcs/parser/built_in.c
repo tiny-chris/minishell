@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:50:57 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 09:09:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 15:05:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ char	**ft_built_in(void)
 	char	**built_in;
 
 	built_in = ft_handle_malloc(MALLOC_M, NULL, TAB_STRS, 8);
+	// TEST3
+	printf("test ici 1\n");
+	ft_handle_malloc(DELONE, built_in, 0, 0);
+	ft_handle_malloc(0, NULL, 0, 0);
+	
+
 	// built_in = malloc(sizeof(char*) * 8);
 	// if (!built_in)
 	// 	return (NULL); // free ce qu'on a deja malloc dans data;

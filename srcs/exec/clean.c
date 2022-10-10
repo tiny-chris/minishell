@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 04:18:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:20:46 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ void	ft_close_std(void)
 
 void	ft_exit_exec(t_data *data)//, int val_exit)
 {
+	int	i;
+
+	i = 0;
 	if (data != NULL)
 	{
 		if (data->pid != NULL)
@@ -35,8 +38,12 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 		}
 		if (data->s_env_path != NULL)
 		{
-			ft_free_tabstr(data->s_env_path);
-			data->s_env_path = NULL;
+			while (data->s_env_path[i])
+			{
+				ft_handle_malloc(DELONE, data->s_env_path[i], 0, 0);
+				i++;
+			}
+			ft_handle_malloc(DELONE, data->s_env_path, 0, 0);
 		}
 		// if (val_exit != -1)
 		// 	data->val_exit = val_exit;
