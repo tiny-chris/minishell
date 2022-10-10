@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 18:17:16 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/10 19:12:41 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,7 +367,7 @@ void	ft_update_cwd(t_data *data);
 
 int		ft_exit(t_cmd *cmd, t_data *data);
 
-/* signaux */
+/*  signaux  */
 
 void	sig_int(int sig);
 void	ft_init_signals(t_data *data);
@@ -375,12 +375,14 @@ void	ft_signal(t_data *data, int signum, t_sighandler handler);
 void	ft_sigquit_child(t_data *data, int signum, t_sighandler handler);
 void	sig_quit(int sig);
 
-/* heredoc */
+/*  heredoc  */
 
 void	ft_heredoc(t_data *data, t_cmd *cmd, t_token *tok_redir);
-char	*ft_get_prompt_line(void);
+char	*ft_get_prompt_line(t_data *data);
 void	ft_add_line(t_data *data, t_token *tok_redir, char *line);
 t_env	*ft_check_env(t_data *data, char *line);
+void	ft_heredoc_sigint(int sig);
+void	ft_end_of_file(t_token *tok_redir);
 
 /* **************************** */
 /* début - for ft_handle_malloc */
