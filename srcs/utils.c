@@ -51,6 +51,50 @@ void	*ft_free_tabstr(char **tab_str)
 	return (NULL);
 }
 
+void	*ft_free_tabstr2(char **tab_str, int flag)
+{
+	int	i;
+
+	i = 0;
+	if (tab_str == NULL)
+		return (NULL);
+	(void) flag;
+	// if (flag == DELONE)
+	// {
+	// 	while (tab_str[i])
+	// 		i++;
+	// 	i--;
+	// 	while (i >= 0)
+	// 	{
+	// 		if (tab_str[i])
+	// 			ft_handle_malloc(DELONE, tab_str[i], 0, 0);
+	// 		i--;
+		
+	// 	}
+	// }
+	free(tab_str);
+	tab_str = NULL;
+	return (NULL);
+}
+
+// 	if (tab_str != NULL)
+// 	{
+// 		if (flag == DELONE)
+// 		{
+// 			while (tab_str[i])
+// 			{
+// 				ft_handle_malloc(DELONE, tab_str[i], 0, 0);
+// 				// free(tab_str[i]);
+// 				// tab_str[i] = NULL;
+// 				i++;
+// 			}
+// 		}
+// 		free(tab_str);
+// 		tab_str = NULL;
+// 	}
+// 	return (NULL);
+// }
+
 void	*ft_free_tabint(int **tab_int, int size)
 {
 	int	i;
@@ -144,4 +188,25 @@ void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3)
 		free(t_int3);
 		t_int3 = NULL;
 	}
+}
+
+int	ft_nb_word(char const *str, char c)
+{
+	int	i;
+	int	word;
+
+	i = 0;
+	word = 0;
+	while (str && str[i])
+	{
+		if (str[i] != c)
+		{
+			word++;
+			while (str[i] != c && str[i])
+				i++;
+		}
+		while (str[i] && str[i] == c)
+			i++;
+	}
+	return (word);
 }

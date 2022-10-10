@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/29 15:12:08 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 09:57:59 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ int	ft_cd(t_cmd *cmd, t_data *data)
 	if (token == NULL)
 	{
 		dprintf(2, "cd --> rentre dans token == NULL\n");
-		ft_get_home(data);
+		ft_get_home(data, ADD_M);///// modifier le flag !!!!!! (checker)
 		if (data->home == NULL)
 		{
 			dprintf(2, "data->home == NULL\n");

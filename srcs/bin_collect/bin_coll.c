@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 07:12:29 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:57:34 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ void	ft_free_ptr_type(void *ptr, int type, int size, int flag)
 {
 	if (!ptr)
 		return ;
-	dprintf(2,"rentre dans le free ptr type\n");
+	// dprintf(2,"rentre dans le free ptr type\n");
 	if (ptr && type == TAB_INT1)
 		ft_free_ints((int *)ptr, NULL, NULL);
 	else if (ptr && type == TAB_INTS)
 		ft_free_tabint((int **)ptr, size);
 	else if ((char *)ptr && type == TAB_STR1)
 	{
-		dprintf(2,"passe dans le free strs pour TAB_STR1\n");
+		// dprintf(2,"passe dans le free strs pour TAB_STR1\n");
 		ft_free_strs((char *)ptr, NULL, NULL);
 	}
 	else if (ptr && type == TAB_STRS)
-		ft_free_tabstr((char **)ptr);
+		ft_free_tabstr2((char **)ptr, flag);
 	else if (ptr && type == LST_ENV)
 	{
 		ft_lstdelone_env((t_env *)ptr, flag);
@@ -71,44 +71,44 @@ static void	ft_failed_malloc(t_bin **bin_head, int flag)
 	else
 		g_val_exit = ft_msg(1, ERRMSG, "", ERRMAL);
 	printf("val exit main vs child = %d\n", g_val_exit);
-	/* affichage de bin_head - pour des STR1 */
-	dprintf(2, "affichage AVANT free bin :\n");
-	t_bin *tmp;
-	tmp = (*bin_head);
-	if (tmp != NULL)
-	{
-		printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-		tmp = tmp->next;
-		if (tmp != NULL)
-		{
-			printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-			tmp = tmp->next;
-			if (tmp != NULL)
-				printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-		}
-	}
-	else
-		printf("vide --> plus de bin_head\n");
-	/* fin d'affichage */
+	// /* affichage de bin_head - pour des STR1 */
+	// dprintf(2, "affichage AVANT free bin :\n");
+	// t_bin *tmp;
+	// tmp = (*bin_head);
+	// if (tmp != NULL)
+	// {
+	// 	printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 	tmp = tmp->next;
+	// 	if (tmp != NULL)
+	// 	{
+	// 		printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 		tmp = tmp->next;
+	// 		if (tmp != NULL)
+	// 			printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 	}
+	// }
+	// else
+	// 	printf("vide --> plus de bin_head\n");
+	// /* fin d'affichage */
 	ft_free_bin(bin_head, flag);
-	/* affichage de bin_head - pour des STR1 */
-	dprintf(2, "affichage APRES free bin :\n");
-	tmp = (*bin_head);
-	if (tmp != NULL)
-	{
-		printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-		tmp = tmp->next;
-		if (tmp != NULL)
-		{
-			printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-			tmp = tmp->next;
-		if (tmp != NULL)
-			printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-		}
-	}
-	else
-		printf("vide --> plus de bin_head\n");
-	/* fin d'affichage */
+	// /* affichage de bin_head - pour des STR1 */
+	// dprintf(2, "affichage APRES free bin :\n");
+	// tmp = (*bin_head);
+	// if (tmp != NULL)
+	// {
+	// 	printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 	tmp = tmp->next;
+	// 	if (tmp != NULL)
+	// 	{
+	// 		printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 		tmp = tmp->next;
+	// 	if (tmp != NULL)
+	// 		printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 	}
+	// }
+	// else
+	// 	printf("vide --> plus de bin_head\n");
+	// /* fin d'affichage */
 	exit (g_val_exit);
 }
 
@@ -139,7 +139,7 @@ void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
 	ptr2 = NULL;
 	if (flag == MALLOC_C || flag == MALLOC_M)
 	{
-		dprintf(2, "rentre dans MALLOC et ptr2 est NULL = %p\n", ptr2);//
+	//	dprintf(2, "rentre dans MALLOC et ptr2 est NULL = %p\n", ptr2);//
 		ptr2 = malloc(ft_get_sizeof(type) * size);
 	}
 	else
@@ -147,7 +147,7 @@ void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
 	//dprintf(2, "valeur ptr2 apres MALLOC (fin) = %p\n", ptr2);
 	if (flag == MALLOC_C || flag == MALLOC_M || flag == ADD_C || flag == ADD_M)
 	{
-		dprintf(2, "valeur ptr2 apres MALLOC (ADD) = %p, type = %d, size = %d\n", ptr2, type, size);
+		// dprintf(2, "valeur ptr2 apres MALLOC (ADD) = %p, type = %d, size = %d\n", ptr2, type, size);
 		if (ptr2 == NULL)
 			ft_failed_malloc(&bin_head, flag);
 		if (ft_lstadd_bin(&bin_head, ptr2, type, size) == 1)
@@ -158,45 +158,45 @@ void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
 	}
 	else if (flag == DELONE)
 	{
-		dprintf(2, "rentre dans DELONE\n");
-		/* affichage de bin_head - pour des STR1 */
-		dprintf(2, "affichage DELONE AVANT :\n");
-		t_bin *tmp;
-		tmp = bin_head;
-		if (tmp != NULL)
-		{
-			printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-			tmp = tmp->next;
-			if (tmp != NULL)
-			{
-				printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-				tmp = tmp->next;
-			if (tmp != NULL)
-				printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-			}
-		}
-		else
-			printf("vide --> plus de bin_head\n");
+	//	dprintf(2, "rentre dans DELONE\n");
+		// /* affichage de bin_head - pour des STR1 */
+		// dprintf(2, "affichage DELONE AVANT :\n");
+		// t_bin *tmp;
+		// tmp = bin_head;
+		// if (tmp != NULL)
+		// {
+		// 	printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+		// 	tmp = tmp->next;
+		// 	if (tmp != NULL)
+		// 	{
+		// 		printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+		// 		tmp = tmp->next;
+		// 	if (tmp != NULL)
+		// 		printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+		// 	}
+		// }
+		// else
+		// 	printf("vide --> plus de bin_head\n");
 		/* fin d'affichage */
 		ft_lstclearone_bin(&bin_head, ptr, flag);
-		/* affichage de bin_head - pour des STR1 */
-		dprintf(2, "affichage DELONE APRES :\n");
-		tmp = bin_head;
-		if (tmp != NULL)
-		{
-			printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-			tmp = tmp->next;
-			if (tmp != NULL)
-			{
-				printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-				tmp = tmp->next;
-			if (tmp != NULL)
-				printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-			}
-		}
-		else
-			printf("vide --> plus de bin_head\n");
-		/* fin d'affichage */
+		// /* affichage de bin_head - pour des STR1 */
+		// dprintf(2, "affichage DELONE APRES :\n");
+		// tmp = bin_head;
+		// if (tmp != NULL)
+		// {
+		// 	printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+		// 	tmp = tmp->next;
+		// 	if (tmp != NULL)
+		// 	{
+		// 		printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+		// 		tmp = tmp->next;
+		// 	if (tmp != NULL)
+		// 		printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+		// 	}
+		// }
+		// else
+		// 	printf("vide --> plus de bin_head\n");
+		// /* fin d'affichage */
 	}
 	else
 	{

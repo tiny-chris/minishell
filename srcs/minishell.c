@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 09:13:28 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 12:39:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,16 @@ static void ft_init_data_0(t_data *data)
 	//TO CHECK : que toutes les variables de t_data sont init_0
 }
 
-void	ft_get_home(t_data *data)
+void	ft_get_home(t_data *data, int flag)
 {
 	(void) data;
 	t_env	*env;
 
 	env = data->env;
-	if (data->home)
-		free(data->home);
-	data->home = NULL;
+	ft_handle_malloc(DELONE, data->home, 0, 0);
+	// if (data->home)
+	// 	free(data->home);
+	// data->home = NULL;
 	if (env != NULL)
 	{
 		while (env)
@@ -71,15 +72,17 @@ void	ft_get_home(t_data *data)
 		}
 	}
 	if (env == NULL)
-	{
-		data->home = NULL;
 		return ;
-	}
-	if (env->content)
+	// {
+	// 	data->home = NULL;
+		// return ;
+	// }
+	if (env->var_equal != NULL && env->content)
 	{
 		data->home = ft_strdup(env->content);
-		if (!data->home)
-			return ;//malloc free
+		ft_handle_malloc(flag, data->home, TAB_STR1, ft_strlen(data->home) + 1);
+		// if (!data->home)
+		// 	return ;//malloc free
 	}
 	return ;
 }
@@ -146,9 +149,18 @@ int	ft_init_data_1(t_data *data, char **envp)
 	// 	ft_free_tabstr(data->built_in);
 	// 	return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
 	// }
-	data->cwd = getcwd(NULL, 0);// sera mise à jour dans cd
+	data->cwd = getcwd(NULL, 0);
+	ft_handle_malloc(ADD_M, data->cwd, TAB_STR1, ft_strlen(data->cwd));
+	// comment mettre le message - could not initialise !!
+	// sera mise à jour dans cd
 	//http://manpagesfr.free.fr/man/man3/getcwd.3.html : ok pour buf NULL et size 0 (POSIX)
 	if (!data->cwd)
+	{
+		g_val_exit = ft_msg(1, ERRMSG, "minishell : ", "could not initialise minishell");
+		dprintf(2, "passe par ce chemin\n");
+		ft_handle_malloc(0, NULL, 0, 0);
+		exit (g_val_exit);
+	}
 	// {
 	// 	g_val_exit();
 	// 			ft_free_env(&(data->env));
@@ -156,15 +168,12 @@ int	ft_init_data_1(t_data *data, char **envp)
 	// 	ft_free_tabstr(data->built_in);
 	// 	return (1);//could not initialise minishell
 	// }
-	{
-		g_val_exit = ft_msg(1, ERRMSG, "minishell : ", "could not initialise minishell");
-		dprintf(2, "passe par ce chemin\n");
-		ft_bin_handler(0, NULL, 0, 0);
-		exit (g_val_exit);
-	}
-	ft_get_home(data);
+	ft_get_home(data, ADD_M);
+	// //TEST3 :
+	// ft_handle_malloc(0, NULL, 0, 0);//
+	// exit (1);//
 	dprintf(2, "val data home = %s\n", data->home);
-	ft_get_env_path(data);
+	ft_get_env_path(data, ADD_M);
 	return (0);
 }
 
@@ -190,18 +199,62 @@ int	ft_clean_cmdline(t_data *data)
 
 int	ft_clean_loop(t_data *data)
 {
+	int	i;
+
+	i = 0;
 	dprintf(2, "je rentre dans clean loop\n");
 	if (data->built_in != NULL)
-		ft_free_tabstr(data->built_in);
+	{
+		while (data->built_in[i])
+		{
+			ft_handle_malloc(DELONE, data->built_in[i], 0, 0);
+			i++;
+		}
+		ft_handle_malloc(DELONE, data->built_in, 0, 0);
+		//  ft_free_tabstr(data->built_in);
+	}
 	if (data->cwd != NULL)
-		free(data->cwd);
+	{
+		ft_handle_malloc(DELONE, data->cwd, 0, 0);
+		// free(data->cwd);
+	}
 	if (data->oldpwd != NULL)
-		free(data->oldpwd);
+	{
+		ft_handle_malloc(DELONE, data->oldpwd, 0, 0);
+		// free(data->oldpwd);
+	}
 	if (data->home != NULL)
-		free(data->home);
-	free(data->prompt);
+	{
+		ft_handle_malloc(DELONE, data->home, 0, 0);
+		// free(data->home);
+	}
+	// free(data->prompt, 0, 0);
+	ft_handle_malloc(DELONE, data->prompt, 0, 0);
 	dprintf(2, "--------------------------------clean-loop : suppr env\n");
 	if (data->env != NULL)
+	{
+		t_env	*tmp;
+
+		tmp = NULL;
+		while (data->env)
+		{
+			tmp = data->env->next;
+			if (data->env->var)
+				ft_handle_malloc(DELONE, data->env->var, 0, 0);
+			if (data->env->var_equal)
+				ft_handle_malloc(DELONE, data->env->var_equal, 0, 0);
+			if (data->env->content)
+				ft_handle_malloc(DELONE, data->env->content, 0, 0);
+			if (data->env->envp)
+				ft_handle_malloc(DELONE, data->env->envp, 0, 0);
+			data->env->head_addr = NULL;
+			// data->env->next = NULL;
+			// free(data->env);
+			// data->env = NULL;
+			ft_handle_malloc(DELONE, data->env, 0, 0);
+			data->env = tmp;
+		}
+	}
 		ft_free_env(&(data->env));
 	dprintf(2, "--------------------------------clean-loop : suppr env done\n");
 	dprintf(2, "--------------------------------clean-loop : suppr env_PATH\n");
@@ -209,7 +262,8 @@ int	ft_clean_loop(t_data *data)
 		ft_free_env(&(data->env_path));
 	dprintf(2, "--------------------------------clean-loop : suppr env_PATH done\n");
 	if (data->s_env_path)
-		ft_free_tabstr(data->s_env_path);
+		ft_handle_malloc(DELONE, data->s_env_path, 0, 0);
+		//ft_free_tabstr(data->s_env_path);
 	return (0);
 }
 

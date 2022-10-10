@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 02:46:58 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:10:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 				--> cela évite une redite (fonction 'ft_get_str_env_path' inutile)
 					et permet de mettre à jour en même temps s_env_path
 */
-int	ft_check_export(t_token *token, t_data *data)
+int	ft_check_export(t_token *token, t_data *data, int flag)
 {
 	t_env	*env;
 	char	*var_tmp;
@@ -56,9 +56,9 @@ int	ft_check_export(t_token *token, t_data *data)
 				return (1);//FREE + EXIT (MALLOC)
 			free(var_tmp);
 			if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal))  == 0)
-				ft_get_env_path(data);//ne plus prendre char **envp
+				ft_get_env_path(data, flag);//ne plus prendre char **envp
 			else if (ft_strncmp(env->var_equal, "HOME=", ft_strlen(env->var_equal))  == 0)
-				ft_get_home(data);
+				ft_get_home(data, ADD_M);///// modifier le flag !!!!!! (checker)
 			return (0);
 		}
 		env = env->next;
@@ -94,7 +94,7 @@ int	ft_check_export(t_token *token, t_data *data)
 	3. on met à jour val_exit
 		et on change de token
 */
-int	ft_export(t_cmd *cmd, t_data *data)
+int	ft_export(t_cmd *cmd, t_data *data, int flag)
 {
 	t_token	*token;
 	int		i;
@@ -131,7 +131,7 @@ int	ft_export(t_cmd *cmd, t_data *data)
 				}
 			}
 			if (token->token[i] == '=')
-				res = ft_check_export(token, data);
+				res = ft_check_export(token, data, flag);
 		}
 		if (res == 0 && res2 == 0)
 			res2 = 0;

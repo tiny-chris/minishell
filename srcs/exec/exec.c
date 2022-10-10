@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/06 16:32:33 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/10 11:38:04 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	ft_child_process(t_data *data, int i)
 	if (cmd->token->type == BUILTIN)
 	{
 		dprintf(2, "passe dans les builtin\n");
-		g_val_exit = ft_exec_built_in(cmd, data);
+		g_val_exit = ft_exec_built_in(cmd, data, ADD_C);
 		ft_free_data_child(data);
 		exit(g_val_exit);// A CORRIGER
 	}
@@ -281,7 +281,7 @@ int	ft_exec(t_data *data)
 		else
 		{
 			printf("passe dans builin unique\n");//
-			g_val_exit = ft_exec_built_in(data->cmd, data);
+			g_val_exit = ft_exec_built_in(data->cmd, data, ADD_M);
 			ft_exit_exec(data);
 		}
 		return (g_val_exit);

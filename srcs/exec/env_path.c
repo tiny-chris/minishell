@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 04:16:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:53:11 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,20 +144,22 @@
 */
 /*	modif du 2e paramètre du prototype uniquement */
 
-int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i)
+int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, int flag)
 {
 	t_env	*new;
 	t_env	*last;
 
-	new = malloc(sizeof(t_env));
-	if (!new)
-	{
-		ft_free_env(env_path);
-		return (1);
-	}
+	new = ft_handle_malloc(flag + 1, NULL, LST_ENV, 1);
+	// new = malloc(sizeof(t_env));
+	// if (!new)
+	// {
+	// 	ft_free_env(env_path);
+	// 	return (1);
+	// }
 	new->var = NULL;
 	new->var_equal = NULL;
 	new->content = ft_strdup(s_env_path_i);
+	ft_handle_malloc(flag, new->content, TAB_STR1, ft_strlen(new->content) + 1);
 	new->envp = NULL;
 	new->next = NULL;
 	if (ft_lstlast_env(*env_path) == 0)
@@ -174,36 +176,40 @@ int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i)
 /*	Version modifiee pour etre utilisee aussi dans le built in export
 	dans le cas où la variable à export est "PATH"
 */
-void	ft_get_env_path(t_data *data)
+void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 {
 	t_env	*env;
 	int		i;
 
 	env = data->env;
 	i = 0;
+	//1. je nettoie s_env_path et env_path s'ils existent
+	ft_handle_malloc(DELONE, data->s_env_path, 0, 0);
+	ft_handle_malloc(DELONE, data->env_path, 0, 0);
+	//2. je check si data->env est NULL --> rien
 	if (env == NULL || env->var[0] == '\0')
 		return ;// on ne met pas à jour env_path donc pas de free ou autre
+	//3. si env n'est pas NULL, je check si j'ai de quoi remplir les 2 data env_path
 	while (env != NULL)
 	{
-		dprintf(2, "env->var_equal = %s et len 'PATH=' = 5\n", env->var_equal);
-			dprintf (2, "strlen = %lu\n", ft_strlen(env->var_equal));
+		// dprintf(2, "env->var_equal = %s et len 'PATH=' = 5\n", env->var_equal);
+		// dprintf (2, "strlen = %lu\n", ft_strlen(env->var_equal));
 		if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal)) == 0)
 			break ;
 		env = env->next;
 	}
-	if (!env->content)
-		return ;//le contenu est vide...
-	if (data->s_env_path)
-		ft_free_tabstr(data->s_env_path);
+	// si ce n'est pas le cas, on retourne (les 2 var sont nulles)
+	if (env == NULL || env->var_equal || env->content)
+		return ;
+	// autrement, je recup les char * de content dans data:
 	data->s_env_path = ft_split(env->content, ':');
-	if (!data->s_env_path)
-		return ;//nettoyer : free / exit malloc
-	if (data->env_path)
-		ft_free_env(&(data->env_path));
+	ft_handle_malloc(flag, data->s_env_path, TAB_STRS, ft_nb_word(env->content, ':' + 1));
+	i = 0;
 	while (data->s_env_path[i])
 	{
-		if (ft_lstadd_env2(&(data->env_path), data->s_env_path[i]))
-			return ;// FREE TOUT ET EXIT
+		ft_lstadd_env2(&(data->env_path), data->s_env_path[i], flag);
+		// if (ft_lstadd_env2(&(data->env_path), data->s_env_path[i]))
+		// 	return ;// FREE TOUT ET EXIT
 		i++;
 	}
 }

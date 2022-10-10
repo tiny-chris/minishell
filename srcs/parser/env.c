@@ -118,14 +118,15 @@ void	ft_lstdelone_env(t_env *node, int flag)
 {
 	if (!node)
 		return ;
-	if (flag == DELONE)
-	{
-		ft_free_strs(node->var, node->var_equal, node->content);
-		dprintf(2, "ca bug pas là\n");
-		ft_free_strs(node->envp, NULL, NULL);
-	// free(node->head_addr);
-	// node->head_addr = NULL;
-	}
+	(void) flag;
+	// if (flag == DELONE)
+	// {
+	// 	ft_free_strs(node->var, node->var_equal, node->content);
+	// //	dprintf(2, "ca bug pas là\n");
+	// 	ft_free_strs(node->envp, NULL, NULL);
+	// // free(node->head_addr);
+	// // node->head_addr = NULL;
+	// }
 	node->next = NULL;
 	free(node);
 	node = NULL;
@@ -172,7 +173,7 @@ void	ft_lstclearone_env(t_env **env_head, t_env *ptr)
 			todel = env->next;
 			tmp = env->next->next;
 			ft_handle_malloc(DELONE, todel, 0, 0);
-			ft_lstdelone_env(todel, 1);
+			ft_lstdelone_env(todel, 1);// corriger/checker le flag ///
 			env->next = tmp;
 			break ;
 		}

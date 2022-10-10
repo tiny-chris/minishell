@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:29 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 07:13:32 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:55:00 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,31 @@ int	ft_lstadd_bin(t_bin **bin_head, void *ptr, int type, int size)
 	new = malloc(sizeof(t_bin));
 	if (!new)
 		return (1);
-	printf("test - lstadd_bin début\n");
+	// printf("test - lstadd_bin début\n");
 	new->ptr = ptr;
 	new->type = type;
 	new->size = size;
 	new->next = (*bin_head);
 	(*bin_head) = new;
-	/* affichage de bin_head */
-	printf("affichage APRES lstadd_bin :\n");
-	t_bin *tmp;
-	tmp = (*bin_head);
-	if (tmp != NULL)
-	{
-		printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-		tmp = tmp->next;
-		if (tmp != NULL)
-		{
-			printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-			tmp = tmp->next;
-			if (tmp != NULL)
-				printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
-		}
-	}
-	else
-		printf("vide --> plus de bin_head\n");
-	/* fin d'affichage */
+	// /* affichage de bin_head */
+	// printf("affichage APRES lstadd_bin :\n");
+	// t_bin *tmp;
+	// tmp = (*bin_head);
+	// if (tmp != NULL)
+	// {
+	// 	printf("tmp[0] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 	tmp = tmp->next;
+	// 	if (tmp != NULL)
+	// 	{
+	// 		printf("tmp[1] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 		tmp = tmp->next;
+	// 		if (tmp != NULL)
+	// 			printf("tmp[2] = %p, type = %d, size = %d\n", tmp->ptr, tmp->type, tmp->size);
+	// 	}
+	// }
+	// else
+	// 	printf("vide --> plus de bin_head\n");
+	// /* fin d'affichage */
 	return (0);
 }
 
@@ -58,8 +58,8 @@ void	ft_lstdelone_bin(t_bin *node, int flag)
 {
 	if (!node)
 		return ;
-	printf("rentre dans delone bin et va aller dans free typ ptr\n");
-	printf("ptr = %p, type = %d, size = %d\n", node->ptr, node->type, node->size);
+	// printf("rentre dans delone bin et va aller dans free typ ptr\n");
+	// printf("ptr = %p, type = %d, size = %d\n", node->ptr, node->type, node->size);
 	ft_free_ptr_type(node->ptr, node->type, node->size, flag);
 	node->type = 0;
 	node->size = 0;
@@ -120,7 +120,7 @@ void	ft_free_bin(t_bin **bin_head, int flag)
 {
 	t_bin	*tmp;
 	t_bin	*todel;
-	int		i = 0;//
+	// int		i = 0;//
 
 	tmp = NULL;
 	todel = NULL;
@@ -130,10 +130,10 @@ void	ft_free_bin(t_bin **bin_head, int flag)
 	{
 		todel = (*bin_head);
 		tmp = (*bin_head)->next;
-		printf("i = %d avant delone bin\n", i);//
+		// printf("i = %d avant delone bin\n", i);//
 		ft_lstdelone_bin(todel, flag);
 		(*bin_head) = tmp;
-		i++;//
+		// i++;//
 	}
 	(*bin_head) = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 07:11:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:38:46 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,12 +161,12 @@ t_env	*ft_get_env(char **envp);
 char	**ft_built_in(void);
 int		ft_only_space(char *line);
 int		ft_init_data_1(t_data *data, char **envp);
-void	ft_get_home(t_data *data);
+void	ft_get_home(t_data *data, int flag);
 
 /*	env_path */
 
-void 	ft_get_env_path(t_data *data);
-int		ft_lstadd_env2(t_env **env, char *s_env_path_i);
+void 	ft_get_env_path(t_data *data, int flag);
+int		ft_lstadd_env2(t_env **env, char *s_env_path_i, int flag);
 
 /*	***** LEXER *****	*/
 /*	*****************	*/
@@ -297,6 +297,9 @@ int		ft_new_strrchr(const char *s, int c);
 void	ft_free_strs(char *str1, char *str2, char *str3);
 void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3);
 
+void	*ft_free_tabstr2(char **tab_str, int flag);
+int		ft_nb_word(char const *str, char c);
+
 /*	***** EXEC *****	*/
 /*	****************	*/
 
@@ -307,14 +310,14 @@ int		ft_exec(t_data *data);
 int		**ft_init_pipe(t_data *data);
 int		*ft_init_pid(t_data *data);
 int		ft_get_files_io(t_data *data);
-int		ft_exec_uniq_builtin(t_data *data);
+// int		ft_exec_uniq_builtin(t_data *data);
 void	ft_child_process(t_data *data, int i);
 int		ft_parent_process(t_data *data);
 
 /*	exec CHILD */
 
 int		ft_redirect_inout(t_data *data, t_cmd *cmd, int i);
-int		ft_exec_built_in(t_cmd *cmd, t_data *data);
+int		ft_exec_built_in(t_cmd *cmd, t_data *data, int flag);
 char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
@@ -341,11 +344,11 @@ int		ft_pwd(t_data *data);
 int		ft_env(t_cmd *cmd, t_data *data);
 void	ft_display_env(t_data *data, t_token *token);
 
-int		ft_export(t_cmd *cmd, t_data *data);
-int		ft_check_export(t_token *token, t_data *data);
+int		ft_export(t_cmd *cmd, t_data *data, int flag);
+int		ft_check_export(t_token *token, t_data *data, int flag);
 
-int		ft_unset(t_cmd *cmd, t_data *data);
-int		ft_check_unset(t_token *token, t_data *data);
+int		ft_unset(t_cmd *cmd, t_data *data, int flag);
+int		ft_check_unset(t_token *token, t_data *data, int flag);
 
 int		ft_cd(t_cmd *cmd, t_data *data);
 void	ft_update_pwd(t_cmd *cmd, t_data *data);

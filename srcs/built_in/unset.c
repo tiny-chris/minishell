@@ -6,13 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/27 22:13:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 10:02:38 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_check_unset(t_token *token, t_data *data)
+int	ft_check_unset(t_token *token, t_data *data, int flag)
 {
 	t_env	*env;
 	t_env	*todel;
@@ -52,7 +52,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 			{
 				todel = env;
 				tmp = env->next;
-				ft_lstdelone_env(todel);
+				ft_lstdelone_env(todel, flag);
 				data->env = tmp;
 				env = data->env;
 			}
@@ -63,7 +63,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 					tmp->next = env->next;
 				else
 					tmp->next = NULL;
-				ft_lstdelone_env(todel);
+				ft_lstdelone_env(todel, flag);
 				env = tmp;
 			}
 		}
@@ -74,7 +74,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 	return (0);
 }
 
-int	ft_unset(t_cmd *cmd, t_data *data)
+int	ft_unset(t_cmd *cmd, t_data *data, int flag)
 {
 	t_token	*token;
 	int		i;
@@ -108,7 +108,7 @@ int	ft_unset(t_cmd *cmd, t_data *data)
 				}
 			}
 			if (token->token[i] == '\0')
-				res = ft_check_unset(token, data);
+				res = ft_check_unset(token, data, flag);
 		}
 		if (res == 0 && res2 == 0)
 			res2 = 0;
