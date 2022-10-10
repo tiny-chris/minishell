@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/04 12:23:09 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 05:04:50 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,6 +293,7 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 	}
 	else
 		cmd_path = ft_find_cmd_path2(cmd, data);
+	dprintf(2, "passe et ne fait pas cmd_path1\n");
 	return (cmd_path);
 }
 
@@ -322,6 +323,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		ft_free_data_child(data);
 		exit(res);
 	}
+	dprintf(2, "passe dans env_path2 et va tester le PATH\n");
 	while (env_path)
 	{
 		j = ft_strlen(env_path->content) - 1;
@@ -339,9 +341,11 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 			if (!new_path)
 				return (NULL);
 		}
+		printf("new_path avec join slash = %s\n", new_path);
 		cmd_path = ft_strjoin(new_path, cmd->token->token);
 		if (!cmd_path)
 			return (free(new_path), NULL);
+		printf("new_path avec join slash = %s\n", cmd_path);
 		free(new_path);
 		if (access((const char *)cmd_path, F_OK | X_OK) == 0)
 			return (cmd_path);

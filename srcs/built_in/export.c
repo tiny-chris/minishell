@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/08 00:58:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 02:46:58 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	ft_check_export(t_token *token, t_data *data)
 		env = env->next;
 	}
 	if (env == NULL)
-		ft_lstadd_env(&(data->env), token->token);
-		//ft_lstadd_env(&(data->env), token->token, ADD_M);// à revoir ADD_M
+		//ft_lstadd_env(&(data->env), token->token);///OLD VERSION
+		ft_lstadd_env(&(data->env), token->token, ADD_M);// à revoir ADD_M
 	env = data->env;
 	free(var_tmp);
 	return (0);

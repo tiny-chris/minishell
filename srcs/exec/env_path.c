@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/07 13:58:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 04:16:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@
 */
 /*	modif du 2e paramètre du prototype uniquement */
 
-int	ft_lstadd_env2(t_env **env, char *s_env_path_i)
+int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i)
 {
 	t_env	*new;
 	t_env	*last;
@@ -152,7 +152,7 @@ int	ft_lstadd_env2(t_env **env, char *s_env_path_i)
 	new = malloc(sizeof(t_env));
 	if (!new)
 	{
-		ft_free_env(env);
+		ft_free_env(env_path);
 		return (1);
 	}
 	new->var = NULL;
@@ -160,13 +160,14 @@ int	ft_lstadd_env2(t_env **env, char *s_env_path_i)
 	new->content = ft_strdup(s_env_path_i);
 	new->envp = NULL;
 	new->next = NULL;
-	if (ft_lstlast_env(*env) == 0)
+	if (ft_lstlast_env(*env_path) == 0)
 	{
-		*env = new;
+		*env_path = new;
 		return (0);
 	}
-	last = ft_lstlast_env(*env);
+	last = ft_lstlast_env(*env_path);
 	last->next = new;
+	new->head_addr = (*env_path);
 	return (0);
 }
 
@@ -184,6 +185,8 @@ void	ft_get_env_path(t_data *data)
 		return ;// on ne met pas à jour env_path donc pas de free ou autre
 	while (env != NULL)
 	{
+		dprintf(2, "env->var_equal = %s et len 'PATH=' = 5\n", env->var_equal);
+			dprintf (2, "strlen = %lu\n", ft_strlen(env->var_equal));
 		if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal)) == 0)
 			break ;
 		env = env->next;

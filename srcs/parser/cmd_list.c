@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/04 01:26:05 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 04:51:37 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
 	new = malloc(sizeof(t_cmd));
 	if (!new)
 	{
+		dprintf(2, "CA BUGGGG !!!!!!!!!!!!!!!!!!!!!!!\n");
 		//ft_free_cmd(cmd);// A FAIRE !!
 		return (1);
 	}

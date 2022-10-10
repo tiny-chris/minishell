@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:29 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/07 20:08:19 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 07:13:32 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,13 @@ int	ft_lstadd_bin(t_bin **bin_head, void *ptr, int type, int size)
 /*	<SUMMARY> frees one node (specified in parameter)
 **	<REMARK> defines which kind of free to apply depending on type & size
 */
-void	ft_lstdelone_bin(t_bin *node)
+void	ft_lstdelone_bin(t_bin *node, int flag)
 {
 	if (!node)
 		return ;
-	ft_free_ptr_type(node->ptr, node->type, node->size);
+	printf("rentre dans delone bin et va aller dans free typ ptr\n");
+	printf("ptr = %p, type = %d, size = %d\n", node->ptr, node->type, node->size);
+	ft_free_ptr_type(node->ptr, node->type, node->size, flag);
 	node->type = 0;
 	node->size = 0;
 	node->next = NULL;
@@ -66,14 +68,14 @@ void	ft_lstdelone_bin(t_bin *node)
 	node = NULL;
 }
 
-static int	ft_lstclearfisrt_bin(t_bin **bin_head)
+static int	ft_lstclearfisrt_bin(t_bin **bin_head, int flag)
 {
 	t_bin	*todel;
 	t_bin	*tmp;
 
 	todel = (*bin_head);
 	tmp = (*bin_head)->next;
-	ft_lstdelone_bin(todel);
+	ft_lstdelone_bin(todel, flag);
 	(*bin_head) = tmp;
 	return (0);
 }
@@ -81,7 +83,7 @@ static int	ft_lstclearfisrt_bin(t_bin **bin_head)
 /*	<SUMMARY> frees the node associated to 'ptr' and removes it from the
 **	linked list
 */
-void	ft_lstclearone_bin(t_bin **bin_head, void *ptr)
+void	ft_lstclearone_bin(t_bin **bin_head, void *ptr, int flag)
 {
 	t_bin	*bin;
 	t_bin	*todel;
@@ -94,7 +96,7 @@ void	ft_lstclearone_bin(t_bin **bin_head, void *ptr)
 		return ;
 	if (bin->ptr == ptr)
 	{
-		ft_lstclearfisrt_bin(bin_head);
+		ft_lstclearfisrt_bin(bin_head, flag);
 		return ;
 	}
 	while (bin)
@@ -103,8 +105,9 @@ void	ft_lstclearone_bin(t_bin **bin_head, void *ptr)
 		{
 			todel = bin->next;
 			tmp = bin->next->next;
-			ft_lstdelone_bin(todel);
+			ft_lstdelone_bin(todel, flag);
 			bin->next = tmp;
+			break ;
 		}
 		bin = bin->next;
 	}
@@ -113,17 +116,24 @@ void	ft_lstclearone_bin(t_bin **bin_head, void *ptr)
 /*	<SUMMARY> deletes the full t_bin linked list by deleting one node after
 **	the other: starting from 1st node (head)
 */
-void	ft_free_bin(t_bin **bin_head)
+void	ft_free_bin(t_bin **bin_head, int flag)
 {
 	t_bin	*tmp;
+	t_bin	*todel;
+	int		i = 0;//
 
+	tmp = NULL;
+	todel = NULL;
 	if (!(*bin_head))
 		return ;
 	while ((*bin_head) != NULL)
 	{
+		todel = (*bin_head);
 		tmp = (*bin_head)->next;
-		ft_lstdelone_bin(*bin_head);
+		printf("i = %d avant delone bin\n", i);//
+		ft_lstdelone_bin(todel, flag);
 		(*bin_head) = tmp;
+		i++;//
 	}
 	(*bin_head) = NULL;
 }

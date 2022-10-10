@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   del_dolls.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/10 04:55:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	ft_undoll_cmd_len(char *no_redir_cmd)
 
 	i = 0;
 	len = ft_strlen(no_redir_cmd);
+	dprintf(2, "check ici si ça passe\n");
 	while (no_redir_cmd[i])
 	{
 		if (no_redir_cmd[i] == 34 || no_redir_cmd[i] == 39)

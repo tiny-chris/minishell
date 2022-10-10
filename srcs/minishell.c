@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/08 01:57:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 07:16:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	ft_get_home(t_data *data)
 	{
 		while (env)
 		{
+			dprintf(2, "env->var_equal = %s et len 'HOME=' = 5\n", env->var_equal);
+			dprintf (2, "strlen = %lu\n", ft_strlen(env->var_equal));
 			if (ft_strncmp(env->var_equal, "HOME=", ft_strlen(env->var_equal)) == 0)
 				break ;
 			env = env->next;
@@ -82,17 +84,60 @@ void	ft_get_home(t_data *data)
 	return ;
 }
 
+// int	ft_init_data_1(t_data *data, char **envp)
+// {
+// 	ft_init_data_0(data);
+// 	printf("test ici 0\n");
+// 	data->env = ft_get_env(envp);
+// 	printf("test là 0\n");
+// 	data->prompt = ft_strdup("--minishell> ");//à ajuster
+// 	if (data->prompt == NULL)
+// 	{
+// 		ft_free_env(&(data->env));
+// 		free(data->prompt);
+// 		return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
+// 	}
+// 	data->built_in = ft_built_in();
+// 	if (data->built_in == NULL)
+// 	{
+// 		ft_free_env(&(data->env));
+// 		free(data->prompt);
+// 		ft_free_tabstr(data->built_in);
+// 		return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
+// 	}
+// 	data->cwd = getcwd(NULL, 0);// sera mise à jour dans cd
+// 	if (!data->cwd)
+// 	{
+// 		ft_free_env(&(data->env));
+// 		free(data->prompt);
+// 		ft_free_tabstr(data->built_in);
+// 		return (1);//could not initialise minishell
+// 	}
+// 	ft_get_home(data);
+// 	dprintf(2, "val data home = %s\n", data->home);
+// 	ft_get_env_path(data);
+// 	return (0);
+// }
+
+
 int	ft_init_data_1(t_data *data, char **envp)
 {
 	ft_init_data_0(data);
 	data->env = ft_get_env(envp);
+	// //TEST1 :
+	// ft_handle_malloc(0, NULL, 0, 0);
+	// exit (1);
 	data->prompt = ft_strdup("--minishell> ");//à ajuster
-	if (data->prompt == NULL)
-	{
-		ft_free_env(&(data->env));
-		free(data->prompt);
-		return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
-	}
+		// //TEST2 :
+		// free(data->prompt);//test2
+		// data->prompt = NULL;//test2
+	ft_handle_malloc(ADD_M, data->prompt, TAB_STR1, ft_strlen(data->prompt) + 1);
+	// if (data->prompt == NULL)
+	// {
+	// 	ft_free_env(&(data->env));
+	// 	free(data->prompt);
+	// 	return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
+	// }
 	data->built_in = ft_built_in();
 	if (data->built_in == NULL)
 	{
@@ -138,6 +183,7 @@ int	ft_clean_cmdline(t_data *data)
 
 int	ft_clean_loop(t_data *data)
 {
+	dprintf(2, "je rentre dans clean loop\n");
 	if (data->built_in != NULL)
 		ft_free_tabstr(data->built_in);
 	if (data->cwd != NULL)
@@ -147,10 +193,14 @@ int	ft_clean_loop(t_data *data)
 	if (data->home != NULL)
 		free(data->home);
 	free(data->prompt);
+	dprintf(2, "--------------------------------clean-loop : suppr env\n");
 	if (data->env != NULL)
 		ft_free_env(&(data->env));
+	dprintf(2, "--------------------------------clean-loop : suppr env done\n");
+	dprintf(2, "--------------------------------clean-loop : suppr env_PATH\n");
 	if (data->env_path)
 		ft_free_env(&(data->env_path));
+	dprintf(2, "--------------------------------clean-loop : suppr env_PATH done\n");
 	if (data->s_env_path)
 		ft_free_tabstr(data->s_env_path);
 	return (0);

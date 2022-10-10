@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 23:32:35 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 04:57:15 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	ft_tokenizer(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
+		dprintf(2, "check check check\n");
 		ft_get_token(cmd);
 		ft_clean_token(cmd, data);
 //		ft_del_empty_token(&cmd, data);

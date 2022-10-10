@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   del_spaces.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/10 04:30:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ int	ft_del_spaces(t_data *data)
 	while (cmd)
 	{
 		len = ft_unspace_cmd_len(cmd->raw_cmd);
+		dprintf(2, "val de len del spaces = %d\n", len);
 		cmd->unspace_cmd = ft_fill_unspace_cmd(cmd->raw_cmd, len);
 		if (!cmd->unspace_cmd)
 			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!

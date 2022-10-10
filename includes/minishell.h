@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/08 01:00:27 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 07:11:22 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef struct s_token
 
 typedef struct s_env
 {
+	struct s_env	*head_addr;// ajout pour suprression via la liste bin
 	char			*var;
 	char			*var_equal;
 	char			*content;
@@ -264,9 +265,10 @@ int		ft_del_empty_cmd(t_data *data);
 	/*	env_list */
 
 t_env	*ft_lstlast_env(t_env *lst);
-//int		ft_lstadd_env(t_env **env, char *envp, int flag);///
-int		ft_lstadd_env(t_env **env, char *envp);
-void	ft_lstdelone_env(t_env *node);
+int		ft_lstadd_env(t_env **env, char *envp, int flag);
+//int		ft_lstadd_env(t_env **env, char *envp);///OLD VERSION
+//void	ft_lstdelone_env(t_env *node);
+void	ft_lstdelone_env(t_env *node, int flag);
 void	ft_free_env(t_env **env);
 
 	/*	cmd_list */
@@ -362,13 +364,21 @@ void	sig_quit(int sig);
 /*	bin collector */
 
 void	*ft_handle_malloc(int flag, void *ptr, int type, int size);
-void	ft_free_ptr_type(void *ptr, int type, int size);
+// void	ft_free_ptr_type(void *ptr, int type, int size);
+void	ft_free_ptr_type(void *ptr, int type, int size, int flag);
 
 /*	bin list */
 
 int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
-void	ft_lstdelone_bin(t_bin *node);
-void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
-void	ft_free_bin(t_bin **bin);
+// void	ft_lstdelone_bin(t_bin *node);
+// void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
+// void	ft_free_bin(t_bin **bin);
+void	ft_lstdelone_bin(t_bin *node, int flag);
+void	ft_lstclearone_bin(t_bin **bin_head, void *ptr, int flag);
+void	ft_free_bin(t_bin **bin_head, int flag);
+
+/* ajout dans les listes */
+
+void	ft_lstclearone_env(t_env **env_head, t_env *ptr);
 
 #endif

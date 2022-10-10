@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/10 04:48:51 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,8 @@ int	ft_get_redir(t_data *data)
 		cmd->no_redir_cmd = ft_strtrim(trim_cmd, " ");
 		free(trim_cmd);
 		dprintf(2, "no redir cmd   = %s --> len = %d vs. strlen = %ld\n", cmd->no_redir_cmd, len, ft_strlen(cmd->no_redir_cmd));
-		if (ft_get_redir_list(cmd->unspace_cmd, &cmd->tok_redir))
+		//if (ft_get_redir_list(cmd->unspace_cmd, &cmd->tok_redir))
+		if (ft_get_redir_list(cmd->no_redir_cmd, &cmd->tok_redir))
 			return (1); // FREE tout ce qu'il y a à free
 		ft_clean_redir(cmd, data);
 		cmd = cmd->next;
