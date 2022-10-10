@@ -61,6 +61,7 @@ SRCS 		:= \
 			exec/cmd_path.c \
 			exec/clean.c \
 			exec/signal.c \
+			exec/here_doc.c \
 			bin_collect/bin_coll.c \
 			bin_collect/bin_list.c \
 
@@ -71,7 +72,7 @@ OBJS		:= $(subst .c,.o,$(SRCS))
 OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
 CC			:= clang
-# CC			:= gcc
+# CC		:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
 CPPFLAGS	:= -I lib/libft -I includes
 LDFLAGS		:= -L lib/libft

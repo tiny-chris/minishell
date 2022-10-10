@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/06 15:02:54 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/10 15:04:01 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,11 +159,7 @@ int	ft_clean_loop(t_data *data)
 void	ft_minishell(t_data *data)
 {
 	if (ft_lexer(data->line))
-	{//dprintf(2, "ft_lexer = %d\n", ft_lexer(data.line));
-		//data->val_exit = ft_msg(2, "", "", ERRSTX);
-		//g_val_exit = data->val_exit;
 		g_val_exit = ft_msg(2, "", "", ERRSTX);
-	}
 	else
 	{
 		ft_parser(data); // peut etre faire un if == 0 ou 1

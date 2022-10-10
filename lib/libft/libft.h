@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:38:51 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/05 15:36:39 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/10 16:24:34 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 
 typedef struct s_list{
 	void			*content;
@@ -64,5 +68,14 @@ void			ft_lstdelone(t_list *lst, void (*del)(void*));
 void			ft_lstclear(t_list **lst, void (*del)(void*));
 void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+size_t			ft_strlen_gnl(char *s);
+size_t			ft_strlcpy_gnl(char *dst, char *src);
+size_t			ft_strlcat_gnl(char *dst, char *src);
+char			*ft_strjoin_gnl(char *s1, char *s2);
+size_t			ft_check_n(char *s1);
+char			*ft_get_line(char *s1);
+char			*ft_get_buffer(char *tmp);
+char			*get_next_line(int fd);
+char			*ft_find_line(char **tmp, char **line);
 
 #endif
