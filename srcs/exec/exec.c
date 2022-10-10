@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 11:38:04 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 15:59:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,14 +141,16 @@ void	ft_child_process(t_data *data, int i)
 	ft_close_fd(data);
 	if (res == -1)
 	{
-		ft_exit_exec(data);
-		ft_free_data_child(data);
+		// ft_exit_exec(data);
+		// ft_free_data_child(data);
+		ft_handle_malloc(0, NULL, 0,0 );
 		ft_close_std();
 		exit(EXIT_FAILURE);
 	}
 	if (cmd->token == NULL)
 	{
-		ft_free_data_child(data);
+		// ft_free_data_child(data);
+		ft_handle_malloc(0, NULL, 0,0 );
 		ft_close_std();
 		exit(EXIT_SUCCESS);
 	}
@@ -157,7 +159,8 @@ void	ft_child_process(t_data *data, int i)
 	{
 		dprintf(2, "passe dans les builtin\n");
 		g_val_exit = ft_exec_built_in(cmd, data, ADD_C);
-		ft_free_data_child(data);
+		ft_handle_malloc(0, NULL, 0,0 );
+		// ft_free_data_child(data);
 		exit(g_val_exit);// A CORRIGER
 	}
 	else
@@ -166,7 +169,8 @@ void	ft_child_process(t_data *data, int i)
 		{
 			//ft_exit_exec(data);
 			res = ft_msg(127, "''", ": ", ERRCMD);
-			ft_free_data_child(data);
+			ft_handle_malloc(0, NULL, 0,0 );
+			//ft_free_data_child(data);
 			ft_close_std();
 			exit(res);
 		}
