@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 07:16:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/10 09:13:28 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,21 +139,28 @@ int	ft_init_data_1(t_data *data, char **envp)
 	// 	return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
 	// }
 	data->built_in = ft_built_in();
-	if (data->built_in == NULL)
-	{
-		ft_free_env(&(data->env));
-		free(data->prompt);
-		ft_free_tabstr(data->built_in);
-		return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
-	}
+	// if (data->built_in == NULL)
+	// {
+	// 	ft_free_env(&(data->env));
+	// 	free(data->prompt);
+	// 	ft_free_tabstr(data->built_in);
+	// 	return (1);//on peut mettre un message de pb de malloc car strdup/ could not initialise minishell
+	// }
 	data->cwd = getcwd(NULL, 0);// sera mise à jour dans cd
 	//http://manpagesfr.free.fr/man/man3/getcwd.3.html : ok pour buf NULL et size 0 (POSIX)
 	if (!data->cwd)
+	// {
+	// 	g_val_exit();
+	// 			ft_free_env(&(data->env));
+	// 	free(data->prompt);
+	// 	ft_free_tabstr(data->built_in);
+	// 	return (1);//could not initialise minishell
+	// }
 	{
-		ft_free_env(&(data->env));
-		free(data->prompt);
-		ft_free_tabstr(data->built_in);
-		return (1);//could not initialise minishell
+		g_val_exit = ft_msg(1, ERRMSG, "minishell : ", "could not initialise minishell");
+		dprintf(2, "passe par ce chemin\n");
+		ft_bin_handler(0, NULL, 0, 0);
+		exit (g_val_exit);
 	}
 	ft_get_home(data);
 	dprintf(2, "val data home = %s\n", data->home);
