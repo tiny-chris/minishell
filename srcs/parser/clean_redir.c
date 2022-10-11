@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 11:11:08 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/11 16:18:18 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ int	ft_fill_undoll_redir(t_token *token, int len)
 
 	i = 0;
 	j = 0;
-	undoll_token = malloc(sizeof(char) * (len + 1));
-	if (!undoll_token)
-		return (1);// FREE TOUT CE QU IL Y A A FREE
+	undoll_token = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	// undoll_token = malloc(sizeof(char) * (len + 1));
+	// if (!undoll_token)
+	// 	return (1);// FREE TOUT CE QU IL Y A A FREE
 	while (token->token[i])
 	{
 		if (token->token[i] == 34 || token->token[i] == 39)
@@ -93,7 +94,8 @@ int	ft_fill_undoll_redir(t_token *token, int len)
 				if (token->token[i] == '\0')
 				{
 					undoll_token[j] = '\0';
-					free(token->token);
+					ft_handle_malloc(DELONE, token->token, 0, 0);
+					// free(token->token);
 					token->token = undoll_token;
 					return (0);
 				}
@@ -112,7 +114,8 @@ int	ft_fill_undoll_redir(t_token *token, int len)
 		i++;
 	}
 	undoll_token[j] = '\0';
-	free(token->token);
+	ft_handle_malloc(DELONE, token->token, 0, 0);
+	// free(token->token);
 	token->token = undoll_token;
 	return (0);
 }
@@ -127,9 +130,10 @@ int	ft_fill_expand_redir(t_token *token, int len, t_data *data)
 	i = 0;
 	j = 0;
 	k = 0;
-	tok_expand = malloc(sizeof(char) * (len + 1));
-	if (!tok_expand)
-		return (1);// FREE TOUT ET EXIT !!
+	tok_expand = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	// tok_expand = malloc(sizeof(char) * (len + 1));
+	// if (!tok_expand)
+	// 	return (1);// FREE TOUT ET EXIT !!
 	while (token->token[i])
 	{
 		if (token->token[i] == '$')
@@ -157,7 +161,8 @@ int	ft_fill_expand_redir(t_token *token, int len, t_data *data)
 		}
 	}
 	tok_expand[j] = '\0';
-	free(token->token);
+	ft_handle_malloc(DELONE, token->token, 0, 0);
+	// free(token->token);
 	token->token = tok_expand;
 	return (0);
 }
@@ -171,9 +176,10 @@ int	ft_fill_consec_quotes_redir(t_token *token, int len)
 
 	i = 0;
 	j = 0;
-	tok_unquote = malloc(sizeof(char) * (len + 1));
-	if (!tok_unquote)
-		return (1); // FREE TOUTTTT + EXIT OF COURSE
+	tok_unquote = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	// tok_unquote = malloc(sizeof(char) * (len + 1));
+	// if (!tok_unquote)
+	// 	return (1); // FREE TOUTTTT + EXIT OF COURSE
 	while (token->token[i])
 	{
 		if (token->token[i] == 34 || token->token[i] == 39)
@@ -194,7 +200,8 @@ int	ft_fill_consec_quotes_redir(t_token *token, int len)
 						tok_unquote[j] = c;
 						j++;
 						tok_unquote[j] = '\0';
-						free (token->token);
+						ft_handle_malloc(DELONE, token->token, 0, 0);
+						// free (token->token);
 						token->token = tok_unquote;
 						return (0);
 					}
@@ -232,7 +239,8 @@ int	ft_fill_consec_quotes_redir(t_token *token, int len)
 		i++;
 	}
 	tok_unquote[j] = '\0';
-	free (token->token);
+	ft_handle_malloc(DELONE, token->token, 0, 0);
+	// free (token->token);
 	token->token = tok_unquote;
 	return (0);
 }
@@ -246,9 +254,10 @@ int	ft_fill_clean_redir(t_token *token, int len)
 
 	i = 0;
 	j = 0;
-	tok_unquote = malloc(sizeof(char) * (len + 1));
-	if (!tok_unquote)
-		return (1);// FREE TOUT ET EXIT
+	tok_unquote = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	// tok_unquote = malloc(sizeof(char) * (len + 1));
+	// if (!tok_unquote)
+	// 	return (1);// FREE TOUT ET EXIT
 	while (token->token[i])
 	{
 		if ((token->token[i] == 34 || token->token[i] == 39) && (token->token[i + 1] == token->token[i]))
@@ -278,7 +287,8 @@ int	ft_fill_clean_redir(t_token *token, int len)
 		i++;
 	}
 	tok_unquote[j] = '\0';
-	free(token->token);
+	ft_handle_malloc(DELONE, token->token, 0, 0);
+	// free(token->token);
 	token->token = tok_unquote;
 	return (0);
 }

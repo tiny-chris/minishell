@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 04:55:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 16:31:22 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_undoll_cmd_len(char *no_redir_cmd)
 
 	i = 0;
 	len = ft_strlen(no_redir_cmd);
-	dprintf(2, "check ici si ça passe\n");
+	// dprintf(2, "check ici si ça passe\n");
 	while (no_redir_cmd[i])
 	{
 		if (no_redir_cmd[i] == 34 || no_redir_cmd[i] == 39)
@@ -128,9 +128,10 @@ char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len)
 
 	i = 0;
 	j = 0;
-	undoll_cmd = malloc(sizeof(char) * (len + 1));
-	if (!undoll_cmd)
-		return (NULL);// FREE TOUT CE QU IL Y A A FREE
+	undoll_cmd = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	// undoll_cmd = malloc(sizeof(char) * (len + 1));
+	// if (!undoll_cmd)
+	// 	return (NULL);// FREE TOUT CE QU IL Y A A FREE
 	while (no_redir_cmd[i])
 	{
 		if (no_redir_cmd[i] == 34 || no_redir_cmd[i] == 39)
@@ -287,6 +288,13 @@ int	ft_del_dolls(t_data *data)
 	{
 		len = ft_undoll_cmd_len(cmd->no_redir_cmd);
 		cmd->undoll_cmd = ft_fill_undoll_cmd(cmd->no_redir_cmd, len);
+
+		// // TEST PARSER
+		// ft_handle_malloc(DELONE, cmd->undoll_cmd, 0, 0);
+		// cmd->undoll_cmd = NULL;
+		// dprintf(2, "check si undoll cmd = NULL\n");
+		// ft_handle_malloc(ADD_M, cmd->undoll_cmd, TAB_STR1, 0);
+
 		if (!cmd->undoll_cmd)
 			return (1);
 		ft_neg_dolls(cmd->undoll_cmd);
