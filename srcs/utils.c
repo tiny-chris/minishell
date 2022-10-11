@@ -51,49 +51,19 @@ void	*ft_free_tabstr(char **tab_str)
 	return (NULL);
 }
 
-void	*ft_free_tabstr2(char **tab_str, int flag)
+/*	<SUMMARY> Deletes only the char** (not the char*)
+*/
+void	*ft_free_tabstr2(char **tab_str)
 {
 	int	i;
 
 	i = 0;
 	if (tab_str == NULL)
 		return (NULL);
-	(void) flag;
-	// if (flag == DELONE)
-	// {
-	// 	while (tab_str[i])
-	// 		i++;
-	// 	i--;
-	// 	while (i >= 0)
-	// 	{
-	// 		if (tab_str[i])
-	// 			ft_handle_malloc(DELONE, tab_str[i], 0, 0);
-	// 		i--;
-		
-	// 	}
-	// }
 	free(tab_str);
 	tab_str = NULL;
 	return (NULL);
 }
-
-// 	if (tab_str != NULL)
-// 	{
-// 		if (flag == DELONE)
-// 		{
-// 			while (tab_str[i])
-// 			{
-// 				ft_handle_malloc(DELONE, tab_str[i], 0, 0);
-// 				// free(tab_str[i]);
-// 				// tab_str[i] = NULL;
-// 				i++;
-// 			}
-// 		}
-// 		free(tab_str);
-// 		tab_str = NULL;
-// 	}
-// 	return (NULL);
-// }
 
 void	*ft_free_tabint(int **tab_int, int size)
 {
@@ -106,6 +76,18 @@ void	*ft_free_tabint(int **tab_int, int size)
 		tab_int[i] = NULL;
 		i++;
 	}
+	free(tab_int);
+	tab_int = NULL;
+	return (NULL);
+}
+
+void	*ft_free_tabint2(int **tab_int, int size)
+{
+	int	i;
+
+	i = 0;
+	if (tab_int == NULL)
+		return ;
 	free(tab_int);
 	tab_int = NULL;
 	return (NULL);

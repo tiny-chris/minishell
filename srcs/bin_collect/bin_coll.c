@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 15:20:48 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 12:02:04 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static size_t	ft_get_sizeof(int type)
 {
 	if (type == TAB_INT1)
 		return (sizeof(int));
-	else if (type == TAB_INTS)
+	else if (type == TAB_INT2 || type == TAB_INTS)
 		return (sizeof(int *));
 	else if (type == TAB_STR1)
 		return (sizeof(char));
-	else if (type == TAB_STRS)
+	else if (type == TAB_STR2 || type == TAB_STRS)
 		return (sizeof(char *));
 	else if (type == LST_ENV)
 		return (sizeof(t_env));
@@ -42,15 +42,19 @@ void	ft_free_ptr_type(void *ptr, int type, int size, int flag)
 	// dprintf(2,"rentre dans le free ptr type\n");
 	if (ptr && type == TAB_INT1)
 		ft_free_ints((int *)ptr, NULL, NULL);
+	else if (ptr && type == TAB_INT2)
+		ft_free_tabint2((int **)ptr, size);
 	else if (ptr && type == TAB_INTS)
 		ft_free_tabint((int **)ptr, size);
-	else if ((char *)ptr && type == TAB_STR1)
+	else if (ptr && type == TAB_STR1)
 	{
 		// dprintf(2,"passe dans le free strs pour TAB_STR1\n");
 		ft_free_strs((char *)ptr, NULL, NULL);
 	}
+	else if (ptr && type == TAB_STR2)
+		ft_free_tabstr2((char **)ptr);
 	else if (ptr && type == TAB_STRS)
-		ft_free_tabstr2((char **)ptr, flag);
+		ft_free_tabstr((char **)ptr);
 	else if (ptr && type == LST_ENV)
 	{
 		ft_lstdelone_env((t_env *)ptr, flag);
@@ -200,7 +204,7 @@ void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
 	}
 	else
 	{
-		dprintf(2, "passssssssssse dans le clean\n");
+		dprintf(2, "passssssssssse dans le free bin\n");
 		// dprintf(2, "rentre dans else\n");
 		// /* affichage de bin_head - pour des STR1 */
 		// dprintf(2, "affichage free bin AVANT :\n");

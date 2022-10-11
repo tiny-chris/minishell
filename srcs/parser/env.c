@@ -100,7 +100,7 @@ int	ft_lstadd_env(t_env **env, char *envp, int flag)
 // 	printf("equal = %d\n", equal);
 // 	// si equal == NULL ?
 // 	new->var = ft_substr(envp, 0, equal);
-// 	new->var_equal = ft_substr(envp, 0, equal + 1);
+//	new->var_equal = ft_substr(envp, 0, equal + 1);
 // 	new->content = ft_substr(envp, equal + 1, (len - equal + 1));
 // 	new->envp = ft_strdup(envp);
 // 	new->next = NULL;

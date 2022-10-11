@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 14:12:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:52:26 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 	//2. je check si data->env est NULL --> rien
 	if (env == NULL || env->var[0] == '\0')
 		return ;// on ne met pas à jour env_path donc pas de free ou autre
-	//3. si env n'est pas NULL, je check si j'ai de quoi remplir les 2 data env_path
+	//3. si env n'est pas NULL, je check si j'ai de quoi remplir les 2 data pour PATH
 	while (env != NULL)
 	{
 		// dprintf(2, "env->var_equal = %s et len 'PATH=' = 5\n", env->var_equal);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/06 16:30:47 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/11 13:05:49 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,20 @@ int	**ft_init_pipe(t_data *data)
 	int	i;
 
 	//dprintf(2, "entre dans init pipe\n");
-	tab_int = (int **) malloc(sizeof(int *) * data->nb_pipes);
-	if (tab_int == NULL)
-		return (free(tab_int), NULL);
+	tab_int = ft_handle_malloc(MALLOC_M, NULL, TAB_INT2, data->nb_pipes);
+	// tab_int = (int **) malloc(sizeof(int *) * data->nb_pipes);
+	// if (tab_int == NULL)
+	// 	return (free(tab_int), NULL);
 	i = 0;
 	while (i < data->nb_pipes)
 	{
-		tab_int[i] = (int *) malloc(sizeof(int) * 2);
-		if (!tab_int[i])
-		{
-			ft_free_tabint(tab_int, i - 1);
-			break ;
-		}
+		tab_int[i] = ft_handle_malloc(MALLOC_M, NULL, TAB_INT1, 2);
+		// tab_int[i] = (int *) malloc(sizeof(int) * 2);
+		// if (!tab_int[i])
+		// {
+		// 	ft_free_tabint(tab_int, i - 1);
+		// 	break ;
+		// }
 		tab_int[i][0] = -1;
 		tab_int[i][1] = -1;
 		i++;

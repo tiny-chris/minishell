@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 11:38:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 12:00:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,14 @@ typedef enum s_type
 typedef enum s_sizetype
 {
 	TAB_INT1		= 100,
-	TAB_INTS		= 101,
-	TAB_STR1		= 102,
-	TAB_STRS		= 103,
-	LST_ENV			= 104,
-	LST_CMD			= 105,
-	LST_TOK			= 106,
+	TAB_INT2		= 101,
+	TAB_INTS		= 102,
+	TAB_STR1		= 103,
+	TAB_STR2		= 104,
+	TAB_STRS		= 105,
+	LST_ENV			= 106,
+	LST_CMD			= 107,
+	LST_TOK			= 108,
 }	t_sizetype;
 
 typedef enum s_flag
@@ -297,7 +299,7 @@ int		ft_new_strrchr(const char *s, int c);
 void	ft_free_strs(char *str1, char *str2, char *str3);
 void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3);
 
-void	*ft_free_tabstr2(char **tab_str, int flag);
+void	*ft_free_tabstr2(char **tab_str);
 int		ft_nb_word(char const *str, char c);
 
 /*	***** EXEC *****	*/
