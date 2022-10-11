@@ -51,17 +51,29 @@ void	*ft_free_tabstr(char **tab_str)
 	return (NULL);
 }
 
-/*	<SUMMARY> Deletes only the char** (not the char*)
+/*	<SUMMARY> Deletes char ** depending on the given type: 
+**	- if type == TAB_STR2: only the char ** (and not char *)
+**	- if type == TAB_STRS/else: deletes char ** AND char*
 */
-void	*ft_free_tabstr2(char **tab_str)
+void	*ft_free_tabstr2(char **tab_str, int type)
 {
 	int	i;
 
 	i = 0;
-	if (tab_str == NULL)
-		return (NULL);
-	free(tab_str);
-	tab_str = NULL;
+	if (tab_str != NULL)
+	{
+		if (type != TAB_STR2)
+		{
+			while (tab_str[i])
+			{
+				free(tab_str[i]);
+				tab_str[i] = NULL;
+				i++;
+			}
+		}
+		free(tab_str);
+		tab_str = NULL;
+	}
 	return (NULL);
 }
 
@@ -86,8 +98,9 @@ void	*ft_free_tabint2(int **tab_int, int size)
 	int	i;
 
 	i = 0;
+	(void) size;
 	if (tab_int == NULL)
-		return ;
+		return (NULL) ;
 	free(tab_int);
 	tab_int = NULL;
 	return (NULL);

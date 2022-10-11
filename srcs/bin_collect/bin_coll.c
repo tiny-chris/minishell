@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 12:02:04 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 15:04:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,20 @@ void	ft_free_ptr_type(void *ptr, int type, int size, int flag)
 		// dprintf(2,"passe dans le free strs pour TAB_STR1\n");
 		ft_free_strs((char *)ptr, NULL, NULL);
 	}
-	else if (ptr && type == TAB_STR2)
-		ft_free_tabstr2((char **)ptr);
-	else if (ptr && type == TAB_STRS)
-		ft_free_tabstr((char **)ptr);
+	else if (ptr && (type == TAB_STR2 || type == TAB_STRS))
+		ft_free_tabstr2((char **)ptr, type);
 	else if (ptr && type == LST_ENV)
 	{
 		ft_lstdelone_env((t_env *)ptr, flag);
 	}
-	else if (ptr && type == LST_CMD)
+	else if (ptr && type == LST_CMDF)// a regrouper avec les LST_CMD (en-dessous)
 		ft_lstdelone_cmd((t_cmd *)ptr);
-	else if (ptr && type == LST_TOK)
+	else if (ptr && type == LST_CMD)
+		ft_lstdelone2_cmd((t_cmd *)ptr);
+	else if (ptr && type == LST_TOKF)
 		ft_lstdelone_tok((t_token *)ptr);
+	else if (ptr && type == LST_TOK)
+		ft_lstdelone2_tok((t_token *)ptr);
 	return ;
 	// else if (type == LST_BIN)// pas vraiment applicable - ne fait pas partie des pointeurs à l'intérieur de lui-même
 	// 	ft_free_bin((t_bin **)ptr);

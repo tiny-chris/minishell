@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 13:05:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:12:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ int	*ft_init_pid(t_data *data)
 
 	i = 0;
 	//dprintf(2, "entre dans init pid\n");
-	pid = malloc(sizeof(int) * (data->nb_pipes + 1));
-	if (!pid)
-		return (NULL);//FREE TOUT ET EXIT
+	pid = ft_handle_malloc(MALLOC_M, NULL, TAB_INT1, (data->nb_pipes + 1));
+	// pid = malloc(sizeof(int) * (data->nb_pipes + 1));
+	// if (!pid)
+	// 	return (NULL);//FREE TOUT ET EXIT
 	while (i < (data->nb_pipes + 1))
 	{
 		pid[i] = -1;

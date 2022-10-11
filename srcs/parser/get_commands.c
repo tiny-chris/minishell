@@ -66,12 +66,19 @@ char	*ft_get_raw_cmd(t_data *data, int i)
 	tmp = NULL;
 	dprintf(2, "-------------------len (ft_get_pipe) = %d\n", ft_get_pipe(data->line, i));
 	tmp = ft_substr(data->line, i, ft_get_pipe(data->line, i));
-	if (!tmp)
-		return (NULL);//free tous les malloc
+	ft_handle_malloc(ADD_M, tmp, TAB_STR1, ft_get_pipe(data->line, i) + 1);
+	// dprintf(2, "-----tmp ajouté = %s et %p----\n", tmp, tmp);
+	// if (!tmp)
+	// 	return (NULL);//free tous les malloc
+	
 	cmd = ft_strtrim(tmp, " ");
-	if (!cmd)
-		return (NULL);//free tous les malloc
-	free(tmp);
+	// // TEST PARSER 1
+	// cmd = NULL;
+	ft_handle_malloc(ADD_M, cmd, TAB_STR1, 0);
+	ft_handle_malloc(DELONE, tmp, 0, 0);
+	// if (!cmd)
+	// 	return (NULL);//free tous les malloc
+	// free(tmp);
 	return (cmd);
 }
 
@@ -126,8 +133,11 @@ t_cmd	*ft_get_commands(t_data *data)
 			return (NULL);
 		dprintf(2, "---------------------val de i = ft_next_pipe = %d\n", ft_next_pipe(data->line, i));
 		i = ft_next_pipe(data->line, i);
-		free(tmp);
+		ft_handle_malloc(DELONE, tmp, 0, 0);
 		nb_cmd--;
 	}
+		// printf("STOOOOOOOOOOOOOOOP\n");
+		// ft_handle_malloc(0, NULL, 0, 0);
+		// exit (22);
 	return (cmd);
 }

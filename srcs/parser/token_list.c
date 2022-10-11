@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:29:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/04 02:44:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 15:05:58 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 	t_token	*new;
 	t_token	*last;
 
-	new = malloc(sizeof(t_token));
-	if (!new)
-	{
-		ft_free_token(tok);
-		return (1);
-	}
+	ft_handle_malloc(ADD_M, token, TAB_STR1, 0);
+	new = ft_handle_malloc(MALLOC_M, NULL, LST_TOK, 1);
+	// new = malloc(sizeof(t_token));
+	// if (!new)
+	// {
+	// 	ft_free_token(tok);
+	// 	return (1);
+	// }
 	new->token = token;
 	//dprintf(2, "new token %s, size = %ld\n", new->token, ft_strlen(new->token));
 	new->type = type;
@@ -62,6 +64,15 @@ void	ft_lstdelone_tok(t_token *node)
 		free(node->token);
 		node->token = NULL;
 	}
+	node->next = NULL;
+	free(node);
+	node = NULL;
+}
+
+void	ft_lstdelone2_tok(t_token *node)
+{
+	if (!node)
+		return ;
 	node->next = NULL;
 	free(node);
 	node = NULL;

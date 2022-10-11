@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/11 12:00:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 15:05:08 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ typedef enum s_sizetype
 	TAB_STRS		= 105,
 	LST_ENV			= 106,
 	LST_CMD			= 107,
-	LST_TOK			= 108,
+	LST_CMDF		= 108,//command full
+	LST_TOK			= 109,
+	LST_TOKF		= 110,
 }	t_sizetype;
 
 typedef enum s_flag
@@ -278,6 +280,7 @@ void	ft_free_env(t_env **env);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 int		ft_lstadd_cmd(t_cmd **cmd, char *cmdline);
 void	ft_lstdelone_cmd(t_cmd *node);
+void	ft_lstdelone2_cmd(t_cmd *node);//regrouper avec delone et utilsier l'option type
 void	ft_free_cmd(t_cmd **cmd);
 
 	/*	token_list */
@@ -285,6 +288,7 @@ void	ft_free_cmd(t_cmd **cmd);
 t_token	*ft_lstlast_tok(t_token *lst);
 int		ft_lstadd_token(t_token **tok, int type, char *token);
 void	ft_lstdelone_tok(t_token *node);
+void	ft_lstdelone2_tok(t_token *node);//regrouper avec delone et utilsier l'option type
 void	ft_lstclear_token(t_token *token);
 void	ft_free_token(t_token **token);
 
@@ -299,7 +303,8 @@ int		ft_new_strrchr(const char *s, int c);
 void	ft_free_strs(char *str1, char *str2, char *str3);
 void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3);
 
-void	*ft_free_tabstr2(char **tab_str);
+void	*ft_free_tabstr2(char **tab_str, int type);
+void	*ft_free_tabint2(int **tab_int, int size);//regrouper avec ft_free_tabint et utilsier l'option type
 int		ft_nb_word(char const *str, char c);
 
 /*	***** EXEC *****	*/
@@ -330,6 +335,7 @@ int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
 void	ft_close_fd(t_data *data);
 void	ft_close_std(void);
 void	ft_exit_exec(t_data *data);//, int val_exit);
+void	ft_clean_exec(t_data *data);// pour remplacer petit à petit ft_exit_exec
 void	ft_free_data_child(t_data *data);
 
 int		ft_clean_cmdline(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 14:20:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:28:50 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,28 @@ void	ft_close_std(void)
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);
+}
+
+void	ft_clean_exec(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (data != NULL)
+	{
+		if (data->pid != NULL)
+			ft_handle_malloc(DELONE, data->pid, 0, 0);
+		if (data->pipe_fd != NULL)
+		{
+			i = 0;
+			while (data->pipe_fd[i])
+			{
+				ft_handle_malloc(DELONE, data->pipe_fd[i], 0, 0);
+				i++;
+			}
+			ft_handle_malloc(DELONE, data->pipe_fd, 0, 0);
+		}
+	}
 }
 
 void	ft_exit_exec(t_data *data)//, int val_exit)

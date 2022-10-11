@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 04:51:37 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 14:46:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,15 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
 	t_cmd	*last;
 
 	new = malloc(sizeof(t_cmd));
-	if (!new)
-	{
-		dprintf(2, "CA BUGGGG !!!!!!!!!!!!!!!!!!!!!!!\n");
-		//ft_free_cmd(cmd);// A FAIRE !!
-		return (1);
-	}
+	ft_handle_malloc(ADD_M, new, LST_CMD, 1);
+	// if (!new)
+	// {
+	// 	dprintf(2, "CA BUGGGG !!!!!!!!!!!!!!!!!!!!!!!\n");
+	// 	//ft_free_cmd(cmd);// A FAIRE !!
+	// 	return (1);
+	// }
 	new->raw_cmd = ft_strdup(cmdline);
+	ft_handle_malloc(ADD_M, new->raw_cmd, TAB_STR1, 0);
 	new->unspace_cmd = NULL;
 	new->no_redir_cmd = NULL;
 	new->undoll_cmd = NULL;
@@ -89,6 +91,16 @@ void	ft_lstdelone_cmd(t_cmd *node)
 	node->cmd_path = NULL;
 	node->next = NULL;
 	free(node);
+	node = NULL;
+}
+
+void	ft_lstdelone2_cmd(t_cmd *node)
+{
+	if (!node)
+		return ;
+	node->next = NULL;
+	free(node);
+	node = NULL;
 }
 
 void	ft_free_cmd(t_cmd **cmd)

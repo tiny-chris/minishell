@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 15:59:36 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:47:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,8 @@ int	ft_parent_process(t_data *data)
 		}
 		status = EINTR;
 	}
-	ft_exit_exec(data);
+	ft_clean_exec(data);
+	//ft_exit_exec(data);
 	// i = 3;
 	// while (i < 1000)
 	// {
@@ -274,19 +275,22 @@ int	ft_exec(t_data *data)
 	ft_get_files_io(data);
 	if (data->nb_pipes == 0 && data->cmd->token == NULL)
 	{
+		printf("passe dans la commande vide\n");//
 		g_val_exit = EXIT_SUCCESS;
-		ft_exit_exec(data);
+	//	ft_exit_exec(data);//a changer
+		ft_clean_exec(data);
 		return (EXIT_SUCCESS);
 	}
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
 	{
-		if (data->cmd->file_err == 1)
+		if (data->cmd->file_err == 1)// POURQUOI ON CLEAN PAS ICI ?
 			g_val_exit = 1;
 		else
 		{
 			printf("passe dans builin unique\n");//
 			g_val_exit = ft_exec_built_in(data->cmd, data, ADD_M);
-			ft_exit_exec(data);
+			ft_clean_exec(data);
+//			ft_exit_exec(data);
 		}
 		return (g_val_exit);
 	}
@@ -297,11 +301,13 @@ int	ft_exec(t_data *data)
 		if (pipe(data->pipe_fd[i]) == -1)
 		{
 			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
-			ft_exit_exec(data);
+			ft_clean_exec(data);
 			return (1);
 		}
 		i++;
 	}
+	// // TEST EXEC 2
+	//return (22);//
 	i = 0;
 	while (i < (data->nb_pipes + 1))
 	{
