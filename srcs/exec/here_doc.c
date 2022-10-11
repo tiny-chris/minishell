@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:09:15 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/11 18:54:50 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/11 18:57:44 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,16 @@ extern int	g_val_exit;
 
 t_env	*ft_check_env(t_data *data, char *line)
 {
-	printf("debut check env\n");
 	t_env	*env;
 	char	*tmp;
 
 	env = data->env;
 	tmp = NULL;
-	printf("env->var %s \n", env->var);
 	while (env)
 	{
 		tmp = ft_strjoin("$", env->var);
 		if (!tmp)
 			exit (EXIT_FAILURE); // et free tout;
-		printf("tmp = %s\n", tmp);
 		if (ft_strncmp(tmp, line, ft_strlen(tmp)) == 0
 			&& (ft_strlen(line) - 1 == ft_strlen(tmp)))
 		{
@@ -50,7 +47,6 @@ void	ft_add_line(t_data *data, t_token *tok_redir, char *line)
 	expand_line = NULL;
 	if (line[0] == '$')
 	{
-		printf("rentre dasn le if\n");
 		tmp = ft_check_env(data, line);
 		if (tmp) // regarder si line est dans l'env
 		{
