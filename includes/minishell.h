@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 19:12:41 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/11 18:34:15 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,7 +375,7 @@ void	ft_signal(t_data *data, int signum, t_sighandler handler);
 void	ft_sigquit_child(t_data *data, int signum, t_sighandler handler);
 void	sig_quit(int sig);
 
-/*  heredoc  */
+/*   heredoc  */
 
 void	ft_heredoc(t_data *data, t_cmd *cmd, t_token *tok_redir);
 char	*ft_get_prompt_line(t_data *data);
@@ -387,11 +387,11 @@ void	ft_end_of_file(t_token *tok_redir);
 /* **************************** */
 /* début - for ft_handle_malloc */
 
-/*	bin collector */
+/*	bin collector  */
 
 void	*ft_handle_malloc(int flag, void *ptr, int type, int size);
 
-/*	bin list */
+/*	bin list  */
 
 int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
 void	ft_lstdelone_bin(t_bin *node);

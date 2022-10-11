@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/08 13:41:28 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/11 18:17:42 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,33 @@ static void	ft_close_builtin_fd(t_cmd *cmd)
 	}
 }
 
+int	ft_check_heredoc(t_data *data)
+{
+	t_cmd	*cmd;
+	t_token	*tok_redir;
+
+	cmd = data->cmd;
+	if (!cmd)
+		return (0);
+	tok_redir = cmd->tok_redir;
+	while (cmd != NULL)
+	{
+		if (tok_redir)
+		{
+			while (tok_redir)
+			{
+				if (tok_redir->type == D_LESS)
+					return (1);
+				tok_redir = tok_redir->next;
+			}
+		}
+		cmd = cmd->next;
+		if (cmd)
+			tok_redir = cmd->tok_redir;
+	}
+	return (0);
+}
+
 int	ft_exec(t_data *data)
 {
 	int	i;
@@ -90,6 +117,12 @@ int	ft_exec(t_data *data)
 		g_val_exit = EXIT_SUCCESS;
 		ft_exit_exec(data);
 		return (EXIT_SUCCESS);
+	}
+	if (ft_check_heredoc(data) && g_val_exit == 130)
+	{
+		ft_close_fd(data);
+		ft_exit_exec(data);
+		return (g_val_exit);
 	}
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
 	{
@@ -119,8 +152,8 @@ int	ft_exec(t_data *data)
 				{
 					g_val_exit = errno;
 					ft_msg(errno, ERRMSG, "", strerror(errno));
-					//tout free
-					//ft_handle_malloc(0, NULL, 0, 0);
+					// tout free ;
+					// ft_handle_malloc(0, NULL, 0, 0) ;
 					exit(errno);
 				}
 			}
