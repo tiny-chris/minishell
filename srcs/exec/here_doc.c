@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:09:15 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/11 18:57:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/12 13:17:46 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,15 @@ void	ft_add_line(t_data *data, t_token *tok_redir, char *line)
 		tmp = ft_check_env(data, line);
 		if (tmp) // regarder si line est dans l'env
 		{
-			printf("expand line = %s\n", expand_line);
-			expand_line = ft_strdup(tmp->content);
+			expand_line = ft_strjoin(tmp->content, "\n");
 			write(tok_redir->fd, expand_line, ft_strlen(expand_line));
 			free(expand_line);
 		}
 	}
 	else
-	{
 		write(tok_redir->fd, line, ft_strlen(line));
-		free(line);
-		line = NULL;
-	}
+	free(line);
+	line = NULL;
 }
 
 void	ft_heredoc_sigint(int sig)
