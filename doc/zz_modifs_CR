@@ -8,6 +8,9 @@ expliquer stp
 pour les signaux - quid des messages "coupés"? les join ou non (si on peut éviter... faire une string)
 
 
+//XXX REPRENDRE ICI - rech : ft_handle_malloc XXX//
+
+
 *** A FAIRE ***
 
 - messages 'erreur de syntax'
