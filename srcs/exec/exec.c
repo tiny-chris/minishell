@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 15:04:58 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:19:18 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,31 @@ int	ft_parent_process(t_data *data)
 	return (status);
 }
 
+int	ft_nopipe_checkcmd(t_data *data)
+{
+	if (data->nb_pipes == 0 && data->cmd->token == NULL)
+	{
+		printf("passe dans la commande vide\n");//
+		if (data->cmd->file_err == 1)
+			g_val_exit = EXIT_FAILURE;
+		else
+			g_val_exit = EXIT_SUCCESS;
+		ft_clean_exec(data);
+		return (g_val_exit);
+	}
+	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
+	{
+		printf("passe dans builin unique\n");//
+		if (data->cmd->file_err == 1)
+			g_val_exit = EXIT_FAILURE;
+		else
+			g_val_exit = ft_exec_built_in(data->cmd, data, ADD_M);
+		ft_clean_exec(data);
+		return (g_val_exit);
+	}
+	return (-1);
+}
+
 int	ft_exec(t_data *data)
 {
 	int	i;
@@ -275,33 +300,48 @@ int	ft_exec(t_data *data)
 	if (data->nb_pipes > 0)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);
-	if (ft_get_files_io(data))
-	{
-		g_val_exit = EXIT_FAILURE;
-		ft_clean_exec(data);
+	ft_get_files_io(data);
+	// {
+	// 	g_val_exit = EXIT_FAILURE;
+	// 	ft_clean_exec(data);
+	// 	return (g_val_exit);
+	// }
+	if (ft_nopipe_checkcmd(data) >= 0)
 		return (g_val_exit);
-	}
-	if (data->nb_pipes == 0 && data->cmd->token == NULL)
-	{
-		printf("passe dans la commande vide\n");//
-		g_val_exit = EXIT_SUCCESS;
-	//	ft_exit_exec(data);//a changer
-		ft_clean_exec(data);
-		return (g_val_exit);
-	}
-	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
-	{
-		if (data->cmd->file_err == 1)// POURQUOI ON CLEAN PAS ICI ?
-			g_val_exit = 1;
-		else
-		{
-			printf("passe dans builin unique\n");//
-			g_val_exit = ft_exec_built_in(data->cmd, data, ADD_M);
-			ft_clean_exec(data);
-//			ft_exit_exec(data);
-		}
-		return (g_val_exit);
-	}
+	// if (data->nb_pipes == 0 && data->cmd->token == NULL)
+	// {
+	// 	printf("passe dans la commande vide\n");//
+	// 	if (data->cmd->file_err == 1)
+	// 		g_val_exit = 1;
+	// 	else
+	// 		g_val_exit = EXIT_SUCCESS;
+	// //	ft_exit_exec(data);//a changer
+	// 	ft_clean_exec(data);
+	// 	return (g_val_exit);
+	// }
+// 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
+// 	{
+// 		if (data->cmd->file_err == 1)// POURQUOI ON CLEAN PAS ICI ?
+// 			g_val_exit = 1;
+// 		else
+// 		{
+// 			printf("passe dans builin unique\n");//
+// 			g_val_exit = ft_exec_built_in(data->cmd, data, ADD_M);
+// 			ft_clean_exec(data);
+// //			ft_exit_exec(data);
+// 		}
+// 		return (g_val_exit);
+// 	}
+	i = 0;
+	// pour data->pid[i] ou ma commande
+	// cmd = data->cmd;
+	// while (i < data->nb_pipes)
+	// {
+	// 	if (cmd->token->type)
+	// }
+
+
+
 	//dprintf(2, "init ok\n");
 	i = 0;
 	while (i < data->nb_pipes)

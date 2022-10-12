@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 14:57:58 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:13:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ int	*ft_init_pid(t_data *data)
 
 int	ft_get_files_io(t_data *data)
 {
-	int		res;
+	// int		res;
 	t_cmd	*cmd;
 	t_token	*tok_redir;
 
-	res = 0;
+	// res = 0;
 	cmd = data->cmd;
 	tok_redir = NULL;
 	//dprintf(2, "entre dans get files io\n");
@@ -81,7 +81,7 @@ int	ft_get_files_io(t_data *data)
 				{
 					cmd->file_err = 1;
 					//printf("outfile error\n"); // afficher error avec erno + strerror
-					res = ft_msg(errno, tok_redir->token, ": ", strerror(errno));
+					ft_msg(errno, tok_redir->token, ": ", strerror(errno));
 				}
 				cmd->outfile = tok_redir->fd;
 			}
@@ -93,7 +93,7 @@ int	ft_get_files_io(t_data *data)
 				{
 					cmd->file_err = 1;
 					//printf("outfile error\n"); // afficher error avec erno + strerror
-					res = ft_msg(errno, tok_redir->token, ": ", strerror(errno));
+					ft_msg(errno, tok_redir->token, ": ", strerror(errno));
 				}
 				cmd->outfile = tok_redir->fd;
 			}
@@ -105,7 +105,7 @@ int	ft_get_files_io(t_data *data)
 				{
 					cmd->file_err = 1;
 					//printf("infile error\n"); // afficher error avec erno + strerror
-					res = ft_msg(errno, tok_redir->token, ": ", strerror(errno));
+					ft_msg(errno, tok_redir->token, ": ", strerror(errno));
 				}
 				cmd->infile = tok_redir->fd;
 			}
@@ -117,7 +117,7 @@ int	ft_get_files_io(t_data *data)
 				{
 					cmd->file_err = 1;
 					//printf("infile error\n"); // afficher error avec erno + strerror
-					res = ft_msg(errno, tok_redir->token, ": ", strerror(errno));
+					ft_msg(errno, tok_redir->token, ": ", strerror(errno));
 				}
 				cmd->infile = tok_redir->fd;
 			}
@@ -127,5 +127,5 @@ int	ft_get_files_io(t_data *data)
 	//	dprintf(2, "cmd->infile = %d et cmd->outfile = %d\n", cmd->infile, cmd->outfile);
 		cmd = cmd->next;
 	}
-	return (res);
+	return (0);
 }
