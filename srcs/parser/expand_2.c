@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 16:52:37 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 01:28:48 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_get_expand_size(char *undoll_cmd, int *i, t_data *data)
 	while (undoll_cmd[j] && (undoll_cmd[j] > 0) && ft_isalnum(undoll_cmd[j]))
 		j++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (j - *i));
-	ft_handle_malloc(ADD_M, var_to_expand, TAB_STR1, (j - *i + 1));
+	ft_handle_malloc(ADD_M, var_to_expand, TAB_STR1, 0);
 	//printf("var to expand = %s, size = %ld\n", var_to_expand, ft_strlen(var_to_expand));
 	// if (!var_to_expand)
 	// 	return (0);// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
@@ -112,7 +112,7 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 	while (undoll_cmd[k] && (undoll_cmd[k] > 0) && ft_isalnum(undoll_cmd[k]))
 		k++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (k - *i));
-	ft_handle_malloc(ADD_M, var_to_expand, TAB_STR1, (k - *i + 1));
+	ft_handle_malloc(ADD_M, var_to_expand, TAB_STR1, 0);
 	// if (!var_to_expand)
 	// 	return ;// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
 	while (env)

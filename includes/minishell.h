@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/11 15:05:08 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 03:19:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,12 @@ typedef enum s_sizetype
 	TAB_INT1		= 100,
 	TAB_INT2		= 101,
 	TAB_INTS		= 102,
-	TAB_STR1		= 103,
-	TAB_STR2		= 104,
-	TAB_STRS		= 105,
-	LST_ENV			= 106,
-	LST_CMD			= 107,
-	LST_CMDF		= 108,//command full
-	LST_TOK			= 109,
-	LST_TOKF		= 110,
+	TAB_STR1		= 110,
+	TAB_STR2		= 111,
+	TAB_STRS		= 112,
+	LST_ENV			= 120,
+	LST_CMD			= 130,
+	LST_TOK			= 140,
 }	t_sizetype;
 
 typedef enum s_flag
@@ -271,16 +269,17 @@ int		ft_del_empty_cmd(t_data *data);
 t_env	*ft_lstlast_env(t_env *lst);
 int		ft_lstadd_env(t_env **env, char *envp, int flag);
 //int		ft_lstadd_env(t_env **env, char *envp);///OLD VERSION
-//void	ft_lstdelone_env(t_env *node);
-void	ft_lstdelone_env(t_env *node, int flag);
+void	ft_lstdelone_env(t_env *node);
+void	ft_lstdelone_env_bin(t_env *node);
 void	ft_free_env(t_env **env);
+void	ft_lstclearone_env(t_env **env_head, t_env *ptr);// voir si utile...
 
 	/*	cmd_list */
 
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 int		ft_lstadd_cmd(t_cmd **cmd, char *cmdline);
 void	ft_lstdelone_cmd(t_cmd *node);
-void	ft_lstdelone2_cmd(t_cmd *node);//regrouper avec delone et utilsier l'option type
+void	ft_lstdelone_cmd_bin(t_cmd *node);
 void	ft_free_cmd(t_cmd **cmd);
 
 	/*	token_list */
@@ -288,23 +287,27 @@ void	ft_free_cmd(t_cmd **cmd);
 t_token	*ft_lstlast_tok(t_token *lst);
 int		ft_lstadd_token(t_token **tok, int type, char *token);
 void	ft_lstdelone_tok(t_token *node);
-void	ft_lstdelone2_tok(t_token *node);//regrouper avec delone et utilsier l'option type
-void	ft_lstclear_token(t_token *token);
+void	ft_lstdelone_tok_bin(t_token *node);
 void	ft_free_token(t_token **token);
+void	ft_lstclear_token(t_token *token);// a supprimer et remplacer par free // A TESTER d'abord
 
 	/*	utils */
 
-void	*ft_free_tabstr(char **tab_str);
-int		ft_new_strchr(const char *s, int c);
-void	*ft_free_tabint(int **tab_int, int size);
-int		ft_is_in_set(const char *set, char c);
-int		ft_new_strrchr(const char *s, int c);
-//void	ft_free_1(char *str1, char *str2);
+// CLEAN
 void	ft_free_strs(char *str1, char *str2, char *str3);
-void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3);
-
+void	*ft_free_tabstr(char **tab_str);
 void	*ft_free_tabstr2(char **tab_str, int type);
-void	*ft_free_tabint2(int **tab_int, int size);//regrouper avec ft_free_tabint et utilsier l'option type
+void	*ft_free_tabstr_bin(char **tab_str, int type);//supprime tout char * et ** dans les 2 (yc bin)
+
+void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3);
+void	*ft_free_tabint(int **tab_int, int size);
+void	*ft_free_tabint2(int **tab_int, int size, int type);
+void	*ft_free_tabint_bin(int **tab_int, int size, int type);
+
+// UTILS
+int		ft_new_strchr(const char *s, int c);
+int		ft_new_strrchr(const char *s, int c);
+int		ft_is_in_set(const char *set, char c);
 int		ft_nb_word(char const *str, char c);
 
 /*	***** EXEC *****	*/
@@ -345,7 +348,7 @@ int		ft_free_exit(int val_exit);
 
 /*	built-ins */
 
-int		ft_echo(t_cmd *cmd, t_data *data);
+int		ft_echo(t_cmd *cmd, t_data *data, int flag);
 
 int		ft_pwd(t_data *data);
 
@@ -355,14 +358,14 @@ void	ft_display_env(t_data *data, t_token *token);
 int		ft_export(t_cmd *cmd, t_data *data, int flag);
 int		ft_check_export(t_token *token, t_data *data, int flag);
 
-int		ft_unset(t_cmd *cmd, t_data *data, int flag);
-int		ft_check_unset(t_token *token, t_data *data, int flag);
+int		ft_unset(t_cmd *cmd, t_data *data);
+int		ft_check_unset(t_token *token, t_data *data);
 
-int		ft_cd(t_cmd *cmd, t_data *data);
-void	ft_update_pwd(t_cmd *cmd, t_data *data);
-void	ft_update_cwd(t_data *data);
+int		ft_cd(t_cmd *cmd, t_data *data, int flag);
+void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
+void	ft_update_cwd(t_data *data, int flag);
 
-int		ft_exit(t_cmd *cmd, t_data *data);
+int		ft_exit(t_cmd *cmd, t_data *data, int flag);
 
 /* signaux */
 
@@ -375,21 +378,17 @@ void	sig_quit(int sig);
 /*	bin collector */
 
 void	*ft_handle_malloc(int flag, void *ptr, int type, int size);
-// void	ft_free_ptr_type(void *ptr, int type, int size);
-void	ft_free_ptr_type(void *ptr, int type, int size, int flag);
+void	ft_free_ptr_type(void *ptr, int type, int size);
+// void	ft_free_ptr_type(void *ptr, int type, int size, int flag);
 
 /*	bin list */
 
 int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
-// void	ft_lstdelone_bin(t_bin *node);
-// void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
-// void	ft_free_bin(t_bin **bin);
-void	ft_lstdelone_bin(t_bin *node, int flag);
-void	ft_lstclearone_bin(t_bin **bin_head, void *ptr, int flag);
-void	ft_free_bin(t_bin **bin_head, int flag);
-
-/* ajout dans les listes */
-
-void	ft_lstclearone_env(t_env **env_head, t_env *ptr);
+void	ft_lstdelone_bin(t_bin *node);
+void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
+void	ft_free_bin(t_bin **bin);
+// void	ft_lstdelone_bin(t_bin *node, int flag);
+// void	ft_lstclearone_bin(t_bin **bin_head, void *ptr, int flag);
+// void	ft_free_bin(t_bin **bin_head, int flag);
 
 #endif

@@ -32,6 +32,66 @@ int	ft_new_strchr(const char *s, int c)
 	return (0);
 }
 
+int	ft_new_strrchr(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+		i++;
+	while (i > 0)
+	{
+		if (s[i] == (char)c)
+			return (i);
+		i--;
+	}
+	return (0);
+}
+
+/*  Checks if there is a char 'c' is in the defined 'set' string
+**	- if yes    --> return 1
+**  - if no     --> return 0
+*/
+int	ft_is_in_set(const char *set, char c)
+{
+	int	i;
+
+	if (!set)
+		return (0);
+	i = 0;
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (1);
+		i ++;
+	}
+	return (0);
+}
+
+int	ft_nb_word(char const *str, char c)
+{
+	int	i;
+	int	word;
+
+	i = 0;
+	word = 0;
+	while (str && str[i])
+	{
+		if (str[i] != c)
+		{
+			word++;
+			while (str[i] != c && str[i])
+				i++;
+		}
+		while (str[i] && str[i] == c)
+			i++;
+	}
+	return (word);
+}
+
+
 void	*ft_free_tabstr(char **tab_str)
 {
 	int	i;
@@ -51,7 +111,7 @@ void	*ft_free_tabstr(char **tab_str)
 	return (NULL);
 }
 
-/*	<SUMMARY> Deletes char ** depending on the given type: 
+/*	<SUMMARY> Deletes char ** depending on the given type:
 **	- if type == TAB_STR2: only the char ** (and not char *)
 **	- if type == TAB_STRS/else: deletes char ** AND char*
 */
@@ -77,6 +137,27 @@ void	*ft_free_tabstr2(char **tab_str, int type)
 	return (NULL);
 }
 
+void	*ft_free_tabstr_bin(char **tab_str, int type)
+{
+	int	i;
+
+	i = 0;
+	if (tab_str != NULL)
+	{
+		if (type != TAB_STR2)
+		{
+			while (tab_str[i])
+			{
+				if (tab_str[i])
+					ft_handle_malloc(DELONE, tab_str[i], 0, 0);
+				i++;
+			}
+		}
+		ft_handle_malloc(DELONE, tab_str, 0, 0);
+	}
+	return (NULL);
+}
+
 void	*ft_free_tabint(int **tab_int, int size)
 {
 	int	i;
@@ -93,55 +174,44 @@ void	*ft_free_tabint(int **tab_int, int size)
 	return (NULL);
 }
 
-void	*ft_free_tabint2(int **tab_int, int size)
+void	*ft_free_tabint2(int **tab_int, int size, int type)
 {
 	int	i;
 
 	i = 0;
-	(void) size;
 	if (tab_int == NULL)
 		return (NULL) ;
+	if (type != TAB_INT2)
+	{
+		while (i < size)
+		{
+			free(tab_int[i]);
+			tab_int[i] = NULL;
+			i++;
+		}
+	}
 	free(tab_int);
 	tab_int = NULL;
 	return (NULL);
 }
 
-/*  Checks if there is a char 'c' is in the defined 'set' string
-**	- if yes    --> return 1
-**  - if no     --> return 0
-*/
-int	ft_is_in_set(const char *set, char c)
-{
-	int	i;
-
-	if (!set)
-		return (0);
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
-		i ++;
-	}
-	return (0);
-}
-
-int	ft_new_strrchr(const char *s, int c)
+void	*ft_free_tabint_bin(int **tab_int, int size, int type)
 {
 	int	i;
 
 	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	while (i > 0)
+	if (tab_int == NULL)
+		return (NULL) ;
+	if (type != TAB_INT2)
 	{
-		if (s[i] == (char)c)
-			return (i);
-		i--;
+		while (i < size)
+		{
+			ft_handle_malloc(DELONE, tab_int[i], 0, 0);
+			i++;
+		}
 	}
-	return (0);
+	ft_handle_malloc(DELONE, tab_int, 0, 0);
+	return (NULL);
 }
 
 //
@@ -183,25 +253,4 @@ void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3)
 		free(t_int3);
 		t_int3 = NULL;
 	}
-}
-
-int	ft_nb_word(char const *str, char c)
-{
-	int	i;
-	int	word;
-
-	i = 0;
-	word = 0;
-	while (str && str[i])
-	{
-		if (str[i] != c)
-		{
-			word++;
-			while (str[i] != c && str[i])
-				i++;
-		}
-		while (str[i] && str[i] == c)
-			i++;
-	}
-	return (word);
 }

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 11:52:26 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 04:20:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,11 @@ int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, int flag)
 	// 	ft_free_env(env_path);
 	// 	return (1);
 	// }
+	// printf("check ici lstadd2 env\n");
 	new->var = NULL;
 	new->var_equal = NULL;
 	new->content = ft_strdup(s_env_path_i);
-	ft_handle_malloc(flag, new->content, TAB_STR1, ft_strlen(new->content) + 1);
+	ft_handle_malloc(flag, new->content, TAB_STR1, 0);
 	new->envp = NULL;
 	new->next = NULL;
 	if (ft_lstlast_env(*env_path) == 0)
@@ -203,7 +204,7 @@ void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 		return ;
 	// autrement, je recup les char * de content dans data:
 	data->s_env_path = ft_split(env->content, ':');
-	ft_handle_malloc(flag, data->s_env_path, TAB_STRS, ft_nb_word(env->content, ':' + 1));
+	ft_handle_malloc(flag, data->s_env_path, TAB_STRS, 0);
 	i = 0;
 	while (data->s_env_path[i])
 	{

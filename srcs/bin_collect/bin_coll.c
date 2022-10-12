@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 15:04:39 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 01:57:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,36 +35,25 @@ static size_t	ft_get_sizeof(int type)
 	return (0);
 }
 
-void	ft_free_ptr_type(void *ptr, int type, int size, int flag)
+void	ft_free_ptr_type(void *ptr, int type, int size)
 {
 	if (!ptr)
 		return ;
 	// dprintf(2,"rentre dans le free ptr type\n");
 	if (ptr && type == TAB_INT1)
 		ft_free_ints((int *)ptr, NULL, NULL);
-	else if (ptr && type == TAB_INT2)
-		ft_free_tabint2((int **)ptr, size);
-	else if (ptr && type == TAB_INTS)
-		ft_free_tabint((int **)ptr, size);
+	else if (ptr && (type == TAB_INT2 || type == TAB_INTS))
+		ft_free_tabint2((int **)ptr, size, type);
 	else if (ptr && type == TAB_STR1)
-	{
-		// dprintf(2,"passe dans le free strs pour TAB_STR1\n");
 		ft_free_strs((char *)ptr, NULL, NULL);
-	}
 	else if (ptr && (type == TAB_STR2 || type == TAB_STRS))
 		ft_free_tabstr2((char **)ptr, type);
 	else if (ptr && type == LST_ENV)
-	{
-		ft_lstdelone_env((t_env *)ptr, flag);
-	}
-	else if (ptr && type == LST_CMDF)// a regrouper avec les LST_CMD (en-dessous)
-		ft_lstdelone_cmd((t_cmd *)ptr);
+		ft_lstdelone_env((t_env *)ptr);
 	else if (ptr && type == LST_CMD)
-		ft_lstdelone2_cmd((t_cmd *)ptr);
-	else if (ptr && type == LST_TOKF)
-		ft_lstdelone_tok((t_token *)ptr);
+		ft_lstdelone_cmd((t_cmd *)ptr);
 	else if (ptr && type == LST_TOK)
-		ft_lstdelone2_tok((t_token *)ptr);
+		ft_lstdelone_tok((t_token *)ptr);
 	return ;
 	// else if (type == LST_BIN)// pas vraiment applicable - ne fait pas partie des pointeurs à l'intérieur de lui-même
 	// 	ft_free_bin((t_bin **)ptr);
@@ -96,7 +85,7 @@ static void	ft_failed_malloc(t_bin **bin_head, int flag)
 	// else
 	// 	printf("vide --> plus de bin_head\n");
 	// /* fin d'affichage */
-	ft_free_bin(bin_head, flag);
+	ft_free_bin(bin_head);
 	// /* affichage de bin_head - pour des STR1 */
 	// dprintf(2, "affichage APRES free bin :\n");
 	// tmp = (*bin_head);
@@ -158,7 +147,7 @@ void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
 			ft_failed_malloc(&bin_head, flag);
 		if (ft_lstadd_bin(&bin_head, ptr2, type, size) == 1)
 		{
-			ft_free_ptr_type(ptr2, type, size, flag);
+			ft_free_ptr_type(ptr2, type, size);
 			ft_failed_malloc(&bin_head, flag);
 		}
 	}
@@ -184,7 +173,7 @@ void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
 		// else
 		// 	printf("vide --> plus de bin_head\n");
 		/* fin d'affichage */
-		ft_lstclearone_bin(&bin_head, ptr, flag);
+		ft_lstclearone_bin(&bin_head, ptr);
 		// /* affichage de bin_head - pour des STR1 */
 		// dprintf(2, "affichage DELONE APRES :\n");
 		// tmp = bin_head;
@@ -227,7 +216,7 @@ void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
 		// else
 		// 	printf("vide --> plus de bin_head\n");
 		// /* fin d'affichage */
-		ft_free_bin(&bin_head, flag);
+		ft_free_bin(&bin_head);
 		// /* affichage de bin_head - pour des STR1 */
 		// dprintf(2, "affichage free bin APRES :\n");
 		// tmp = bin_head;

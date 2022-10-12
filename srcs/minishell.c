@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/11 11:57:26 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 04:51:31 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,12 @@ void	ft_get_home(t_data *data, int flag)
 	t_env	*env;
 
 	env = data->env;
-	ft_handle_malloc(DELONE, data->home, 0, 0);
+	dprintf(2, "data->home == %p\n", data->home);
+	if (data->home)
+	{
+		dprintf(2, "data->home == %s\n", data->home);
+		ft_handle_malloc(DELONE, data->home, 0, 0);
+	}
 	// if (data->home)
 	// 	free(data->home);
 	// data->home = NULL;
@@ -72,7 +77,11 @@ void	ft_get_home(t_data *data, int flag)
 		}
 	}
 	if (env == NULL)
+	{
+		dprintf(2, "pas trouve HOME donc return\n");
+
 		return ;
+	}
 	// {
 	// 	data->home = NULL;
 		// return ;
@@ -81,7 +90,7 @@ void	ft_get_home(t_data *data, int flag)
 	{
 		data->home = ft_strdup(env->content);
 		// printf("flag data home = %d\n", flag);
-		ft_handle_malloc(flag, data->home, TAB_STR1, ft_strlen(data->home) + 1);
+		ft_handle_malloc(flag, data->home, TAB_STR1, 0);
 		// if (!data->home)
 		// 	return ;//malloc free
 	}
@@ -135,7 +144,7 @@ int	ft_init_data_1(t_data *data, char **envp)
 		// // TEST2 :
 		// free(data->prompt);//test2
 		// data->prompt = NULL;//test2
-	ft_handle_malloc(ADD_M, data->prompt, TAB_STR1, ft_strlen(data->prompt) + 1);
+	ft_handle_malloc(ADD_M, data->prompt, TAB_STR1, 0);
 	// if (data->prompt == NULL)
 	// {
 	// 	ft_free_env(&(data->env));
@@ -161,7 +170,7 @@ int	ft_init_data_1(t_data *data, char **envp)
 		ft_handle_malloc(0, NULL, 0, 0);
 		exit (g_val_exit);
 	}
-	ft_handle_malloc(ADD_M, data->cwd, TAB_STR1, ft_strlen(data->cwd));
+	ft_handle_malloc(ADD_M, data->cwd, TAB_STR1, 0);
 	// sera mise à jour dans cd
 	//http://manpagesfr.free.fr/man/man3/getcwd.3.html : ok pour buf NULL et size 0 (POSIX)
 	// {
@@ -180,45 +189,26 @@ int	ft_init_data_1(t_data *data, char **envp)
 	return (0);
 }
 
-/*	Clean data->cmd
-*/
-int	ft_clean_cmdline(t_data *data)
-{
-	if (data != NULL)
-	{
-		if (data->line)
-		{
-			free(data->line);
-			data->line = NULL;
-		}
-		if (data->str_exit)
-		{
-			free(data->str_exit);
-			data->str_exit = NULL;
-		}
-	}
-	return (0);
-}
-
 int	ft_clean_loop(t_data *data)
 {
-	int	i;
+	// int	i;
 	t_env	*tmp_env;
 //	char	*tmp_str;
 
-	i = 0;
+	// i = 0;
 	dprintf(2, "je rentre dans clean loop\n");
-	if (data->built_in != NULL)
-	{
-		while (data->built_in[i])
-		{
-			if (data->built_in[i])
-				ft_handle_malloc(DELONE, data->built_in[i], 0, 0);
-			i++;
-		}
-		ft_handle_malloc(DELONE, data->built_in, 0, 0);
-		//  ft_free_tabstr(data->built_in);
-	}
+	ft_free_tabstr_bin(data->built_in, TAB_STRS);
+	// if (data->built_in != NULL)
+	// {
+	// 	while (data->built_in[i])
+	// 	{
+	// 		if (data->built_in[i])
+	// 			ft_handle_malloc(DELONE, data->built_in[i], 0, 0);
+	// 		i++;
+	// 	}
+	// 	ft_handle_malloc(DELONE, data->built_in, 0, 0);
+	// 	//  ft_free_tabstr(data->built_in);
+	// }
 	dprintf(2, "built-in OK--------\n");
 	if (data->cwd != NULL)
 	{
@@ -299,7 +289,36 @@ void	ft_minishell(t_data *data)
 		ft_exec(data); // peut etre faire un if == 0 ou 1
 		ft_free_cmd(&(data->cmd)); // A AJUSTER
 	}
-	ft_clean_cmdline(data);
+	// ft_clean_cmdline(data);
+	if (data != NULL)
+	{
+		if (data->line)
+			ft_handle_malloc(DELONE, data->line, 0, 0);
+		if (data->str_exit)
+			ft_handle_malloc(DELONE, data->str_exit, 0, 0);
+	}
+}
+
+/*	Clean data->cmd
+*/
+int	ft_clean_cmdline(t_data *data)
+{
+	if (data != NULL)
+	{
+		if (data->line)
+			ft_handle_malloc(DELONE, data->line, 0, 0);
+		// {
+		// 	free(data->line);
+		// 	data->line = NULL;
+		// }
+		if (data->str_exit)
+			ft_handle_malloc(DELONE, data->str_exit, 0, 0);
+		// {
+		// 	free(data->str_exit);
+		// 	data->str_exit = NULL;
+		// }
+	}
+	return (0);
 }
 
 void	ft_exit_ctrl_d(t_data *data)
@@ -322,12 +341,12 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (ft_init_data_1(&data, envp))
 			return (1);
-		// while (1)
+		while (1)
 		{
 			ft_init_signals(&data);
 			data.line = readline(data.prompt);
 			if (!data.line)
-				ft_exit_ctrl_d(&data);
+				ft_exit_ctrl_d(&data);// est ce qu'on doit aussi protéger pour un malloc ??
 			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
 			{
 				add_history(data.line);

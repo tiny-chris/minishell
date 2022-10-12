@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/11 13:28:50 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 04:32:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_clean_exec(t_data *data)
 		if (data->pipe_fd != NULL)
 		{
 			i = 0;
-			while (data->pipe_fd[i])
+			while (i < data->nb_pipes)
 			{
 				ft_handle_malloc(DELONE, data->pipe_fd[i], 0, 0);
 				i++;
@@ -55,7 +55,7 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 		}
 		if (data->pipe_fd != NULL)
 		{
-			ft_free_tabint(data->pipe_fd, data->nb_pipes);
+			ft_free_tabint(data->pipe_fd, data->nb_pipes);// incorrect sinon creer une fonction comme ft_free_tabstr_bin
 			data->pipe_fd = NULL;
 		}
 		if (data->s_env_path != NULL)
@@ -72,74 +72,71 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 	}
 }
 
+// void	ft_free_data_child(t_data *data)
+// {
+// 	if (data->line != NULL)
+// 	{
+// 		free(data->line);
+// 		data->line = NULL;
+// 	}
+// 	if (data->prompt != NULL)
+// 	{
+// 		free(data->prompt);
+// 		data->prompt = NULL;
+// 	}
+// 	if (data->env != NULL)
+// 	{
+// 		ft_free_env(&(data->env));
+// 		data->env = NULL;
+// 	}
+// 	if (data->cwd != NULL)
+// 	{
+// 		free(data->cwd);
+// 		data->cwd = NULL;
+// 	}
+// 	if (data->oldpwd != NULL)
+// 	{
+// 		free(data->oldpwd);
+// 		data->oldpwd = NULL;
+// 	}
+// 	if (data->home != NULL)
+// 	{
+// 		free(data->home);
+// 		data->home = NULL;
+// 	}
+// 	if (data->str_exit != NULL)
+// 	{
+// 		free(data->str_exit);
+// 		data->str_exit = NULL;
+// 	}
+// 	if (data->cmd != NULL)
+// 	{
+// 		ft_free_cmd(&(data->cmd));
+// 		data->cmd = NULL;
+// 	}
+// 	if (data->built_in != NULL)
+// 		ft_free_tabstr_bin(data->built_in, TAB_STRS);
+// 	if (data->pid != NULL)
+// 	{
+// 		free (data->pid);
+// 		data->pid = NULL;
+// 	}
+// 	if (data->pipe_fd != NULL)
+// 		ft_free_tabint_bin(data->pipe_fd, data->nb_pipes, TAB_INTS);
+// 	if (data->env_path != NULL)
+// 	{
+// 		ft_free_env(&(data->env_path));
+// 		data->env_path = NULL;
+// 	}
+// 	if (data->s_env_path != NULL)
+// 		ft_free_tabstr_bin(data->s_env_path, TAB_STRS);
+// }
+
 void	ft_free_data_child(t_data *data)
 {
-	if (data->line != NULL)
-	{
-		free(data->line);
-		data->line = NULL;
-	}
-	if (data->prompt != NULL)
-	{
-		free(data->prompt);
-		data->prompt = NULL;
-	}
-	if (data->env != NULL)
-	{
-		ft_free_env(&(data->env));
-		data->env = NULL;
-	}
-	if (data->cwd != NULL)
-	{
-		free(data->cwd);
-		data->cwd = NULL;
-	}
-	if (data->oldpwd != NULL)
-	{
-		free(data->oldpwd);
-		data->oldpwd = NULL;
-	}
-	if (data->home != NULL)
-	{
-		free(data->home);
-		data->home = NULL;
-	}
-	if (data->str_exit != NULL)
-	{
-		free(data->str_exit);
-		data->str_exit = NULL;
-	}
-	if (data->cmd != NULL)
-	{
-		ft_free_cmd(&(data->cmd));
-		data->cmd = NULL;
-	}
-	if (data->built_in != NULL)
-	{
-		ft_free_tabstr(data->built_in);
-		data->built_in = NULL;
-	}
-	if (data->pid != NULL)
-	{
-		free (data->pid);
-		data->pid = NULL;
-	}
-	if (data->pipe_fd != NULL)
-	{
-		ft_free_tabint(data->pipe_fd, data->nb_pipes);
-		data->pipe_fd = NULL;
-	}
-	if (data->env_path != NULL)
-	{
-		ft_free_env(&(data->env_path));
-		data->env_path = NULL;
-	}
-	if (data->s_env_path != NULL)
-	{
-		ft_free_tabstr(data->s_env_path);
-		data->s_env_path = NULL;
-	}
-
+	(void) data;// A REVOIR
+	ft_handle_malloc(0, NULL, 0, 0);
+	//close fd ???
 }
 
 void	ft_close_fd(t_data *data)

@@ -6,13 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 10:53:43 by lmelard           #+#    #+#             */
-/*   Updated: 2022/09/23 16:05:53 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 02:14:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(t_cmd *cmd, t_data *data)
+int	ft_echo(t_cmd *cmd, t_data *data, int flag)
 {
 	t_token	*token;
 	char	*tmp;
@@ -26,41 +26,50 @@ int	ft_echo(t_cmd *cmd, t_data *data)
 		{
 			if (token->type == SP_QUOTES)
 			{
-				free(token->token);
+				ft_handle_malloc(DELONE, token->token, 0, 0);
+				// free(token->token);
 				token->token = ft_strdup("\n");
-				if (!token->token)
-					return (ft_msg(1, "", "", ERRMAL));
+				ft_handle_malloc(flag, token->token, TAB_STR1, 0);
+				// if (!token->token)
+				// 	return (ft_msg(1, "", "", ERRMAL));
 			}
 			else
 			{
 				tmp = ft_strdup(token->token);
-				if (!tmp)
-					return (ft_msg(1, "", "", ERRMAL)); // FREEE + EXIT
-				free(token->token);
+				ft_handle_malloc(flag, tmp, TAB_STR1, 0);
+				// if (!tmp)
+				// 	return (ft_msg(1, "", "", ERRMAL)); // FREEE + EXIT
+				ft_handle_malloc(DELONE, token->token, 0, 0);
+				// free(token->token);
 				token->token = ft_strjoin(tmp, "\n");
-				if (!token->token)
-				{
-					free(tmp);
-					return (ft_msg(1, "", "", ERRMAL));
-				}
-				free(tmp);
+				ft_handle_malloc(flag, token->token, TAB_STR1, 0);
+				// if (!token->token)
+				// {
+				// 	free(tmp);
+				// 	return (ft_msg(1, "", "", ERRMAL));
+				// }
+				ft_handle_malloc(DELONE, tmp, 0, 0);
+				// free(tmp);
 			}
 			printf("%s", token->token);
 			return (0);
 		}
 		if (token->next == NULL)
-		{
-			printf("");
-			return (0);
-		}
-		if (token->next)
+		// {
+			return (write(1, "", 0));
+			// printf("");
+			// return (0);
+		// }
+		else//if (token->next)
 		{
 			if (token->next->type == SP_QUOTES)
 			{
-				free(token->next->token);
+				ft_handle_malloc(DELONE, token->next->token, 0, 0);
+				// free(token->next->token);
 				token->next->token = ft_strdup("");
-				if (!token->next->token)
-					return (ft_msg(1, "", "", ERRMAL));
+				ft_handle_malloc(flag, token->next->token, TAB_STR1, 0);
+				// if (!token->next->token)
+				// 	return (ft_msg(1, "", "", ERRMAL));
 			}
 			printf("%s", token->next->token);
 			return (0);

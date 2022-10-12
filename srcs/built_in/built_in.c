@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 16:39:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 11:38:57 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 03:19:34 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ int	ft_exec_built_in(t_cmd *cmd, t_data *data, int flag)
 
 	token = cmd->token;
 	if (ft_strncmp(token->token, "echo", 4) == 0)
-		g_val_exit = ft_echo(cmd, data);
+		g_val_exit = ft_echo(cmd, data, flag);
 	else if (ft_strncmp(token->token, "cd", 2) == 0)
-		g_val_exit = ft_cd(cmd, data);
+		g_val_exit = ft_cd(cmd, data, flag);
 	else if (ft_strncmp(token->token, "pwd", 3) == 0)
 		g_val_exit = ft_pwd(data);
 	else if (ft_strncmp(token->token, "export", 6) == 0)
 		g_val_exit = ft_export(cmd, data, flag);
 	else if (ft_strncmp(token->token, "unset", 5) == 0)
-		g_val_exit = ft_unset(cmd, data, flag);
+		g_val_exit = ft_unset(cmd, data);
 	else if (ft_strncmp(token->token, "env", 3) == 0)
 		g_val_exit = ft_env(cmd, data);
 	else if (ft_strncmp(token->token, "exit", 4) == 0)
-		g_val_exit = ft_exit(cmd, data);
+		g_val_exit = ft_exit(cmd, data, flag);
 	return (g_val_exit);
 }
 

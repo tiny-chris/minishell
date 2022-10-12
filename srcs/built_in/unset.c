@@ -6,13 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 10:02:38 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 05:25:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_check_unset(t_token *token, t_data *data, int flag)
+int	ft_check_unset(t_token *token, t_data *data)
 {
 	t_env	*env;
 	t_env	*todel;
@@ -28,15 +28,16 @@ int	ft_check_unset(t_token *token, t_data *data, int flag)
 			if (ft_strncmp(token->token, "PATH", 4) == 0 && ft_strlen(token->token) == 4)
 			{
 				if (data->env_path)
-				{
+				// {
 					ft_free_env(&(data->env_path));
-					data->env_path = NULL;
-				}
+				printf("val env path unset = %p\n", data->env_path);//
+				// 	data->env_path = NULL;
+				// }
 				if (data->s_env_path)
-				{
-					ft_free_tabstr(data->s_env_path);
-					data->s_env_path = NULL;
-				}
+				// {
+					ft_free_tabstr_bin(data->s_env_path, TAB_STRS);
+				// 	data->s_env_path = NULL;
+				// }
 			}
 			else if (ft_strncmp(token->token, "HOME", 4) == 0 && ft_strlen(token->token) == 4)
 			{
@@ -44,15 +45,17 @@ int	ft_check_unset(t_token *token, t_data *data, int flag)
 				if (data->home)
 				{
 					printf("data->home = %s\n", data->home);//
-					free(data->home);
-					data->home = NULL;
+					ft_handle_malloc(DELONE, data->home, 0, 0);
+					//free(data->home);
+					data->home = NULL;// ne pas enleve pour le moment - prb de leak sinon...
+					printf("data->home h= %p\n", data->home);//
 				}
 			}
 			if (env == data->env)
 			{
 				todel = env;
 				tmp = env->next;
-				ft_lstdelone_env(todel, flag);
+				ft_lstdelone_env_bin(todel);
 				data->env = tmp;
 				env = data->env;
 			}
@@ -63,18 +66,18 @@ int	ft_check_unset(t_token *token, t_data *data, int flag)
 					tmp->next = env->next;
 				else
 					tmp->next = NULL;
-				ft_lstdelone_env(todel, flag);
+				ft_lstdelone_env_bin(todel);
 				env = tmp;
 			}
 		}
-		if (env != data->env || tmp != env)//ajout de la 2e condition
+		if (env != data->env || tmp != env)
 			tmp = tmp->next;
 		env = env->next;
 	}
 	return (0);
 }
 
-int	ft_unset(t_cmd *cmd, t_data *data, int flag)
+int	ft_unset(t_cmd *cmd, t_data *data)
 {
 	t_token	*token;
 	int		i;
@@ -108,7 +111,7 @@ int	ft_unset(t_cmd *cmd, t_data *data, int flag)
 				}
 			}
 			if (token->token[i] == '\0')
-				res = ft_check_unset(token, data, flag);
+				res = ft_check_unset(token, data);
 		}
 		if (res == 0 && res2 == 0)
 			res2 = 0;

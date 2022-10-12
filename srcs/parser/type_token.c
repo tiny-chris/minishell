@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 17:16:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 01:38:11 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,11 @@ void	ft_echo_join_words_fill(t_token *token)
 		// free(char_tmp2);
 	}
 	if (token)
-		//printf("last clean token = %s, type =%d \n", token->token, token->type);
 	{
+		//printf("last clean token = %s, type =%d \n", token->token, token->type);
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//ft_free_token(token->next);// remplacer lstclear par ça... à voir avec les **
 		ft_lstclear_token(token->next);// nettoyage ici avec ft_handle_malloc !!!
 		token->next = NULL;
 	}
@@ -151,7 +154,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 				printf("test\n");
 				todel = token;
 				tmp = token->next;
-				ft_lstdelone_tok(todel);// nettoyage ici avec ft_handle_malloc !!!
+				ft_lstdelone_tok_bin(todel);
 				cmd->token->next = tmp;
 				token = cmd->token->next;
 			}
@@ -166,7 +169,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 	//	et pareil pour les consécutifs qui contiennent '='
 	//	si un token ne contient pas '=', alors il sera typé "token->env=1 pour erreur dans exec"
 	//sinon, si le token suivant 'env' (2) ne contient pas de '='
-	//	--> alors on supprimer le token 'env' (1) et on modifie le token (2) en commande ou builtin
+	//	--> alors on supprime le token 'env' (1) et on modifie le token (2) en commande ou builtin
 	//		et "token->env=1 pour erreur dans exec"
 	else if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0)) // && data->env != NULL)
 	{
@@ -177,7 +180,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 			{
 				todel = token;
 				tmp = token->next;
-				ft_lstdelone_tok(todel);// nettoyage ici avec ft_handle_malloc !!!
+				ft_lstdelone_tok_bin(todel);
 				cmd->token->next = tmp;
 				token = cmd->token->next;
 			}
@@ -205,7 +208,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 			token->env = 1;
 			todel = cmd->token;
 			tmp = token;
-			ft_lstdelone_tok(todel);// nettoyage ici avec ft_handle_malloc !!!
+			ft_lstdelone_tok_bin(todel);
 			cmd->token = tmp;
 		}
 	}

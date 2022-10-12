@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/11 13:47:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 05:26:33 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,23 +103,24 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 		token = token->next;
 		i++;
 	}
-	cmd_opt = malloc(sizeof(char *) * (i + 1));
-	if (!cmd_opt)
-		return (NULL);
+	cmd_opt = ft_handle_malloc(MALLOC_C, NULL, TAB_STR2, (i + 1));
+	// cmd_opt = malloc(sizeof(char *) * (i + 1));
+	// if (!cmd_opt)
+	// 	return (NULL);
 	i = 0;
 	token = cmd->token;
 	while (token)
 	{
 		cmd_opt[i] = ft_strdup(token->token);
-		if (!cmd_opt[i])
-		{
-			ft_free_tabstr(cmd_opt);
-			return (NULL);
-		}
+		ft_handle_malloc(ADD_C, cmd_opt[i], TAB_STR1, 0);
+		// if (!cmd_opt[i])
+		// {
+		// 	ft_free_tabstr(cmd_opt);
+		// 	return (NULL);
+		// }
 		i++;
 		token = token->next;
 	}
-	//cmd_opt[i] = ft_strdup("");
 	cmd_opt[i] = NULL;
 	return (cmd_opt);
 }
@@ -147,7 +148,7 @@ void	ft_child_process(t_data *data, int i)
 		ft_close_std();
 		exit(EXIT_FAILURE);
 	}
-	if (cmd->token == NULL)
+	if (cmd->token == NULL)//OK
 	{
 		// ft_free_data_child(data);
 		ft_handle_malloc(0, NULL, 0,0 );
@@ -169,7 +170,7 @@ void	ft_child_process(t_data *data, int i)
 		{
 			//ft_exit_exec(data);
 			res = ft_msg(127, "''", ": ", ERRCMD);
-			ft_handle_malloc(0, NULL, 0,0 );
+			ft_handle_malloc(0, NULL, 0, 0);
 			//ft_free_data_child(data);
 			ft_close_std();
 			exit(res);
@@ -180,8 +181,9 @@ void	ft_child_process(t_data *data, int i)
 		if (cmd->cmd_opt == NULL)
 		{
 			//ft_exit_exec(data);
-			res = ft_msg(1, "", "", ERRMAL);
-			ft_free_data_child(data);
+			g_val_exit = ft_msg(1, "", "", ERRMAL);
+			ft_handle_malloc(0, NULL, 0, 0);
+			// ft_free_data_child(data);
 			ft_close_std();
 			exit(res);
 		}
@@ -192,7 +194,8 @@ void	ft_child_process(t_data *data, int i)
 		{
 			//ft_exit_exec(data);
 			res = ft_msg(EXIT_FAILURE, "", "", ERRMAL);
-			ft_free_data_child(data);
+			// ft_free_data_child(data);
+			ft_handle_malloc(0, NULL, 0, 0);
 			ft_close_std();
 			exit(res);
 		}
@@ -201,7 +204,8 @@ void	ft_child_process(t_data *data, int i)
 		{
 			//ft_exit_exec(data);
 			res = ft_msg(126, cmd->token->token, ": ", strerror(errno));
-			ft_free_data_child(data);
+			// ft_free_data_child(data);
+			ft_handle_malloc(0, NULL, 0, 0);
 			ft_close_std();
 			exit(res);
 		}
