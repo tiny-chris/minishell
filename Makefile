@@ -45,6 +45,7 @@ SRCS 		:= \
 			parser/del_empty_token.c \
 			parser/space_quotes.c \
 			parser/del_nwords.c \
+			parser/heredoc_path.c \
 			built_in/built_in.c \
 			built_in/echo.c \
 			built_in/pwd.c \

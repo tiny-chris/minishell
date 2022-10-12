@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/07 17:04:51 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/12 17:33:52 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
 	new->file_err = 0;
 	new->cmd_opt = NULL;
 	new->cmd_path = NULL;
+	new->heredoc_path = NULL;
 	new->next = NULL;
 	if (ft_lstlast_cmd(*cmd) == 0)
 	{
@@ -88,6 +89,9 @@ void	ft_lstdelone_cmd(t_cmd *node)
 	if (node->cmd_path)
 		free(node->cmd_path);
 	node->cmd_path = NULL;
+	if (node->heredoc_path)
+		free(node->heredoc_path);
+	node->heredoc_path = NULL;
 	node->next = NULL;
 	free(node);
 }

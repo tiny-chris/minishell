@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:29:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/04 02:44:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:44:06 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	ft_lstadd_token(t_token **tok, int type, char *token)
 	new->fd = -1;
 	new->env = 0;
 	new->printed = 0;
+	new->hd_quotes = -1;
 	new->next = NULL;
 	if (ft_lstlast_tok(*tok) == 0)
 	{

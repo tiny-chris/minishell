@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/11 18:34:15 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/12 17:35:12 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ typedef struct s_token
 	int				fd;
 	int				env;
 	int				printed;//pour env - init à 0 et passe à 1 si printé dans built-in env
+	int				hd_quotes;
 	struct s_token	*next;
 }	t_token;
 
@@ -125,13 +126,14 @@ typedef struct s_cmd
 	char			*clean_cmd;//modifier par expand_cmd ??
 	t_token			*token;
 	t_token			*tok_redir;
-	int				infile;//
-	int				outfile;//
+	int				infile; //
+	int				outfile; //
 	int				stin; //
 	int				stout; //
 	int				file_err;
 	char			**cmd_opt;
 	char			*cmd_path;
+	char			*heredoc_path;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -272,10 +274,14 @@ t_token	*ft_get_token_echo(t_token **token);
 void	ft_echo_join_words_fill(t_token *token);
 int		ft_del_nword(t_cmd *cmd);
 
-/*	Step 7 del_empty_cmd */
+/*	Step 7 del_empty_cmd N'EXISTE PLUS */
 
-int		ft_get_cmd_lst_size(t_data *data);
-int		ft_del_empty_cmd(t_data *data);
+// int		ft_get_cmd_lst_size(t_data *data);
+// int		ft_del_empty_cmd(t_data *data);
+
+/*  Step 7	 heredoc_path  */
+
+int		ft_heredoc_path(t_data *data);
 
 	/*	env_list */
 

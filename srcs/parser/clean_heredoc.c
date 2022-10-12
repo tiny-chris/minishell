@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:55:17 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/12 17:46:41 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,8 @@ int	ft_clean_heredoc(t_token *token)
 	ft_fill_undoll_heredoc(token, len);
 	dprintf(2, "undoll heredoc = %s, len = %d vs. strlen = %ld\n", token->token, len, ft_strlen(token->token));
 	len = ft_unquote_heredoc_len(token->token);
+	if ((size_t)len != ft_strlen(token->token))
+		token->hd_quotes = 1;
 	ft_fill_unquote_heredoc(token, len);
 	dprintf(2, "unquote heredoc = %s, len = %d vs. strlen = %ld\n", token->token, len, ft_strlen(token->token));
 	return (0);

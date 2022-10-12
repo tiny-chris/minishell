@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:00:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/22 15:16:57 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:34:37 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ int	ft_parser(t_data *data)
 	ft_del_dolls(data);
 	ft_expand(data);
 	ft_tokenizer(data);
+	ft_heredoc_path(data);
 	return (0);
 }

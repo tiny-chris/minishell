@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:09:15 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 13:17:46 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/12 17:47:21 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_add_line(t_data *data, t_token *tok_redir, char *line)
 	t_env	*tmp;
 
 	expand_line = NULL;
-	if (line[0] == '$')
+	if (line[0] == '$' && tok_redir->hd_quotes != 1)
 	{
 		tmp = ft_check_env(data, line);
 		if (tmp) // regarder si line est dans l'env
@@ -95,7 +95,7 @@ void	ft_heredoc(t_data *data, t_cmd *cmd, t_token *tok_redir)
 
 	line = NULL;
 	tok_redir = tok_redir->next;
-	tok_redir->fd = open("/tmp/temp_heredoc", O_CREAT | O_TRUNC | O_RDWR, 0644);
+	tok_redir->fd = open(cmd->heredoc_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	g_val_exit = 0;
 	if (tok_redir->fd < 0)
 	{
@@ -127,7 +127,7 @@ void	ft_heredoc(t_data *data, t_cmd *cmd, t_token *tok_redir)
 		free(line);
 	close(stdin_dup);
 	close(tok_redir->fd);
-	tok_redir->fd = open("/tmp/temp_heredoc", O_RDONLY);
+	tok_redir->fd = open(cmd->heredoc_path, O_RDONLY);
 	cmd->infile = tok_redir->fd;
-	unlink("/tmp/temp_heredoc");
+	unlink(cmd->heredoc_path);
 }
