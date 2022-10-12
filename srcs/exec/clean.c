@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 14:45:40 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 22:45:35 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 void	ft_close_std(void)
 {
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
+	if (STDIN_FILENO != -1)
+		close(STDIN_FILENO);
+	if (STDOUT_FILENO != -1)
+		close(STDOUT_FILENO);
+	if (STDERR_FILENO != -1)
+		close(STDERR_FILENO);
 }
 
 void	ft_clean_exec(t_data *data)
@@ -27,16 +30,16 @@ void	ft_clean_exec(t_data *data)
 	if (data != NULL)
 	{
 		if (data->pid != NULL)
-			ft_handle_malloc(DELONE, data->pid, 0, 0);
+			ft_handle_malloc(DELONE, data->pid, 0, NULL);
 		if (data->pipe_fd != NULL)
 		{
 			i = 0;
 			while (i < data->nb_pipes)
 			{
-				ft_handle_malloc(DELONE, data->pipe_fd[i], 0, 0);
+				ft_handle_malloc(DELONE, data->pipe_fd[i], 0, NULL);
 				i++;
 			}
-			ft_handle_malloc(DELONE, data->pipe_fd, 0, 0);
+			ft_handle_malloc(DELONE, data->pipe_fd, 0, NULL);
 		}
 	}
 }
@@ -62,10 +65,10 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 		{
 			while (data->s_env_path[i])
 			{
-				ft_handle_malloc(DELONE, data->s_env_path[i], 0, 0);
+				ft_handle_malloc(DELONE, data->s_env_path[i], 0, NULL);
 				i++;
 			}
-			ft_handle_malloc(DELONE, data->s_env_path, 0, 0);
+			ft_handle_malloc(DELONE, data->s_env_path, 0, NULL);
 		}
 		// if (val_exit != -1)
 		// 	data->val_exit = val_exit;
@@ -135,13 +138,17 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 int	ft_free_data_child(int res, t_data *data)
 {
 	//(void) data;// A REVOIR
-	ft_handle_malloc(0, NULL, 0, 0);
+	ft_handle_malloc(0, NULL, 0, NULL);
 	ft_close_std();
 	ft_close_fd(data);//close fd autres???
 	rl_clear_history();
 	return (res);
 }
 
+
+// voir si plutôt faire :
+// si fd >2
+// fermer !?
 void	ft_close_fd(t_data *data)
 {
 	t_cmd	*cmd;

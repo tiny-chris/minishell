@@ -6,13 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 05:30:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 22:59:37 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//extern int	g_val_exit;// remplacer data-> val exit par g_val_exit !!
+extern int	g_val_exit;
 
 char	*ft_get_path_parent(char *cwd_update)
 {
@@ -26,7 +26,7 @@ char	*ft_get_path_parent(char *cwd_update)
 	if (ft_strlen(cwd_update) == 1 && cwd_update[0] == '/')
 	{
 		new_cwd = ft_strdup(cwd_update);
-		ft_handle_malloc(ADD_C, new_cwd, TAB_STR1, 0);// revoir le flag
+		ft_handle_malloc(ADD_C + TAB_STR1, new_cwd, 0, data);// revoir le flag
 		// if (!new_cwd)
 		// 	return (NULL);//tout nettoyer car pb de malloc
 	}
@@ -196,6 +196,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 	DIR		*directory;
 	char	*tmp;
 
+	(void) data;
 	directory = NULL;
 	tmp = NULL;
 	if (!token)
@@ -205,7 +206,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 	if (directory != NULL)// c'est un directory
 	{
 		closedir(directory);
-		data->val_exit = ft_msg(126, token, ": ", ERRDIR);
+		g_val_exit = ft_msg(126, token, ": ", ERRDIR);
 		// ft_free_data_child(data);
 		ft_handle_malloc(0, NULL, 0, 0);
 		// if (full_path)
@@ -214,7 +215,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 		// 	free(full_path);
 		// 	full_path = NULL;
 		// }
-		exit (data->val_exit);
+		exit (g_val_exit);
 	}
 	else
 	{
@@ -226,7 +227,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 					return (ft_strdup(full_path));
 				else
 				{
-					data->val_exit = ft_msg(126, token, ": ", ERRPRD);//enlever 'test'
+					g_val_exit = ft_msg(126, token, ": ", ERRPRD);//enlever 'test'
 					// ft_free_data_child(data);
 					ft_handle_malloc(0, NULL, 0, 0);
 					// if (full_path)
@@ -235,7 +236,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 					// 	free(full_path);
 					// 	full_path = NULL;
 					// }
-					exit (data->val_exit);
+					exit (g_val_exit);
 				}
 			}
 			// printf("full path n'est PAS F_OK\n");
@@ -248,7 +249,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 			{
 				free(tmp);
 				tmp = NULL;
-				data->val_exit = ft_msg(126, token, ": ", ERRNDR);
+				g_val_exit = ft_msg(126, token, ": ", ERRNDR);
 				// ft_free_data_child(data);
 				ft_handle_malloc(0, NULL, 0, 0);
 				// if (full_path)
@@ -257,7 +258,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 				// 	free(full_path);
 				// 	full_path = NULL;
 				// }
-				exit (data->val_exit);
+				exit (g_val_exit);
 			}
 			if (tmp)
 				ft_handle_malloc(DELONE, tmp, 0, 0);
@@ -272,7 +273,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 			// 	full_path = NULL;
 			// }
 		}
-		data->val_exit = ft_msg(127, token, ": ", ERRFOD);
+		g_val_exit = ft_msg(127, token, ": ", ERRFOD);
 		// ft_free_data_child(data);
 		ft_handle_malloc(0, NULL, 0, 0);
 		// if (full_path)
@@ -281,7 +282,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 		// 	free(full_path);
 		// 	full_path = NULL;
 		// }
-		exit (data->val_exit);
+		exit (g_val_exit);
 	}
 	return (NULL);
 }
@@ -314,10 +315,10 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 		if (cmd->token->token[0] == '/')
 		{
 			full_path = ft_strdup(cmd->token->token);
-			ft_handle_malloc(ADD_C, full_path, TAB_STR1, 0);
+			ft_handle_malloc(ADD_C + TAB_STR1, full_path, 0, data);
 			cmd_path = ft_check_abs_path(cmd->token->token, full_path, data, \
 				ft_strlen(cmd->token->token));
-			ft_handle_malloc(ADD_C, cmd_path, TAB_STR1, 0);
+			ft_handle_malloc(ADD_C + TAB_STR1, cmd_path, 0, data);
 		}
 		else
 		{
@@ -327,7 +328,7 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 			// 	return (NULL);//tout nettoyer malloc et exit
 			cmd_path = ft_check_abs_path(cmd->token->token, full_path, data, \
 				ft_strlen(cmd->token->token));
-			ft_handle_malloc(ADD_C, cmd_path, TAB_STR1, 0);
+			ft_handle_malloc(ADD_C + TAB_STR1, cmd_path, 0, data);
 		}
 	}
 	else
@@ -354,14 +355,14 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		//printf("env path existe pas\n");
 		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
 		// ft_free_data_child(data);
-		ft_handle_malloc(0, NULL, 0, 0);
+		ft_handle_malloc(0, NULL, 0, NULL);
 		exit(res);
 	}
 	if (ft_strncmp(cmd->token->token, "..", ft_strlen(cmd->token->token)) == 0)
 	{
 		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
 		// ft_free_data_child(data);
-		ft_handle_malloc(0, NULL, 0, 0);
+		ft_handle_malloc(0, NULL, 0, NULL);
 		exit(res);
 	}
 	dprintf(2, "passe dans env_path2 et va tester le PATH\n");
@@ -372,7 +373,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		if (env_path->content[j] != '/')
 		{
 			new_path = ft_strjoin(env_path->content, "/");
-			ft_handle_malloc(ADD_C, new_path, TAB_STR1, 0);
+			ft_handle_malloc(ADD_C + TAB_STR1, new_path, 0, data);
 			// if (!new_path)
 			// 	return (NULL);
 			//printf("new_path = %s\n", new_path);
@@ -380,21 +381,21 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		else
 		{
 			new_path = ft_strdup(env_path->content);
-			ft_handle_malloc(ADD_C, new_path, TAB_STR1, 0);
+			ft_handle_malloc(ADD_C + TAB_STR1, new_path, 0, data);
 			// if (!new_path)
 			// 	return (NULL);
 		}
 		// printf("new_path avec join slash = %s\n", new_path);
 		cmd_path = ft_strjoin(new_path, cmd->token->token);
-		ft_handle_malloc(ADD_C, cmd_path, TAB_STR1, 0);
+		ft_handle_malloc(ADD_C + TAB_STR1, cmd_path, 0, data);
 		// if (!cmd_path)
 		// 	return (free(new_path), NULL);
 		// printf("new_path avec join slash = %s\n", cmd_path);
-		ft_handle_malloc(DELONE, new_path, 0, 0);
+		ft_handle_malloc(DELONE, new_path, 0, NULL);
 		// free(new_path);
 		if (access((const char *)cmd_path, F_OK | X_OK) == 0)
 			return (cmd_path);
-		ft_handle_malloc(DELONE, cmd_path, 0, 0);
+		ft_handle_malloc(DELONE, cmd_path, 0, NULL);
 		// free(cmd_path);
 		env_path = env_path->next;
 	}
@@ -404,6 +405,6 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 	else
 		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
 	// ft_free_data_child(data);
-	ft_handle_malloc(0, NULL, 0, 0);
+	ft_handle_malloc(0, NULL, 0, NULL);
 	exit(res);
 }

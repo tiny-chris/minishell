@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 22:21:51 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 01:57:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,12 @@ void	ft_free_ptr_type(void *ptr, int type, int size)
 	// 	ft_free_bin((t_bin **)ptr);
 }
 
-static void	ft_failed_malloc(t_bin **bin_head, int flag, t_data *data)
+static void	ft_failed_malloc(t_bin **bin_head, int flag)
 {
-	ft_putendl_fd(2, ERRMAL);
-	ft_close_std();
-	ft_close_fd(data);
-	rl_clear_history();
 	if (flag == ADD_C || flag == MALLOC_C)
-		g_val_exit = 42;
+		g_val_exit = ft_msg(42, ERRMSG, "", ERRMAL);
 	else
-		g_val_exit = 1;
+		g_val_exit = ft_msg(1, ERRMSG, "", ERRMAL);
 	printf("val exit main vs child = %d\n", g_val_exit);
 	// /* affichage de bin_head - pour des STR1 */
 	// dprintf(2, "affichage AVANT free bin :\n");
@@ -130,48 +126,16 @@ static void	ft_failed_malloc(t_bin **bin_head, int flag, t_data *data)
 **	MALLOC		1001	2001	-->	malloc + check + add to bin_head
 **	DELONE		3000	same
 */
-// void	*ft_malloc(int flag_type, void *ptr, int size, t_data *data)
-// {
-// 	void	*ptr2;
-// 	int		flag;
-
-// 	ptr2 = NULL;
-// 	flag = ((flag_type / 1000) * 1000) + (flag_type % 10);
-// 	printf("val de flag = %d\n", flag);
-// 	if (flag == MALLOC_C || flag == MALLOC_M)
-// 		ptr2 = malloc(ft_get_sizeof(flag_type - flag) * size);
-// 	else
-// 		ptr2 = ptr;
-// 	if (ptr2 == NULL)
-// 	{
-// 		ft_close_std();
-// 		ft_close_fd(data);
-// 		rl_clear_history();
-// 		ft_handle_malloc(0, NULL, 0, 0);
-// 		if (flag == ADD_C || flag == MALLOC_C)
-// 			g_val_exit = 42;
-// 		else
-// 			g_val_exit = 1;
-// 		ft_putendl_fd(2, "Error: memory allocation failure");
-// 		exit(g_val_exit);
-// 	}
-// 	return (ptr);
-// }
-
-void	*ft_handle_malloc(int flag_type, void *ptr, int size, t_data *data)
+void	*ft_handle_malloc(int flag, void *ptr, int type, int size)
 {
 	static t_bin	*bin_head;
 	void			*ptr2;
-	int				flag;
 
 	ptr2 = NULL;
-	flag = ((flag_type / 1000) * 1000) + (flag_type % 10);
-	printf("val de flag = %d\n", flag);
-	printf("ADD_C = %d, MALLOC_C = %d, ADD_M = %d\n", ADD_C, MALLOC_C, ADD_M);
 	if (flag == MALLOC_C || flag == MALLOC_M)
 	{
 	//	dprintf(2, "rentre dans MALLOC et ptr2 est NULL = %p\n", ptr2);//
-		ptr2 = malloc(ft_get_sizeof(flag_type - flag) * size);
+		ptr2 = malloc(ft_get_sizeof(type) * size);
 	}
 	else
 		ptr2 = ptr;
@@ -180,11 +144,11 @@ void	*ft_handle_malloc(int flag_type, void *ptr, int size, t_data *data)
 	{
 		// dprintf(2, "valeur ptr2 apres MALLOC (ADD) = %p, type = %d, size = %d\n", ptr2, type, size);
 		if (ptr2 == NULL)
-			ft_failed_malloc(&bin_head, flag, data);
-		if (ft_lstadd_bin(&bin_head, ptr2, (flag_type - flag), size) == 1)
+			ft_failed_malloc(&bin_head, flag);
+		if (ft_lstadd_bin(&bin_head, ptr2, type, size) == 1)
 		{
-			ft_free_ptr_type(ptr2, (flag_type - flag), size);
-			ft_failed_malloc(&bin_head, flag, data);
+			ft_free_ptr_type(ptr2, type, size);
+			ft_failed_malloc(&bin_head, flag);
 		}
 	}
 	else if (flag == DELONE)

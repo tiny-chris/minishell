@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 18:19:18 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:36:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,16 +332,6 @@ int	ft_exec(t_data *data)
 // 		}
 // 		return (g_val_exit);
 // 	}
-	i = 0;
-	// pour data->pid[i] ou ma commande
-	// cmd = data->cmd;
-	// while (i < data->nb_pipes)
-	// {
-	// 	if (cmd->token->type)
-	// }
-
-
-
 	//dprintf(2, "init ok\n");
 	i = 0;
 	while (i < data->nb_pipes)

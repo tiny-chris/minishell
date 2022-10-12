@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 11:41:59 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 03:57:37 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 22:43:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_exit(t_cmd *cmd, t_data *data, int flag)
 	check = NULL;
 	if (token == NULL) // exit sans argument
 	{
-		ft_handle_malloc(0, NULL, 0, 0); // a uncomment
+		ft_handle_malloc(0, NULL, 0, NULL); // a uncomment
 		rl_clear_history(); // a uncomment
 		ft_putstr_fd("exit\n", 1);
 		// ft_tmp_free(data); // free temporaire
@@ -73,18 +73,18 @@ int	ft_exit(t_cmd *cmd, t_data *data, int flag)
 		return (ft_msg(1, "exit\n", "exit: ", "too many arguments"));
 	ret = ft_atoi(token->token);
 	check = ft_itoa(ret);
-	ft_handle_malloc(flag, check, TAB_STR1, 0);
+	ft_handle_malloc(flag + TAB_STR1, check, 0, data);
 	if (ft_strncmp(check, token->token, ft_strlen(check)))
 	{
 		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
 		// ft_tmp_free(data); // free temporaire
 		// free(check); // a ajuster avec ft_handle malloc
-		ft_handle_malloc(0, NULL, 0, 0);
+		ft_handle_malloc(0, NULL, 0, NULL);
 		rl_clear_history();
 		// ajouter des close fd ?
 		exit(g_val_exit);
 	}
-	ft_handle_malloc(0, NULL, 0, 0);
+	ft_handle_malloc(0, NULL, 0, NULL);
 	rl_clear_history(); // a uncomment
 	// ft_tmp_free(data); // free temporaire
 	// free(check); // a ajuster avec ft_handle malloc

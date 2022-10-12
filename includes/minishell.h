@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 14:46:03 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 22:22:11 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # include <unistd.h>
 
 # define ERRSTX "syntax error"
-# define ERRMAL "memory allocation failure"
+# define ERRMAL "Error: memory allocation failure"
 # define ERRCMD "command not found"
 # define ERRDIR "is a directory"
 # define ERRNDR "not a directory"
@@ -66,14 +66,14 @@ typedef enum s_type
 typedef enum s_sizetype
 {
 	TAB_INT1		= 100,
-	TAB_INT2		= 101,
-	TAB_INTS		= 102,
-	TAB_STR1		= 110,
-	TAB_STR2		= 111,
-	TAB_STRS		= 112,
-	LST_ENV			= 120,
-	LST_CMD			= 130,
-	LST_TOK			= 140,
+	TAB_INT2		= 200,
+	TAB_INTS		= 300,
+	TAB_STR1		= 400,
+	TAB_STR2		= 500,
+	TAB_STRS		= 600,
+	LST_ENV			= 700,
+	LST_CMD			= 800,
+	LST_TOK			= 900,
 }	t_sizetype;
 
 typedef enum s_flag
@@ -377,7 +377,8 @@ void	sig_quit(int sig);
 
 /*	bin collector */
 
-void	*ft_handle_malloc(int flag, void *ptr, int type, int size);
+// void	*ft_handle_malloc(int flag, void *ptr, int type, int size);
+void	*ft_handle_malloc(int flag_type, void *ptr, int size, t_data *data);
 void	ft_free_ptr_type(void *ptr, int type, int size);
 // void	ft_free_ptr_type(void *ptr, int type, int size, int flag);
 

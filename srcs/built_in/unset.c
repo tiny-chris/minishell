@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 05:25:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 22:44:44 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 				if (data->home)
 				{
 					printf("data->home = %s\n", data->home);//
-					ft_handle_malloc(DELONE, data->home, 0, 0);
+					ft_handle_malloc(DELONE, data->home, 0, NULL);
 					//free(data->home);
 					data->home = NULL;// ne pas enleve pour le moment - prb de leak sinon...
 					printf("data->home h= %p\n", data->home);//

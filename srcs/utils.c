@@ -149,11 +149,11 @@ void	*ft_free_tabstr_bin(char **tab_str, int type)
 			while (tab_str[i])
 			{
 				if (tab_str[i])
-					ft_handle_malloc(DELONE, tab_str[i], 0, 0);
+					ft_handle_malloc(DELONE, tab_str[i], 0, NULL);
 				i++;
 			}
 		}
-		ft_handle_malloc(DELONE, tab_str, 0, 0);
+		ft_handle_malloc(DELONE, tab_str, 0, NULL);
 	}
 	return (NULL);
 }
@@ -206,11 +206,11 @@ void	*ft_free_tabint_bin(int **tab_int, int size, int type)
 	{
 		while (i < size)
 		{
-			ft_handle_malloc(DELONE, tab_int[i], 0, 0);
+			ft_handle_malloc(DELONE, tab_int[i], 0, NULL);
 			i++;
 		}
 	}
-	ft_handle_malloc(DELONE, tab_int, 0, 0);
+	ft_handle_malloc(DELONE, tab_int, 0, NULL);
 	return (NULL);
 }
 

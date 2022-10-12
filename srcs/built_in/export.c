@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 04:18:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 22:44:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 	i = ft_new_strchr(token->token, '=');
 	printf("val de i new strchr export = dans tokentoken : %d\n", i);
 	var_tmp = ft_substr(token->token, 0, i + 1);
-	ft_handle_malloc(flag, var_tmp, TAB_STR1, 0);
+	ft_handle_malloc(flag + TAB_STR1, var_tmp, 0, data);
 	// if (!var_tmp)
 	// 	return (1);//FREE + EXIT (MALLOC)
 	while (env)
@@ -47,19 +47,19 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 		if (ft_strncmp(env->var_equal, var_tmp, ft_strlen(env->var_equal)) == 0)
 		{
 			dprintf(2, "rentre dans if\n");
-			ft_handle_malloc(DELONE, env->content, 0, 0);
+			ft_handle_malloc(DELONE, env->content, 0, NULL);
 			// free(env->content);
 			env->content = ft_substr(token->token, i + 1, (ft_strlen(token->token) - i + 1));
-			ft_handle_malloc(flag, env->content, TAB_STR1, 0);
+			ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
 			// if (!env->content)
 			// 	return (1);//FREE + EXIT (MALLOC)
-			ft_handle_malloc(DELONE, env->envp, 0, 0);
+			ft_handle_malloc(DELONE, env->envp, 0, NULL);
 			// free(env->envp);
 			env->envp = ft_strdup(token->token);
-			ft_handle_malloc(flag, env->envp, TAB_STR1, 0);
+			ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
 			// if (!env->envp)
 			// 	return (1);//FREE + EXIT (MALLOC)
-			ft_handle_malloc(DELONE, var_tmp, 0, 0);
+			ft_handle_malloc(DELONE, var_tmp, 0, NULL);
 			// free(var_tmp);
 			if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal))  == 0)
 				ft_get_env_path(data, flag);//ne plus prendre char **envp
@@ -73,7 +73,7 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 		//ft_lstadd_env(&(data->env), token->token);///OLD VERSION
 		ft_lstadd_env(&(data->env), token->token, flag);
 	env = data->env;
-	ft_handle_malloc(DELONE, var_tmp, 0, 0);
+	ft_handle_malloc(DELONE, var_tmp, 0, NULL);
 	// free(var_tmp);
 	return (0);
 }
