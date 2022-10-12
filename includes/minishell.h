@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 03:19:27 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 14:46:03 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,7 +339,7 @@ void	ft_close_fd(t_data *data);
 void	ft_close_std(void);
 void	ft_exit_exec(t_data *data);//, int val_exit);
 void	ft_clean_exec(t_data *data);// pour remplacer petit à petit ft_exit_exec
-void	ft_free_data_child(t_data *data);
+int		ft_free_data_child(int res, t_data *data);
 
 int		ft_clean_cmdline(t_data *data);
 int		ft_clean_loop(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 05:26:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:04:58 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,36 +143,34 @@ void	ft_child_process(t_data *data, int i)
 	if (res == -1)
 	{
 		// ft_exit_exec(data);
-		// ft_free_data_child(data);
-		ft_handle_malloc(0, NULL, 0,0 );
-		ft_close_std();
-		exit(EXIT_FAILURE);
+		g_val_exit = ft_free_data_child(EXIT_FAILURE, data);
+		// ft_handle_malloc(0, NULL, 0,0 );
+		// ft_close_std();
+		exit(g_val_exit);
 	}
 	if (cmd->token == NULL)//OK
 	{
-		// ft_free_data_child(data);
-		ft_handle_malloc(0, NULL, 0,0 );
-		ft_close_std();
-		exit(EXIT_SUCCESS);
+		g_val_exit = ft_free_data_child(EXIT_SUCCESS, data);
+		// ft_handle_malloc(0, NULL, 0,0 );
+		// ft_close_std();
+		exit(g_val_exit);
 	}
 //	dprintf(2, "child %d: res(redirect inout) = %d\n", i, res);
 	if (cmd->token->type == BUILTIN)
 	{
 		dprintf(2, "passe dans les builtin\n");
 		g_val_exit = ft_exec_built_in(cmd, data, ADD_C);
-		ft_handle_malloc(0, NULL, 0,0 );
-		// ft_free_data_child(data);
+		ft_free_data_child(g_val_exit, data);
 		exit(g_val_exit);// A CORRIGER
 	}
 	else
 	{
 		if (cmd->token->type == SP_QUOTES)
 		{
+			g_val_exit = ft_msg(127, "''", ": ", ERRCMD);
 			//ft_exit_exec(data);
-			res = ft_msg(127, "''", ": ", ERRCMD);
-			ft_handle_malloc(0, NULL, 0, 0);
-			//ft_free_data_child(data);
-			ft_close_std();
+			ft_free_data_child(g_val_exit, data);
+			// ft_close_std();
 			exit(res);
 		}
 		cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
@@ -242,6 +240,7 @@ int	ft_parent_process(t_data *data)
 		waitpid(data->pid[i], &status, 0);
 		i++;
 	}
+	printf("status = %d\n", status);//
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
@@ -276,14 +275,19 @@ int	ft_exec(t_data *data)
 	if (data->nb_pipes > 0)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);
-	ft_get_files_io(data);
+	if (ft_get_files_io(data))
+	{
+		g_val_exit = EXIT_FAILURE;
+		ft_clean_exec(data);
+		return (g_val_exit);
+	}
 	if (data->nb_pipes == 0 && data->cmd->token == NULL)
 	{
 		printf("passe dans la commande vide\n");//
 		g_val_exit = EXIT_SUCCESS;
 	//	ft_exit_exec(data);//a changer
 		ft_clean_exec(data);
-		return (EXIT_SUCCESS);
+		return (g_val_exit);
 	}
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
 	{

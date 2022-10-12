@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 04:32:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 14:45:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,14 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 // 		ft_free_tabstr_bin(data->s_env_path, TAB_STRS);
 // }
 
-void	ft_free_data_child(t_data *data)
+int	ft_free_data_child(int res, t_data *data)
 {
-	(void) data;// A REVOIR
+	//(void) data;// A REVOIR
 	ft_handle_malloc(0, NULL, 0, 0);
-	//close fd ???
+	ft_close_std();
+	ft_close_fd(data);//close fd autres???
+	rl_clear_history();
+	return (res);
 }
 
 void	ft_close_fd(t_data *data)
