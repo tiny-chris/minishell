@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:25:45 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 16:18:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:38:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void	ft_child_process(t_data *data, int i)
 		{
 			//ft_exit_exec(data);
 			res = ft_msg(126, cmd->token->token, ": ", strerror(errno));
-			ft_free_data_child(data);
+			ft_free_data_child(res, data);
 			// ft_handle_malloc(0, NULL, 0, NULL);
 			// ft_close_std();
 			exit(res);

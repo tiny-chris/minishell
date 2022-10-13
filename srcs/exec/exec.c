@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 16:27:31 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:37:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int	ft_exec(t_data *data)
 					exit(errno); // exit a la place comme lors d'une erreur de malloc
 				}
 			}
-			g_val_exit = ft_exec_built_in(data->cmd, data);
+			g_val_exit = ft_exec_built_in(data->cmd, data, ADD_M);
 			if (data->cmd->tok_redir)
 			{
 				if (ft_redirect_std(data->cmd) == -1)
