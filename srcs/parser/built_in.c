@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 12:50:57 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 10:55:15 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:43:00 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	**ft_built_in(void)
 	char	**built_in;
 
 	built_in = ft_handle_malloc(MALLOC_M + TAB_STR2, NULL, (7 + 1), NULL);
-	printf("built in char ** addr = %p\n", built_in);
+	// printf("built in char ** addr = %p\n", built_in);
 	// // TEST3
 	// printf("test 3 ici 1\n");
 	// ft_handle_malloc(0, NULL, 0, 0);
@@ -31,9 +31,9 @@ char	**ft_built_in(void)
 	// // TEST4
 	// built_in[0] = NULL;///
 	built_in[0] = ft_strdup("echo");
-	printf("built in[0] char * addr = %p\n", built_in[0]);
+	// printf("built in[0] char * addr = %p\n", built_in[0]);
 	ft_handle_malloc(ADD_M + TAB_STR1, built_in[0], 0, NULL);
-	printf("built in[0] char * addr = %p\n", built_in[0]);
+	// printf("built in[0] char * addr = %p\n", built_in[0]);
 	built_in[1] = ft_strdup("cd");
 	ft_handle_malloc(ADD_M + TAB_STR1, built_in[1], 0, NULL);
 	built_in[2] = ft_strdup("pwd");

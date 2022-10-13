@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 12:02:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:48:21 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,12 @@ void	ft_echo_join_words_fill(t_token *token)
 	while (tmp && tmp->next)
 	{
 		char_tmp1 = ft_strjoin(token->token, " ");
+
+		// // TEST type_token
+		// // TEST type_token --> desactiver la ligne char_tmp! = ft_strjoin...
+		// char_tmp1 = NULL;// TEST type_token
+		// dprintf(2, "check si char_tmp1 de type_token = NULL\n");// TEST type_token
+
 		ft_handle_malloc(ADD_M + TAB_STR1, char_tmp1, 0, NULL);
 		ft_handle_malloc(DELONE, token->token, 0, NULL);
 		// free(token->token);

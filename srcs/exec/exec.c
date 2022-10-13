@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 10:42:37 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:41:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 	while (token)
 	{
 		cmd_opt[i] = ft_strdup(token->token);
+		// cmd_opt[i] = NULL;/// TEST
+		// printf("TEST cmd opt [i] = NULL\n");// TEST
 		ft_handle_malloc(ADD_C + TAB_STR1, cmd_opt[i], 0, data);
 		// if (!cmd_opt[i])
 		// {
@@ -176,16 +178,22 @@ void	ft_child_process(t_data *data, int i)
 		cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
 		// printf("cmd_opt = %s\n", cmd->cmd_opt[0]);
 		// printf("cmd_opt = %s\n", cmd->cmd_opt[1]);
-		if (cmd->cmd_opt == NULL)
-		{
-			//ft_exit_exec(data);
-			g_val_exit = ft_msg(1, "", "", ERRMAL);
-			ft_handle_malloc(0, NULL, 0, NULL);
-			// ft_free_data_child(data);
-			ft_close_std();
-			exit(res);
-		}
+
+			// //TEST - cmd->cmd_opt --> NULL
+			// //TEST - cmd->cmd_opt --> NULL ==> desactiver la ligne cmd->cmd_opt = ft_init_... 
+			// cmd->cmd_opt = NULL;//TEST - cmd->cmd_opt --> NULL
+
+		// if (cmd->cmd_opt == NULL)
+		// {
+		// 	//ft_exit_exec(data);
+		// 	g_val_exit = ft_msg(1, "", "", ERRMAL);
+		// 	ft_handle_malloc(0, NULL, 0, NULL);
+		// 	// ft_free_data_child(data);
+		// 	ft_close_std();
+		// 	exit(res);
+		// }
 	//	printf("cmd->cmd_opt = %s\n", cmd->cmd_opt[0]);
+
 		cmd->cmd_path = ft_find_cmd_path(cmd, data);
 		//printf("cmd_path = %s\n", cmd->cmd_path);
 		if (!cmd->cmd_path)
@@ -240,9 +248,13 @@ int	ft_parent_process(t_data *data)
 		waitpid(data->pid[i], &status, 0);
 		i++;
 	}
-	printf("status = %d\n", status);//
+	// printf("status = %d\n", status);//
 	if (WIFEXITED(status))
+	{
+		if (status == 42)// A TESTER
+			ft_free_data_child(1, data);
 		status = WEXITSTATUS(status);
+	}
 	else if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGQUIT)
@@ -257,6 +269,7 @@ int	ft_parent_process(t_data *data)
 		}
 		status = EINTR;
 	}
+	// printf("status 2 = %d\n", status);//
 	ft_clean_exec(data);
 	//ft_exit_exec(data);
 	// i = 3;

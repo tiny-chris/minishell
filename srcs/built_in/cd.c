@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 22:37:32 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:44:25 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,22 +252,22 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 	token = token->next;
 	if (token == NULL)
 	{
-		dprintf(2, "cd --> rentre dans token == NULL\n");
+		// dprintf(2, "cd --> rentre dans token == NULL\n");
 		ft_get_home(data, flag);
-		dprintf(2, "data->home == %p\n", data->home);
+		// dprintf(2, "data->home == %p\n", data->home);
 		if (data->home == NULL)
 		{
-			dprintf(2, "data->home == NULL\n");
+			// dprintf(2, "data->home == NULL\n");
 			return (ft_msg(1, cmd->token->token, ": ", ERRHOM));
 		}
 		else if (data->home[0] == '\0')
 		{
-			dprintf(2, "data->home[0] = 0\n");
+			// dprintf(2, "data->home[0] = 0\n");
 			return (0);
 		}
 		if (chdir(data->home) == -1)
 			return (ft_msg(errno, data->home, ": ", strerror(errno)));
-		printf("cd tout seul\n");
+		printf("cd tout seul\n");//
 		ft_update_pwd(cmd, data, flag);
 		return (0);
 	}

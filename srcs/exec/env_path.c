@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 11:33:29 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:24:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,12 @@ int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag)
 	t_env	*last;
 
 	new = ft_handle_malloc(flag + 1 + LST_ENV, NULL, 1, data);
+	
+	// //test lstadd env2
+	// new = NULL;//test lstadd env2
+	// printf("new lstadd env2 = NULL\n");//test lstadd env2
+	// ft_handle_malloc(flag + LST_ENV, new, 0, data);//test lstadd env2
+
 	// new = malloc(sizeof(t_env));
 	// if (!new)
 	// {

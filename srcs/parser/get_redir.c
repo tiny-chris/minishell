@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 11:51:36 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:35:06 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,12 @@ int	ft_get_redir(t_data *data)
 		// cmd->no_redir_cmd = NULL;
 		// dprintf(2, "oops - cmd no redir cmd est NULL\n");
 		cmd->no_redir_cmd = ft_strtrim(trim_cmd, " ");
+		
+	// //TEST no_redir_cmd NULL
+	// //TEST no_redir_cmd NULL --> comment la ligne cmd->no_redir_cmd = ft_strtrim...
+	// cmd->no_redir_cmd = NULL;//TEST no_redir_cmd NULL
+	// printf("cmd->no_redir_cmd = NULL\n");//TEST no_redir_cmd NULL
+
 		ft_handle_malloc(ADD_M + TAB_STR1, cmd->no_redir_cmd, 0, NULL);
 		ft_handle_malloc(DELONE, trim_cmd, 0, NULL);
 		// free(trim_cmd);

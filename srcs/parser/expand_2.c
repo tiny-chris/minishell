@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 11:42:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:41:35 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,10 +194,10 @@ int	ft_expand(t_data *data)
 		cmd->clean_cmd = ft_fill_clean_cmd(cmd->undoll_cmd, len, data);
 
 		// // TEST PARSER
-		// ft_handle_malloc(DELONE, cmd->clean_cmd, 0, 0);
-		// cmd->clean_cmd = NULL;
-		// dprintf(2, "check si clean_cmd de expand = NULL\n");
-		// ft_handle_malloc(ADD_M, cmd->clean_cmd, TAB_STR1, 0);
+		// ft_handle_malloc(DELONE, cmd->clean_cmd, 0, NULL);// TEST PARSER
+		// cmd->clean_cmd = NULL;// TEST PARSER
+		// dprintf(2, "check si clean_cmd de expand = NULL\n");// TEST PARSER
+		// ft_handle_malloc(ADD_M, cmd->clean_cmd, TAB_STR1, 0);// TEST PARSER
 
 		//  if (!cmd->clean_cmd)
 		// 	return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!

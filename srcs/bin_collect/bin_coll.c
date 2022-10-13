@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 10:46:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:41:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_free_ptr_type(void *ptr, int type, int size)
 
 static void	ft_failed_malloc(t_bin **bin_head, int flag, t_data *data)
 {
-	ft_putendl_fd(2, ERRMAL);
+	ft_putendl_fd(ERRMAL, 2);
 	ft_close_std();
 	if (data)
 		ft_close_fd(data);
@@ -167,12 +167,16 @@ void	*ft_handle_malloc(int flag_type, void *ptr, int size, t_data *data)
 
 	ptr2 = NULL;
 	flag = ((flag_type / 1000) * 1000) + (flag_type % 10);
-	printf("val de flag = %d\n", flag);
-	printf("ADD_C = %d, MALLOC_C = %d, ADD_M = %d\n", ADD_C, MALLOC_C, ADD_M);
+	// printf("val de flag = %d\n", flag);
 	if (flag == MALLOC_C || flag == MALLOC_M)
 	{
 	//	dprintf(2, "rentre dans MALLOC et ptr2 est NULL = %p\n", ptr2);//
 		ptr2 = malloc(ft_get_sizeof(flag_type - flag) * size);
+
+	// 	// TEST - BIN COLL - malloc failure - REMETTRE LE MALLOC
+	// 	printf("size of type = %zu\n", ft_get_sizeof(flag_type - flag));// TEST - BIN COLL - malloc failure - REMETTRE LE MALLOC
+	// 	if (ft_get_sizeof(flag_type - flag))// TEST - BIN COLL - malloc failure - REMETTRE LE MALLOC
+	// 		ptr2 = NULL;// TEST - BIN COLL - malloc failure - REMETTRE LE MALLOC
 	}
 	else
 		ptr2 = ptr;

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 23:59:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:38:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,7 +317,12 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 	if (!cmd->token->token)
 		return (NULL);
 	if (ft_strlen(cmd->token->token) == 1 && cmd->token->token[0] == '.')
-		exit(ft_msg(2, ERRFAR, "\n", ERRFAU));
+	{
+		g_val_exit = ft_msg(2, ERRFAR, "\n", ERRFAU);
+		ft_free_data_child(g_val_exit, data);
+		// ft_handle_malloc(0, NULL, 0, NULL);
+		exit(g_val_exit);
+	}
 	if (ft_is_in_set(cmd->token->token, '/'))
 	{
 		if (cmd->token->token[0] == '/')

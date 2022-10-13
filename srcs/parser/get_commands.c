@@ -66,6 +66,12 @@ char	*ft_get_raw_cmd(t_data *data, int i)
 	tmp = NULL;
 	dprintf(2, "-------------------len (ft_get_pipe) = %d\n", ft_get_pipe(data->line, i));
 	tmp = ft_substr(data->line, i, ft_get_pipe(data->line, i));
+
+	// //TEST get_raw_cmd NULL
+	// ft_handle_malloc(DELONE, tmp, 0, NULL);//TEST get_raw_cmd NULL
+	// tmp = NULL;//TEST get_raw_cmd NULL
+	// printf("tmp pour get_raw_cmd = NULL\n");//TEST get_raw_cmd NULL
+
 	ft_handle_malloc(ADD_M + TAB_STR1, tmp, 0, NULL);
 	// dprintf(2, "-----tmp ajouté = %s et %p----\n", tmp, tmp);
 	// if (!tmp)

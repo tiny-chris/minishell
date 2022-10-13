@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 11:53:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:40:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ typedef struct s_data
 //int		main(int argc, char **argv, char **envp);
 //int		main(void);//
 void	ft_minishell(t_data *data);
-int		ft_clean_loop(t_data *data);
+// int		ft_clean_loop(t_data *data);
 int		ft_clean_cmdline(t_data *data);
 void	ft_exit_ctrl_d(t_data *data);
 

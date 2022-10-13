@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 10:52:29 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:38:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,11 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 
 int	ft_free_data_child(int res, t_data *data)
 {
-	//(void) data;// A REVOIR
+	(void) data;// A REVOIR
+	rl_clear_history();
 	ft_handle_malloc(0, NULL, 0, NULL);
 	ft_close_std();
-	ft_close_fd(data);//close fd autres???
-	rl_clear_history();
+	// ft_close_fd(data);//close fd autres???
 	return (res);
 }
 
@@ -160,7 +160,7 @@ void	ft_close_fd(t_data *data)
 	i = 0;
 	if (!data)
 		return ;
-	if (cmd)
+	if (data->cmd)
 	{
 		while (cmd)
 		{

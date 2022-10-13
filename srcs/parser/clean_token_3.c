@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 11:17:02 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:54:04 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,14 @@ char	*ft_fill_consec_quotes(char *token, int len)
 
 	i = 0;
 	j = 0;
+
+	// // TEST clean_token
+	// (void) len;// TEST clean_token
+	// tmp_cmd = NULL;// TEST clean_token
+	// printf("test si tmp_cmd de clean token dans ft_fill_consec_quotes = NULL\n");
+	// ft_handle_malloc(ADD_M, tmp_cmd, 0, NULL);// TEST clean_token
+	// // TEST clean_token --> désactiver la ligne tmp_cmd = ft_handle_malloc(MALLOC_M...)
+
 	tmp_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
 	// tmp_cmd = malloc(sizeof(char) * (len + 1));
 	// if (!tmp_cmd)
