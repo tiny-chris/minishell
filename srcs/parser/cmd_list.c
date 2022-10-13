@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 04:05:28 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:13:05 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ t_cmd	*ft_lstlast_cmd(t_cmd *lst)
 	return (node);
 }
 
-int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
+int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline, t_data *data)
 {
 	t_cmd	*new;
 	t_cmd	*last;
 
-	new = ft_handle_malloc(MALLOC_M, NULL, LST_CMD, 1);
+	new = ft_handle_malloc(MALLOC_M + LST_CMD, NULL, 1, data);
 	// new = malloc(sizeof(t_cmd));
 	// if (!new)
 	// {
@@ -45,7 +45,7 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
 	// 	return (1);
 	// }
 	new->raw_cmd = ft_strdup(cmdline);
-	ft_handle_malloc(ADD_M, new->raw_cmd, TAB_STR1, 0);
+	ft_handle_malloc(ADD_M + TAB_STR1, new->raw_cmd, 0, data);
 	new->unspace_cmd = NULL;
 	new->no_redir_cmd = NULL;
 	new->undoll_cmd = NULL;
@@ -108,15 +108,15 @@ void	ft_lstdelone_cmd_bin(t_cmd *node)
 	if (!node)
 		return ;
 	if (node->raw_cmd)
-		ft_handle_malloc(DELONE, node->raw_cmd, 0, 0);
+		ft_handle_malloc(DELONE, node->raw_cmd, 0, NULL);
 	if (node->unspace_cmd)
-		ft_handle_malloc(DELONE, node->unspace_cmd, 0, 0);
+		ft_handle_malloc(DELONE, node->unspace_cmd, 0, NULL);
 	if (node->no_redir_cmd)
-		ft_handle_malloc(DELONE, node->no_redir_cmd, 0, 0);
+		ft_handle_malloc(DELONE, node->no_redir_cmd, 0, NULL);
 	if (node->undoll_cmd)
-		ft_handle_malloc(DELONE, node->undoll_cmd, 0, 0);
+		ft_handle_malloc(DELONE, node->undoll_cmd, 0, NULL);
 	if (node->clean_cmd)
-		ft_handle_malloc(DELONE, node->clean_cmd, 0, 0);
+		ft_handle_malloc(DELONE, node->clean_cmd, 0, NULL);
 	if (node->tok_redir)
 		ft_free_token(&(node->tok_redir));
 	if (node->token)
@@ -124,8 +124,8 @@ void	ft_lstdelone_cmd_bin(t_cmd *node)
 	if (node->cmd_opt != NULL)
 		ft_free_tabstr_bin(node->cmd_opt, TAB_STRS);
 	if (node->cmd_path)
-		ft_handle_malloc(DELONE, node->cmd_path, 0, 0);
-	ft_handle_malloc(DELONE, node, 0, 0);
+		ft_handle_malloc(DELONE, node->cmd_path, 0, NULL);
+	ft_handle_malloc(DELONE, node, 0, NULL);
 }
 
 void	ft_free_cmd(t_cmd **cmd)

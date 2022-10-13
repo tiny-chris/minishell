@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 00:01:59 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:33:29 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,13 +144,12 @@
 */
 /*	modif du 2e paramètre du prototype uniquement */
 
-int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, int flag)
+int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag)
 {
 	t_env	*new;
 	t_env	*last;
 
-	//XXX REPRENDRE ICI - rech : ft_handle_malloc XXX//
-	new = ft_handle_malloc(flag + 1, NULL, LST_ENV, 1);
+	new = ft_handle_malloc(flag + 1 + LST_ENV, NULL, 1, data);
 	// new = malloc(sizeof(t_env));
 	// if (!new)
 	// {
@@ -161,7 +160,7 @@ int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, int flag)
 	new->var = NULL;
 	new->var_equal = NULL;
 	new->content = ft_strdup(s_env_path_i);
-	ft_handle_malloc(flag, new->content, TAB_STR1, 0);
+	ft_handle_malloc(flag + TAB_STR1, new->content, 0, data);
 	new->envp = NULL;
 	new->next = NULL;
 	if (ft_lstlast_env(*env_path) == 0)
@@ -186,8 +185,8 @@ void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 	env = data->env;
 	i = 0;
 	//1. je nettoie s_env_path et env_path s'ils existent
-	ft_handle_malloc(DELONE, data->s_env_path, 0, 0);
-	ft_handle_malloc(DELONE, data->env_path, 0, 0);
+	ft_handle_malloc(DELONE, data->s_env_path, 0, NULL);
+	ft_handle_malloc(DELONE, data->env_path, 0, NULL);
 	//2. je check si data->env est NULL --> rien
 	if (env == NULL || env->var[0] == '\0')
 		return ;// on ne met pas à jour env_path donc pas de free ou autre
@@ -205,11 +204,11 @@ void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 		return ;
 	// autrement, je recup les char * de content dans data:
 	data->s_env_path = ft_split(env->content, ':');
-	ft_handle_malloc(flag, data->s_env_path, TAB_STRS, 0);
+	ft_handle_malloc(flag + TAB_STRS, data->s_env_path, 0, data);
 	i = 0;
 	while (data->s_env_path[i])
 	{
-		ft_lstadd_env2(&(data->env_path), data->s_env_path[i], flag);
+		ft_lstadd_env2(&(data->env_path), data->s_env_path[i], data, flag);
 		// if (ft_lstadd_env2(&(data->env_path), data->s_env_path[i]))
 		// 	return ;// FREE TOUT ET EXIT
 		i++;

@@ -16,7 +16,7 @@
 ** <REMARK>	flag is equal to ADD_M (add main) as this function is only called
 **			once at the start of the program
 */
-t_env	*ft_get_env(char **envp)
+t_env	*ft_get_env(char **envp, t_data *data)
 {
 	t_env	*env;
 	int		i;
@@ -26,7 +26,7 @@ t_env	*ft_get_env(char **envp)
 	while (envp[i] != NULL)
 	{
 		//if (ft_lstadd_env(&env, envp[i]) == 1)// OLD VERSION
-		ft_lstadd_env(&env, envp[i], ADD_M);
+		ft_lstadd_env(&env, envp[i], data, ADD_M);
 		// if (ft_lstadd_env(&env, envp[i], ADD_M) == 1)
 		// 	return (NULL);
 		i++;

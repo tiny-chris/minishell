@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 01:28:48 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:42:44 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_get_error_size(t_data *data)
 	len = 0;
 	//str_exit = ft_itoa(data->val_exit);
 	str_exit = ft_itoa(g_val_exit);
-	ft_handle_malloc(ADD_M, str_exit, TAB_STR1, 0);
+	ft_handle_malloc(ADD_M + TAB_STR1, str_exit, 0, data);
 	// if (!str_exit)
 	// 	return (-1); ///free tout ce qu'il y a à free + exit
 	len = ft_strlen(str_exit);
@@ -47,7 +47,7 @@ int	ft_get_expand_size(char *undoll_cmd, int *i, t_data *data)
 	while (undoll_cmd[j] && (undoll_cmd[j] > 0) && ft_isalnum(undoll_cmd[j]))
 		j++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (j - *i));
-	ft_handle_malloc(ADD_M, var_to_expand, TAB_STR1, 0);
+	ft_handle_malloc(ADD_M + TAB_STR1, var_to_expand, 0, data);
 	//printf("var to expand = %s, size = %ld\n", var_to_expand, ft_strlen(var_to_expand));
 	// if (!var_to_expand)
 	// 	return (0);// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
@@ -64,7 +64,7 @@ int	ft_get_expand_size(char *undoll_cmd, int *i, t_data *data)
 		env = env->next;
 	}
 	*i = j;
-	ft_handle_malloc(DELONE, var_to_expand, 0, 0);
+	ft_handle_malloc(DELONE, var_to_expand, 0, NULL);
 	// free(var_to_expand);
 	//printf("expand len = %d et le i =%d\n", len, *i);
 	return (len);
@@ -112,7 +112,7 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 	while (undoll_cmd[k] && (undoll_cmd[k] > 0) && ft_isalnum(undoll_cmd[k]))
 		k++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (k - *i));
-	ft_handle_malloc(ADD_M, var_to_expand, TAB_STR1, 0);
+	ft_handle_malloc(ADD_M + TAB_STR1, var_to_expand, 0, data);
 	// if (!var_to_expand)
 	// 	return ;// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
 	while (env)
@@ -130,7 +130,7 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 		}
 		env = env->next;
 	}
-	ft_handle_malloc(DELONE, var_to_expand, 0, 0);
+	ft_handle_malloc(DELONE, var_to_expand, 0, NULL);
 	// free(var_to_expand);
 	*i = k;
 	return ;
@@ -146,7 +146,7 @@ char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data)
 	i = 0;
 	j = 0;
 	k = 0;
-	clean_cmd = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	clean_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
 	// clean_cmd = malloc(sizeof(char) * (len + 1));
 	// if (!clean_cmd)
 	// 	return (NULL);// FREE TOUT ET EXIT !!

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:55:17 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 16:08:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:28:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 
 	i = 0;
 	j = 0;
-	undoll_token = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	undoll_token = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
 	// undoll_token = malloc(sizeof(char) * (len + 1));
 	// if (!undoll_token)
 	// 	return (1);// FREE TOUT CE QU IL Y A A FREE
@@ -104,7 +104,7 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 		i++;
 	}
 	undoll_token[j] = '\0';
-	ft_handle_malloc(DELONE, token->token, 0, 0);
+	ft_handle_malloc(DELONE, token->token, 0, NULL);
 	// free(token->token);
 	token->token = undoll_token;
 	return (0);
@@ -142,7 +142,7 @@ int	ft_fill_unquote_heredoc(t_token *token, int len)
 
 	i = 0;
 	j = 0;
-	unquote_token = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	unquote_token = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
 	// unquote_token = malloc(sizeof(char) * (len + 1));
 	// if (!unquote_token)
 	// 	return (1);// FREE TOUT CE QU IL Y A A FREE
@@ -167,7 +167,7 @@ int	ft_fill_unquote_heredoc(t_token *token, int len)
 		i++;
 	}
 	unquote_token[j] = '\0';
-	ft_handle_malloc(DELONE, token->token, 0, 0);
+	ft_handle_malloc(DELONE, token->token, 0, NULL);
 	// free(token->token);
 	token->token = unquote_token;
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 17:13:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:44:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ int	**ft_init_pipe(t_data *data)
 	int	i;
 
 	//dprintf(2, "entre dans init pipe\n");
-	tab_int = ft_handle_malloc(MALLOC_M, NULL, TAB_INT2, data->nb_pipes);
+	tab_int = ft_handle_malloc(MALLOC_M + TAB_INT2, NULL, data->nb_pipes, data);
 	// tab_int = (int **) malloc(sizeof(int *) * data->nb_pipes);
 	// if (tab_int == NULL)
 	// 	return (free(tab_int), NULL);
 	i = 0;
 	while (i < data->nb_pipes)
 	{
-		tab_int[i] = ft_handle_malloc(MALLOC_M, NULL, TAB_INT1, 2);
+		tab_int[i] = ft_handle_malloc(MALLOC_M + TAB_INT1, NULL, 2, data);
 		// tab_int[i] = (int *) malloc(sizeof(int) * 2);
 		// if (!tab_int[i])
 		// {
@@ -46,7 +46,7 @@ int	*ft_init_pid(t_data *data)
 
 	i = 0;
 	//dprintf(2, "entre dans init pid\n");
-	pid = ft_handle_malloc(MALLOC_M, NULL, TAB_INT1, (data->nb_pipes + 1));
+	pid = ft_handle_malloc(MALLOC_M + TAB_INT1, NULL, (data->nb_pipes + 1), data);
 	// pid = malloc(sizeof(int) * (data->nb_pipes + 1));
 	// if (!pid)
 	// 	return (NULL);//FREE TOUT ET EXIT

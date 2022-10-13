@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 22:44:36 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:32:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 	}
 	if (env == NULL)
 		//ft_lstadd_env(&(data->env), token->token);///OLD VERSION
-		ft_lstadd_env(&(data->env), token->token, flag);
+		ft_lstadd_env(&(data->env), token->token, data, flag);
 	env = data->env;
 	ft_handle_malloc(DELONE, var_tmp, 0, NULL);
 	// free(var_tmp);

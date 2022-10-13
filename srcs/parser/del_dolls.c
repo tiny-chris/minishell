@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 16:31:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:15:28 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len)
 
 	i = 0;
 	j = 0;
-	undoll_cmd = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	undoll_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
 	// undoll_cmd = malloc(sizeof(char) * (len + 1));
 	// if (!undoll_cmd)
 	// 	return (NULL);// FREE TOUT CE QU IL Y A A FREE

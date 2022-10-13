@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 16:30:03 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:51:36 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char	*ft_fill_no_redir(char *unspace_cmd, int len)
 
 	i = 0;
 	j = 0;
-	no_redir_cmd = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	no_redir_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
 	// no_redir_cmd = malloc(sizeof(char) * (len + 1));
 	// if (!no_redir_cmd)
 	// 	return (NULL); // free tout
@@ -201,7 +201,7 @@ int	ft_is_redir(char *unspace_cmd, int *j)
 	return (0);
 }
 
-int	ft_get_redir_list(char *unspace_cmd, t_token **tok_redir)//on peut faire un void et pas un int
+int	ft_get_redir_list(char *unspace_cmd, t_token **tok_redir, t_data *data)//on peut faire un void et pas un int
 {
 	int		i;
 	int		j;
@@ -225,7 +225,7 @@ int	ft_get_redir_list(char *unspace_cmd, t_token **tok_redir)//on peut faire un 
 			type = ft_is_redir(unspace_cmd, &j);
 			if (type)
 			{
-				ft_lstadd_token(tok_redir, type, ft_substr(unspace_cmd, i, (j - i)));
+				ft_lstadd_token(tok_redir, type, ft_substr(unspace_cmd, i, (j - i)), data);
 				// if (ft_lstadd_token(tok_redir, type, ft_substr(unspace_cmd, i, (j - i))))
 				// 	return (1); //free tout ce qu'il y a à free
 				i = j;
@@ -240,7 +240,7 @@ int	ft_get_redir_list(char *unspace_cmd, t_token **tok_redir)//on peut faire un 
 					}
 					j++;
 				}
-				ft_lstadd_token(tok_redir, type + 10, ft_substr(unspace_cmd, i, (j - i)));
+				ft_lstadd_token(tok_redir, type + 10, ft_substr(unspace_cmd, i, (j - i)), data);
 				// if (ft_lstadd_token(tok_redir, type + 10, ft_substr(unspace_cmd, i, j - i)))
 				// 	return (1); //free tout ce qu'il y a à free
 				i = j - 1;
@@ -283,11 +283,11 @@ int	ft_get_redir(t_data *data)
 		// cmd->no_redir_cmd = NULL;
 		// dprintf(2, "oops - cmd no redir cmd est NULL\n");
 		cmd->no_redir_cmd = ft_strtrim(trim_cmd, " ");
-		ft_handle_malloc(ADD_M, cmd->no_redir_cmd, TAB_STR1, 0);
-		ft_handle_malloc(DELONE, trim_cmd, 0, 0);
+		ft_handle_malloc(ADD_M + TAB_STR1, cmd->no_redir_cmd, 0, NULL);
+		ft_handle_malloc(DELONE, trim_cmd, 0, NULL);
 		// free(trim_cmd);
 		dprintf(2, "no redir cmd   = %s --> len = %d vs. strlen = %ld\n", cmd->no_redir_cmd, len, ft_strlen(cmd->no_redir_cmd));
-		ft_get_redir_list(cmd->unspace_cmd, &cmd->tok_redir);
+		ft_get_redir_list(cmd->unspace_cmd, &cmd->tok_redir, data);
 		// if (ft_get_redir_list(cmd->no_redir_cmd, &cmd->tok_redir))
 		// 	return (1); // FREE tout ce qu'il y a à free
 		ft_clean_redir(cmd, data);

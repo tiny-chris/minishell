@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 01:38:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:02:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ t_token	*ft_get_token_echo(t_token **token)
 		if (tmp_token->token[i] == '\0')
 		{
 			tmp_token->type = WORD_N;
-			ft_handle_malloc(DELONE, tmp_token->token, 0, 0);
+			ft_handle_malloc(DELONE, tmp_token->token, 0, NULL);
 			// free(tmp_token->token);
 			tmp_token->token = ft_strdup("-n");
-			ft_handle_malloc(ADD_M, tmp_token->token, TAB_STR1, 0);
+			ft_handle_malloc(ADD_M + TAB_STR1, tmp_token->token, 0, NULL);
 			//printf("clean token = %s, type =%d \n", tmp_token->token, tmp_token->type);
 		}
 		else
@@ -92,10 +92,10 @@ void	ft_echo_join_words_fill(t_token *token)
 	{
 		if (tmp->type == SP_QUOTES)
 		{
-			ft_handle_malloc(DELONE, tmp->token, 0, 0);
+			ft_handle_malloc(DELONE, tmp->token, 0, NULL);
 			// free(tmp->token);
 			tmp->token = ft_strdup("");
-			ft_handle_malloc(ADD_M, tmp->token, TAB_STR1, 0);
+			ft_handle_malloc(ADD_M + TAB_STR1, tmp->token, 0, NULL);
 		}
 		tmp = tmp->next;
 	}
@@ -105,17 +105,17 @@ void	ft_echo_join_words_fill(t_token *token)
 	while (tmp && tmp->next)
 	{
 		char_tmp1 = ft_strjoin(token->token, " ");
-		ft_handle_malloc(ADD_M, char_tmp1, TAB_STR1, 0);
-		ft_handle_malloc(DELONE, token->token, 0, 0);
+		ft_handle_malloc(ADD_M + TAB_STR1, char_tmp1, 0, NULL);
+		ft_handle_malloc(DELONE, token->token, 0, NULL);
 		// free(token->token);
 		char_tmp2 = ft_strjoin(char_tmp1, tmp->next->token);
-		ft_handle_malloc(ADD_M, char_tmp2, TAB_STR1, 0);
-		ft_handle_malloc(DELONE, char_tmp1, 0, 0);
+		ft_handle_malloc(ADD_M + TAB_STR1, char_tmp2, 0, NULL);
+		ft_handle_malloc(DELONE, char_tmp1, 0, NULL);
 		// free(char_tmp1);
 		token->token = ft_strdup(char_tmp2);
-		ft_handle_malloc(ADD_M, token->token, TAB_STR1, 0);
+		ft_handle_malloc(ADD_M + TAB_STR1, token->token, 0, NULL);
 		tmp = tmp->next;
-		ft_handle_malloc(DELONE, char_tmp2, 0, 0);
+		ft_handle_malloc(DELONE, char_tmp2, 0, NULL);
 		// free(char_tmp2);
 	}
 	if (token)

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 22:22:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:53:56 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int		ft_clean_loop(t_data *data);
 int		ft_clean_cmdline(t_data *data);
 void	ft_exit_ctrl_d(t_data *data);
 
-t_env	*ft_get_env(char **envp);
+t_env	*ft_get_env(char **envp, t_data *data);
 char	**ft_built_in(void);
 int		ft_only_space(char *line);
 int		ft_init_data_1(t_data *data, char **envp);
@@ -168,7 +168,8 @@ void	ft_get_home(t_data *data, int flag);
 /*	env_path */
 
 void 	ft_get_env_path(t_data *data, int flag);
-int		ft_lstadd_env2(t_env **env, char *s_env_path_i, int flag);
+// int		ft_lstadd_env2(t_env **env, char *s_env_path_i, int flag);
+int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag);
 
 /*	***** LEXER *****	*/
 /*	*****************	*/
@@ -205,7 +206,7 @@ char	*ft_fill_unspace_cmd(char *raw_cmd, int len);
 int		ft_get_redir(t_data *data);
 int		ft_len_no_redir(char *unspace_cmd);
 char	*ft_fill_no_redir(char *unspace_cmd, int len);
-int		ft_get_redir_list(char *unspace_cmd, t_token **tok_redir);
+int		ft_get_redir_list(char *unspace_cmd, t_token **tok_redir, t_data *data);
 int		ft_is_redir(char *unspace_cmd, int *j);
 
 /*	Step (x)	clean_redir */
@@ -243,7 +244,7 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 /*	Step 6	tokens */
 
 int		ft_tokenizer(t_data *data);
-int		ft_get_token(t_cmd *cmd);
+int		ft_get_token(t_cmd *cmd, t_data *data);
 int		ft_clean_token(t_cmd *cmd, t_data *data);
 int		ft_consec_quotes_len(char *token);
 char	*ft_fill_consec_quotes(char *token, int len);
@@ -267,7 +268,7 @@ int		ft_del_empty_cmd(t_data *data);
 	/*	env_list */
 
 t_env	*ft_lstlast_env(t_env *lst);
-int		ft_lstadd_env(t_env **env, char *envp, int flag);
+int		ft_lstadd_env(t_env **env, char *envp, t_data *data, int flag);
 //int		ft_lstadd_env(t_env **env, char *envp);///OLD VERSION
 void	ft_lstdelone_env(t_env *node);
 void	ft_lstdelone_env_bin(t_env *node);
@@ -277,7 +278,7 @@ void	ft_lstclearone_env(t_env **env_head, t_env *ptr);// voir si utile...
 	/*	cmd_list */
 
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
-int		ft_lstadd_cmd(t_cmd **cmd, char *cmdline);
+int		ft_lstadd_cmd(t_cmd **cmd, char *cmdline, t_data *data);
 void	ft_lstdelone_cmd(t_cmd *node);
 void	ft_lstdelone_cmd_bin(t_cmd *node);
 void	ft_free_cmd(t_cmd **cmd);
@@ -285,7 +286,7 @@ void	ft_free_cmd(t_cmd **cmd);
 	/*	token_list */
 
 t_token	*ft_lstlast_tok(t_token *lst);
-int		ft_lstadd_token(t_token **tok, int type, char *token);
+int		ft_lstadd_token(t_token **tok, int type, char *token, t_data *data);
 void	ft_lstdelone_tok(t_token *node);
 void	ft_lstdelone_tok_bin(t_token *node);
 void	ft_free_token(t_token **token);

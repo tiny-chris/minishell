@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 14:56:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:31:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
 
 	i = 0;
 	j = 0;
-	unspace_cmd = ft_handle_malloc(MALLOC_M, NULL, TAB_STR1, (len + 1));
+	unspace_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
 	// unspace_cmd = malloc(sizeof(char) * (len + 1));
 	// if (!unspace_cmd)
 	// 	return (NULL); // free tout ce qu'il y a à free

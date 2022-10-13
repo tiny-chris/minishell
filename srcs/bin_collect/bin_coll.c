@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 22:21:51 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:46:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static void	ft_failed_malloc(t_bin **bin_head, int flag, t_data *data)
 {
 	ft_putendl_fd(2, ERRMAL);
 	ft_close_std();
-	ft_close_fd(data);
+	if (data)
+		ft_close_fd(data);
 	rl_clear_history();
 	if (flag == ADD_C || flag == MALLOC_C)
 		g_val_exit = 42;

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 22:45:35 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:52:29 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,24 +158,32 @@ void	ft_close_fd(t_data *data)
 	cmd = data->cmd;
 	token = NULL;
 	i = 0;
-	while (cmd)
+	if (!data)
+		return ;
+	if (cmd)
 	{
-		token = cmd->tok_redir;
-		while (token)
+		while (cmd)
 		{
-			if (token->fd != -1)
-				close(token->fd);
-			token = token->next;
+			token = cmd->tok_redir;
+			while (token)
+			{
+				if (token->fd != -1)
+					close(token->fd);
+				token = token->next;
+			}
+			cmd = cmd->next;
 		}
-		cmd = cmd->next;
 	}
-	while (i < data->nb_pipes)
+	if (data->pipe_fd)
 	{
-		if (data->pipe_fd[i][0] != -1)
-			close(data->pipe_fd[i][0]);
-		if (data->pipe_fd[i][1] != -1)
-			close(data->pipe_fd[i][1]);
-		i++;
+		while (i < data->nb_pipes)
+		{
+			if (data->pipe_fd[i][0] != -1)
+				close(data->pipe_fd[i][0]);
+			if (data->pipe_fd[i][1] != -1)
+				close(data->pipe_fd[i][1]);
+			i++;
+		}
 	}
 }
 

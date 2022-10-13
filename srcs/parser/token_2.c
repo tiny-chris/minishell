@@ -6,13 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 16:55:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:53:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_get_token(t_cmd *cmd)
+int	ft_get_token(t_cmd *cmd, t_data *data)
 {
 	char	*clean_cmd;
 	t_token	*token;
@@ -36,7 +36,7 @@ int	ft_get_token(t_cmd *cmd)
 		}
 		if (clean_cmd[j] == ' ' || clean_cmd[j] == '\0')
 		{
-			ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i));
+			ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i), data);
 			// if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
 			// 	return (1);//FREE & EXIT
 			if (clean_cmd[j] == '\0')
@@ -50,7 +50,7 @@ int	ft_get_token(t_cmd *cmd)
 		else if (clean_cmd[j] != 34 && clean_cmd[j] != 39)
 			j++;
 	}
-	ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i));
+	ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i), data);
 	// if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
 	// 	return (1);
 	if (clean_cmd[j] == '\0')
@@ -86,7 +86,7 @@ int	ft_tokenizer(t_data *data)
 	while (cmd)
 	{
 		dprintf(2, "check check check\n");
-		ft_get_token(cmd);
+		ft_get_token(cmd, data);
 		ft_clean_token(cmd, data);
 //		ft_del_empty_token(&cmd, data);
 		ft_del_empty_token(cmd, data);

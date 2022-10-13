@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:29:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 23:23:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:57:34 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ t_token	*ft_lstlast_tok(t_token *lst)
 	return (node);
 }
 
-int	ft_lstadd_token(t_token **tok, int type, char *token)
+int	ft_lstadd_token(t_token **tok, int type, char *token, t_data *data)
 {
 	t_token	*new;
 	t_token	*last;
 
-	ft_handle_malloc(ADD_M, token, TAB_STR1, 0);
-	new = ft_handle_malloc(MALLOC_M, NULL, LST_TOK, 1);
+	ft_handle_malloc(ADD_M + TAB_STR1, token, 0, data);
+	new = ft_handle_malloc(MALLOC_M + LST_TOK, NULL, 1, data);
 	// new = malloc(sizeof(t_token));
 	// if (!new)
 	// {
@@ -95,8 +95,8 @@ void	ft_lstdelone_tok_bin(t_token *node)
 	if (!node)
 		return ;
 	if (node->token != NULL)
-		ft_handle_malloc(DELONE, node->token, 0, 0);
-	ft_handle_malloc(DELONE, node, 0, 0);
+		ft_handle_malloc(DELONE, node->token, 0, NULL);
+	ft_handle_malloc(DELONE, node, 0, NULL);
 }
 
 // ft_free_token et ft_lstclear_token sont presques semblables

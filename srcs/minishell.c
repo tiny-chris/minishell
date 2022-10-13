@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 22:30:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:34:56 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_get_home(t_data *data, int flag)
 	if (data->home)
 	{
 		dprintf(2, "data->home == %s\n", data->home);
-		ft_handle_malloc(DELONE, data->home, 0, 0, 0);
+		ft_handle_malloc(DELONE, data->home, 0, NULL);
 	}
 	// if (data->home)
 	// 	free(data->home);
@@ -136,7 +136,7 @@ void	ft_get_home(t_data *data, int flag)
 int	ft_init_data_1(t_data *data, char **envp)
 {
 	ft_init_data_0(data);
-	data->env = ft_get_env(envp);
+	data->env = ft_get_env(envp, data);
 		// //TEST1 :
 		// ft_handle_malloc(0, NULL, 0, 0);
 		// exit (1);

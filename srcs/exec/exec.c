@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 20:36:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:42:37 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 		token = token->next;
 		i++;
 	}
-	cmd_opt = ft_handle_malloc(MALLOC_C, NULL, TAB_STR2, (i + 1));
+	cmd_opt = ft_handle_malloc(MALLOC_C + TAB_STR2, NULL, (i + 1), data);
 	// cmd_opt = malloc(sizeof(char *) * (i + 1));
 	// if (!cmd_opt)
 	// 	return (NULL);
@@ -112,7 +112,7 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 	while (token)
 	{
 		cmd_opt[i] = ft_strdup(token->token);
-		ft_handle_malloc(ADD_C, cmd_opt[i], TAB_STR1, 0);
+		ft_handle_malloc(ADD_C + TAB_STR1, cmd_opt[i], 0, data);
 		// if (!cmd_opt[i])
 		// {
 		// 	ft_free_tabstr(cmd_opt);
@@ -180,7 +180,7 @@ void	ft_child_process(t_data *data, int i)
 		{
 			//ft_exit_exec(data);
 			g_val_exit = ft_msg(1, "", "", ERRMAL);
-			ft_handle_malloc(0, NULL, 0, 0);
+			ft_handle_malloc(0, NULL, 0, NULL);
 			// ft_free_data_child(data);
 			ft_close_std();
 			exit(res);
@@ -193,7 +193,7 @@ void	ft_child_process(t_data *data, int i)
 			//ft_exit_exec(data);
 			res = ft_msg(EXIT_FAILURE, "", "", ERRMAL);
 			// ft_free_data_child(data);
-			ft_handle_malloc(0, NULL, 0, 0);
+			ft_handle_malloc(0, NULL, 0, NULL);
 			ft_close_std();
 			exit(res);
 		}
@@ -203,7 +203,7 @@ void	ft_child_process(t_data *data, int i)
 			//ft_exit_exec(data);
 			res = ft_msg(126, cmd->token->token, ": ", strerror(errno));
 			// ft_free_data_child(data);
-			ft_handle_malloc(0, NULL, 0, 0);
+			ft_handle_malloc(0, NULL, 0, NULL);
 			ft_close_std();
 			exit(res);
 		}
