@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/07 22:16:28 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:33:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ int	ft_get_error_size(t_data *data)
 	len = 0;
 	//str_exit = ft_itoa(data->val_exit);
 	str_exit = ft_itoa(g_val_exit);
-	if (!str_exit)
-		return (-1); ///free tout ce qu'il y a à free + exit
+	ft_handle_malloc(ADD_M + TAB_STR1, str_exit, 0, data);
+	// if (!str_exit)
+	// 	return (-1); ///free tout ce qu'il y a à free + exit
 	len = ft_strlen(str_exit);
 	data->str_exit = str_exit;
 	return (len);
@@ -46,9 +47,10 @@ int	ft_get_expand_size(char *undoll_cmd, int *i, t_data *data)
 	while (undoll_cmd[j] && (undoll_cmd[j] > 0) && ft_isalnum(undoll_cmd[j]))
 		j++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (j - *i));
+	ft_handle_malloc(ADD_M + TAB_STR1, var_to_expand, 0, data);
 	//printf("var to expand = %s, size = %ld\n", var_to_expand, ft_strlen(var_to_expand));
-	if (!var_to_expand)
-		return (0);// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
+	// if (!var_to_expand)
+	// 	return (0);// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
 	while (env)
 	{
 		if ((ft_strlen(var_to_expand) == ft_strlen(env->var)) \
@@ -62,7 +64,8 @@ int	ft_get_expand_size(char *undoll_cmd, int *i, t_data *data)
 		env = env->next;
 	}
 	*i = j;
-	free(var_to_expand);
+	ft_handle_malloc(DELONE, var_to_expand, 0, NULL);
+	// free(var_to_expand);
 	//printf("expand len = %d et le i =%d\n", len, *i);
 	return (len);
 }
@@ -109,8 +112,9 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 	while (undoll_cmd[k] && (undoll_cmd[k] > 0) && ft_isalnum(undoll_cmd[k]))
 		k++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (k - *i));
-	if (!var_to_expand)
-		return ;// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
+	ft_handle_malloc(ADD_M + TAB_STR1, var_to_expand, 0, data);
+	// if (!var_to_expand)
+	// 	return ;// A CHECKER POUR FREE SI PB DE MALLOC - garbage collector
 	while (env)
 	{
 		if ((ft_strlen(var_to_expand) == ft_strlen(env->var)) \
@@ -129,7 +133,8 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *d
 		}
 		env = env->next;
 	}
-	free(var_to_expand);
+	ft_handle_malloc(DELONE, var_to_expand, 0, NULL);
+	// free(var_to_expand);
 	*i = k;
 	return ;
 }
@@ -144,9 +149,10 @@ char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data)
 	i = 0;
 	j = 0;
 	k = 0;
-	clean_cmd = malloc(sizeof(char) * (len + 1));
-	if (!clean_cmd)
-		return (NULL);// FREE TOUT ET EXIT !!
+	clean_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	// clean_cmd = malloc(sizeof(char) * (len + 1));
+	// if (!clean_cmd)
+	// 	return (NULL);// FREE TOUT ET EXIT !!
 	while (undoll_cmd[i])
 	{
 		if (undoll_cmd[i] == '$')
@@ -189,8 +195,15 @@ int	ft_expand(t_data *data)
 		len = ft_expand_cmd_len(cmd->undoll_cmd, data);//function that get the len of clean_cmd
 	//	printf("len avec expand = %d\n", len);
 		cmd->clean_cmd = ft_fill_clean_cmd(cmd->undoll_cmd, len, data);
-		 if (!cmd->clean_cmd)
-			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
+
+		// // TEST PARSER
+		// ft_handle_malloc(DELONE, cmd->clean_cmd, 0, NULL);// TEST PARSER
+		// cmd->clean_cmd = NULL;// TEST PARSER
+		// dprintf(2, "check si clean_cmd de expand = NULL\n");// TEST PARSER
+		// ft_handle_malloc(ADD_M, cmd->clean_cmd, TAB_STR1, 0);// TEST PARSER
+
+		//  if (!cmd->clean_cmd)
+		// 	return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!!
 		dprintf(2, "expand cmd     = %s --> len = %d vs. strlen = %ld\n", cmd->clean_cmd, len, ft_strlen(cmd->clean_cmd));
 		cmd = cmd->next;
 	}

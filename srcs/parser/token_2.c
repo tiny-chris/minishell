@@ -6,13 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/23 23:32:35 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:53:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_get_token(t_cmd *cmd)
+int	ft_get_token(t_cmd *cmd, t_data *data)
 {
 	char	*clean_cmd;
 	t_token	*token;
@@ -36,8 +36,9 @@ int	ft_get_token(t_cmd *cmd)
 		}
 		if (clean_cmd[j] == ' ' || clean_cmd[j] == '\0')
 		{
-			if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
-				return (1);//FREE & EXIT
+			ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i), data);
+			// if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
+			// 	return (1);//FREE & EXIT
 			if (clean_cmd[j] == '\0')
 			{
 				cmd->token = token;
@@ -49,8 +50,9 @@ int	ft_get_token(t_cmd *cmd)
 		else if (clean_cmd[j] != 34 && clean_cmd[j] != 39)
 			j++;
 	}
-	if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
-		return (1);
+	ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i), data);
+	// if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
+	// 	return (1);
 	if (clean_cmd[j] == '\0')
 	{
 		cmd->token = token;
@@ -60,7 +62,7 @@ int	ft_get_token(t_cmd *cmd)
 	return (0);
 }
 
-static void	ft_print_token(t_cmd *cmd)//  A SUPPRIMER
+static void	ft_print_token(t_cmd *cmd)//  A SUPPRIMER !!!!!!!!!!
 {
 	t_token	*token;
 	int		nb;
@@ -83,7 +85,8 @@ int	ft_tokenizer(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
-		ft_get_token(cmd);
+		dprintf(2, "check check check\n");
+		ft_get_token(cmd, data);
 		ft_clean_token(cmd, data);
 //		ft_del_empty_token(&cmd, data);
 		ft_del_empty_token(cmd, data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   del_empty_token.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 16:55:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/12 01:32:20 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,12 +172,12 @@ int	ft_del_empty_token(t_cmd *cmd, t_data *data)
 				todel = tok;
 				tok = tok->next;
 				todel->next = NULL;
-				ft_lstdelone_tok(todel);
+				ft_lstdelone_tok_bin(todel);
 				cmd->token = tok;
 			}
 			else//pas de tok->next
 			{
-				ft_lstdelone_tok(tok);
+				ft_lstdelone_tok_bin(tok);
 				cmd->token = NULL;
 				return (0);
 			}
@@ -194,14 +194,14 @@ int	ft_del_empty_token(t_cmd *cmd, t_data *data)
 					tmp = tok->next->next;
 					todel->next = NULL;
 					tok->next = tmp;
-					ft_lstdelone_tok(todel);
+					ft_lstdelone_tok_bin(todel);
 					tok = cmd->token;
 				}
 				else//next next is NULL
 				{
 					todel = tok->next;
 					tok->next = NULL;
-					ft_lstdelone_tok(todel);
+					ft_lstdelone_tok_bin(todel);
 					return (0);
 				}
 			}

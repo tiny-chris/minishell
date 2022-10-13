@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:55:17 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 17:46:41 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:28:26 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,10 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 
 	i = 0;
 	j = 0;
-	undoll_token = malloc(sizeof(char) * (len + 1));
-	if (!undoll_token)
-		return (1);// FREE TOUT CE QU IL Y A A FREE
+	undoll_token = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	// undoll_token = malloc(sizeof(char) * (len + 1));
+	// if (!undoll_token)
+	// 	return (1);// FREE TOUT CE QU IL Y A A FREE
 	while (token->token[i])
 	{
 		if (token->token[i] == 34 || token->token[i] == 39)
@@ -103,7 +104,8 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 		i++;
 	}
 	undoll_token[j] = '\0';
-	free(token->token);
+	ft_handle_malloc(DELONE, token->token, 0, NULL);
+	// free(token->token);
 	token->token = undoll_token;
 	return (0);
 }
@@ -140,9 +142,10 @@ int	ft_fill_unquote_heredoc(t_token *token, int len)
 
 	i = 0;
 	j = 0;
-	unquote_token = malloc(sizeof(char) * (len + 1));
-	if (!unquote_token)
-		return (1);// FREE TOUT CE QU IL Y A A FREE
+	unquote_token = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	// unquote_token = malloc(sizeof(char) * (len + 1));
+	// if (!unquote_token)
+	// 	return (1);// FREE TOUT CE QU IL Y A A FREE
 	while (token->token[i])
 	{
 		if (token->token[i] == 34 || token->token[i] == 39)
@@ -164,7 +167,8 @@ int	ft_fill_unquote_heredoc(t_token *token, int len)
 		i++;
 	}
 	unquote_token[j] = '\0';
-	free(token->token);
+	ft_handle_malloc(DELONE, token->token, 0, NULL);
+	// free(token->token);
 	token->token = unquote_token;
 	return (0);
 }

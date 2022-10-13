@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/10 18:16:02 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:28:15 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,20 @@ int	**ft_init_pipe(t_data *data)
 	int	i;
 
 	//dprintf(2, "entre dans init pipe\n");
-	tab_int = (int **) malloc(sizeof(int *) * data->nb_pipes);
-	if (tab_int == NULL)
-		return (free(tab_int), NULL);
+	tab_int = ft_handle_malloc(MALLOC_M + TAB_INT2, NULL, data->nb_pipes, data);
+	// tab_int = (int **) malloc(sizeof(int *) * data->nb_pipes);
+	// if (tab_int == NULL)
+	// 	return (free(tab_int), NULL);
 	i = 0;
 	while (i < data->nb_pipes)
 	{
-		tab_int[i] = (int *) malloc(sizeof(int) * 2);
-		if (!tab_int[i])
-		{
-			ft_free_tabint(tab_int, i - 1);
-			break ;
-		}
+		tab_int[i] = ft_handle_malloc(MALLOC_M + TAB_INT1, NULL, 2, data);
+		// tab_int[i] = (int *) malloc(sizeof(int) * 2);
+		// if (!tab_int[i])
+		// {
+		// 	ft_free_tabint(tab_int, i - 1);
+		// 	break ;
+		// }
 		tab_int[i][0] = -1;
 		tab_int[i][1] = -1;
 		i++;
@@ -81,9 +83,10 @@ int	*ft_init_pid(t_data *data)
 
 	i = 0;
 	//dprintf(2, "entre dans init pid\n");
-	pid = malloc(sizeof(int) * (data->nb_pipes + 1));
-	if (!pid)
-		return (NULL);//FREE TOUT ET EXIT
+	pid = ft_handle_malloc(MALLOC_M + TAB_INT1, NULL, (data->nb_pipes + 1), data);
+	// pid = malloc(sizeof(int) * (data->nb_pipes + 1));
+	// if (!pid)
+	// 	return (NULL);//FREE TOUT ET EXIT
 	while (i < (data->nb_pipes + 1))
 	{
 		pid[i] = -1;
@@ -94,9 +97,11 @@ int	*ft_init_pid(t_data *data)
 
 int	ft_get_files_io(t_data *data)
 {
+	// int		res;
 	t_cmd	*cmd;
 	t_token	*tok_redir;
 
+	// res = 0;
 	cmd = data->cmd;
 	tok_redir = NULL;
 	//dprintf(2, "entre dans get files io\n");
@@ -112,7 +117,7 @@ int	ft_get_files_io(t_data *data)
 				if (tok_redir->fd < 0)
 				{
 					cmd->file_err = 1;
-					g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno)); // exit avec free
+					g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
 				}
 				cmd->outfile = tok_redir->fd;
 			}
@@ -123,7 +128,7 @@ int	ft_get_files_io(t_data *data)
 				if (tok_redir->fd < 0)
 				{
 					cmd->file_err = 1;
-					g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno)); // exit avec free
+					g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
 				}
 				cmd->outfile = tok_redir->fd;
 			}
@@ -134,7 +139,7 @@ int	ft_get_files_io(t_data *data)
 				if (tok_redir->fd < 0)
 				{
 					cmd->file_err = 1;
-					g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno)); // exit avec free
+					g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
 				}
 				cmd->infile = tok_redir->fd;
 			}

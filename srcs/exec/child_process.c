@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:25:45 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/06 17:33:34 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:18:46 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,64 +106,75 @@ void	ft_child_process(t_data *data, int i)
 	ft_close_fd(data);
 	if (res == -1)
 	{
-		ft_exit_exec(data);
-		ft_free_data_child(data);
-		ft_close_std();
-		exit(EXIT_FAILURE);
+		// ft_exit_exec(data);
+		g_val_exit = ft_free_data_child(EXIT_FAILURE, data);
+		// ft_handle_malloc(0, NULL, 0,0 );
+		// ft_close_std();
+		exit(g_val_exit);
 	}
-	if (cmd->token == NULL)
+	if (cmd->token == NULL)//OK
 	{
-		ft_free_data_child(data);
-		ft_close_std();
-		exit(EXIT_SUCCESS);
+		g_val_exit = ft_free_data_child(EXIT_SUCCESS, data);
+		// ft_handle_malloc(0, NULL, 0,0 );
+		// ft_close_std();
+		exit(g_val_exit);
 	}
 //	dprintf(2, "child %d: res(redirect inout) = %d\n", i, res);
 	if (cmd->token->type == BUILTIN)
 	{
 		dprintf(2, "passe dans les builtin\n");
-		g_val_exit = ft_exec_built_in(cmd, data);
-		ft_free_data_child(data);
+		g_val_exit = ft_exec_built_in(cmd, data, ADD_C);
+		ft_free_data_child(g_val_exit, data);
 		exit(g_val_exit);// A CORRIGER
 	}
 	else
 	{
 		if (cmd->token->type == SP_QUOTES)
 		{
+			g_val_exit = ft_msg(127, "''", ": ", ERRCMD);
 			//ft_exit_exec(data);
-			res = ft_msg(127, "''", ": ", ERRCMD);
-			ft_free_data_child(data);
-			ft_close_std();
+			ft_free_data_child(g_val_exit, data);
+			// ft_close_std();
 			exit(res);
 		}
 		cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
 		// printf("cmd_opt = %s\n", cmd->cmd_opt[0]);
 		// printf("cmd_opt = %s\n", cmd->cmd_opt[1]);
-		if (cmd->cmd_opt == NULL)
-		{
-			//ft_exit_exec(data);
-			res = ft_msg(1, "", "", ERRMAL);
-			ft_free_data_child(data);
-			ft_close_std();
-			exit(res);
-		}
+
+			// //TEST - cmd->cmd_opt --> NULL
+			// //TEST - cmd->cmd_opt --> NULL ==> desactiver la ligne cmd->cmd_opt = ft_init_... 
+			// cmd->cmd_opt = NULL;//TEST - cmd->cmd_opt --> NULL
+
+		// if (cmd->cmd_opt == NULL)
+		// {
+		// 	//ft_exit_exec(data);
+		// 	g_val_exit = ft_msg(1, "", "", ERRMAL);
+		// 	ft_handle_malloc(0, NULL, 0, NULL);
+		// 	// ft_free_data_child(data);
+		// 	ft_close_std();
+		// 	exit(res);
+		// }
 	//	printf("cmd->cmd_opt = %s\n", cmd->cmd_opt[0]);
+
 		cmd->cmd_path = ft_find_cmd_path(cmd, data);
 		//printf("cmd_path = %s\n", cmd->cmd_path);
-		if (!cmd->cmd_path)
-		{
-			//ft_exit_exec(data);
-			res = ft_msg(EXIT_FAILURE, "", "", ERRMAL);
-			ft_free_data_child(data);
-			ft_close_std();
-			exit(res);
-		}
+		// if (!cmd->cmd_path)
+		// {
+		// 	//ft_exit_exec(data);
+		// 	res = ft_msg(EXIT_FAILURE, "", "", ERRMAL);
+		// 	// ft_free_data_child(data);
+		// 	ft_handle_malloc(0, NULL, 0, NULL);
+		// 	ft_close_std();
+		// 	exit(res);
+		// }
 		printf("val cmd path = %s\n", cmd->cmd_path);
 		if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env_path) == -1)
 		{
 			//ft_exit_exec(data);
 			res = ft_msg(126, cmd->token->token, ": ", strerror(errno));
 			ft_free_data_child(data);
-			ft_close_std();
+			// ft_handle_malloc(0, NULL, 0, NULL);
+			// ft_close_std();
 			exit(res);
 		}
 		ft_close_std();

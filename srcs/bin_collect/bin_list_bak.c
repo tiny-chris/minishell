@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:29 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 21:00:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/12 02:07:03 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ int	ft_lstadd_bin(t_bin **bin_head, void *ptr, int type, int size)
 
 	first = (*bin_head);
 	new = malloc(sizeof(t_bin));
-	{
-
-	}
 	if (!new)
 		return (1);
 	// printf("test - lstadd_bin début\n");

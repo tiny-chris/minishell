@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/28 23:45:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:48:21 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,10 @@ t_token	*ft_get_token_echo(t_token **token)
 		if (tmp_token->token[i] == '\0')
 		{
 			tmp_token->type = WORD_N;
-			free(tmp_token->token);
+			ft_handle_malloc(DELONE, tmp_token->token, 0, NULL);
+			// free(tmp_token->token);
 			tmp_token->token = ft_strdup("-n");
+			ft_handle_malloc(ADD_M + TAB_STR1, tmp_token->token, 0, NULL);
 			//printf("clean token = %s, type =%d \n", tmp_token->token, tmp_token->type);
 		}
 		else
@@ -90,8 +92,10 @@ void	ft_echo_join_words_fill(t_token *token)
 	{
 		if (tmp->type == SP_QUOTES)
 		{
-			free(tmp->token);
+			ft_handle_malloc(DELONE, tmp->token, 0, NULL);
+			// free(tmp->token);
 			tmp->token = ft_strdup("");
+			ft_handle_malloc(ADD_M + TAB_STR1, tmp->token, 0, NULL);
 		}
 		tmp = tmp->next;
 	}
@@ -101,17 +105,32 @@ void	ft_echo_join_words_fill(t_token *token)
 	while (tmp && tmp->next)
 	{
 		char_tmp1 = ft_strjoin(token->token, " ");
-		free(token->token);
+
+		// // TEST type_token
+		// // TEST type_token --> desactiver la ligne char_tmp! = ft_strjoin...
+		// char_tmp1 = NULL;// TEST type_token
+		// dprintf(2, "check si char_tmp1 de type_token = NULL\n");// TEST type_token
+
+		ft_handle_malloc(ADD_M + TAB_STR1, char_tmp1, 0, NULL);
+		ft_handle_malloc(DELONE, token->token, 0, NULL);
+		// free(token->token);
 		char_tmp2 = ft_strjoin(char_tmp1, tmp->next->token);
-		free(char_tmp1);
+		ft_handle_malloc(ADD_M + TAB_STR1, char_tmp2, 0, NULL);
+		ft_handle_malloc(DELONE, char_tmp1, 0, NULL);
+		// free(char_tmp1);
 		token->token = ft_strdup(char_tmp2);
+		ft_handle_malloc(ADD_M + TAB_STR1, token->token, 0, NULL);
 		tmp = tmp->next;
-		free(char_tmp2);
+		ft_handle_malloc(DELONE, char_tmp2, 0, NULL);
+		// free(char_tmp2);
 	}
 	if (token)
-		//printf("last clean token = %s, type =%d \n", token->token, token->type);
 	{
-		ft_lstclear_token(token->next);
+		//printf("last clean token = %s, type =%d \n", token->token, token->type);
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//ft_free_token(token->next);// remplacer lstclear par ça... à voir avec les **
+		ft_lstclear_token(token->next);// nettoyage ici avec ft_handle_malloc !!!
 		token->next = NULL;
 	}
 }
@@ -141,7 +160,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 				printf("test\n");
 				todel = token;
 				tmp = token->next;
-				ft_lstdelone_tok(todel);
+				ft_lstdelone_tok_bin(todel);
 				cmd->token->next = tmp;
 				token = cmd->token->next;
 			}
@@ -156,7 +175,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 	//	et pareil pour les consécutifs qui contiennent '='
 	//	si un token ne contient pas '=', alors il sera typé "token->env=1 pour erreur dans exec"
 	//sinon, si le token suivant 'env' (2) ne contient pas de '='
-	//	--> alors on supprimer le token 'env' (1) et on modifie le token (2) en commande ou builtin
+	//	--> alors on supprime le token 'env' (1) et on modifie le token (2) en commande ou builtin
 	//		et "token->env=1 pour erreur dans exec"
 	else if (token && token->type == BUILTIN && (ft_strncmp(token->token, "env", 3) == 0)) // && data->env != NULL)
 	{
@@ -167,7 +186,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 			{
 				todel = token;
 				tmp = token->next;
-				ft_lstdelone_tok(todel);
+				ft_lstdelone_tok_bin(todel);
 				cmd->token->next = tmp;
 				token = cmd->token->next;
 			}
@@ -195,7 +214,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 			token->env = 1;
 			todel = cmd->token;
 			tmp = token;
-			ft_lstdelone_tok(todel);
+			ft_lstdelone_tok_bin(todel);
 			cmd->token = tmp;
 		}
 	}

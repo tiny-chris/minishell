@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   del_spaces.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 11:31:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,10 @@ char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
 
 	i = 0;
 	j = 0;
-	unspace_cmd = malloc(sizeof(char) * (len + 1));
-	if (!unspace_cmd)
-		return (NULL); // free tout ce qu'il y a à free
+	unspace_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	// unspace_cmd = malloc(sizeof(char) * (len + 1));
+	// if (!unspace_cmd)
+	// 	return (NULL); // free tout ce qu'il y a à free
 	while (raw_cmd[i])
 	{
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
@@ -178,9 +179,10 @@ int	ft_del_spaces(t_data *data)
 	while (cmd)
 	{
 		len = ft_unspace_cmd_len(cmd->raw_cmd);
+		dprintf(2, "val de len del spaces = %d\n", len);
 		cmd->unspace_cmd = ft_fill_unspace_cmd(cmd->raw_cmd, len);
-		if (!cmd->unspace_cmd)
-			return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!
+		// if (!cmd->unspace_cmd)
+		// 	return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!
 		dprintf(2, "unspace cmd    = %s --> len = %d vs. strlen = %ld\n", cmd->unspace_cmd, len, ft_strlen(cmd->raw_cmd));//
 		cmd = cmd->next;
 	}

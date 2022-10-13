@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 17:33:52 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:33:35 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,21 @@ t_cmd	*ft_lstlast_cmd(t_cmd *lst)
 	return (node);
 }
 
-int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
+int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline, t_data *data)
 {
 	t_cmd	*new;
 	t_cmd	*last;
 
-	new = malloc(sizeof(t_cmd));
-	if (!new)
-	{
-		//ft_free_cmd(cmd);// A FAIRE !!
-		return (1);
-	}
+	new = ft_handle_malloc(MALLOC_M + LST_CMD, NULL, 1, data);
+	// new = malloc(sizeof(t_cmd));
+	// if (!new)
+	// {
+	// 	dprintf(2, "CA BUGGGG !!!!!!!!!!!!!!!!!!!!!!!\n");
+	// 	//ft_free_cmd(cmd);// A FAIRE !!
+	// 	return (1);
+	// }
 	new->raw_cmd = ft_strdup(cmdline);
+	ft_handle_malloc(ADD_M + TAB_STR1, new->raw_cmd, 0, data);
 	new->unspace_cmd = NULL;
 	new->no_redir_cmd = NULL;
 	new->undoll_cmd = NULL;
@@ -68,44 +71,83 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
 	return (0);
 }
 
+// void	ft_lstdelone_cmd(t_cmd *node, int type)
+// {
+// 	if (!node)
+// 		return ;
+// 	if (type != LST_CMD)
+// 	{
+// 		ft_free_strs(node->raw_cmd, node->unspace_cmd, node->no_redir_cmd);
+// 		ft_free_strs(node->undoll_cmd, node->clean_cmd, node->cmd_path);
+// 		ft_free_token(&(node->token));
+// 		ft_free_token(&(node->tok_redir));
+// 		if (node->cmd_opt != NULL)
+// 			ft_free_tabstr(node->cmd_opt);
+// 		node->infile = 0;
+// 		node->outfile = 1;
+// 		node->file_err = 0;
+// 	}
+// 	node->next = NULL;
+// 	free(node);
+// 	node = NULL;
+// }
+
+/*	<SUMMARY> Deletes the t_cmd node ONLY (not its content) and removes it
+**	from the garbage collector at the same time
+**	<REMARK>	a malloc of t_cmd node is always done without content
+**				(on the contrary of char **, e.g. ft_split function)
+*/
 void	ft_lstdelone_cmd(t_cmd *node)
 {
 	if (!node)
 		return ;
-	free(node->raw_cmd);
-	node->raw_cmd = NULL;
-	free(node->unspace_cmd);
-	node->unspace_cmd = NULL;
-	free(node->no_redir_cmd);
-	node->no_redir_cmd = NULL;
-	free(node->undoll_cmd);
-	node->undoll_cmd = NULL;
-	free(node->clean_cmd);
-	node->clean_cmd = NULL;
-	ft_free_token(&(node->tok_redir));
-	ft_free_token(&(node->token));
-	if (node->cmd_opt != NULL)
-		ft_free_tabstr(node->cmd_opt);
-	if (node->cmd_path)
-		free(node->cmd_path);
-	node->cmd_path = NULL;
-	if (node->heredoc_path)
-		free(node->heredoc_path);
-	node->heredoc_path = NULL;
 	node->next = NULL;
 	free(node);
+	node = NULL;
+}
+
+void	ft_lstdelone_cmd_bin(t_cmd *node)
+{
+	if (!node)
+		return ;
+	if (node->raw_cmd)
+		ft_handle_malloc(DELONE, node->raw_cmd, 0, NULL);
+	if (node->unspace_cmd)
+		ft_handle_malloc(DELONE, node->unspace_cmd, 0, NULL);
+	if (node->no_redir_cmd)
+		ft_handle_malloc(DELONE, node->no_redir_cmd, 0, NULL);
+	if (node->undoll_cmd)
+		ft_handle_malloc(DELONE, node->undoll_cmd, 0, NULL);
+	if (node->clean_cmd)
+		ft_handle_malloc(DELONE, node->clean_cmd, 0, NULL);
+	if (node->tok_redir)
+		ft_free_token(&(node->tok_redir));
+	if (node->token)
+		ft_free_token(&(node->token));
+	if (node->cmd_opt != NULL)
+		ft_free_tabstr_bin(node->cmd_opt, TAB_STRS);
+	if (node->cmd_path)
+		ft_handle_malloc(DELONE, node->cmd_path, 0, NULL);
+	if (node->heredoc_path)
+		ft_handle_malloc(DELONE, node->heredoc_path, 0, NULL);
+	node->next = NULL;
+	ft_handle_malloc(DELONE, node, 0, NULL);
 }
 
 void	ft_free_cmd(t_cmd **cmd)
 {
 	t_cmd	*tmp;
+	t_cmd	*todel;
 
+	tmp = NULL;
+	todel = NULL;
 	if (!*cmd)
 		return ;
 	while ((*cmd) != NULL)
 	{
+		todel = (*cmd);
 		tmp = (*cmd)->next;
-		ft_lstdelone_cmd(*cmd);
+		ft_lstdelone_cmd_bin(todel);
 		(*cmd) = tmp;
 	}
 	(*cmd) = NULL;

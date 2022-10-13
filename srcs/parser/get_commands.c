@@ -64,13 +64,27 @@ char	*ft_get_raw_cmd(t_data *data, int i)
 
 	cmd = NULL;
 	tmp = NULL;
+	dprintf(2, "-------------------len (ft_get_pipe) = %d\n", ft_get_pipe(data->line, i));
 	tmp = ft_substr(data->line, i, ft_get_pipe(data->line, i));
-	if (!tmp)
-		return (NULL);//free tous les malloc
+
+	// //TEST get_raw_cmd NULL
+	// ft_handle_malloc(DELONE, tmp, 0, NULL);//TEST get_raw_cmd NULL
+	// tmp = NULL;//TEST get_raw_cmd NULL
+	// printf("tmp pour get_raw_cmd = NULL\n");//TEST get_raw_cmd NULL
+
+	ft_handle_malloc(ADD_M + TAB_STR1, tmp, 0, NULL);
+	// dprintf(2, "-----tmp ajouté = %s et %p----\n", tmp, tmp);
+	// if (!tmp)
+	// 	return (NULL);//free tous les malloc
+
 	cmd = ft_strtrim(tmp, " ");
-	if (!cmd)
-		return (NULL);//free tous les malloc
-	free(tmp);
+	// // TEST PARSER 1
+	// cmd = NULL;
+	ft_handle_malloc(ADD_M + TAB_STR1, cmd, 0, NULL);
+	ft_handle_malloc(DELONE, tmp, 0, NULL);
+	// if (!cmd)
+	// 	return (NULL);//free tous les malloc
+	// free(tmp);
 	return (cmd);
 }
 
@@ -119,12 +133,18 @@ t_cmd	*ft_get_commands(t_data *data)
 	while (nb_cmd > 0)
 	{
 		tmp = ft_get_raw_cmd(data, i);
+		dprintf(2, "---------------------------val de i = %d, pour la commande :%d\n", i, nb_cmd);
 		dprintf(2, "raw cmd        = %s --> strlen = %ld\n", tmp, ft_strlen(tmp));
-		if (ft_lstadd_cmd(&cmd, tmp) == 1)
-			return (NULL);
+		ft_lstadd_cmd(&cmd, tmp, data);
+		// if (ft_lstadd_cmd(&cmd, tmp) == 1)
+		// 	return (NULL);
+		dprintf(2, "---------------------val de i = ft_next_pipe = %d\n", ft_next_pipe(data->line, i));
 		i = ft_next_pipe(data->line, i);
-		free(tmp);
+		ft_handle_malloc(DELONE, tmp, 0, NULL);
 		nb_cmd--;
 	}
+		// printf("STOOOOOOOOOOOOOOOP\n");
+		// ft_handle_malloc(0, NULL, 0, 0);
+		// exit (22);
 	return (cmd);
 }

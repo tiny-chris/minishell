@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   del_nwords.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:07:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/11 21:25:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	ft_del_nword(t_cmd *cmd)
 	token = cmd->token;
 	todel = NULL;
 	tmp = NULL;
-	if (token && token->type == BUILTIN && (ft_strncmp(token->token, "echo", 4) == 0))
+	if (token && token->type == BUILTIN \
+		&& (ft_strncmp(token->token, "echo", 4) == 0))
 	{
 		token = token->next;
 		while (token && token->type == WORD_N)
@@ -32,7 +33,7 @@ int	ft_del_nword(t_cmd *cmd)
 				tmp = token->next->next;
 				todel->next = NULL;
 				token->next = tmp;
-				ft_lstdelone_tok(todel);
+				ft_lstdelone_tok_bin(todel);
 			}
 			else
 				return (0);

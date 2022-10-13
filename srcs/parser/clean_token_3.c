@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_token_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 17:38:14 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:29:29 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,18 @@ char	*ft_fill_consec_quotes(char *token, int len)
 
 	i = 0;
 	j = 0;
-	tmp_cmd = malloc(sizeof(char) * (len + 1));
-	if (!tmp_cmd)
-		return (NULL); // FREE TOUTTTT + EXIT OF COURSE
+
+	// // TEST clean_token
+	// (void) len;// TEST clean_token
+	// tmp_cmd = NULL;// TEST clean_token
+	// printf("test si tmp_cmd de clean token dans ft_fill_consec_quotes = NULL\n");
+	// ft_handle_malloc(ADD_M, tmp_cmd, 0, NULL);// TEST clean_token
+	// // TEST clean_token --> désactiver la ligne tmp_cmd = ft_handle_malloc(MALLOC_M...)
+
+	tmp_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	// tmp_cmd = malloc(sizeof(char) * (len + 1));
+	// if (!tmp_cmd)
+	// 	return (NULL); // FREE TOUTTTT + EXIT OF COURSE
 	while (token[i])
 	{
 		if (token[i] == 34 || token[i] == 39)
@@ -174,9 +183,10 @@ char	*ft_fill_clean_token(char *tmp_token, int len)
 
 	i = 0;
 	j = 0;
-	token = malloc(sizeof(char) * (len + 1));
-	if (!token)
-		return (NULL);// FREE TOUT ET EXIT
+	token = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	// token = malloc(sizeof(char) * (len + 1));
+	// if (!token)
+	// 	return (NULL);// FREE TOUT ET EXIT
 	while (tmp_token[i])
 	{
 		if ((tmp_token[i] == 34 || tmp_token[i] == 39) && (tmp_token[i + 1] == tmp_token[i]))
@@ -239,12 +249,14 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 		len = ft_consec_quotes_len(token->token);
 		tmp_token = ft_fill_consec_quotes(token->token, len);
 		dprintf(2, "csquotes token = %s --> len = %d vs. strlen = %ld\n", tmp_token, len, ft_strlen(tmp_token));
-		free(token->token);
+		ft_handle_malloc(DELONE, token->token, 0, NULL);
+		// free(token->token);
 		//2e étape
 		ft_space_quotes(tmp_token, token);
 		len = ft_clean_len(tmp_token);
 		token->token = ft_fill_clean_token(tmp_token, len);
-		free(tmp_token);
+		ft_handle_malloc(DELONE, tmp_token, 0, NULL);
+		// free(tmp_token);
 		ft_positive_token(token);
 	//	dprintf(2, "clean_token = %s\n", token->token);
 	//	dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(token->token));

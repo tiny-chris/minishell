@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:12:08 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/03 18:48:19 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 15:40:49 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	sig_quit(int sig)
 
 void	ft_signal(t_data *data, int signum, t_sighandler handler)
 {
+	(void) data;
 	if (signal(signum, handler) == SIG_ERR)
 	{
 		g_val_exit = errno;
@@ -68,11 +69,12 @@ void	ft_signal(t_data *data, int signum, t_sighandler handler)
 		ft_putendl_fd(strerror(errno), 2);
 		//ft_exitmsg(data, "");
         ft_msg(g_val_exit, "minishell: ", "", "error\n");
-        ft_free_cmd(&(data->cmd));// A AJUSTER
-        ft_clean_cmdline(data);
-        ft_clean_cmdline(data);
+        // ft_free_cmd(&(data->cmd));// A AJUSTER
+        // ft_clean_cmdline(data);
+        // ft_clean_cmdline(data);
         rl_clear_history();
-        ft_clean_loop(data);
+        // ft_clean_loop(data);
+		ft_handle_malloc(0, NULL, 0, NULL);
 	}
 }
 
