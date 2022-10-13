@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/10 15:04:01 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 14:40:21 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,7 @@
 
 int	g_val_exit;
 
-int	ft_only_space(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '$' && line[i + 1] && ft_isdigit(line[i + 1]))
-			i++;
-		else if (line[i] != ' ')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static void ft_init_data_0(t_data *data)
+static void	ft_init_data_0(t_data *data)
 {
 	data->line = NULL;
 	data->prompt = NULL;
@@ -194,7 +178,7 @@ int	main(int argc, char **argv, char **envp)
 			data.line = readline(data.prompt);
 			if (!data.line)
 				ft_exit_ctrl_d(&data);
-			if (data.line && ft_strlen(data.line) != 0 && ft_only_space(data.line) == 1)
+			if (data.line && ft_strlen(data.line) != 0)
 			{
 				add_history(data.line);
 				ft_minishell(&data);
