@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:53:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/14 00:52:31 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,16 +230,6 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	if (oldpwd)
 		ft_handle_malloc(DELONE, oldpwd, 0, NULL);
 	return ;
-	// //***mise à jour de data->cwd et data->oldpwd --> mis au tout début***
-	// if (data->oldpwd)
-	// 	free(data->oldpwd);
-	// data->oldpwd = ft_strdup(data->cwd);
-	// if (!data->oldpwd)
-	// 	return ;//free malloc !!
-	// free(data->cwd);
-	// data->cwd = getcwd(NULL, 0);
-	// if (!data->cwd)
-	// 	return ;//free malloc !!
 }
 
 int	ft_cd(t_cmd *cmd, t_data *data, int flag)
@@ -250,6 +240,7 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 	directory = NULL;
 	token = cmd->token;
 	token = token->next;
+	dprintf("finir de tester les val de retour 13, 20... et forcer\n");
 	if (token == NULL)
 	{
 		// dprintf(2, "cd --> rentre dans token == NULL\n");
@@ -266,7 +257,7 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 			return (0);
 		}
 		if (chdir(data->home) == -1)
-			return (ft_msg(errno, data->home, ": ", strerror(errno)));
+			return (ft_msg(errno, data->home, ": zzz", strerror(errno)));//
 		// printf("cd tout seul\n");//
 		ft_update_pwd(cmd, data, flag);
 		return (0);
@@ -277,13 +268,13 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 	{
 		directory = opendir(token->token);
 		if (directory == NULL)
-			return (ft_msg(1, token->token, ": ", ERRNDR));
+			return (ft_msg(1, token->token, ": jjj", ERRNDR));//
 		closedir(directory);
 		if (chdir(token->token) == -1)
-			return (ft_msg(errno, ERRMSG, "", strerror(errno)));
+			return (ft_msg(1, ERRMSG, ": yyy", strerror(errno)));//
 		ft_update_pwd(cmd, data, flag);
 		return (0);
 	}
 	else
-		return (ft_msg(errno, token->token, ": ", strerror(errno)));
+		return (ft_msg(1, token->token, ": xxx", strerror(errno)));//
 }

@@ -6,7 +6,61 @@
 >	Attention dans le history
 	Quand on a un echo -n (pas de retour à la ligne), lorsqu'on veut sélectionner de précédentes commandes, la prompt line 'minishell>' s'efface... (ou ne s'affiche plus)
 
->	** tests non concluants **
+>>	** tests non concluants **
+
+
+> 	commande :     cd //
+		--> vérifier que c'est / ou // qui doit être retourné
+		- test bash (chez moi): //
+		- test minishell: /
+
+
+>	G-DOC : 85 tests (de 388 à 472) - voir mes commentaires colonne L
+	cf. lignes :
+		- l. 392, 393, 394, 395 --> non gérées, à gérer ??
+		- l. 416 : valeur de retour à 1 (et non 2) --> CORRIGE (forcé dans cd)
+		- l. 420 : valeur de retour à 1 (et non 2)
+			/!\ path différent (Not such file or directory ou bien not a directory), cf. mes notes
+		- l. 423 : vérifier le résultat sur bash à 42 : si // alors / ou // ??
+		- l. 424 : idem 423
+		- l. 428 : valeur de retour à 1 (et non 2) --> CORRIGE (forcé dans cd)
+		- l. 433 : géré comme un texte (et pas une option, idem 431 et 432)
+		- l. 438 : valeur de retour à 1 (et non 2) --> CORRIGE (forcé dans cd)
+		- l. 446 : ?? (mais plus dans le sujet)
+		- l. 450 : built-in cd :
+				il faut gérer le cas de getcwd quand on ne peut plus aller qq part avec cd
+
+				G-DOC ligne 450 :
+					$> mkdir a
+					$> mkdir a/b
+					$> cd a/b
+					$> rm -r ../../a
+					($> pwd   --> optionnel, mais le résultat cd .. reste le même)
+					$> cd ..
+
+					- dans bash --> cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+					- notre minishell --> on exite comme "malloc failure" (point discuté le 13.10)
+		- l. 462 : ok pour minishell dans minishell
+				MAIS erreurs de commandes (lien env_path)
+				l'env est l'env path... (wrong)
+
+		+ sur cd : revoir les éléments/tests pour valeur de retour (13, 20...)
+				une partie a été modifiée mais s'assurer que tout OK
+				!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+>	ordre des commandes (d'abord heredoc puis les autres redir)
+
+	$tutu $toto <youpla pwd $tut <<$$$$bou super $?
+	(puis $$$$bou)
+	--> dans bash : d'abord here_doc puis la redir pas ok
+	--> pour nous : d'abord redir pas ok, puis heredoc ==> à inverser ?
+
+	sinon OK pour :
+	> $tutu $toto <youpla pwd $tut <<$$$$bou super $?    --> quand youpla existe (d'abord heredoc puis pwd)
+		ou
+	> $tutu $toto >youpi pwd $tut <<$$$$bou super $?     --> pwd dans youpi après le heredoc
+
+
 
 
 	/*******************************/
