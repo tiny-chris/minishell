@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 16:37:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:23:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,18 @@ int	ft_redirect_std(t_cmd *cmd)
 	return (0);
 }
 
-static void	ft_close_builtin_fd(t_cmd *cmd)
-{
-	t_token *tok_redir;
+// static void	ft_close_builtin_fd(t_cmd *cmd)
+// {
+// 	t_token *tok_redir;
 
-	tok_redir = cmd->tok_redir;
-	while (tok_redir)
-	{
-		if (tok_redir->fd != -1)
-			close(tok_redir->fd);
-		tok_redir = tok_redir->next;
-	}
-}
+// 	tok_redir = cmd->tok_redir;
+// 	while (tok_redir)
+// 	{
+// 		if (tok_redir->fd != -1)
+// 			close(tok_redir->fd);
+// 		tok_redir = tok_redir->next;
+// 	}
+// }
 
 int	ft_check_heredoc(t_data *data)
 {
@@ -114,14 +114,18 @@ int	ft_exec(t_data *data)
 	ft_get_files_io(data);
 	if (data->nb_pipes == 0 && data->cmd->token == NULL)
 	{
-		g_val_exit = EXIT_SUCCESS;
-		ft_exit_exec(data);
-		return (EXIT_SUCCESS);
+		if (data->cmd->file_err == 1)
+			g_val_exit = EXIT_FAILURE;
+		else
+			g_val_exit = EXIT_SUCCESS;
+		ft_close_fd(data);
+		ft_clean_exec(data);
+		return (g_val_exit);
 	}
 	if (ft_check_heredoc(data) && g_val_exit == 130)
 	{
 		ft_close_fd(data);
-		ft_exit_exec(data);
+		ft_clean_exec(data);
 		return (g_val_exit);
 	}
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
@@ -134,14 +138,15 @@ int	ft_exec(t_data *data)
 			if (data->cmd->tok_redir)
 			{
 				res = ft_redirect_builtin(data->cmd);
-				ft_close_builtin_fd(data->cmd);
-				if (res == -1 || data->cmd->token == NULL)
+				//ft_close_builtin_fd(data->cmd);
+				ft_close_fd(data);
+				if (res == -1)
 				{
+					ft_msg(errno, ERRMSG, "", strerror(errno));
 					ft_redirect_std(data->cmd);
-					ft_exit_exec(data); // il vaut mieux tout free
+					ft_clean_exec(data); // il vaut mieux tout free
 					//ft_handle_malloc(0, NULL, 0, 0);
 					//g_val_exit = errno;
-					ft_msg(errno, ERRMSG, "", strerror(errno));
 					exit(errno); // exit a la place comme lors d'une erreur de malloc
 				}
 			}
@@ -157,7 +162,7 @@ int	ft_exec(t_data *data)
 					exit(errno);
 				}
 			}
-			ft_exit_exec(data);
+			ft_clean_exec(data); 
 		}
 		return (g_val_exit);
 	}
@@ -167,7 +172,7 @@ int	ft_exec(t_data *data)
 		if (pipe(data->pipe_fd[i]) == -1)
 		{
 			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
-			ft_exit_exec(data); // peut etre mieux de tout free et exit
+			ft_clean_exec(data); // peut etre mieux de tout free et exit
 			return (1);
 		}
 		i++;

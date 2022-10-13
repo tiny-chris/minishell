@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 11:53:40 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:14:55 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,14 @@ int	ft_tokenizer(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
-		dprintf(2, "check check check\n");
+		// dprintf(2, "check check check\n");
 		ft_get_token(cmd, data);
 		ft_clean_token(cmd, data);
 //		ft_del_empty_token(&cmd, data);
 		ft_del_empty_token(cmd, data);
 		if (cmd->token)
 		{
-			dprintf(2, "passe avant type token\n");
+			// dprintf(2, "passe avant type token\n");
 			ft_type_token(cmd, data);
 		}
 		ft_del_nword(cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:35:41 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 16:01:54 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:59:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,11 @@ int	ft_heredoc_path(t_data *data)
 	while (cmd)
 	{
 		tmp = ft_itoa(i);
-		if (!tmp)
-			exit(EXIT_FAILURE); //free (error malloc)
+		ft_handle_malloc(ADD_M + TAB_STR1, tmp, 0, NULL);
 		cmd->heredoc_path = ft_strjoin("/tmp/tmp_heredoc", tmp);
-		printf("cmd->heredoc_path = %s\n", cmd->heredoc_path);
-		if (!cmd->heredoc_path)
-			exit(EXIT_FAILURE); //free (error malloc)
-		free(tmp);
-		tmp = NULL;
+		ft_handle_malloc(ADD_M + TAB_STR1, cmd->heredoc_path, 0, NULL);
+		printf("cmd->heredoc_path = %s\n", cmd->heredoc_path);//
+		ft_handle_malloc(DELONE, tmp, 0, NULL);
 		cmd = cmd->next;
 		i++;
 	}

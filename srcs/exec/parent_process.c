@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_process.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:28:34 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/06 17:33:55 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 17:04:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ int	ft_parent_process(t_data *data)
 		i++;
 	}
 	if (WIFEXITED(status))
+	{
+		if (status == 42)// A TESTER
+			ft_free_data_child(1, data);
 		status = WEXITSTATUS(status);
+	}
 	else if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGQUIT)
@@ -42,7 +46,7 @@ int	ft_parent_process(t_data *data)
 		}
 		status = EINTR;
 	}
-	ft_exit_exec(data);
+	ft_clean_exec(data);
 	// i = 3;
 	// while (i < 1000)
 	// {

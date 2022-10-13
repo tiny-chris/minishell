@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:02 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 15:41:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:15:26 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ void	*ft_handle_malloc(int flag_type, void *ptr, int size, t_data *data)
 	}
 	else
 	{
-		dprintf(2, "passssssssssse dans le free bin\n");
+		// dprintf(2, "passssssssssse dans le free bin\n");
 		// dprintf(2, "rentre dans else\n");
 		// /* affichage de bin_head - pour des STR1 */
 		// dprintf(2, "affichage free bin AVANT :\n");

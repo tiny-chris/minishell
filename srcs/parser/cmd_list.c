@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 16:33:35 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:06:17 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ void	ft_lstdelone_cmd_bin(t_cmd *node)
 		ft_handle_malloc(DELONE, node->cmd_path, 0, NULL);
 	if (node->heredoc_path)
 		ft_handle_malloc(DELONE, node->heredoc_path, 0, NULL);
-	node->next = NULL;
 	ft_handle_malloc(DELONE, node, 0, NULL);
 }
 
