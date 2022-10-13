@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:35:41 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 16:59:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:48:29 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_heredoc_path(t_data *data)
 		ft_handle_malloc(ADD_M + TAB_STR1, tmp, 0, NULL);
 		cmd->heredoc_path = ft_strjoin("/tmp/tmp_heredoc", tmp);
 		ft_handle_malloc(ADD_M + TAB_STR1, cmd->heredoc_path, 0, NULL);
-		printf("cmd->heredoc_path = %s\n", cmd->heredoc_path);//
+		// printf("cmd->heredoc_path = %s\n", cmd->heredoc_path);//
 		ft_handle_malloc(DELONE, tmp, 0, NULL);
 		cmd = cmd->next;
 		i++;

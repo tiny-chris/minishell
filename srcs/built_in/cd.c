@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 15:44:25 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:53:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_update_cwd(t_data *data, int flag)
 	ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
 	// if (!data->cwd)
 	// 	return ;//free malloc !!
-	dprintf(2, "updated: data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);//
+	// dprintf(2, "updated: data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);//
 }
 
 /*	t_env *env et env = data->env
@@ -174,7 +174,7 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 				}
 				else// (!env->content), si OLDPWD est vide 'OLDPWD=' dans env
 				{
-					dprintf(2, "on est dans le cas PWD unset et OLDPWD=\n");
+					// dprintf(2, "on est dans le cas PWD unset et OLDPWD=\n");
 					env->content = ft_strdup(data->oldpwd);
 					ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
 					// if (!env->content)
@@ -267,7 +267,7 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 		}
 		if (chdir(data->home) == -1)
 			return (ft_msg(errno, data->home, ": ", strerror(errno)));
-		printf("cd tout seul\n");//
+		// printf("cd tout seul\n");//
 		ft_update_pwd(cmd, data, flag);
 		return (0);
 	}

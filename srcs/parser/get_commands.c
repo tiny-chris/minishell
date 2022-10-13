@@ -64,7 +64,7 @@ char	*ft_get_raw_cmd(t_data *data, int i)
 
 	cmd = NULL;
 	tmp = NULL;
-	dprintf(2, "-------------------len (ft_get_pipe) = %d\n", ft_get_pipe(data->line, i));
+	// dprintf(2, "-------------------len (ft_get_pipe) = %d\n", ft_get_pipe(data->line, i));
 	tmp = ft_substr(data->line, i, ft_get_pipe(data->line, i));
 
 	// //TEST get_raw_cmd NULL
@@ -133,12 +133,12 @@ t_cmd	*ft_get_commands(t_data *data)
 	while (nb_cmd > 0)
 	{
 		tmp = ft_get_raw_cmd(data, i);
-		dprintf(2, "---------------------------val de i = %d, pour la commande :%d\n", i, nb_cmd);
-		dprintf(2, "raw cmd        = %s --> strlen = %ld\n", tmp, ft_strlen(tmp));
+		// dprintf(2, "---------------------------val de i = %d, pour la commande :%d\n", i, nb_cmd);
+		// dprintf(2, "raw cmd        = %s --> strlen = %ld\n", tmp, ft_strlen(tmp));
 		ft_lstadd_cmd(&cmd, tmp, data);
 		// if (ft_lstadd_cmd(&cmd, tmp) == 1)
 		// 	return (NULL);
-		dprintf(2, "---------------------val de i = ft_next_pipe = %d\n", ft_next_pipe(data->line, i));
+		// dprintf(2, "---------------------val de i = ft_next_pipe = %d\n", ft_next_pipe(data->line, i));
 		i = ft_next_pipe(data->line, i);
 		ft_handle_malloc(DELONE, tmp, 0, NULL);
 		nb_cmd--;

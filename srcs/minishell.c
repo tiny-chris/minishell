@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 16:35:38 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:49:54 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	ft_get_home(t_data *data, int flag)
 	}
 	if (env == NULL)
 	{
-		dprintf(2, "pas trouve HOME donc return\n");
+		// dprintf(2, "pas trouve HOME donc return\n");
 
 		return ;
 	}
@@ -169,7 +169,7 @@ int	ft_init_data_1(t_data *data, char **envp)
 	// //TEST7 :
 	// ft_handle_malloc(0, NULL, 0, 0);//TEST7
 	// exit (1);////TEST7
-	dprintf(2, "val data home = %s\n", data->home);
+	// dprintf(2, "val data home = %s\n", data->home);
 	ft_get_env_path(data, ADD_M);
 	return (0);
 }

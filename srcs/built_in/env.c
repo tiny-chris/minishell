@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/29 01:52:10 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:53:44 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ int	ft_env(t_cmd *cmd, t_data *data)
 		return (0);
 	}
 	token = token->next;
-	dprintf(2, "val de token->next pour env = %s\n", token->token);
-	dprintf(2, "val de ft_new_strchr(token->token, '=') = %d\n", ft_new_strchr(token->token, '='));
+	// dprintf(2, "val de token->next pour env = %s\n", token->token);
+	// dprintf(2, "val de ft_new_strchr(token->token, '=') = %d\n", ft_new_strchr(token->token, '='));
 	if (ft_new_strchr(token->token, '='))
 	{
 		tmp = token;

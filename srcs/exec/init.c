@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 16:28:15 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:38:26 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,26 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 		token = token->next;
 		i++;
 	}
-	cmd_opt = malloc(sizeof(char *) * (i + 1));
-	if (!cmd_opt)
-		return (NULL);
+	cmd_opt = ft_handle_malloc(MALLOC_C + TAB_STR2, NULL, (i + 1), data);
+	// cmd_opt = malloc(sizeof(char *) * (i + 1));
+	// if (!cmd_opt)
+	// 	return (NULL);
 	i = 0;
 	token = cmd->token;
 	while (token)
 	{
 		cmd_opt[i] = ft_strdup(token->token);
-		if (!cmd_opt[i])
-		{
-			ft_free_tabstr(cmd_opt);
-			return (NULL);
-		}
+		// cmd_opt[i] = NULL;/// TEST
+		// printf("TEST cmd opt [i] = NULL\n");// TEST
+		ft_handle_malloc(ADD_C + TAB_STR1, cmd_opt[i], 0, data);
+		// if (!cmd_opt[i])
+		// {
+		// 	ft_free_tabstr(cmd_opt);
+		// 	return (NULL);
+		// }
 		i++;
 		token = token->next;
 	}
-	//cmd_opt[i] = ft_strdup("");
 	cmd_opt[i] = NULL;
 	return (cmd_opt);
 }

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 17:23:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:56:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	ft_exec(t_data *data)
 			g_val_exit = 1;
 		else
 		{
-			printf("passe dans builin unique\n"); //
+			// printf("passe dans builin unique\n"); //
 			if (data->cmd->tok_redir)
 			{
 				res = ft_redirect_builtin(data->cmd);

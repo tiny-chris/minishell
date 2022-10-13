@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 11:32:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:54:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 	env = data->env;
 	var_tmp = NULL;
 	i = ft_new_strchr(token->token, '=');
-	printf("val de i new strchr export = dans tokentoken : %d\n", i);
+	// printf("val de i new strchr export = dans tokentoken : %d\n", i);
 	var_tmp = ft_substr(token->token, 0, i + 1);
 	ft_handle_malloc(flag + TAB_STR1, var_tmp, 0, data);
 	// if (!var_tmp)
@@ -46,7 +46,7 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 	{
 		if (ft_strncmp(env->var_equal, var_tmp, ft_strlen(env->var_equal)) == 0)
 		{
-			dprintf(2, "rentre dans if\n");
+			// dprintf(2, "rentre dans if\n");
 			ft_handle_malloc(DELONE, env->content, 0, NULL);
 			// free(env->content);
 			env->content = ft_substr(token->token, i + 1, (ft_strlen(token->token) - i + 1));

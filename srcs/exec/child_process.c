@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:25:45 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 16:38:40 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:55:26 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	ft_child_process(t_data *data, int i)
 //	dprintf(2, "child %d: res(redirect inout) = %d\n", i, res);
 	if (cmd->token->type == BUILTIN)
 	{
-		dprintf(2, "passe dans les builtin\n");
+		// dprintf(2, "passe dans les builtin\n");
 		g_val_exit = ft_exec_built_in(cmd, data, ADD_C);
 		ft_free_data_child(g_val_exit, data);
 		exit(g_val_exit);// A CORRIGER
@@ -167,7 +167,7 @@ void	ft_child_process(t_data *data, int i)
 		// 	ft_close_std();
 		// 	exit(res);
 		// }
-		printf("val cmd path = %s\n", cmd->cmd_path);
+		// printf("val cmd path = %s\n", cmd->cmd_path);
 		if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env_path) == -1)
 		{
 			//ft_exit_exec(data);

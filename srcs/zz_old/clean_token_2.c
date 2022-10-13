@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_token_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 18:41:20 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/09/16 14:13:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/13 17:46:35 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,7 +313,7 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 	while (token)
 	{
 		len = ft_new_len(token->token);
-		printf("len clean token = %d\n", len);
+		// printf("len clean token = %d\n", len);
 		ft_first_token(token, len);
 		ft_positive_token(token);
 		//printf("new clean token = %s, len = %ld\n", token->token, ft_strlen(token->token));

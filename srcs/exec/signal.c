@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:12:08 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 15:40:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:59:58 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,15 @@ void	ft_signal(t_data *data, int signum, t_sighandler handler)
 	if (signal(signum, handler) == SIG_ERR)
 	{
 		g_val_exit = errno;
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd("error: ", 2);
-		ft_putendl_fd(strerror(errno), 2);
 		//ft_exitmsg(data, "");
-        ft_msg(g_val_exit, "minishell: ", "", "error\n");
+        ft_msg(g_val_exit, "minishell: ", "error: ", strerror(errno));
         // ft_free_cmd(&(data->cmd));// A AJUSTER
         // ft_clean_cmdline(data);
         // ft_clean_cmdline(data);
         rl_clear_history();
         // ft_clean_loop(data);
 		ft_handle_malloc(0, NULL, 0, NULL);
+		exit (42);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 22:44:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:54:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 				if (data->env_path)
 				// {
 					ft_free_env(&(data->env_path));
-				printf("val env path unset = %p\n", data->env_path);//
+				// printf("val env path unset = %p\n", data->env_path);//
 				// 	data->env_path = NULL;
 				// }
 				if (data->s_env_path)
@@ -41,14 +41,14 @@ int	ft_check_unset(t_token *token, t_data *data)
 			}
 			else if (ft_strncmp(token->token, "HOME", 4) == 0 && ft_strlen(token->token) == 4)
 			{
-				printf("check le HOME unset\n");//
+				// printf("check le HOME unset\n");//
 				if (data->home)
 				{
-					printf("data->home = %s\n", data->home);//
+					// printf("data->home = %s\n", data->home);//
 					ft_handle_malloc(DELONE, data->home, 0, NULL);
 					//free(data->home);
 					data->home = NULL;// ne pas enleve pour le moment - prb de leak sinon...
-					printf("data->home h= %p\n", data->home);//
+					// printf("data->home h= %p\n", data->home);//
 				}
 			}
 			if (env == data->env)

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 15:38:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:50:55 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,7 +351,7 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 	}
 	else
 		cmd->cmd_path = ft_find_cmd_path2(cmd, data);
-	dprintf(2, "passe et ne fait pas cmd_path1\n");
+	// dprintf(2, "passe et ne fait pas cmd_path1\n");
 	return (cmd->cmd_path);
 }
 
@@ -363,7 +363,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 	int		j;
 	int		res;
 
-	printf("debut env_path2\n");
+	// printf("debut env_path2\n");
 	cmd_path = NULL;
 	new_path = NULL;
 	env_path = data->env_path;
@@ -383,7 +383,7 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		ft_handle_malloc(0, NULL, 0, NULL);
 		exit(res);
 	}
-	dprintf(2, "passe dans env_path2 et va tester le PATH\n");
+	// dprintf(2, "passe dans env_path2 et va tester le PATH\n");
 	while (env_path)
 	{
 		j = ft_strlen(env_path->content) - 1;

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:14:55 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:49:02 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,21 @@ int	ft_get_token(t_cmd *cmd, t_data *data)
 	return (0);
 }
 
-static void	ft_print_token(t_cmd *cmd)//  A SUPPRIMER !!!!!!!!!!
-{
-	t_token	*token;
-	int		nb;
+// static void	ft_print_token(t_cmd *cmd)//  A SUPPRIMER !!!!!!!!!!
+// {
+// 	t_token	*token;
+// 	int		nb;
 
-	nb = 0;
-	token = cmd->token;
-	while (token)
-	{
-		dprintf(2, "print token[%d] = %s, type = %d, size = %ld, env = %d\n", \
-		nb, token->token, token->type, ft_strlen(token->token), token->type);
-		token = token->next;
-		nb++;
-	}
-}
+// 	nb = 0;
+// 	token = cmd->token;
+// 	while (token)
+// 	{
+// 		// dprintf(2, "print token[%d] = %s, type = %d, size = %ld, env = %d\n", \
+// 		nb, token->token, token->type, ft_strlen(token->token), token->type);
+// 		token = token->next;
+// 		nb++;
+// 	}
+// }
 
 int	ft_tokenizer(t_data *data)
 {
@@ -96,7 +96,7 @@ int	ft_tokenizer(t_data *data)
 			ft_type_token(cmd, data);
 		}
 		ft_del_nword(cmd);
-		ft_print_token(cmd);//A SUPPRIMER
+		// ft_print_token(cmd);//A SUPPRIMER
 		cmd = cmd->next;
 	}
 

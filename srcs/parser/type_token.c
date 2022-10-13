@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 14:48:21 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 18:02:46 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 		{
 			if (token && ft_strncmp(token->token, "unset", ft_strlen(token->token)) == 0)
 			{
-				printf("test\n");
+				// printf("test\n");
 				todel = token;
 				tmp = token->next;
 				ft_lstdelone_tok_bin(todel);

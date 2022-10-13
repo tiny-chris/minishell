@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 14:35:06 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:47:29 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,7 @@ int	ft_get_redir(t_data *data)
 		ft_handle_malloc(ADD_M + TAB_STR1, cmd->no_redir_cmd, 0, NULL);
 		ft_handle_malloc(DELONE, trim_cmd, 0, NULL);
 		// free(trim_cmd);
-		dprintf(2, "no redir cmd   = %s --> len = %d vs. strlen = %ld\n", cmd->no_redir_cmd, len, ft_strlen(cmd->no_redir_cmd));
+		// dprintf(2, "no redir cmd   = %s --> len = %d vs. strlen = %ld\n", cmd->no_redir_cmd, len, ft_strlen(cmd->no_redir_cmd));
 		ft_get_redir_list(cmd->unspace_cmd, &cmd->tok_redir, data);
 		// if (ft_get_redir_list(cmd->no_redir_cmd, &cmd->tok_redir))
 		// 	return (1); // FREE tout ce qu'il y a à free
@@ -315,7 +315,7 @@ int	ft_get_redir(t_data *data)
 		token = tmp->tok_redir;
 		while (token)
 		{
-			dprintf(2, "token redir = %s, type = %d\n", token->token, token->type);
+			// dprintf(2, "token redir = %s, type = %d\n", token->token, token->type);
 			token = token->next;
 		}
 		tmp = tmp->next;

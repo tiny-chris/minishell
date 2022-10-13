@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 16:29:29 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:48:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,10 +245,10 @@ int	ft_clean_token(t_cmd *cmd, t_data *data)
 	while (token)
 	{
 		tmp_token = NULL;
-		dprintf(2, "token->token   = %s, strlen = %ld\n", token->token, ft_strlen(token->token));
+		// dprintf(2, "token->token   = %s, strlen = %ld\n", token->token, ft_strlen(token->token));
 		len = ft_consec_quotes_len(token->token);
 		tmp_token = ft_fill_consec_quotes(token->token, len);
-		dprintf(2, "csquotes token = %s --> len = %d vs. strlen = %ld\n", tmp_token, len, ft_strlen(tmp_token));
+		// dprintf(2, "csquotes token = %s --> len = %d vs. strlen = %ld\n", tmp_token, len, ft_strlen(tmp_token));
 		ft_handle_malloc(DELONE, token->token, 0, NULL);
 		// free(token->token);
 		//2e étape
