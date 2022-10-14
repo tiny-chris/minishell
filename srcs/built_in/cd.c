@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/14 19:46:39 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/14 19:51:46 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	ft_update_cwd(char *token, t_data *data, int flag)
 	ft_handle_malloc(DELONE, data->cwd, 0, NULL);
 	// free(data->cwd);
 	// data->cwd = NULL;
-	//dprintf(2, "token = %s, size token = %zu\n", token, ft_strlen(token));
 	if (token && ft_strncmp(token, "//", 2) == 0 && ft_strlen(token) == 2)
 		data->cwd = ft_strdup("//");
 	else
@@ -45,10 +44,6 @@ int	ft_update_cwd(char *token, t_data *data, int flag)
 		if (!data->cwd)
 			return (ft_msg(1, "error retrieving current directory: ", "getcwd: ", "cannot access parent directories: No such file or directory"));//
 	}
-	// dprintf(2, "data->cwd = %s\n", data->cwd);
-	// {
-	// 	xxx
-	// }
 	ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
 	// if (!data->cwd)
 	// 	return ;//free malloc !!
@@ -124,8 +119,7 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	oldpwd = NULL;
 	pwd_null = 0;
 	token = cmd->token->next;
-	dprintf(2, "rentre dans update pwd\n");
-	dprintf(2, "haut token = %s, size token = %zu\n", token->token, ft_strlen(token->token));
+	// dprintf(2, "rentre dans update pwd\n");
 	if (ft_update_cwd(token->token, data, flag))
 		return (1);
 	//mise à jour PWD
@@ -143,9 +137,6 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 				// free(env->content);
 				// env->content = NULL;
 			}
-			// else
-			// 	oldpwd = NULL;
-			// dprintf(2, "token = %s, size token = %zu\n", token->token, ft_strlen(token->token));
 			if (ft_strncmp(token->token, "//", 2) == 0 && ft_strlen(token->token) == 2)
 				env->content = ft_strdup(token->token);
 			else
@@ -154,7 +145,6 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 				if (!env->content)
 					return (ft_msg(1, "error retrieving current directory: ", "getcwd: ", "cannot access parent directories: No such file or directory"));//
 			}
-			// dprintf(2, "env->content = %s\n", env->content);
 			// env->content = getcwd(NULL, 0);
 			ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
 			// if (!env->content)
