@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/14 20:36:58 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/14 21:14:13 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define ERRSTX "syntax error"
+# define ERRSTX "syntax error near unexpected token"
 # define ERRMAL "Error: memory allocation failure"
 # define ERRCMD "command not found"
 # define ERRDIR "is a directory"
