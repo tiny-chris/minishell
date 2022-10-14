@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 17:50:55 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/14 19:41:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 	if (!token)
 		return (NULL);
 	directory = opendir(full_path);
-	//printf("val de directory = %p\n", directory);
+	// printf("val de directory = %p\n", directory);
 	if (directory != NULL)// c'est un directory
 	{
 		closedir(directory);
@@ -255,8 +255,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 			ft_handle_malloc(ADD_M + TAB_STR1, tmp, 0, data);
 			if (access((const char *)tmp, F_OK) == 0)
 			{
-				free(tmp);
-				tmp = NULL;
+				ft_handle_malloc(DELONE, tmp, 0, NULL);
 				g_val_exit = ft_msg(126, token, ": ", ERRNDR);
 				// ft_free_data_child(data);
 				ft_handle_malloc(0, NULL, 0, NULL);
