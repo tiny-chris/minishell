@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/14 14:21:09 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/14 19:46:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 	4 - chdir
 */
 
-void	ft_update_cwd(t_data *data, int flag)
+int	ft_update_cwd(char *token, t_data *data, int flag)
 {
 	if (data->oldpwd)
 		ft_handle_malloc(DELONE, data->oldpwd, 0, NULL);
@@ -36,11 +36,24 @@ void	ft_update_cwd(t_data *data, int flag)
 	ft_handle_malloc(DELONE, data->cwd, 0, NULL);
 	// free(data->cwd);
 	// data->cwd = NULL;
-	data->cwd = getcwd(NULL, 0);
+	//dprintf(2, "token = %s, size token = %zu\n", token, ft_strlen(token));
+	if (token && ft_strncmp(token, "//", 2) == 0 && ft_strlen(token) == 2)
+		data->cwd = ft_strdup("//");
+	else
+	{
+		data->cwd = getcwd(NULL, 0);
+		if (!data->cwd)
+			return (ft_msg(1, "error retrieving current directory: ", "getcwd: ", "cannot access parent directories: No such file or directory"));//
+	}
+	// dprintf(2, "data->cwd = %s\n", data->cwd);
+	// {
+	// 	xxx
+	// }
 	ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
 	// if (!data->cwd)
 	// 	return ;//free malloc !!
 	// dprintf(2, "updated: data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);//
+	return (0);
 }
 
 /*	t_env *env et env = data->env
@@ -100,17 +113,21 @@ void	ft_update_cwd(t_data *data, int flag)
 			--> on ne fait rien car le maillon est supprimé via unset PWD
 
 */
-void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
+int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 {
 	t_env	*env;
 	char	*oldpwd;
 	int		pwd_null;
+	t_token	*token;
 
-	(void) cmd;// voir si on enlève le paramètre
 	env = data->env;
 	oldpwd = NULL;
 	pwd_null = 0;
-	ft_update_cwd(data, flag);
+	token = cmd->token->next;
+	dprintf(2, "rentre dans update pwd\n");
+	dprintf(2, "haut token = %s, size token = %zu\n", token->token, ft_strlen(token->token));
+	if (ft_update_cwd(token->token, data, flag))
+		return (1);
 	//mise à jour PWD
 	while (env)
 	{
@@ -128,7 +145,17 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 			}
 			// else
 			// 	oldpwd = NULL;
-			env->content = getcwd(NULL, 0);
+			// dprintf(2, "token = %s, size token = %zu\n", token->token, ft_strlen(token->token));
+			if (ft_strncmp(token->token, "//", 2) == 0 && ft_strlen(token->token) == 2)
+				env->content = ft_strdup(token->token);
+			else
+			{
+				env->content = getcwd(NULL, 0);
+				if (!env->content)
+					return (ft_msg(1, "error retrieving current directory: ", "getcwd: ", "cannot access parent directories: No such file or directory"));//
+			}
+			// dprintf(2, "env->content = %s\n", env->content);
+			// env->content = getcwd(NULL, 0);
 			ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
 			// if (!env->content)
 			// 	return ; //free malloc!!
@@ -229,18 +256,31 @@ void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	}
 	if (oldpwd)
 		ft_handle_malloc(DELONE, oldpwd, 0, NULL);
-	return ;
+	return (0) ;
 }
+
+// for "stale file handle"
+/* 
+
+When the directory is deleted, the inode for that directory (and the inodes for its contents) are recycled. The pointer your shell has to that directory's inode (and its contents's inodes) are now no longer valid. When the directory is restored from backup, the old inodes are not (necessarily) reused; the directory and its contents are stored on random inodes. The only thing that stays the same is that the parent directory reuses the same name for the restored directory (because you told it to).
+
+Now if you attempt to access the contents of the directory that your original shell is still pointing to, it communicates that request to the file system as a request for the original inode, which has since been recycled (and may even be in use for something entirely different now). So you get a stale file handle message because you asked for some nonexistent data.
+
+When you perform a cd operation, the shell reevaluates the inode location of whatever destination you give it. Now that your shell knows the new inode for the directory (and the new inodes for its contents), future requests for its contents will be valid.
+
+*/
+// https://stackoverflow.com/questions/20105260/what-does-stale-file-handle-in-linux-mean
+// 
 
 int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 {
 	t_token	*token;
 	DIR		*directory;
+	int		res;
 
 	directory = NULL;
 	token = cmd->token;
 	token = token->next;
-	dprintf(2, "finir de tester les val de retour 13, 20... et forcer\n");
 	if (token == NULL)
 	{
 		// dprintf(2, "cd --> rentre dans token == NULL\n");
@@ -264,17 +304,30 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 	}
 	if (token->next)
 		return (ft_msg(1, cmd->token->token, ": ", ERRARG));
+	// dprintf(2, "cd puis token = %s\n", token->token);
 	if (access(token->token, F_OK) == 0)
 	{
 		directory = opendir(token->token);
+		// dprintf(2, "cd --> directory = %p\n", directory);
 		if (directory == NULL)
 			return (ft_msg(1, token->token, ": jjj", ERRNDR));//
 		closedir(directory);
-		if (chdir(token->token) == -1)
-			return (ft_msg(1, ERRMSG, ": yyy", strerror(errno)));//
-		ft_update_pwd(cmd, data, flag);
+		res = chdir(token->token);
+		// dprintf(2, "cd --> chdir = %d\n", res);//test
+		if (res != 0)
+			return (ft_msg(1, token->token, ": yyy", strerror(errno)));//
+		if (ft_update_pwd(cmd, data, flag))
+			return (1);
 		return (0);
 	}
 	else
-		return (ft_msg(1, token->token, ": xxx", strerror(errno)));//
+	{
+		// res = chdir(token->token);
+		// if (res != 0)
+		// {
+		// 	dprintf(2, "check error\n");
+		// 	return (ft_msg(1, token->token, ": yyy", strerror(errno)));//
+		// }
+		return (ft_msg(1, token->token, ": xxx ", strerror(errno)));//
+	}
 }
