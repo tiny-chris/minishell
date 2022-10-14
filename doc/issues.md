@@ -9,11 +9,19 @@
 >>	** tests non concluants **
 
 
+	/*******************************/
+	FIXED
+	/*******************************/
+
 > 	commande :     cd //
 		--> vérifier que c'est / ou // qui doit être retourné
 		- test bash (chez moi): //
 		- test minishell: /
 
+
+	/*******************************/
+	FIXED sauf MINISHELL dans MINISHELL
+	/*******************************/
 
 >	G-DOC : 85 tests (de 388 à 472) - voir mes commentaires colonne L
 	cf. lignes :
@@ -47,6 +55,10 @@
 		+ sur cd : revoir les éléments/tests pour valeur de retour (13, 20...)
 				une partie a été modifiée mais s'assurer que tout OK
 				!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	/*******************************/
+	PAS GRAVE
+	/*******************************/
 
 >	ordre des commandes (d'abord heredoc puis les autres redir)
 
