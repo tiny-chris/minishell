@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_process.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:28:34 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 17:04:41 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/14 18:22:50 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,13 @@ int	ft_parent_process(t_data *data)
 			status = 128 + WTERMSIG(status);
 			ft_putstr_fd("Quit (core dumped)\n", 1);
 		}
-		if (WTERMSIG(status) == SIGINT)
+		else if (WTERMSIG(status) == SIGINT)
 		{
 			status = 128 + WTERMSIG(status);
 			write(1, "\n", 1);
 		}
-		status = EINTR;
+		else
+			status = EINTR;
 	}
 	ft_clean_exec(data);
 	// i = 3;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/14 00:52:31 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/14 14:21:09 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 	directory = NULL;
 	token = cmd->token;
 	token = token->next;
-	dprintf("finir de tester les val de retour 13, 20... et forcer\n");
+	dprintf(2, "finir de tester les val de retour 13, 20... et forcer\n");
 	if (token == NULL)
 	{
 		// dprintf(2, "cd --> rentre dans token == NULL\n");
