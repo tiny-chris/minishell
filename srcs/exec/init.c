@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:38:26 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 17:50:57 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	ft_get_files_io(t_data *data)
 			else if (tok_redir->type == D_GREAT)
 			{
 				tok_redir = tok_redir->next;
-				tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_APPEND);
+				tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_APPEND, 0644);
 				if (tok_redir->fd < 0)
 				{
 					cmd->file_err = 1;
