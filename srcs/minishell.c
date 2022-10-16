@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 17:49:54 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:49:22 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	ft_init_data_1(t_data *data, char **envp)
 		// // TEST2 :
 		// free(data->prompt);//test2
 		// data->prompt = NULL;//test2
-	ft_handle_malloc(ADD_M + TAB_STR1, data->prompt, 0, data);
+	ft_handle_malloc(ADD_M + TAB_STR1, data->prompt, 0, data);// !!!!!!!!!!!!!!!!!! A REMETTRE
 	// if (data->prompt == NULL)
 	// {
 	// 	ft_free_env(&(data->env));

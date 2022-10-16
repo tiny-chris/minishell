@@ -6,11 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 17:02:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 16:31:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_val_exit;
 
 void	ft_close_std(void)
 {
@@ -186,6 +188,29 @@ void	ft_close_fd(t_data *data)
 		}
 	}
 }
+
+// void	ft_clean_fork(t_data *data, int i)
+// {
+// 	int		j;
+
+// 	j = 0;
+// 	if (j != i)//
+// 	{
+// 		while (j < i && data->pid[j])
+// 		{
+// 			ft_close_fd(data);
+// 			g_val_exit = ft_free_data_child(42, data);
+// 			j++;
+// 		}
+// 	}
+// 	if (j = i && data->pid[j])
+// 	{
+// 		ft_close_fd(data);
+// 		g_val_exit = ft_free_data_child(42, data);
+// 		exit (g_val_exit);
+// 	}
+// }
+
 
 int	ft_msg(int val_exit, char *msg1, char *msg2, char *msg3)
 {

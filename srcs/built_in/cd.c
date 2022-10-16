@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/14 19:51:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 17:35:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 			return (0);
 		}
 		if (chdir(data->home) == -1)
-			return (ft_msg(errno, data->home, ": zzz", strerror(errno)));//
+			return (ft_msg(errno, data->home, ": ", strerror(errno)));
 		// printf("cd tout seul\n");//
 		ft_update_pwd(cmd, data, flag);
 		return (0);
@@ -300,12 +300,12 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 		directory = opendir(token->token);
 		// dprintf(2, "cd --> directory = %p\n", directory);
 		if (directory == NULL)
-			return (ft_msg(1, token->token, ": jjj", ERRNDR));//
+			return (ft_msg(1, token->token, ": ", ERRNDR));
 		closedir(directory);
 		res = chdir(token->token);
 		// dprintf(2, "cd --> chdir = %d\n", res);//test
 		if (res != 0)
-			return (ft_msg(1, token->token, ": yyy", strerror(errno)));//
+			return (ft_msg(1, token->token, ": ", strerror(errno)));
 		if (ft_update_pwd(cmd, data, flag))
 			return (1);
 		return (0);
@@ -318,6 +318,6 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 		// 	dprintf(2, "check error\n");
 		// 	return (ft_msg(1, token->token, ": yyy", strerror(errno)));//
 		// }
-		return (ft_msg(1, token->token, ": xxx ", strerror(errno)));//
+		return (ft_msg(1, token->token, ": ", strerror(errno)));
 	}
 }
