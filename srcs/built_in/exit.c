@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 11:41:59 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/14 21:01:33 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/16 15:14:07 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,10 @@ int	ft_exit(t_cmd *cmd, t_data *data, int flag)
 	token = cmd->token->next; // le token apres exit
 	ret = 0;
 	check = NULL;
+	if (data->nb_pipes == 0)
+		ft_putstr_fd("exit\n", 1);
 	if (token == NULL) // exit sans argument
 	{
-		ft_putstr_fd("exit\n", 1);
 		if (data->nb_pipes == 0 && data->cmd->tok_redir)
 		{
 			if (ft_redirect_std(data->cmd) == -1)
@@ -103,7 +104,7 @@ int	ft_exit(t_cmd *cmd, t_data *data, int flag)
 	}
 	if (ft_check_digit(token->token) == 0)
 	{
-		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
+		g_val_exit = ft_msg(2, "", "exit: ", "numeric argument required");
 		if (data->nb_pipes == 0 && data->cmd->tok_redir)
 		{
 			if (ft_redirect_std(data->cmd) == -1)
@@ -121,14 +122,14 @@ int	ft_exit(t_cmd *cmd, t_data *data, int flag)
 		exit(g_val_exit);
 	}
 	if (token->next)
-		return (ft_msg(1, "exit\n", "exit: ", "too many arguments"));
+		return (ft_msg(1, "", "exit: ", "too many arguments"));
 	ret = ft_atoi(token->token);
 	check = ft_itoa(ret);
 	ft_handle_malloc(flag + TAB_STR1, check, 0, data);
 	check2 = ft_get_check2(token->token, flag, data);
 	if (ft_strncmp(check, check2, ft_strlen(check)))
 	{
-		g_val_exit = ft_msg(2, "exit\n", "exit: ", "numeric argument required");
+		g_val_exit = ft_msg(2, "", "exit: ", "numeric argument required");
 		if (data->nb_pipes == 0 && data->cmd->tok_redir)
 		{
 			if (ft_redirect_std(data->cmd) == -1)
