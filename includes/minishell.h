@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/14 21:14:13 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/16 18:18:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,6 +333,7 @@ int		ft_get_files_io(t_data *data);
 // int		ft_exec_uniq_builtin(t_data *data);
 void	ft_child_process(t_data *data, int i);
 int		ft_parent_process(t_data *data);
+int		ft_parent_exit(t_data *data, int res);
 
 /*	exec CHILD */
 

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 17:56:07 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 19:12:10 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,13 @@ int	ft_exec(t_data *data)
 				ft_close_fd(data);
 				if (res == -1)
 				{
-					ft_msg(errno, ERRMSG, "", strerror(errno));
+					g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+					// ft_msg(errno, ERRMSG, "", strerror(errno));
 					ft_redirect_std(data->cmd);
 					ft_clean_exec(data); // il vaut mieux tout free
 					//ft_handle_malloc(0, NULL, 0, 0);
 					//g_val_exit = errno;
-					exit(errno); // exit a la place comme lors d'une erreur de malloc
+					exit(g_val_exit); // exit a la place comme lors d'une erreur de malloc
 				}
 			}
 			g_val_exit = ft_exec_built_in(data->cmd, data, ADD_M);
@@ -155,11 +156,14 @@ int	ft_exec(t_data *data)
 			{
 				if (ft_redirect_std(data->cmd) == -1)
 				{
-					g_val_exit = errno;
-					ft_msg(errno, ERRMSG, "", strerror(errno));
+					g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+					ft_clean_exec(data);
+					exit(g_val_exit);
+					// g_val_exit = errno;
+					// ft_msg(errno, ERRMSG, "", strerror(errno));
 					// tout free ;
 					// ft_handle_malloc(0, NULL, 0, 0) ;
-					exit(errno);
+					// exit(errno);
 				}
 			}
 			ft_clean_exec(data); 
@@ -170,19 +174,32 @@ int	ft_exec(t_data *data)
 	while (i < data->nb_pipes)
 	{
 		if (pipe(data->pipe_fd[i]) == -1)
+		// // TEST PIPE//
+		// int test = pipe(data->pipe_fd[i]);//test
+		// test = -1;//test
+		// if (test == -1)//test
 		{
 			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
-			ft_clean_exec(data); // peut etre mieux de tout free et exit
-			return (1);
+			ft_close_fd(data);
+			g_val_exit = ft_free_data_child(1, data); // peut etre mieux de tout free et exit
+			exit (g_val_exit);
 		}
 		i++;
 	}
 	i = 0;
+	res = -1;
+	// printf("debut res = %d\n", res);
 	while (i < (data->nb_pipes + 1))
 	{
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
-			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno)); // peut etre mieux de tout free et exit aussi
+		{
+			g_val_exit = errno;//ft_msg(errno, ERRMSG, "", strerror(errno)); // peut etre mieux de tout free et exit aussi
+			res = i;
+			i = data->nb_pipes + 1;
+			// printf("dans pid -1 alors i = %d\n", i);
+			break ;
+		}
 		else if (data->pid[i] == 0)
 		{
 			ft_signal(data, SIGQUIT, sig_quit); // default action ca va pas car quitte le minishell avec des leaks en plus
@@ -190,8 +207,15 @@ int	ft_exec(t_data *data)
 		}
 		i++;
 	}
-	ft_signal(data, SIGINT, SIG_IGN); // pour eviter d'avoir 2 prompts.
+	// printf("fin res = %d\n", res);
+	if (res >= 0)
+	{
+		// printf("fin2 res = %d\n", res);
+		exit (ft_parent_exit(data, res));
+	}
 	ft_signal(data, SIGQUIT, SIG_IGN);
+	ft_signal(data, SIGINT, SIG_IGN); // pour eviter d'avoir 2 prompts.
+	// printf("fin3 res = %d\n", res);
 	g_val_exit = ft_parent_process(data);
 	return (0);
 }

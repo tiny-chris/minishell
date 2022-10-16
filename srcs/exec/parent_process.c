@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_process.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:28:34 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/14 18:22:50 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/16 19:10:53 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,23 @@ int	ft_parent_process(t_data *data)
 			status = EINTR;
 	}
 	ft_clean_exec(data);
-	// i = 3;
-	// while (i < 1000)
-	// {
-	// 	close(i);
-	// 	i++;
-	// }
 	return (status);
+}
+
+int	ft_parent_exit(t_data *data, int res)
+{
+	int		i;
+	int		status;
+
+	// (void) res;
+	ft_close_fd(data);
+	i = 0;
+	ft_msg(g_val_exit, ERRMSG, "", strerror(g_val_exit));
+	while (i < res + 1)
+	{
+		waitpid(data->pid[i], &status, 0);
+		i++;
+	}
+	g_val_exit = ft_free_data_child(1, data);
+	return (g_val_exit);
 }
