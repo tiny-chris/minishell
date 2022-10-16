@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/16 17:35:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 20:12:35 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@
 	4 - chdir
 */
 
-int	ft_update_cwd(char *token, t_data *data, int flag)
+int	ft_update_cwd(t_token *t, t_data *data, int flag)
 {
+	// dprintf(2, "test\n");
+	// dprintf(2, "1. data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);
 	if (data->oldpwd)
 		ft_handle_malloc(DELONE, data->oldpwd, 0, NULL);
 	// {
@@ -36,7 +38,7 @@ int	ft_update_cwd(char *token, t_data *data, int flag)
 	ft_handle_malloc(DELONE, data->cwd, 0, NULL);
 	// free(data->cwd);
 	// data->cwd = NULL;
-	if (token && ft_strncmp(token, "//", 2) == 0 && ft_strlen(token) == 2)
+	if (t && (ft_strncmp(t->token, "//", 2) == 0 && ft_strlen(t->token) == 2))
 		data->cwd = ft_strdup("//");
 	else
 	{
@@ -45,6 +47,7 @@ int	ft_update_cwd(char *token, t_data *data, int flag)
 			return (ft_msg(1, "error retrieving current directory: ", "getcwd: ", "cannot access parent directories: No such file or directory"));//
 	}
 	ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
+	// dprintf(2, "test2\n");
 	// if (!data->cwd)
 	// 	return ;//free malloc !!
 	// dprintf(2, "updated: data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);//
@@ -120,12 +123,14 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	pwd_null = 0;
 	token = cmd->token->next;
 	// dprintf(2, "rentre dans update pwd\n");
-	if (ft_update_cwd(token->token, data, flag))
+	// dprintf(2, "token = %p\n", token);
+	if (ft_update_cwd(token, data, flag))
 		return (1);
+	// dprintf(2, "data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);
 	//mise à jour PWD
 	while (env)
 	{
-		if (ft_strncmp(env->var_equal, "PWD=", ft_strlen(env->var_equal)) == 0)
+		if (ft_strncmp(env->var_equal, "PWD=", 4) == 0 && (ft_strlen(env->var_equal) == 4))
 		{
 			if (env->content)
 			{
@@ -137,7 +142,7 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 				// free(env->content);
 				// env->content = NULL;
 			}
-			if (ft_strncmp(token->token, "//", 2) == 0 && ft_strlen(token->token) == 2)
+			if (token && ft_strncmp(token->token, "//", 2) == 0 && ft_strlen(token->token) == 2)
 				env->content = ft_strdup(token->token);
 			else
 			{
@@ -172,7 +177,8 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	env = data->env;
 	while (env)
 	{
-		if (ft_strncmp(env->var_equal, "OLDPWD=", ft_strlen(env->var_equal)) == 0)
+		if (ft_strncmp(env->var_equal, "OLDPWD=", 7) == 0 \
+			&& (ft_strlen(env->var_equal) == 7))
 		{
 			if (pwd_null == 1)//si PWD n'existe pas
 			{

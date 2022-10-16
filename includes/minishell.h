@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/16 18:18:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 20:03:38 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,7 +376,7 @@ int		ft_cd(t_cmd *cmd, t_data *data, int flag);
 // void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
 int		ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
 // void	ft_update_cwd(t_data *data, int flag);
-int		ft_update_cwd(char *token, t_data *data, int flag);
+int		ft_update_cwd(t_token *token, t_data *data, int flag);
 
 int		ft_exit(t_cmd *cmd, t_data *data, int flag);
 

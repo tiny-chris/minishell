@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/16 15:49:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 20:16:06 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	ft_get_home(t_data *data, int flag)
 		{
 			// dprintf(2, "env->var_equal = %s et len 'HOME=' = 5\n", env->var_equal);
 			// dprintf (2, "strlen = %lu\n", ft_strlen(env->var_equal));
-			if (ft_strncmp(env->var_equal, "HOME=", ft_strlen(env->var_equal)) == 0)
+			if (ft_strncmp(env->var_equal, "HOME=", 5) == 0 && (ft_strlen(env->var_equal) == 5))
 				break ;
 			env = env->next;
 		}
@@ -73,6 +73,7 @@ void	ft_get_home(t_data *data, int flag)
 	if (env->var_equal != NULL && env->content)
 	{
 		data->home = ft_strdup(env->content);
+		// dprintf(2, "new data home = %s\n", data->home);//
 		// printf("flag data home = %d\n", flag);
 		ft_handle_malloc(flag + TAB_STR1, data->home, 0, data);
 		// if (!data->home)
