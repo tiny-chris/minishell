@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/14 19:41:19 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 20:48:32 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 	if (!token)
 		return (NULL);
 	directory = opendir(full_path);
-	// printf("val de directory = %p\n", directory);
+	dprintf(2, "val de directory = %p\n", directory);//
 	if (directory != NULL)// c'est un directory
 	{
 		closedir(directory);
@@ -227,15 +227,18 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 	}
 	else
 	{
+		dprintf(2, "token (len-1) = %c\n", token[len - 1]);
 		if (token[len - 1] != '/')
 		{
+			dprintf(2, "val access full path F OK = %d\n", access((const char *)full_path, F_OK));//
 			if (access((const char *)full_path, F_OK) == 0)
 			{
+				dprintf(2, "val access full path X OK = %d\n", access((const char *)full_path, X_OK));//
 				if (access((const char *)full_path, X_OK) == 0)
 					return (ft_strdup(full_path));
 				else
 				{
-					g_val_exit = ft_msg(126, token, ": ", ERRPRD);//enlever 'test'
+					g_val_exit = ft_msg(126, token, ": ", ERRPRD);
 					// ft_free_data_child(data);
 					ft_handle_malloc(0, NULL, 0, NULL);
 					// if (full_path)
@@ -327,9 +330,11 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 		if (cmd->token->token[0] == '/')
 		{
 			full_path = ft_strdup(cmd->token->token);
+			dprintf(2, "val full path = %s\n", full_path);
 			ft_handle_malloc(ADD_C + TAB_STR1, full_path, 0, data);
 			cmd->cmd_path = ft_check_abs_path(cmd->token->token, full_path, data, \
 				ft_strlen(cmd->token->token));
+			dprintf(2, "val de full path apres check abs = %s\n", cmd->cmd_path);
 			// cmd_path = ft_check_abs_path(cmd->token->token, full_path, data, \
 			// 	ft_strlen(cmd->token->token));
 			ft_handle_malloc(ADD_C + TAB_STR1, cmd->cmd_path, 0, data);

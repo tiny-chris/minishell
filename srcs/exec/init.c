@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/16 17:50:57 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/16 20:51:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data)
 	while (token)
 	{
 		cmd_opt[i] = ft_strdup(token->token);
+		dprintf(2, "cmd option[%i] = %s\n", i, cmd_opt[i]);
 		// cmd_opt[i] = NULL;/// TEST
 		// printf("TEST cmd opt [i] = NULL\n");// TEST
 		ft_handle_malloc(ADD_C + TAB_STR1, cmd_opt[i], 0, data);

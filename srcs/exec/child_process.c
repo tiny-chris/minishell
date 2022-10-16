@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:25:45 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/13 17:55:26 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 22:05:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ void	ft_child_process(t_data *data, int i)
 			exit(res);
 		}
 		cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
+		dprintf(2, "cmd option = %p\n", cmd->cmd_opt);
 		// printf("cmd_opt = %s\n", cmd->cmd_opt[0]);
 		// printf("cmd_opt = %s\n", cmd->cmd_opt[1]);
 
@@ -157,7 +158,58 @@ void	ft_child_process(t_data *data, int i)
 	//	printf("cmd->cmd_opt = %s\n", cmd->cmd_opt[0]);
 
 		cmd->cmd_path = ft_find_cmd_path(cmd, data);
-		//printf("cmd_path = %s\n", cmd->cmd_path);
+		dprintf(2, "cmd path = %s\n", cmd->cmd_path);//
+		int x = 0;//
+		char **s_env_path = data->s_env_path;
+		while (s_env_path[x])//
+		{//
+			if (s_env_path[x])//
+				dprintf(2, "s_env_path[%d] = %s\n", x, s_env_path[x]);//
+			x++;//
+		}//
+		
+
+		//////////////////
+		// cas particulier pour env !!!!
+		char *check = NULL;
+		char *last = NULL;
+		s_env_path = data->s_env_path;
+		int len = ft_strlen(cmd->cmd_path);
+		dprintf(2, "len cmd->cmpd_path = %d\n", len);
+		last = ft_substr(cmd->cmd_path, len - 3, 3);
+		dprintf(2, "last = %s\n", last);
+		if (ft_strncmp(last, "env", 3) == 0)
+		{
+			j = 0;
+			check = ft_substr(cmd->cmd_path, 0, len - 4);
+			dprintf(2, "check = %s\n", check);
+			while (s_env_path[j])
+			{
+				if ((ft_strncmp(s_env_path[j], check, len - 4) == 0) && ((int)ft_strlen(s_env_path[j]) == len - 4))
+				{
+					dprintf(2, "cas particulier de env - a afficher\n");
+					/*
+					si cmd_opt = uniquement 1 cahr * alors on affiche env et on sort
+					sinon, 
+					
+					sinon on l'efface
+					==> dans le parsing, remplacer /usr/bin/env ou /bin/env ou ... s_env_path avec env : 
+					- si rien alors mettre env (built in)
+					- si qch, supprimer ce token
+					
+					*/
+					break ;
+				}
+				j++;
+			}
+			free (last);
+			last = NULL;
+			free (check);
+		}
+		if (last)
+			free(last);
+
+		/////////////// fin cas particulier
 		// if (!cmd->cmd_path)
 		// {
 		// 	//ft_exit_exec(data);

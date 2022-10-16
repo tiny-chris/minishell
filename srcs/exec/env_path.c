@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 14:24:41 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/16 21:04:32 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 	{
 		// dprintf(2, "env->var_equal = %s et len 'PATH=' = 5\n", env->var_equal);
 		// dprintf (2, "strlen = %lu\n", ft_strlen(env->var_equal));
-		if (ft_strncmp(env->var_equal, "PATH=", ft_strlen(env->var_equal)) == 0)
+		if (ft_strncmp(env->var_equal, "PATH=", 5) == 0 && (ft_strlen(env->var_equal) == 5))
 			break ;
 		env = env->next;
 	}
