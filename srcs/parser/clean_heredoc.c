@@ -6,24 +6,16 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:55:17 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 09:17:45 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:47:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-Step 1
 - pas d'expand
-- si $ dans des quotes : on garde
-- si $ hors quotes :
-	- si plusieurs $ contigus et si quote juste après dernier $
-			- si nb impair --> on supprime 1$
-			- si nb pair --> on garde tel quel
-	- si plusieurs $ contigus et pas de quote juste après
-		--> on garde le même nb de $
-
-Step 2
+- si quote juste après $ --> on supprime 1$
+	$$$'toto'	-->	$$toto
 - supprimer les quotes fermantes (toutes ! et on sort du temp file avec "entrer")
 */
 
@@ -31,38 +23,26 @@ int	ft_undoll_heredoc_len(char *token)
 {
 	int		len;
 	int		i;
-	int		j;
 	char	c;
 
 	i = 0;
-	len = (int) ft_strlen(token);
+	len = ft_strlen(token);
 	while (token[i])
 	{
 		if (token[i] == 34 || token[i] == 39)
 		{
 			c = token[i];
 			i++;
-			// len --;
 			while (token[i] && token[i] != c)
 				i++;
-			// len--;
 		}
 		else if (token[i] == '$')
 		{
-			j = 1;
 			i++;
 			while (token[i] && token[i] == '$')
-			{
 				i++;
-				j++;
-			}
 			if (token[i] == 34 || token[i] == 39)
-			{
-				if (j % 2 != 0)
-					len--;
-			}
-			//else//si pas de quote (\0 ou autr)
-				//rien
+				len--;
 			i--;
 		}
 		i++;
@@ -70,14 +50,11 @@ int	ft_undoll_heredoc_len(char *token)
 	return (len);
 }
 
-//devant des quotes fermées et suivies d'un $
-
 int	ft_fill_undoll_heredoc(t_token *token, int len)
 {
 	char	*undoll_token;
 	int		i;
 	int		j;
-	int		k;
 	char	c;
 
 	i = 0;
@@ -105,26 +82,17 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 		}
 		else if (token->token[i] == '$')
 		{
-			k = 1;
 			i++;
 			while (token->token[i] && token->token[i] == '$')
 			{
+				undoll_token[j] = token->token[i];
 				i++;
-				k++;
-				// undoll_token[j] = token->token[i];
-				// i++;
-				// j++;
+				j++;
 			}
-			if (token->token[i] == 34 || token->token[i] == 39)
-			{
-				if (k % 2 != 0)
-					k--;
-			}
-			while (k > 0)
+			if (token->token[i] != 34 && token->token[i] != 39)
 			{
 				undoll_token[j] = '$';
 				j++;
-				k--;
 			}
 			i--;
 		}
