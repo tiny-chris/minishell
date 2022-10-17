@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/16 16:31:23 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 11:59:03 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,15 @@ void	ft_exit_exec(t_data *data)//, int val_exit)
 // 	if (data->s_env_path != NULL)
 // 		ft_free_tabstr_bin(data->s_env_path, TAB_STRS);
 // }
+
+int	ft_free_data_process(int res, t_data *data)
+{
+	(void) data;
+	rl_clear_history();
+	ft_handle_malloc(0, NULL, 0, NULL);
+	ft_close_std();
+	return (res);
+}
 
 int	ft_free_data_child(int res, t_data *data)
 {
