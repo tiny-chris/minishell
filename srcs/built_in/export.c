@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 18:36:16 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/17 18:59:47 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,37 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 	3. on met à jour val_exit
 		et on change de token
 */
+
+static int	ft_get_export_var(t_data *data, t_token *token, int *res, int flag)
+{
+	int	i;
+
+	i = 0;
+	while (token->token[i] && token->token[i] != '=')
+	{
+		if ((ft_isalnum(token->token[i]) == 0))
+		{
+			*res = ft_msg(1, token->token, ": ", ERRNAM);
+			break ;
+		}
+		else
+		{
+			i++;
+			*res = 0;
+		}
+	}
+	if (token->token[i] == '=')
+		*res = ft_check_export(token, data, flag);
+	return (0);
+}
+
 int	ft_export(t_cmd *cmd, t_data *data, int flag)
 {
 	t_token	*token;
-	int		i;
 	int		res;
 	int		res2;
 
 	token = cmd->token;
-	i = 0;
 	res = 0;
 	res2 = 0;
 	if (token->next == NULL)
@@ -109,30 +131,12 @@ int	ft_export(t_cmd *cmd, t_data *data, int flag)
 		else if ((token->token[0] == '_') && (token->token[1] == '='))
 			res = 0;
 		else
-		{
-			while (token->token[i] && token->token[i] != '=')
-			{
-				// printf("token->token[%d] = %c\n", i, token->token[i]);
-				if ((ft_isalnum(token->token[i]) == 0))
-				{
-					res = ft_msg(1, token->token, ": ", ERRNAM);
-					break ;
-				}
-				else
-				{
-					i++;
-					res = 0;
-				}
-			}
-			if (token->token[i] == '=')
-				res = ft_check_export(token, data, flag);
-		}
+			ft_get_export_var(data, token, &res, flag);
 		if (res == 0 && res2 == 0)
 			res2 = 0;
 		else
 			res2 = 1;
 		token = token->next;
-		i = 0;
 	}
 	return (res2);
 }
