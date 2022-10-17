@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:53:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:37:44 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 		si oui --> affiche token
 		sinon affiche env et on ajoute lstaddback à une nouvelle liste 'new'
 
-int	printed dans t_token;//pour env - init à 0 et passe à 1 si printé dans built-in env
+int	printed dans t_token;//pour env - init à 0 et passe à 1
+si printé dans built-in env
 si printed = 0 alors il faut display à la fin de env
 
 hors loop:
@@ -58,7 +59,6 @@ void	ft_display_env(t_data *data, t_token *token)
 			printf("%s\n", token->token);
 		token = token->next;
 	}
-	//ajout pour réinitialiser tous les printed à 0
 	tmp = token;
 	while (tmp)
 	{
@@ -98,7 +98,7 @@ int	ft_env(t_cmd *cmd, t_data *data)
 	if (env == NULL)
 	{
 		if (token->next == NULL)
-			return (0); //val_exit == 0
+			return (0);
 		return (ft_msg(127, token->token, ": ", ERRFOD));
 	}
 	if (token->next == NULL)
@@ -107,8 +107,6 @@ int	ft_env(t_cmd *cmd, t_data *data)
 		return (0);
 	}
 	token = token->next;
-	// dprintf(2, "val de token->next pour env = %s\n", token->token);
-	// dprintf(2, "val de ft_new_strchr(token->token, '=') = %d\n", ft_new_strchr(token->token, '='));
 	if (ft_new_strchr(token->token, '='))
 	{
 		tmp = token;
