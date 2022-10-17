@@ -12,6 +12,24 @@
 
 #include "minishell.h"
 
+
+static int	ft_btw_quotes(char *line, int i)
+{
+	int		j;
+	char	c;
+
+	j = i;
+	if (line[j] == 34 || line[j] == 39)
+	{
+		c = line[j];
+		j++;
+		while (line[j] && line[j] != c)
+			j++;
+		return (j);
+	}
+	return (i);
+}
+
 /*	2 étapes
 	1. check contenu i+1
 		- espaces uniquement
@@ -56,19 +74,20 @@ int	ft_check_redir(char *line, int i)
 int	ft_redir(char *line)
 {
 	int		i;
-	char	q;
+	// char	q;
 	char	c;
 
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == 34 || line[i] == 39)
-		{
-			q = line[i];
-			i++;
-			while (line[i] != q)
-				i++;
-		}
+		i = ft_btw_quotes(line, i);
+		// if (line[i] == 34 || line[i] == 39)
+		// {
+		// 	q = line[i];
+		// 	i++;
+		// 	while (line[i] && line[i] != q)
+		// 		i++;
+		// }
 		else if (line[i] == 60 || line[i] == 62)
 		{
 			c = line[i];
@@ -84,14 +103,14 @@ int	ft_redir(char *line)
 	return (0);
 }
 
-/*	check if 'quotes englobantes' sont bien fermées
-**	val ASCII simple quote : 39
-**	val ASCII double quote : 34
+/*	<SUMMARY> checks if any open quote has its matching closing quote 
+**	ASCII value for a simple quote : 39 and for a doubble quote : 34
 */
 int	ft_quote(char *line)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	c;
 
 	i = 0;
 	j = 0;
@@ -99,18 +118,10 @@ int	ft_quote(char *line)
 	{
 		if (line[i] == 39 || line[i] == 34)
 		{
-			if (line[i] == 39)
-			{
-				j = i + 1;
-				while (line[j] && line[j] != 39)
-					j++;
-			}
-			else if (line[i] == 34)
-			{
-				j = i + 1;
-				while (line[j] && line[j] != 34)
-					j++;
-			}
+			c = line[i];
+			j = i + 1;
+			while (line[j] && line[j] != c)
+				j++;
 			if (!line[j])
 				return (1);
 			i = j;
@@ -119,10 +130,41 @@ int	ft_quote(char *line)
 	}
 	return (0);
 }
+// int	ft_quote(char *line)
+// {
+// 	int	i;
+// 	int	j;
 
-/* on compte le nombre de pipes hors quotes
+// 	i = 0;
+// 	j = 0;
+// 	while (line[i])
+// 	{
+// 		if (line[i] == 39 || line[i] == 34)
+// 		{
+// 			if (line[i] == 39)
+// 			{
+// 				j = i + 1;
+// 				while (line[j] && line[j] != 39)
+// 					j++;
+// 			}
+// 			else if (line[i] == 34)
+// 			{
+// 				j = i + 1;
+// 				while (line[j] && line[j] != 34)
+// 					j++;
+// 			}
+// 			if (!line[j])
+// 				return (1);
+// 			i = j;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+
+/* <SUMMARY> counts the number of pipes out of those between quotes
 */
-
 int	ft_count_pipe(char *line)
 {
 	int		count;
@@ -174,6 +216,34 @@ int	ft_first_pipe(char *line)
 	return (i);
 }
 
+int	ft_pipe(char *line, int count)
+{
+	int		i;
+
+	i = 0;
+	while (line[i] && count)
+	{
+		if (i == 0)
+			if (ft_first_pipe(line) == -1)
+				return (1);
+		i++;
+		if (line[i] == '\0' || line[i] == '|')
+			return (1);
+		if (line[i] == ' ')
+		{
+			while (line[i] && line[i] == ' ')
+				i++;
+			if (line[i] == '\0' || line[i] == '|')
+				return (1);
+		}
+		i = ft_btw_quotes(line, i);
+		while (line[i] && line[i] != '|')
+			i++;
+		count--;
+	}
+	return (0);
+}
+
 int	ft_pipe(char *line)
 {
 	int		i;
@@ -202,7 +272,7 @@ int	ft_pipe(char *line)
 		{
 			c = line[i];
 			i++;
-			while (line[i] != c)
+			while (line[i] && line[i] != c)
 				i++;
 		}
 		while (line[i] && line[i] != '|')
@@ -214,13 +284,17 @@ int	ft_pipe(char *line)
 
 int	ft_lexer(char *line)
 {
+	int	count;
+
+	count = 0;
 	if (!line)
 		return (0);
 	else
 	{
 		if (ft_quote(line) == 1)
 			return (1);
-		if (ft_pipe(line) == 1)
+		count = ft_count_pipe(line);
+		if (ft_pipe(line, count) == 1)
 			return (2);
 		if (ft_redir(line) == 1)
 			return (3);
