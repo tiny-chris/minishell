@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/17 13:22:31 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 06:41:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,9 @@ int	ft_init_data_1(t_data *data)
 {
 	ft_init_data_0(data);
 	data->env = ft_get_env(data);
-		//TEST1 :
-		ft_free_data_process(1, NULL);
+		// //TEST1 :
 		// ft_handle_malloc(0, NULL, 0, 0);//test1
-		exit (1);//test1
+		// exit (1);//test1
 	data->prompt = ft_strdup("--minishell> ");//à ajuster
 		// // TEST2 :
 		// free(data->prompt);//test2
@@ -179,6 +178,91 @@ int	ft_init_data_1(t_data *data)
 	return (0);
 }
 
+// int	ft_clean_loop(t_data *data)
+// {
+// 	// int	i;
+// 	t_env	*tmp_env;
+// //	char	*tmp_str;
+
+// 	// i = 0;
+// 	dprintf(2, "je rentre dans clean loop\n");
+// 	ft_free_tabstr_bin(data->built_in, TAB_STRS);
+// 	// if (data->built_in != NULL)
+// 	// {
+// 	// 	while (data->built_in[i])
+// 	// 	{
+// 	// 		if (data->built_in[i])
+// 	// 			ft_handle_malloc(DELONE, data->built_in[i], 0, 0);
+// 	// 		i++;
+// 	// 	}
+// 	// 	ft_handle_malloc(DELONE, data->built_in, 0, 0);
+// 	// 	//  ft_free_tabstr(data->built_in);
+// 	// }
+// 	dprintf(2, "built-in OK--------\n");
+// 	if (data->cwd != NULL)
+// 	{
+// 		ft_handle_malloc(DELONE, data->cwd, 0, NULL);
+// 		// free(data->cwd);
+// 	}
+// 	if (data->oldpwd != NULL)
+// 	{
+// 		ft_handle_malloc(DELONE, data->oldpwd, 0, NULL);
+// 		// free(data->oldpwd);
+// 	}
+// 	if (data->home != NULL)
+// 	{
+// 		ft_handle_malloc(DELONE, data->home, 0, NULL);
+// 		// free(data->home);
+// 	}
+// 	dprintf(2, "cwd / oldpwd / home OK--------\n");
+// 	// free(data->prompt, 0, 0);
+// 	ft_handle_malloc(DELONE, data->prompt, 0, NULL);
+// 	dprintf(2, "--------------------------------clean-loop : suppr env\n");
+// 	if (data->env != NULL)
+// 	{
+// 		tmp_env = NULL;
+// 		while (data->env)
+// 		{
+// 			tmp_env = data->env->next;
+// 			if (data->env->var)
+// 				ft_handle_malloc(DELONE, data->env->var, 0, NULL);
+// 			if (data->env->var_equal)
+// 				ft_handle_malloc(DELONE, data->env->var_equal, 0, NULL);
+// 			if (data->env->content)
+// 				ft_handle_malloc(DELONE, data->env->content, 0, NULL);
+// 			if (data->env->envp)
+// 				ft_handle_malloc(DELONE, data->env->envp, 0, NULL);
+// 			data->env->head_addr = NULL;
+// 			// data->env->next = NULL;
+// 			// free(data->env);
+// 			// data->env = NULL;
+// 			ft_handle_malloc(DELONE, data->env, 0, NULL);
+// 			data->env = tmp_env;
+// 		}
+// 	}
+// 	//	ft_free_env(&(data->env));
+// 	dprintf(2, "--------------------------------clean-loop : suppr env done\n");
+// 	dprintf(2, "--------------------------------clean-loop : suppr env_PATH start\n");
+// 	if (data->env_path != NULL)
+// 	{
+// 		tmp_env = NULL;
+// 		while (data->env_path)
+// 		{
+// 			tmp_env = data->env_path->next;
+// 			if (data->env_path->content)
+// 				ft_handle_malloc(DELONE, data->env_path->content, 0, NULL);
+// 			data->env_path->head_addr = NULL;
+// 			ft_handle_malloc(DELONE, data->env_path, 0, NULL);
+// 			data->env_path = tmp_env;
+// 		}
+// 	}
+// 		// ft_free_env(&(data->env_path));
+// 	dprintf(2, "--------------------------------clean-loop : suppr env_PATH done\n");
+// 	if (data->s_env_path)
+// 		ft_handle_malloc(DELONE, data->s_env_path, 0, NULL);
+// 		//ft_free_tabstr(data->s_env_path);
+// 	return (0);
+// }
 
 void	ft_minishell(t_data *data)
 {
@@ -200,36 +284,35 @@ void	ft_minishell(t_data *data)
 }
 
 /*	Clean data->cmd
-// */
-// int	ft_clean_cmdline(t_data *data)
-// {
-// 	if (data != NULL)
-// 	{
-// 		if (data->line)
-// 			ft_handle_malloc(DELONE, data->line, 0, NULL);
-// 		// {
-// 		// 	free(data->line);
-// 		// 	data->line = NULL;
-// 		// }
-// 		if (data->str_exit)
-// 			ft_handle_malloc(DELONE, data->str_exit, 0, NULL);
-// 		// {
-// 		// 	free(data->str_exit);
-// 		// 	data->str_exit = NULL;
-// 		// }
-// 	}
-// 	return (0);
-// }
+*/
+int	ft_clean_cmdline(t_data *data)
+{
+	if (data != NULL)
+	{
+		if (data->line)
+			ft_handle_malloc(DELONE, data->line, 0, NULL);
+		// {
+		// 	free(data->line);
+		// 	data->line = NULL;
+		// }
+		if (data->str_exit)
+			ft_handle_malloc(DELONE, data->str_exit, 0, NULL);
+		// {
+		// 	free(data->str_exit);
+		// 	data->str_exit = NULL;
+		// }
+	}
+	return (0);
+}
 
 void	ft_exit_ctrl_d(t_data *data)
 {
 	write(2, "exit\n", 5);
-	(void) data;
+	ft_free_cmd(&(data->cmd)); // A AJUSTER
+	ft_clean_cmdline(data);
+	ft_clean_cmdline(data);
 	rl_clear_history();
 	ft_handle_malloc(0, NULL, 0, NULL);
-	// ft_free_cmd(&(data->cmd)); // A AJUSTER
-	// ft_clean_cmdline(data);
-	// ft_clean_cmdline(data);
 	// ft_clean_loop(data);
 	exit(0);
 }

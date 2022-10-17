@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/17 12:04:35 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 05:18:57 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,9 @@ typedef struct s_data
 //int		main(int argc, char **argv, char **envp);
 //int		main(void);//
 void	ft_minishell(t_data *data);
-
+// int		ft_clean_loop(t_data *data);
+int		ft_clean_cmdline(t_data *data);
+void	ft_exit_ctrl_d(t_data *data);
 
 // t_env	*ft_get_env(char **envp, t_data *data);
 t_env	*ft_get_env(t_data *data);
@@ -344,7 +346,7 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
 
-/*	exec CLEAN & EXIT */
+/*	exec CLEAN */
 
 int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
 void	ft_close_fd(t_data *data);
@@ -352,11 +354,9 @@ void	ft_close_std(void);
 void	ft_exit_exec(t_data *data);//, int val_exit);
 void	ft_clean_exec(t_data *data);// pour remplacer petit à petit ft_exit_exec
 int		ft_free_data_child(int res, t_data *data);
-int		ft_free_data_process(int res, t_data *data);
-void	ft_exit_ctrl_d(t_data *data);
 
-// int		ft_clean_cmdline(t_data *data);
-// int		ft_clean_loop(t_data *data);
+int		ft_clean_cmdline(t_data *data);
+int		ft_clean_loop(t_data *data);
 
 int		ft_free_exit(int val_exit);
 
