@@ -6,27 +6,34 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:55:17 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:47:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 14:26:45 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-- pas d'expand
-- si quote juste après $ --> on supprime 1$
-	$$$'toto'	-->	$$toto
-- supprimer les quotes fermantes (toutes ! et on sort du temp file avec "entrer")
+/*	Step 1
+	- pas d'expand
+	- si $ dans des quotes : on garde
+	- si $ hors quotes :
+		- si plusieurs $ contigus et si quote juste après dernier $
+				- si nb impair --> on supprime 1$
+				- si nb pair --> on garde tel quel
+		- si plusieurs $ contigus et pas de quote juste après
+			--> on garde le même nb de $
+	Step 2- si quote juste après $ --> on supprime 1$
+	- supprimer les quotes fermantes (toutes ! et on sort du temp file avec "entrer")
 */
 
 int	ft_undoll_heredoc_len(char *token)
 {
 	int		len;
 	int		i;
+	int		j;
 	char	c;
 
 	i = 0;
-	len = ft_strlen(token);
+	len = (int) ft_strlen(token);
 	while (token[i])
 	{
 		if (token[i] == 34 || token[i] == 39)
@@ -38,11 +45,16 @@ int	ft_undoll_heredoc_len(char *token)
 		}
 		else if (token[i] == '$')
 		{
+			j = 1;
 			i++;
 			while (token[i] && token[i] == '$')
+			{
 				i++;
+				j++;
+			}	
 			if (token[i] == 34 || token[i] == 39)
-				len--;
+				if (j % 2 != 0)
+					len--;
 			i--;
 		}
 		i++;
@@ -55,14 +67,12 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 	char	*undoll_token;
 	int		i;
 	int		j;
+	int		k;
 	char	c;
 
 	i = 0;
 	j = 0;
 	undoll_token = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
-	// undoll_token = malloc(sizeof(char) * (len + 1));
-	// if (!undoll_token)
-	// 	return (1);// FREE TOUT CE QU IL Y A A FREE
 	while (token->token[i])
 	{
 		if (token->token[i] == 34 || token->token[i] == 39)
@@ -82,17 +92,23 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 		}
 		else if (token->token[i] == '$')
 		{
+			k = 1;
 			i++;
 			while (token->token[i] && token->token[i] == '$')
 			{
-				undoll_token[j] = token->token[i];
 				i++;
-				j++;
+				k++;
+			}	
+			if (token->token[i] == 34 || token->token[i] == 39)
+			{
+				if (k % 2 != 0)
+					k--;
 			}
-			if (token->token[i] != 34 && token->token[i] != 39)
+			while (k > 0)
 			{
 				undoll_token[j] = '$';
 				j++;
+				k--;
 			}
 			i--;
 		}
@@ -105,7 +121,6 @@ int	ft_fill_undoll_heredoc(t_token *token, int len)
 	}
 	undoll_token[j] = '\0';
 	ft_handle_malloc(DELONE, token->token, 0, NULL);
-	// free(token->token);
 	token->token = undoll_token;
 	return (0);
 }
