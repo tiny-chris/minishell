@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:30:46 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 05:51:34 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 15:09:10 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,34 +117,49 @@ int	ft_get_files_io(t_data *data)
 			if (tok_redir->type == GREAT)
 			{
 				tok_redir = tok_redir->next;
-				tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
-				if (tok_redir->fd < 0)
+				if (cmd->file_err != 1)
 				{
-					cmd->file_err = 1;
-					g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
+					tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
+					if (tok_redir->fd < 0)
+					{
+						cmd->file_err = 1;
+						g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
+					}
 				}
+				else
+					tok_redir->fd = -1;
 				cmd->outfile = tok_redir->fd;
 			}
 			else if (tok_redir->type == D_GREAT)
 			{
 				tok_redir = tok_redir->next;
-				tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_APPEND, 0644);
-				if (tok_redir->fd < 0)
+				if (cmd->file_err != 1)
 				{
-					cmd->file_err = 1;
-					g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
+					tok_redir->fd = open(tok_redir->token, O_CREAT | O_RDWR | O_APPEND, 0644);
+					if (tok_redir->fd < 0)
+					{
+						cmd->file_err = 1;
+						g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
+					}
 				}
+				else
+					tok_redir->fd = -1;
 				cmd->outfile = tok_redir->fd;
 			}
 			else if (tok_redir->type == LESS)
 			{
 				tok_redir = tok_redir->next;
-				tok_redir->fd = open(tok_redir->token, O_RDONLY);
-				if (tok_redir->fd < 0)
+				if (cmd->file_err != 1)
 				{
-					cmd->file_err = 1;
-					g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
+					tok_redir->fd = open(tok_redir->token, O_RDONLY);
+					if (tok_redir->fd < 0)
+					{
+						cmd->file_err = 1;
+						g_val_exit = ft_msg(errno, tok_redir->token, ": ", strerror(errno)); // exit avec free
+					}
 				}
+				else
+					tok_redir->fd = -1;
 				cmd->infile = tok_redir->fd;
 			}
 			else if (tok_redir->type == D_LESS)
