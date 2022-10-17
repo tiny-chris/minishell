@@ -29,6 +29,7 @@ SRCS 		:= \
 			parser/env.c \
 			parser/env_list.c \
 			parser/lexer.c \
+			parser/lexer2.c \
 			parser/get_commands.c \
 			parser/cmd_list.c \
 			parser/built_in.c \
