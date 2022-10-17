@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/16 20:03:38 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 05:18:57 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define ERRSTX "syntax error near unexpected token"
+# define ERRSTX "Syntax error near unexpected token"
 # define ERRMAL "Error: memory allocation failure"
 # define ERRCMD "command not found"
 # define ERRDIR "is a directory"
@@ -138,6 +138,7 @@ typedef struct s_data
 {
 	char			*line;
 	char			*prompt;
+	char			**environ;
 	t_env			*env;
 	char			*cwd;//current work directory
 	char			*oldpwd;
@@ -163,10 +164,12 @@ void	ft_minishell(t_data *data);
 int		ft_clean_cmdline(t_data *data);
 void	ft_exit_ctrl_d(t_data *data);
 
-t_env	*ft_get_env(char **envp, t_data *data);
+// t_env	*ft_get_env(char **envp, t_data *data);
+t_env	*ft_get_env(t_data *data);
 char	**ft_built_in(void);
 int		ft_only_space(char *line);
-int		ft_init_data_1(t_data *data, char **envp);
+// int		ft_init_data_1(t_data *data, char **envp);
+int		ft_init_data_1(t_data *data);
 void	ft_get_home(t_data *data, int flag);
 
 /*	env_path */
@@ -416,5 +419,9 @@ void	ft_free_bin(t_bin **bin);
 // void	ft_lstdelone_bin(t_bin *node, int flag);
 // void	ft_lstclearone_bin(t_bin **bin_head, void *ptr, int flag);
 // void	ft_free_bin(t_bin **bin_head, int flag);
+
+/*	cas particulier pour env	*/
+
+int		ft_spec_env_case(t_cmd *cmd, t_data *data);
 
 #endif

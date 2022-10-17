@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/16 20:16:06 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 06:41:09 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ int	g_val_exit;
 
 static void	ft_init_data_0(t_data *data)
 {
+	extern char	**environ;
+
 	data->line = NULL;
 	data->prompt = NULL;
+	data->environ = environ;
 	data->env = NULL;
 	data->cwd = NULL;
 	data->oldpwd = NULL;
@@ -118,10 +121,10 @@ void	ft_get_home(t_data *data, int flag)
 // }
 
 
-int	ft_init_data_1(t_data *data, char **envp)
+int	ft_init_data_1(t_data *data)
 {
 	ft_init_data_0(data);
-	data->env = ft_get_env(envp, data);
+	data->env = ft_get_env(data);
 		// //TEST1 :
 		// ft_handle_malloc(0, NULL, 0, 0);//test1
 		// exit (1);//test1
@@ -267,11 +270,10 @@ void	ft_minishell(t_data *data)
 		g_val_exit = ft_msg(2, "", "", ERRSTX);
 	else
 	{
-		ft_parser(data); // peut etre faire un if == 0 ou 1
-		ft_exec(data); // peut etre faire un if == 0 ou 1
+		ft_parser(data);
+		ft_exec(data);
 		ft_free_cmd(&(data->cmd)); // A AJUSTER
 	}
-	// ft_clean_cmdline(data);
 	if (data != NULL)
 	{
 		if (data->line)
@@ -315,13 +317,13 @@ void	ft_exit_ctrl_d(t_data *data)
 	exit(0);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv)
 {
 	t_data	data;
 
 	if (argc == 1 && !argv[1])
 	{
-		if (ft_init_data_1(&data, envp))
+		if (ft_init_data_1(&data))
 			return (1);
 		while (1)
 		{
@@ -336,7 +338,6 @@ int	main(int argc, char **argv, char **envp)
 			}
 		}
 		rl_clear_history();
-	//	ft_clean_loop(&data);
 		ft_handle_malloc(0, NULL, 0, NULL);
 		return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:49:02 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 06:20:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	ft_tokenizer(t_data *data)
 		ft_clean_token(cmd, data);
 //		ft_del_empty_token(&cmd, data);
 		ft_del_empty_token(cmd, data);
+		ft_spec_env_case(cmd, data);// vérifier que c'est bien placé par rapport à type_token
 		if (cmd->token)
 		{
 			// dprintf(2, "passe avant type token\n");

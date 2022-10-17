@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/* <SUMMARY> Functions for linked list 'env'
+/* <SUMMARY> Functions for linked list 't_env'
 */
 t_env	*ft_lstlast_env(t_env *lst)
 {
@@ -159,51 +159,51 @@ void	ft_free_env(t_env **env)
 
 // A VOIR SI ON LES UTILISE...
 
-static int	ft_lstclearfirst_env(t_env **env_head)
-{
-	t_env	*todel;
-	t_env	*tmp;
+// static int	ft_lstclearfirst_env(t_env **env_head)
+// {
+// 	t_env	*todel;
+// 	t_env	*tmp;
 
-	todel = (*env_head);
-	tmp = (*env_head)->next;
-	ft_handle_malloc(DELONE, todel, 0, NULL);
-	ft_lstdelone_env(todel);
-	(*env_head) = tmp;
-	return (0);
-}
+// 	todel = (*env_head);
+// 	tmp = (*env_head)->next;
+// 	ft_handle_malloc(DELONE, todel, 0, NULL);
+// 	ft_lstdelone_env(todel);
+// 	(*env_head) = tmp;
+// 	return (0);
+// }
 
-void	ft_lstclearone_env(t_env **env_head, t_env *ptr)
-{
-//	t_env	**env_head;
-	t_env	*env;
-	t_env	*todel;
-	t_env	*tmp;
+// void	ft_lstclearone_env(t_env **env_head, t_env *ptr)
+// {
+// //	t_env	**env_head;
+// 	t_env	*env;
+// 	t_env	*todel;
+// 	t_env	*tmp;
 
-	if (env_head == NULL)
-		(*env_head) = ptr->head_addr;
-	if (ptr->head_addr == NULL)
-		return ;
-	env = (*env_head);
-	todel = NULL;
-	tmp = NULL;
-	if (!(*env_head) || !ptr)
-		return ;
-	if (env == ptr)
-	{
-		ft_lstclearfirst_env(env_head);
-		return ;
-	}
-	while (env != NULL)
-	{
-		if (env->next && env->next == ptr)
-		{
-			todel = env->next;
-			tmp = env->next->next;
-			ft_handle_malloc(DELONE, todel, 0, NULL);
-			ft_lstdelone_env(todel);// corriger/checker le flag ///
-			env->next = tmp;
-			break ;
-		}
-		env = env->next;
-	}
-}
+// 	if (env_head == NULL)
+// 		(*env_head) = ptr->head_addr;
+// 	if (ptr->head_addr == NULL)
+// 		return ;
+// 	env = (*env_head);
+// 	todel = NULL;
+// 	tmp = NULL;
+// 	if (!(*env_head) || !ptr)
+// 		return ;
+// 	if (env == ptr)
+// 	{
+// 		ft_lstclearfirst_env(env_head);
+// 		return ;
+// 	}
+// 	while (env != NULL)
+// 	{
+// 		if (env->next && env->next == ptr)
+// 		{
+// 			todel = env->next;
+// 			tmp = env->next->next;
+// 			ft_handle_malloc(DELONE, todel, 0, NULL);
+// 			ft_lstdelone_env(todel);// corriger/checker le flag ///
+// 			env->next = tmp;
+// 			break ;
+// 		}
+// 		env = env->next;
+// 	}
+// }

@@ -6,19 +6,14 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:06:17 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 06:49:32 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*	FUNCTIONS FOR LINKED LIST 'cmd'
-**	- int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline)
-**	- t_cmd	*ft_lstlast_cmd(t_cmd *lst)
-**	- void	ft_free_cmd(t_cmd **cmd)
-**	- void	ft_lstdelone_cmd(t_cmd *node)
+/* <SUMMARY> Functions for linked list 't_cmd'
 */
-
 t_cmd	*ft_lstlast_cmd(t_cmd *lst)
 {
 	t_cmd	*node;
@@ -37,13 +32,6 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline, t_data *data)
 	t_cmd	*last;
 
 	new = ft_handle_malloc(MALLOC_M + LST_CMD, NULL, 1, data);
-	// new = malloc(sizeof(t_cmd));
-	// if (!new)
-	// {
-	// 	dprintf(2, "CA BUGGGG !!!!!!!!!!!!!!!!!!!!!!!\n");
-	// 	//ft_free_cmd(cmd);// A FAIRE !!
-	// 	return (1);
-	// }
 	new->raw_cmd = ft_strdup(cmdline);
 	ft_handle_malloc(ADD_M + TAB_STR1, new->raw_cmd, 0, data);
 	new->unspace_cmd = NULL;
