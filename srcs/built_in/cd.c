@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/16 20:12:35 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:40:44 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,11 @@
 
 int	ft_update_cwd(t_token *t, t_data *data, int flag)
 {
-	// dprintf(2, "test\n");
-	// dprintf(2, "1. data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);
 	if (data->oldpwd)
 		ft_handle_malloc(DELONE, data->oldpwd, 0, NULL);
-	// {
-	// 	free(data->oldpwd);
-	// 	data->oldpwd = NULL;
-	// }
 	data->oldpwd = ft_strdup(data->cwd);
 	ft_handle_malloc(flag + TAB_STR1, data->oldpwd, 0, data);
-	// if (!data->oldpwd)
-	// 	return ;//free malloc !!
 	ft_handle_malloc(DELONE, data->cwd, 0, NULL);
-	// free(data->cwd);
-	// data->cwd = NULL;
 	if (t && (ft_strncmp(t->token, "//", 2) == 0 && ft_strlen(t->token) == 2))
 		data->cwd = ft_strdup("//");
 	else
@@ -47,10 +37,6 @@ int	ft_update_cwd(t_token *t, t_data *data, int flag)
 			return (ft_msg(1, "error retrieving current directory: ", "getcwd: ", "cannot access parent directories: No such file or directory"));//
 	}
 	ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
-	// dprintf(2, "test2\n");
-	// if (!data->cwd)
-	// 	return ;//free malloc !!
-	// dprintf(2, "updated: data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);//
 	return (0);
 }
 
@@ -122,12 +108,8 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	oldpwd = NULL;
 	pwd_null = 0;
 	token = cmd->token->next;
-	// dprintf(2, "rentre dans update pwd\n");
-	// dprintf(2, "token = %p\n", token);
 	if (ft_update_cwd(token, data, flag))
 		return (1);
-	// dprintf(2, "data->cwd = %s et data->oldpwd = %s\n", data->cwd, data->oldpwd);
-	//mise à jour PWD
 	while (env)
 	{
 		if (ft_strncmp(env->var_equal, "PWD=", 4) == 0 && (ft_strlen(env->var_equal) == 4))
@@ -136,11 +118,7 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 			{
 				oldpwd = ft_strdup(env->content);
 				ft_handle_malloc(flag + TAB_STR1, oldpwd, 0, data);
-				// if (!oldpwd)
-				// 	return ; //free malloc!!
 				ft_handle_malloc(DELONE, env->content, 0, NULL);
-				// free(env->content);
-				// env->content = NULL;
 			}
 			if (token && ft_strncmp(token->token, "//", 2) == 0 && ft_strlen(token->token) == 2)
 				env->content = ft_strdup(token->token);
@@ -150,100 +128,65 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 				if (!env->content)
 					return (ft_msg(1, "error retrieving current directory: ", "getcwd: ", "cannot access parent directories: No such file or directory"));//
 			}
-			// env->content = getcwd(NULL, 0);
 			ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
-			// if (!env->content)
-			// 	return ; //free malloc!!
 			if (env->envp)
 				ft_handle_malloc(DELONE, env->envp, 0, NULL);
-			// {
-			// 	free(env->envp);
-			// 	env->envp = NULL;
-			// }
 			env->envp = ft_strjoin(env->var_equal, env->content);
 			ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-			// if (!env->envp)
-			// 	return ;//free malloc !!
 			break ;
 		}
 		env = env->next;
 	}
-	if (env == NULL)//on ne trouve pas PWD --> unset
+	if (env == NULL)
 	{
 		oldpwd = NULL;
 		pwd_null = 1;
 	}
-	//mise à jour OLDPWD
 	env = data->env;
 	while (env)
 	{
 		if (ft_strncmp(env->var_equal, "OLDPWD=", 7) == 0 \
 			&& (ft_strlen(env->var_equal) == 7))
 		{
-			if (pwd_null == 1)//si PWD n'existe pas
+			if (pwd_null == 1)
 			{
-				if (env->content)// i.e. 'OLDPWD=content' dans env
+				if (env->content)
 				{
 					ft_handle_malloc(DELONE, env->content, 0, NULL);
-					// free(env->content);
-					// env->content = NULL;
 					if (env->envp)
 						ft_handle_malloc(DELONE, env->envp, 0, NULL);
-						// free(env->envp);
-					env->envp = ft_strdup("OLDPWD=");//ft_strdup(env->var_equal);
+					env->envp = ft_strdup("OLDPWD=");
 					ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-					// if (!env->envp)
-					// 	return ; //free malloc !!
 				}
-				else// (!env->content), si OLDPWD est vide 'OLDPWD=' dans env
+				else
 				{
-					// dprintf(2, "on est dans le cas PWD unset et OLDPWD=\n");
 					env->content = ft_strdup(data->oldpwd);
 					ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
-					// if (!env->content)
-					// 	return ; //free malloc!!
 					if (env->envp)
 						ft_handle_malloc(DELONE, env->envp, 0, NULL);
-						// free(env->envp);
 					env->envp = ft_strjoin(env->var_equal, env->content);
 					ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-					// if (!env->envp)
-					// 	return ; //free malloc !!
 				}
 			}
-			else// (pwd_null == 0) i.e. si PWD existe
+			else
 			{
-				if (!oldpwd)//si PWD est vide i.e. 'PWD=' dans env
+				if (!oldpwd)
 				{
 					ft_handle_malloc(DELONE, env->content, 0, NULL);
-					// if (env->content)
-					// 	free(env->content);
-					// env->content = NULL;
 					if (env->envp)
 						ft_handle_malloc(DELONE, env->envp, 0, NULL);
-						// free(env->envp);
-					env->envp = ft_strdup("OLDPWD=");//ft_strdup(env->var_equal);
+					env->envp = ft_strdup("OLDPWD=");
 					ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-					// if (!env->envp)
-					// 	return ; //free malloc !!
 				}
-				else//if (oldpwd)
+				else
 				{
 					ft_handle_malloc(DELONE, env->content, 0, NULL);
-					// if (env->content)
-					// 	free(env->content);
 					env->content = ft_strdup(oldpwd);
 					ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
-					// if (!env->content)
-					// 	return ; //free malloc!!
-					//free(oldpwd);
 					if (env->envp)
 						ft_handle_malloc(DELONE, env->envp, 0, NULL);
-						// free(env->envp);
 					env->envp = ft_strjoin(env->var_equal, env->content);
 					ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-					// if (!env->envp)
-					// 	return ; //free malloc !!
 				}
 			}
 			break ;
@@ -252,7 +195,7 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	}
 	if (oldpwd)
 		ft_handle_malloc(DELONE, oldpwd, 0, NULL);
-	return (0) ;
+	return (0);
 }
 
 // for "stale file handle"
@@ -279,37 +222,25 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 	token = token->next;
 	if (token == NULL)
 	{
-		// dprintf(2, "cd --> rentre dans token == NULL\n");
 		ft_get_home(data, flag);
-		// dprintf(2, "data->home == %p\n", data->home);
 		if (data->home == NULL)
-		{
-			// dprintf(2, "data->home == NULL\n");
 			return (ft_msg(1, cmd->token->token, ": ", ERRHOM));
-		}
 		else if (data->home[0] == '\0')
-		{
-			// dprintf(2, "data->home[0] = 0\n");
 			return (0);
-		}
 		if (chdir(data->home) == -1)
 			return (ft_msg(errno, data->home, ": ", strerror(errno)));
-		// printf("cd tout seul\n");//
 		ft_update_pwd(cmd, data, flag);
 		return (0);
 	}
 	if (token->next)
 		return (ft_msg(1, cmd->token->token, ": ", ERRARG));
-	// dprintf(2, "cd puis token = %s\n", token->token);
 	if (access(token->token, F_OK) == 0)
 	{
 		directory = opendir(token->token);
-		// dprintf(2, "cd --> directory = %p\n", directory);
 		if (directory == NULL)
 			return (ft_msg(1, token->token, ": ", ERRNDR));
 		closedir(directory);
 		res = chdir(token->token);
-		// dprintf(2, "cd --> chdir = %d\n", res);//test
 		if (res != 0)
 			return (ft_msg(1, token->token, ": ", strerror(errno)));
 		if (ft_update_pwd(cmd, data, flag))
@@ -317,13 +248,5 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 		return (0);
 	}
 	else
-	{
-		// res = chdir(token->token);
-		// if (res != 0)
-		// {
-		// 	dprintf(2, "check error\n");
-		// 	return (ft_msg(1, token->token, ": yyy", strerror(errno)));//
-		// }
 		return (ft_msg(1, token->token, ": ", strerror(errno)));
-	}
 }
