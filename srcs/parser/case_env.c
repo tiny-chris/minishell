@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:07:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 06:53:55 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 07:00:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,12 @@ static int	ft_check_env_case(char *token, int len, char **s_path)
 	char	*check;
 
 	i = -1;
-	// dprintf(2, "passe dans check env case\n");//
-	if (len < 4)
-		return (0);
 	last = ft_substr(token, len - 3, 3);
 	ft_handle_malloc(ADD_M + TAB_STR1, last, 3, NULL);
 	if (ft_strncmp(last, "env", 3) != 0)
 		return (ft_handle_malloc(DELONE, last, 0, NULL), 0);
-	// dprintf(2, "last = %s\n", last);//
 	check = ft_substr(token, 0, len - 4);
 	ft_handle_malloc(ADD_M + TAB_STR1, check, 0, NULL);
-	// dprintf(2, "check = %s\n", check);//
 	while (s_path[++i])
 	{
 		if ((ft_strncmp(s_path[i], check, len - 4) == 0) \
@@ -82,7 +77,6 @@ static void	ft_deal_env_case(t_cmd *cmd, t_data *data)
 	t_token	*tok;
 
 	(void) data;
-	// dprintf(2, "deal env case rentre dans ce cas\n");
 	tok = cmd->token;
 	if (tok->next == NULL)
 	{
@@ -108,7 +102,6 @@ static void	ft_deal_env_case(t_cmd *cmd, t_data *data)
 
 int	ft_spec_env_case(t_cmd *cmd, t_data *data)
 {
-	// dprintf(2, "rentre dans spec env case\n");
 	t_token	*token;
 	int	len;
 	char	**s_path;
@@ -120,11 +113,10 @@ int	ft_spec_env_case(t_cmd *cmd, t_data *data)
 	//if (token->type != COMMAND)
 	//	return (0);
 	len = (int)ft_strlen(token->token);
-	// dprintf(2, "len = %d\n", len);
+	if (len < 4)
+		return (0);
 	s_path = data->s_env_path;
-	// if (s_path)
-	// 	dprintf(2, "s_path ok et s_path[0] = %s\n", s_path[0]);
-	if (ft_check_env_case(token->token, len, s_path))
+	if (s_path && ft_check_env_case(token->token, len, s_path))
 		ft_deal_env_case(cmd, data);
 	return (0);
 }
