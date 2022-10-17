@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/17 05:18:57 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:06:39 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,6 +382,8 @@ int		ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
 int		ft_update_cwd(t_token *token, t_data *data, int flag);
 
 int		ft_exit(t_cmd *cmd, t_data *data, int flag);
+int		ft_check_digit(char *token);
+char	*ft_get_check2(char *token, int flag, t_data *data);
 
 /*  signaux  */
 

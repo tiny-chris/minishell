@@ -55,6 +55,7 @@ SRCS 		:= \
 			built_in/unset.c \
 			built_in/cd.c \
 			built_in/exit.c \
+			built_in/exit_utils.c \
 			exec/exec.c \
 			exec/child_process.c\
 			exec/parent_process.c\
