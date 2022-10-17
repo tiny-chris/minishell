@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/17 17:41:17 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:00:32 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,10 @@ void 	ft_get_env_path(t_data *data, int flag);
 // int		ft_lstadd_env2(t_env **env, char *s_env_path_i, int flag);
 int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag);
 
+
+
+
+
 /*	***** LEXER *****	*/
 /*	*****************	*/
 
@@ -190,7 +194,6 @@ int		ft_first_pipe(char *line);
 int		ft_redir(char *line);
 int		ft_check_redir(char *line, int i);
 
-
 /*	***** PARSER *****	*/
 /*	******************	*/
 
@@ -200,8 +203,6 @@ int		ft_parser(t_data *data);
 
 t_cmd	*ft_get_commands(t_data *data);
 char	*ft_get_raw_cmd(t_data *data, int i);
-//int		ft_get_pipe(char *line, int i);// mise en static
-//int		ft_next_pipe(char *line, int i);// mise en static
 
 /*	Step 2	del_spaces */
 

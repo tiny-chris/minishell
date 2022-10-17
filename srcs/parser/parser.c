@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:00:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 14:34:26 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/17 17:58:14 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*	Appeler cette fonction dans minishell.c DANS la boucle infinie
-*/
 
 static int	ft_del_tabs(t_data *data)
 {
@@ -39,10 +36,12 @@ static int	ft_del_tabs(t_data *data)
 	return (0);
 }
 
+/*	<SUMMARY> parses the command line - main function
+*/
 int	ft_parser(t_data *data)
 {
 	data->nb_pipes = ft_count_pipe(data->line);
-	data->cmd = ft_get_commands(data);//separation des commandes en fonction du nb de pipes
+	data->cmd = ft_get_commands(data);
 	ft_del_tabs(data);
 	ft_del_spaces(data);
 	ft_get_redir(data);
