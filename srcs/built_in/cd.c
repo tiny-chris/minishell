@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 18:43:01 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 18:48:02 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,112 +29,6 @@ int	ft_update_cwd(t_token *t, t_data *data, int flag)
 	}
 	ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
 	return (0);
-}
-
-static void	ft_handle_malloc_pwd(t_env *env, t_data *data, int flag)
-{
-	ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
-	if (env->envp)
-		ft_handle_malloc(DELONE, env->envp, 0, NULL);
-	env->envp = ft_strjoin(env->var_equal, env->content);
-	ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-}
-
-static int	ft_pwd_content(t_env *env, t_data *data, t_token *token, int flag)
-{
-	if (env->content)
-	{
-		data->tmp_oldpwd = ft_strdup(env->content);
-		ft_handle_malloc(flag + TAB_STR1, data->tmp_oldpwd, 0, data);
-		ft_handle_malloc(DELONE, env->content, 0, NULL);
-	}
-	if (token && ft_strncmp(token->token, "//", 2) == 0
-		&& ft_strlen(token->token) == 2)
-		env->content = ft_strdup(token->token);
-	else
-	{
-		env->content = getcwd(NULL, 0);
-		if (!env->content)
-			return (ft_msg(1, ERRCWD, "", ""));
-	}
-	return (0);
-}
-
-static int	ft_new_pwd(t_env *env, t_data *data, t_token *token, int flag)
-{
-	while (env)
-	{
-		if (ft_strncmp(env->var_equal, "PWD=", 4) == 0
-			&& (ft_strlen(env->var_equal) == 4))
-		{
-			if (ft_pwd_content(env, data, token, flag))
-				return (1);
-			ft_handle_malloc_pwd(env, data, flag);
-			break ;
-		}
-		env = env->next;
-	}
-	return (0);
-}
-
-static void	ft_oldpwd_nopwd(t_env *env, t_data *data, int flag)
-{
-	if (env->content)
-	{
-		ft_handle_malloc(DELONE, env->content, 0, NULL);
-		if (env->envp)
-			ft_handle_malloc(DELONE, env->envp, 0, NULL);
-		env->envp = ft_strdup("OLDPWD=");
-		ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-	}
-	else
-	{
-		env->content = ft_strdup(data->oldpwd);
-		ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
-		if (env->envp)
-			ft_handle_malloc(DELONE, env->envp, 0, NULL);
-		env->envp = ft_strjoin(env->var_equal, env->content);
-		ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-	}
-}
-
-static void	ft_oldpwd_pwd(t_env *env, t_data *data, int flag)
-{
-	if (!data->tmp_oldpwd)
-	{
-		ft_handle_malloc(DELONE, env->content, 0, NULL);
-		if (env->envp)
-			ft_handle_malloc(DELONE, env->envp, 0, NULL);
-		env->envp = ft_strdup("OLDPWD=");
-		ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-	}
-	else
-	{
-		ft_handle_malloc(DELONE, env->content, 0, NULL);
-		env->content = ft_strdup(data->tmp_oldpwd);
-		ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
-		if (env->envp)
-			ft_handle_malloc(DELONE, env->envp, 0, NULL);
-		env->envp = ft_strjoin(env->var_equal, env->content);
-		ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
-	}
-}
-
-static void	ft_new_oldpwd(t_env *env, t_data *data, int flag, int pwd_null)
-{
-	while (env)
-	{
-		if (ft_strncmp(env->var_equal, "OLDPWD=", 7) == 0 \
-			&& (ft_strlen(env->var_equal) == 7))
-		{
-			if (pwd_null == 1)
-				ft_oldpwd_nopwd(env, data, flag);
-			else
-				ft_oldpwd_pwd(env, data, flag);
-			break ;
-		}
-		env = env->next;
-	}
 }
 
 int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
@@ -162,7 +56,7 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	return (0);
 }
 
-static int	ft_exec_cd(t_token *token, t_cmd *cmd, t_data *data, int flag)
+int	ft_exec_cd(t_token *token, t_cmd *cmd, t_data *data, int flag)
 {
 	DIR		*directory;
 	int		res;

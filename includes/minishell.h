@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 18:13:20 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 18:48:50 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,6 +384,13 @@ int		ft_cd(t_cmd *cmd, t_data *data, int flag);
 int		ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
 // void	ft_update_cwd(t_data *data, int flag);
 int		ft_update_cwd(t_token *token, t_data *data, int flag);
+int		ft_exec_cd(t_token *token, t_cmd *cmd, t_data *data, int flag);
+void	ft_new_oldpwd(t_env *env, t_data *data, int flag, int pwd_null);
+void	ft_oldpwd_pwd(t_env *env, t_data *data, int flag);
+void	ft_oldpwd_nopwd(t_env *env, t_data *data, int flag);
+int		ft_new_pwd(t_env *env, t_data *data, t_token *token, int flag);
+int		ft_pwd_content(t_env *env, t_data *data, t_token *token, int flag);
+void	ft_handle_malloc_pwd(t_env *env, t_data *data, int flag);
 
 int		ft_exit(t_cmd *cmd, t_data *data, int flag);
 int		ft_check_digit(char *token);
