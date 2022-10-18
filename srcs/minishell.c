@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/17 06:41:09 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:10:03 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	ft_init_data_0(t_data *data)
 	data->pipe_fd = NULL;
 	data->env_path = NULL;
 	data->s_env_path = NULL;
+	data->tmp_oldpwd = NULL;
 	//TO CHECK : que toutes les variables de t_data sont init_0
 }
 

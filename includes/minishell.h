@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/17 19:01:34 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 18:13:20 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define ERRFAU ".: usage: . filename [arguments]"
 # define ERRPRD "permission denied"
 # define ERRARC "invalid number of arguments"
+# define ERRCWD "error retrieving current directory: getcwd: cannot access parent directories: No such file or directory"
 
 typedef void	(*t_sighandler)(int);
 
@@ -152,6 +153,7 @@ typedef struct s_data
 	int				**pipe_fd;
 	t_env			*env_path;
 	char			**s_env_path;
+	char			*tmp_oldpwd;
 }	t_data;
 
 /*	***** INIT *****	*/
