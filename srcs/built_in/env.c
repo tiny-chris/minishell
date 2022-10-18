@@ -6,46 +6,29 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 18:37:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 20:34:57 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-- while (env)
-	parcourir
-	verif si qch de correspondant dans le token
-		while (token)
-		si oui --> affiche token
-		sinon affiche env et on ajoute lstaddback à une nouvelle liste 'new'
-
-int	printed dans t_token;//pour env - init à 0 et passe à 1
-si printé dans built-in env
-si printed = 0 alors il faut display à la fin de env
-
-hors loop:
-si qch dans nouvelle liste 'new'
-affiche le token
-free la nouvelle liste 'new'
-*/
-void	ft_display_env(t_data *data, t_token *token)
+static void	ft_print_env_lst(t_env *env, t_token *token)
 {
-	t_env	*env;
 	t_token	*tmp;
+	size_t	size_var_equal;
 
-	env = data->env;
 	tmp = NULL;
+	size_var_equal = ft_strlen(env->var_equal);
 	while (env)
 	{
 		tmp = token;
 		while (tmp)
 		{
-			if (ft_strncmp(tmp->token, env->var_equal, ft_strlen(env->var_equal)) == 0)
+			if (ft_strncmp(tmp->token, env->var_equal, size_var_equal) == 0)
 			{
 				printf("%s\n", tmp->token);
 				tmp->printed = 1;
-				break;
+				break ;
 			}
 			tmp = tmp->next;
 		}
@@ -53,6 +36,16 @@ void	ft_display_env(t_data *data, t_token *token)
 			printf("%s\n", env->envp);
 		env = env->next;
 	}
+}
+
+void	ft_display_env(t_data *data, t_token *token)
+{
+	t_env	*env;
+	t_token	*tmp;
+
+	env = data->env;
+	tmp = NULL;
+	ft_print_env_lst(env, token);
 	while (token)
 	{
 		if (token->printed == 0)
@@ -67,34 +60,28 @@ void	ft_display_env(t_data *data, t_token *token)
 	}
 }
 
-/*
-	token = 'env'
-	si env est vide
-		--> check token->next
-		si token->next est vide
-			--> rien - pas d'erreur / juste vide
-		sinon (si token->next non NULL)
-			--> message d'erreur (no such file or directory)
-	sinon (env non vide)
-		si token->next == NULL // juste 'env' dans la commande
-			--> on affiche le contenu de l'env
-		sinon (si token->next non vide)
-			si le token contient un '=' ==> uniquement cette situation (car traité dans parsing)
-				--> tant que ce sont des tokens contenant au moins 1 =, alors on avance
-					s'il existe un autre token après (sans =)
-						--> message d'erreur
-					sinon (pas de token sans =)
-						--> on affiche le contenu de l'env
-*/
+static int	ft_env_equal(t_token *token, t_data *data)
+{
+	t_token	*tmp;
+
+	tmp = token;
+	while (tmp && ft_is_in_set(tmp->token, '='))
+		tmp = tmp->next;
+	if (tmp)
+		return (ft_msg(127, tmp->token, ": ", ERRFOD));
+	ft_display_env(data, token);
+	return (0);
+}
+
 int	ft_env(t_cmd *cmd, t_data *data)
 {
 	t_token	*token;
-	t_token	*tmp;
 	t_env	*env;
 
 	token = cmd->token;
-	tmp = NULL;
 	env = data->env;
+	if (data->env_path == NULL)
+		return (ft_msg(127, token->token, ": ", ERRFOD));
 	if (env == NULL)
 	{
 		if (token->next == NULL)
@@ -107,14 +94,10 @@ int	ft_env(t_cmd *cmd, t_data *data)
 		return (0);
 	}
 	token = token->next;
-	if (ft_new_strchr(token->token, '='))
+	if (ft_is_in_set(token->token, '='))
 	{
-		tmp = token;
-		while (tmp && ft_new_strchr(tmp->token, '='))
-			tmp = tmp->next;
-		if (tmp)
-			return (ft_msg(127, tmp->token, ": ", ERRFOD));
-		ft_display_env(data, token);
+		if (ft_env_equal(token, data))
+			return (127);
 	}
 	return (0);
 }
