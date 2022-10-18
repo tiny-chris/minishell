@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 14:11:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/18 19:58:08 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ int	ft_type_token(t_cmd *cmd, t_data *data)
 			else
 				break ;
 		}
-		if (token && ft_new_strchr(token->token, '='))
+		if (token && ft_is_in_set(token->token, '='))
 		{
 			while (token)
 			{

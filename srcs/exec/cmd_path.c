@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/16 20:48:32 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/18 19:31:35 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,7 +423,10 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 	}
 //	printf("check je suis là\n");
 	if (cmd->token->env == 1)
+	{
+		printf("test\n");
 		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
+	}
 	else
 		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
 	// ft_free_data_child(data);
