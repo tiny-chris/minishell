@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 10:53:43 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/17 17:23:54 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 12:25:54 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	ft_print_no_word_n(t_token *token, t_data *data, int flag)
 		ft_handle_malloc(flag + TAB_STR1, token->token, 0, data);
 		ft_handle_malloc(DELONE, tmp, 0, NULL);
 	}
-	printf("%s", token->token);
+	ft_putstr_fd(token->token, STDOUT_FILENO);
 	return (0);
 }
 
@@ -47,19 +47,20 @@ int	ft_echo(t_cmd *cmd, t_data *data, int flag)
 		if (token->type != WORD_N)
 			return (ft_print_no_word_n(token, data, flag));
 		if (token->next == NULL)
-			return (write(1, "", 0));
+			return (write(STDOUT_FILENO, "", 0));
 		else
 		{
-			if (token->next->type == SP_QUOTES)
+			token = token->next;
+			if (token->type == SP_QUOTES)
 			{
-				ft_handle_malloc(DELONE, token->next->token, 0, NULL);
-				token->next->token = ft_strdup("");
+				ft_handle_malloc(DELONE, token->token, 0, NULL);
+				token->token = ft_strdup("");
 				ft_handle_malloc(flag + TAB_STR1, token->next->token, 0, data);
 			}
-			printf("%s", token->next->token);
+			ft_putstr_fd(token->token, STDOUT_FILENO);
 			return (0);
 		}
 	}
-	printf("\n");
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	return (0);
 }
