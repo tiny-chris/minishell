@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 06:37:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:59:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag)
 	}
 	last = ft_lstlast_env(*env_path);
 	last->next = new;
-	new->head_addr = (*env_path);
+//	new->head_addr = (*env_path);
 	return (0);
 }
 
@@ -190,9 +190,17 @@ void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 
 	env = data->env;
 	i = 0;
-	//1. je nettoie s_env_path et env_path s'ils existent
-	ft_handle_malloc(DELONE, data->s_env_path, 0, NULL);
-	ft_handle_malloc(DELONE, data->env_path, 0, NULL);
+	if (data->s_env_path)
+	{
+		ft_handle_malloc(DELONE, data->s_env_path, 0, NULL);
+		data->s_env_path = NULL;
+	}
+	if (data->env_path)
+	{
+		ft_handle_malloc(DELONE, data->env_path, 0, NULL);
+		data->env_path = NULL;
+	}
+
 	//2. je check si data->env est NULL --> rien
 	if (env == NULL || env->var[0] == '\0')
 		return ;// on ne met pas à jour env_path donc pas de free ou autre
@@ -206,10 +214,15 @@ void	ft_get_env_path(t_data *data, int flag)// ajout du flag pour child ou non
 		env = env->next;
 	}
 	// si ce n'est pas le cas, on retourne (les 2 var sont nulles)
-	if (env == NULL || env->var_equal == NULL || env->content == NULL)
+	if (env == NULL || env->var_equal == NULL || env->content[0] == '\0')
+	{
+		dprintf(2, "addr data->s_env_path = %p\n", data->s_env_path);
+		dprintf(2, "addr data->env_path = %p\n", data->env_path);
+		dprintf(2, "on passe la\n");
 		return ;
+	}
 	// autrement, je recup les char * de content dans data:
-	data->s_env_path = ft_split(env->content, ':');
+	data->s_env_path = ft_split2(env->content, ':');
 	ft_handle_malloc(flag + TAB_STRS, data->s_env_path, 0, data);
 	i = 0;
 	while (data->s_env_path[i])
