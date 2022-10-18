@@ -91,7 +91,6 @@ int	ft_nb_word(char const *str, char c)
 	return (word);
 }
 
-
 void	*ft_free_tabstr(char **tab_str)
 {
 	int	i;
