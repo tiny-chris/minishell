@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/16 19:12:10 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/18 22:27:53 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,76 +31,46 @@ extern int	g_val_exit;
 **	Return value: the exit status (when error) of the last child process
 */
 
-static int	ft_redirect_builtin(t_cmd *cmd)
+void	ft_get_pipe(t_data *data)
 {
-	cmd->stin = dup(STDIN_FILENO);
-	if (cmd->stin == -1)
-		return (-1);
-	cmd->stout = dup(STDOUT_FILENO);
-	if (cmd->stout == -1)
-		return (-1);
-	if (cmd->infile != 0)
+	int	i;
+
+	i = 0;
+	while (i < data->nb_pipes)
 	{
-		if (dup2(cmd->infile, STDIN_FILENO) == -1)
-			return (-1);
-	}
-	if (cmd->outfile != 1)
-	{
-		if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
-			return (-1);
-	}
-	return (0);
-}
-
-int	ft_redirect_std(t_cmd *cmd)
-{
-	if (dup2(cmd->stin, STDIN_FILENO) == -1)
-		return (-1);
-	if (dup2(cmd->stout, STDOUT_FILENO) == -1)
-		return (-1);
-	close(cmd->stin);
-	close(cmd->stout);
-	return (0);
-}
-
-// static void	ft_close_builtin_fd(t_cmd *cmd)
-// {
-// 	t_token *tok_redir;
-
-// 	tok_redir = cmd->tok_redir;
-// 	while (tok_redir)
-// 	{
-// 		if (tok_redir->fd != -1)
-// 			close(tok_redir->fd);
-// 		tok_redir = tok_redir->next;
-// 	}
-// }
-
-int	ft_check_heredoc(t_data *data)
-{
-	t_cmd	*cmd;
-	t_token	*tok_redir;
-
-	cmd = data->cmd;
-	if (!cmd)
-		return (0);
-	tok_redir = cmd->tok_redir;
-	while (cmd != NULL)
-	{
-		if (tok_redir)
+		if (pipe(data->pipe_fd[i]) == -1)
 		{
-			while (tok_redir)
-			{
-				if (tok_redir->type == D_LESS)
-					return (1);
-				tok_redir = tok_redir->next;
-			}
+			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+			ft_close_fd(data);
+			g_val_exit = ft_free_data_child(1, data);
+			exit (g_val_exit);
 		}
-		cmd = cmd->next;
-		if (cmd)
-			tok_redir = cmd->tok_redir;
+		i++;
 	}
-	return (0);
+}
+
+void	ft_fork(t_data *data, int *res)
+{
+	int	i;
+
+	i = 0;
+	while (i < (data->nb_pipes + 1))
+	{
+		data->pid[i] = fork();
+		if (data->pid[i] == -1)
+		{
+			g_val_exit = errno;
+			*res = i;
+			i = data->nb_pipes + 1;
+			break ;
+		}
+		else if (data->pid[i] == 0)
+		{
+			ft_signal(data, SIGQUIT, sig_quit);
+			ft_child_process(data, i);
+		}
+		i++;
+	}
 }
 
 int	ft_exec(t_data *data)
@@ -108,114 +78,24 @@ int	ft_exec(t_data *data)
 	int	i;
 	int	res;
 
+	i = 0;
 	if (data->nb_pipes > 0)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);
 	ft_get_files_io(data);
 	if (data->nb_pipes == 0 && data->cmd->token == NULL)
-	{
-		if (data->cmd->file_err == 1)
-			g_val_exit = EXIT_FAILURE;
-		else
-			g_val_exit = EXIT_SUCCESS;
-		ft_close_fd(data);
-		ft_clean_exec(data);
-		return (g_val_exit);
-	}
+		return (ft_no_pipe_no_token(data));
 	if (ft_check_heredoc(data) && g_val_exit == 130)
-	{
-		ft_close_fd(data);
-		ft_clean_exec(data);
-		return (g_val_exit);
-	}
+		return (ft_check_sigint_heredoc(data));
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
-	{
-		if (data->cmd->file_err == 1)
-			g_val_exit = 1;
-		else
-		{
-			// printf("passe dans builin unique\n"); //
-			if (data->cmd->tok_redir)
-			{
-				res = ft_redirect_builtin(data->cmd);
-				//ft_close_builtin_fd(data->cmd);
-				ft_close_fd(data);
-				if (res == -1)
-				{
-					g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
-					// ft_msg(errno, ERRMSG, "", strerror(errno));
-					ft_redirect_std(data->cmd);
-					ft_clean_exec(data); // il vaut mieux tout free
-					//ft_handle_malloc(0, NULL, 0, 0);
-					//g_val_exit = errno;
-					exit(g_val_exit); // exit a la place comme lors d'une erreur de malloc
-				}
-			}
-			g_val_exit = ft_exec_built_in(data->cmd, data, ADD_M);
-			if (data->cmd->tok_redir)
-			{
-				if (ft_redirect_std(data->cmd) == -1)
-				{
-					g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
-					ft_clean_exec(data);
-					exit(g_val_exit);
-					// g_val_exit = errno;
-					// ft_msg(errno, ERRMSG, "", strerror(errno));
-					// tout free ;
-					// ft_handle_malloc(0, NULL, 0, 0) ;
-					// exit(errno);
-				}
-			}
-			ft_clean_exec(data); 
-		}
-		return (g_val_exit);
-	}
-	i = 0;
-	while (i < data->nb_pipes)
-	{
-		if (pipe(data->pipe_fd[i]) == -1)
-		// // TEST PIPE//
-		// int test = pipe(data->pipe_fd[i]);//test
-		// test = -1;//test
-		// if (test == -1)//test
-		{
-			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
-			ft_close_fd(data);
-			g_val_exit = ft_free_data_child(1, data); // peut etre mieux de tout free et exit
-			exit (g_val_exit);
-		}
-		i++;
-	}
-	i = 0;
+		return (ft_unique_builtin(data));
+	ft_get_pipe(data);
 	res = -1;
-	// printf("debut res = %d\n", res);
-	while (i < (data->nb_pipes + 1))
-	{
-		data->pid[i] = fork();
-		if (data->pid[i] == -1)
-		{
-			g_val_exit = errno;//ft_msg(errno, ERRMSG, "", strerror(errno)); // peut etre mieux de tout free et exit aussi
-			res = i;
-			i = data->nb_pipes + 1;
-			// printf("dans pid -1 alors i = %d\n", i);
-			break ;
-		}
-		else if (data->pid[i] == 0)
-		{
-			ft_signal(data, SIGQUIT, sig_quit); // default action ca va pas car quitte le minishell avec des leaks en plus
-			ft_child_process(data, i);
-		}
-		i++;
-	}
-	// printf("fin res = %d\n", res);
+	ft_fork(data, &res);
 	if (res >= 0)
-	{
-		// printf("fin2 res = %d\n", res);
 		exit (ft_parent_exit(data, res));
-	}
 	ft_signal(data, SIGQUIT, SIG_IGN);
-	ft_signal(data, SIGINT, SIG_IGN); // pour eviter d'avoir 2 prompts.
-	// printf("fin3 res = %d\n", res);
+	ft_signal(data, SIGINT, SIG_IGN);
 	g_val_exit = ft_parent_process(data);
 	return (0);
 }

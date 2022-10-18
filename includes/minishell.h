@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 21:30:16 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 22:33:40 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,25 +330,41 @@ int		ft_nb_word(char const *str, char c);
 /*	****************	*/
 
 int		ft_exec(t_data *data);
-int		ft_redirect_std(t_cmd *cmd);
+void	ft_get_pipe(t_data *data);
+void	ft_fork(t_data *data, int *res);
 
-/*	exec MAIN */
+/*	exec init */
 
 int		**ft_init_pipe(t_data *data);
 int		*ft_init_pid(t_data *data);
 int		ft_get_files_io(t_data *data);
-// int		ft_exec_uniq_builtin(t_data *data);
-void	ft_child_process(t_data *data, int i);
-int		ft_parent_process(t_data *data);
-int		ft_parent_exit(t_data *data, int res);
+
+/*	exec check exec	*/
+
+int		ft_no_pipe_no_token(t_data *data);
+int		ft_check_sigint_heredoc(t_data *data);
+int		ft_check_heredoc(t_data *data);
+
+/* 	exec Unique Built in */
+
+int		ft_unique_builtin(t_data *data);
+void	ft_handle_ub_fd(t_data *data);
+int		ft_redirect_std(t_cmd *cmd);
+int		ft_redirect_builtin(t_cmd *cmd);
 
 /*	exec CHILD */
 
+void	ft_child_process(t_data *data, int i);
 int		ft_redirect_inout(t_data *data, t_cmd *cmd, int i);
 int		ft_exec_built_in(t_cmd *cmd, t_data *data, int flag);
 char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
+
+/*	exec parent		*/
+
+int		ft_parent_process(t_data *data);
+int		ft_parent_exit(t_data *data, int res);
 
 /*	exec CLEAN */
 
