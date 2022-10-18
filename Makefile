@@ -64,6 +64,7 @@ SRCS 		:= \
 			exec/check_exec.c \
 			exec/unique_builtin.c \
 			exec/child_process.c\
+			exec/redirect_inout.c \
 			exec/parent_process.c\
 			exec/env_path.c \
 			exec/init.c \
