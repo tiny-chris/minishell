@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 18:19:34 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 18:24:21 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ int	ft_update_cwd(t_token *t, t_data *data, int flag)
 	return (0);
 }
 
+static void	ft_handle_malloc_pwd(t_env *env, t_data *data, int flag)
+{
+	ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
+	if (env->envp)
+		ft_handle_malloc(DELONE, env->envp, 0, NULL);
+	env->envp = ft_strjoin(env->var_equal, env->content);
+	ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
+}
+
 static int	ft_new_pwd(t_env *env, t_data *data, t_token *token, int flag)
 {
 	while (env)
@@ -49,13 +58,9 @@ static int	ft_new_pwd(t_env *env, t_data *data, t_token *token, int flag)
 			{
 				env->content = getcwd(NULL, 0);
 				if (!env->content)
-					return (ft_msg(1, ERRCWD, "", ""));//
+					return (ft_msg(1, ERRCWD, "", ""));
 			}
-			ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
-			if (env->envp)
-				ft_handle_malloc(DELONE, env->envp, 0, NULL);
-			env->envp = ft_strjoin(env->var_equal, env->content);
-			ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
+			ft_handle_malloc_pwd(env, data, flag);
 			break ;
 		}
 		env = env->next;
