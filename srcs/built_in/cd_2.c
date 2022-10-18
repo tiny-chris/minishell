@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:40:51 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 18:47:08 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 22:24:44 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_oldpwd_nopwd(t_env *env, t_data *data, int flag)
 	if (env->content)
 	{
 		ft_handle_malloc(DELONE, env->content, 0, NULL);
+		env->content = NULL;
 		if (env->envp)
 			ft_handle_malloc(DELONE, env->envp, 0, NULL);
 		env->envp = ft_strdup("OLDPWD=");
@@ -38,6 +39,7 @@ void	ft_oldpwd_pwd(t_env *env, t_data *data, int flag)
 	if (!data->tmp_oldpwd)
 	{
 		ft_handle_malloc(DELONE, env->content, 0, NULL);
+		env->content = NULL;
 		if (env->envp)
 			ft_handle_malloc(DELONE, env->envp, 0, NULL);
 		env->envp = ft_strdup("OLDPWD=");

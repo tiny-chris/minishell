@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 18:48:02 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 22:54:49 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,17 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	t_env	*env;
 	int		pwd_null;
 	t_token	*token;
+	int		res;
 
 	env = data->env;
 	pwd_null = 0;
 	token = cmd->token->next;
 	if (ft_update_cwd(token, data, flag))
 		return (1);
-	if (ft_new_pwd(env, data, token, flag))
+	res = ft_new_pwd(env, data, token, flag);
+	if (res > 0)
 		return (1);
-	if (env == NULL)
+	if (res == -1)
 	{
 		data->tmp_oldpwd = NULL;
 		pwd_null = 1;
@@ -62,6 +64,8 @@ int	ft_exec_cd(t_token *token, t_cmd *cmd, t_data *data, int flag)
 	int		res;
 
 	directory = NULL;
+	if (access(token->token, F_OK))
+		return (ft_msg(1, token->token, ": ", strerror(errno)));
 	directory = opendir(token->token);
 	if (directory == NULL)
 		return (ft_msg(1, token->token, ": ", ERRNDR));
@@ -77,6 +81,7 @@ int	ft_exec_cd(t_token *token, t_cmd *cmd, t_data *data, int flag)
 int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 {
 	t_token	*token;
+	int		res;
 
 	token = cmd->token;
 	token = token->next;
@@ -87,15 +92,15 @@ int	ft_cd(t_cmd *cmd, t_data *data, int flag)
 			return (ft_msg(1, cmd->token->token, ": ", ERRHOM));
 		else if (data->home[0] == '\0')
 			return (0);
-		if (chdir(data->home) == -1)
+		res = chdir(data->home);
+		if (res == -1)
 			return (ft_msg(errno, data->home, ": ", strerror(errno)));
 		ft_update_pwd(cmd, data, flag);
 		return (0);
 	}
 	if (token->next)
 		return (ft_msg(1, cmd->token->token, ": ", ERRARG));
-	if (access(token->token, F_OK) == 0)
-		return (ft_exec_cd(token, cmd, data, flag));
-	else
-		return (ft_msg(1, token->token, ": ", strerror(errno)));
+	if (token->type == SP_QUOTES)
+		return (0);
+	return (ft_exec_cd(token, cmd, data, flag));
 }

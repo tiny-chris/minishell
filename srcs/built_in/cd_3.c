@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_3.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 18:47:22 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 18:48:43 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 22:26:34 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,7 @@ int	ft_new_pwd(t_env *env, t_data *data, t_token *token, int flag)
 		}
 		env = env->next;
 	}
+	if (env == NULL)
+		return (-1);
 	return (0);
 }
