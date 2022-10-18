@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/16 20:48:32 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/18 19:04:32 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,7 +354,10 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 		}
 	}
 	else
+	{
+		// printf("va dans find cmd path 2\n");
 		cmd->cmd_path = ft_find_cmd_path2(cmd, data);
+	}
 	// dprintf(2, "passe et ne fait pas cmd_path1\n");
 	return (cmd->cmd_path);
 }
@@ -372,19 +375,17 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 	new_path = NULL;
 	env_path = data->env_path;
 	res = -2;
-	if (!data->env_path)
+	if ( data->env_path == NULL || data->s_env_path == NULL)
 	{
-		//printf("env path existe pas\n");
+		// printf("env path existe pas\n");
 		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
-		// ft_free_data_child(data);
-		ft_handle_malloc(0, NULL, 0, NULL);
+		ft_free_data_child(res, data);
 		exit(res);
 	}
 	if (ft_strncmp(cmd->token->token, "..", ft_strlen(cmd->token->token)) == 0)
 	{
 		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
-		// ft_free_data_child(data);
-		ft_handle_malloc(0, NULL, 0, NULL);
+		ft_free_data_child(res, data);
 		exit(res);
 	}
 	// dprintf(2, "passe dans env_path2 et va tester le PATH\n");
@@ -396,16 +397,11 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		{
 			new_path = ft_strjoin(env_path->content, "/");
 			ft_handle_malloc(ADD_C + TAB_STR1, new_path, 0, data);
-			// if (!new_path)
-			// 	return (NULL);
-			//printf("new_path = %s\n", new_path);
 		}
 		else
 		{
 			new_path = ft_strdup(env_path->content);
 			ft_handle_malloc(ADD_C + TAB_STR1, new_path, 0, data);
-			// if (!new_path)
-			// 	return (NULL);
 		}
 		// printf("new_path avec join slash = %s\n", new_path);
 		cmd_path = ft_strjoin(new_path, cmd->token->token);
@@ -426,7 +422,6 @@ char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
 		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
 	else
 		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
-	// ft_free_data_child(data);
-	ft_handle_malloc(0, NULL, 0, NULL);
+	ft_free_data_child(res, data);
 	exit(res);
 }
