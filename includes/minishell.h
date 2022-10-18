@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 23:22:35 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 01:39:48 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,13 +183,15 @@ int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag)
 
 
 
+int		ft_count_btw_quotes(char *line, int i);
+int		ft_count_space(char *line, int i);
+int		ft_nb_csq_redir(char *line, int i);
 
 
 /*	***** LEXER *****	*/
 /*	*****************	*/
 
 int		ft_lexer(char *line);
-int		ft_btw_quotes(char *line, int i);
 int		ft_quote(char *line);
 int		ft_count_pipe(char *line);
 int		ft_pipe(char *line, int count);
@@ -210,7 +212,7 @@ char	*ft_get_raw_cmd(t_data *data, int i);
 /*	Step 2	del_spaces */
 
 int		ft_del_spaces(t_data *data);
-int		ft_unspace_cmd_len(char	*raw_cmd);
+int		ft_unspace_cmd_len(char	*raw_cmd, int len);
 char	*ft_fill_unspace_cmd(char *raw_cmd, int len);
 
 /*	Step 3	extract_redir */
