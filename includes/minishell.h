@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 21:30:16 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 23:10:29 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@
 # define ERRFAU ".: usage: . filename [arguments]"
 # define ERRPRD "permission denied"
 # define ERRARC "invalid number of arguments"
-# define ERRCWD "error retrieving current directory: getcwd: cannot access parent directories: No such file or directory"
+# define ERRCWD "error retrieving current directory: getcwd: cannot access \
+parent directories: No such file or directory"
 
 typedef void	(*t_sighandler)(int);
 
