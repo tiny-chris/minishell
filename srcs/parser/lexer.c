@@ -32,7 +32,7 @@ int	ft_check_redir(char *line, int i)
 	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62) \
 		&& (line[j] != ' '))
 	{
-		j = ft_btw_quotes(line, j);
+		j = ft_count_btw_quotes(line, j);
 		j++;
 	}
 	if (j == i)
@@ -52,7 +52,7 @@ int	ft_redir(char *line)
 	while (line[i])
 	{
 		if (line[i] == 34 || line[i] == 39)
-			i = ft_btw_quotes(line, i);
+			i = ft_count_btw_quotes(line, i);
 		else if (line[i] == 60 || line[i] == 62)
 		{
 			c = line[i];
@@ -66,25 +66,6 @@ int	ft_redir(char *line)
 		i++;
 	}
 	return (0);
-}
-
-/*	<SUMMARY> Helper function to go through (closing) quotes
-*/
-int	ft_btw_quotes(char *line, int i)
-{
-	int		j;
-	char	c;
-
-	j = i;
-	if (line[j] == 34 || line[j] == 39)
-	{
-		c = line[j];
-		j++;
-		while (line[j] && line[j] != c)
-			j++;
-		return (j);
-	}
-	return (i);
 }
 
 /*	<SUMMARY> checks if any open quote has its matching closing quote 

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:46:13 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:07:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,57 +19,29 @@
 **	<PARAM>		{char *} raw_cmd --> from get_commands.c
 **	<RETURNS>	the size of the new string to be copied unspace_cmd (int)
 */
-
-
-// TO BE NORMED
-int	ft_unspace_cmd_len(char	*raw_cmd)
+int	ft_unspace_cmd_len(char	*raw_cmd, int len)
 {
-	int		len;
 	int		i;
-	char	c;
 
-	len = ft_strlen(raw_cmd);
-	i = 0;
-	while (raw_cmd[i])
+	i = -1;
+	while (raw_cmd[++i])
 	{
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
-		{
-			c = raw_cmd[i];
-			i++;
-			while (raw_cmd[i] && raw_cmd[i] != c)
-				i++;
-		}
+			i = ft_count_btw_quotes(raw_cmd, i);
 		else if (raw_cmd[i] == ' ')
 		{
-			i++;
-			while (raw_cmd[i] && raw_cmd[i] == ' ')
-			{
-				len--;
-				i++;
-			}
-			i--;
-		}
+			len = len - ft_count_space(raw_cmd, i, 0);
+			i += ft_count_space(raw_cmd, i, 0);
+		}	
 		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
 		{
-			c = raw_cmd[i];
-			i++;
-			if (raw_cmd[i] == c)
-				i++;
+			i += ft_nb_csq_redir(raw_cmd, i);
 			if (raw_cmd[i] == ' ')
 			{
-				i++;
-				len--;
-				while (raw_cmd[i] && raw_cmd[i] == ' ')
-				{
-					len--;
-					i++;
-				}
-				i--;
+				len = len - ft_count_space(raw_cmd, i, 1);
+				i += ft_count_space(raw_cmd, i, 1);
 			}
-			else
-				i--;
 		}
-		i++;
 	}
 	return (len);
 }
@@ -85,77 +57,177 @@ int	ft_unspace_cmd_len(char	*raw_cmd)
 
 
 // TO BE NORMED
-char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
+//between quotes
+char	*ft_fill_unspace_btw_quotes(char *raw, int i, char *unspace, int j)
 {
-	char	*unspace_cmd;//raw_cmd_no_space;
-	int		i;
-	int		j;
 	char	c;
 
-	i = 0;
-	j = 0;
-	unspace_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
-	// unspace_cmd = malloc(sizeof(char) * (len + 1));
-	// if (!unspace_cmd)
-	// 	return (NULL); // free tout ce qu'il y a à free
-	while (raw_cmd[i])
+	if (raw[i] == 34 || raw[i] == 39)
+	{
+		c = raw[i];
+		unspace[j] = raw[i];
+		i++;
+		j++;
+		while (raw[i] != c)
+		{
+			unspace[j] = raw[i];
+			i++;
+			j++;
+		}
+		unspace[j] = raw[i];
+		j++;
+	}
+	return (unspace);
+}
+
+char	*ft_fill_unspace_redir(char *raw_cmd, int i, char *unspace_cmd, int j)
+{
+	char	c;
+
+	if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
+	{
+		c = raw_cmd[i];
+		unspace_cmd[j] = raw_cmd[i];
+		i++;
+		j++;
+		if (raw_cmd[i] == c)
+		{
+			unspace_cmd[j] = raw_cmd[i];
+			// i++;
+			// j++;
+		}
+		// if (raw_cmd[i] == ' ')
+		// {
+		// 	i++;
+		// 	while (raw_cmd[i] && raw_cmd[i] == ' ')
+		// 		i++;
+		// 	i--;
+		// }
+		// else
+		// 	i--;
+	}
+	return (unspace_cmd);
+}
+
+char	*ft_fill_unspace_else(char *raw_cmd, int i, char *unspace_cmd, int j)
+{
+	unspace_cmd[j] = raw_cmd[i];
+	j++;
+
+	if (raw_cmd[i] == ' ')
+	{
+		unspace_cmd[j] = raw_cmd[i];
+		j++;
+		i += ft_count_space(raw_cmd, i, 0);
+	}
+	else
+	{
+
+	}
+	
+	return (unspace_cmd);
+}
+
+
+///////////
+
+char	*ft_fill_unspace_cmd(char *raw_cmd, int len, char *unspace_cmd, int j)
+{
+	int		i;
+
+	i = -1;
+	while (raw_cmd[++i])
 	{
 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
 		{
-			c = raw_cmd[i];
-			unspace_cmd[j] = raw_cmd[i];
-			i++;
-			j++;
-			while (raw_cmd[i] != c)
-			{
-				unspace_cmd[j] = raw_cmd[i];
-				i++;
-				j++;
-			}
-			unspace_cmd[j] = raw_cmd[i];
-			j++;
-		}
-		else if (raw_cmd[i] == ' ')
-		{
-			unspace_cmd[j] = raw_cmd[i];
-			i++;
-			j++;
-			while (raw_cmd[i] && raw_cmd[i] == ' ')
-				i++;
-			i--;
+			unspace_cmd = ft_fill_unspace_cmd2(raw_cmd, i, unspace_cmd, j);
+			//j += ft_count_btw_quotes(raw_cmd, i) - i;// a checker
+			i = ft_count_btw_quotes(raw_cmd, i);
 		}
 		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
 		{
-			c = raw_cmd[i];
-			unspace_cmd[j] = raw_cmd[i];
-			i++;
-			j++;
-			if (raw_cmd[i] == c)
-			{
-				unspace_cmd[j] = raw_cmd[i];
-				i++;
-				j++;
-			}
-			if (raw_cmd[i] == ' ')
-			{
-				i++;
-				while (raw_cmd[i] && raw_cmd[i] == ' ')
-					i++;
-				i--;
-			}
-			else
-				i--;
+			unspace_cmd = ft_fill_unspace_redir(raw_cmd, i, unspace_cmd, j);
+			j += ft_nb_csq_redir(raw_cmd, i);
+			i += ft_nb_csq_redir(raw_cmd, i) + ft_count_space(raw_cmd, i, 1);
 		}
 		else
 		{
-			unspace_cmd[j] = raw_cmd[i];
+			unspace_cmd = ft_fill_unspace_else(raw_cmd, i, unspace_cmd, j);
 			j++;
+			i += ft_count_space(raw_cmd, i, 0);
 		}
-		i++;
 	}
-	unspace_cmd[j] = '\0';
 	return (unspace_cmd);
 }
+
+// char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
+// {
+// 	char	*unspace_cmd;
+// 	int		i;
+// 	int		j;
+// 	char	c;
+
+// 	i = 0;
+// 	j = 0;
+// 	unspace_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+// 	while (raw_cmd[i])
+// 	{
+// 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
+// 		{
+// 			c = raw_cmd[i];
+// 			unspace_cmd[j] = raw_cmd[i];
+// 			i++;
+// 			j++;
+// 			while (raw_cmd[i] != c)
+// 			{
+// 				unspace_cmd[j] = raw_cmd[i];
+// 				i++;
+// 				j++;
+// 			}
+// 			unspace_cmd[j] = raw_cmd[i];
+// 			j++;
+// 		}
+// 		else if (raw_cmd[i] == ' ')
+// 		{
+// 			unspace_cmd[j] = raw_cmd[i];
+// 			i++;
+// 			j++;
+// 			while (raw_cmd[i] && raw_cmd[i] == ' ')
+// 				i++;
+// 			i--;
+// 		}
+// 		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
+// 		{
+// 			c = raw_cmd[i];
+// 			unspace_cmd[j] = raw_cmd[i];
+// 			i++;
+// 			j++;
+// 			if (raw_cmd[i] == c)
+// 			{
+// 				unspace_cmd[j] = raw_cmd[i];
+// 				i++;
+// 				j++;
+// 			}
+// 			if (raw_cmd[i] == ' ')
+// 			{
+// 				i++;
+// 				while (raw_cmd[i] && raw_cmd[i] == ' ')
+// 					i++;
+// 				i--;
+// 			}
+// 			else
+// 				i--;
+// 		}
+// 		else
+// 		{
+// 			unspace_cmd[j] = raw_cmd[i];
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	unspace_cmd[j] = '\0';
+// 	return (unspace_cmd);
+// }
 
 /*	***** PARSING | unspace_cmd *****
 **	<SUMMARY>
@@ -174,13 +246,17 @@ int	ft_del_spaces(t_data *data)
 {
 	t_cmd	*cmd;
 	int		len;
+	int		j;
+	char	*unspace_cmd;
 
 	cmd = data->cmd;
 	while (cmd)
 	{
-		len = ft_unspace_cmd_len(cmd->raw_cmd);
-		// dprintf(2, "val de len del spaces = %d\n", len);
-		cmd->unspace_cmd = ft_fill_unspace_cmd(cmd->raw_cmd, len);
+		len = ft_unspace_cmd_len(cmd->raw_cmd, ft_strlen(cmd->raw_cmd));
+		unspace_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+		j = 0;
+		unspace_cmd[len] = '\0';
+		cmd->unspace_cmd = ft_fill_unspace_cmd(cmd->raw_cmd, len, unspace_cmd, j);
 		// if (!cmd->unspace_cmd)
 		// 	return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!
 		// dprintf(2, "unspace cmd    = %s --> len = %d vs. strlen = %ld\n", cmd->unspace_cmd, len, ft_strlen(cmd->raw_cmd));//
