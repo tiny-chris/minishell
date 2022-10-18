@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 18:14:32 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/18 18:19:34 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,8 @@ int	ft_update_cwd(t_token *t, t_data *data, int flag)
 	return (0);
 }
 
-int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
+static int	ft_new_pwd(t_env *env, t_data *data, t_token *token, int flag)
 {
-	t_env	*env;
-	//char	*oldpwd;
-	int		pwd_null;
-	t_token	*token;
-
-	env = data->env;
-	//oldpwd = NULL;
-	pwd_null = 0;
-	token = cmd->token->next;
-	if (ft_update_cwd(token, data, flag))
-		return (1);
 	while (env)
 	{
 		if (ft_strncmp(env->var_equal, "PWD=", 4) == 0 && (ft_strlen(env->var_equal) == 4))
@@ -71,6 +60,22 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 		}
 		env = env->next;
 	}
+	return (0);
+}
+
+int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
+{
+	t_env	*env;
+	int		pwd_null;
+	t_token	*token;
+
+	env = data->env;
+	pwd_null = 0;
+	token = cmd->token->next;
+	if (ft_update_cwd(token, data, flag))
+		return (1);
+	if (ft_new_pwd(env, data, token, flag))
+		return (1);
 	if (env == NULL)
 	{
 		data->tmp_oldpwd = NULL;
