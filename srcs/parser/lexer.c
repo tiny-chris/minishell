@@ -32,7 +32,7 @@ int	ft_check_redir(char *line, int i)
 	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62) \
 		&& (line[j] != ' '))
 	{
-		j = ft_count_btw_quotes(line, j);
+		j += ft_count_btw_quotes(line, j);
 		j++;
 	}
 	if (j == i)
@@ -52,7 +52,7 @@ int	ft_redir(char *line)
 	while (line[i])
 	{
 		if (line[i] == 34 || line[i] == 39)
-			i = ft_count_btw_quotes(line, i);
+			i += ft_count_btw_quotes(line, i);
 		else if (line[i] == 60 || line[i] == 62)
 		{
 			c = line[i];

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer2.c                                           :+:      :+:    :+:   */
+/*   lexer_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -54,7 +54,7 @@ int	ft_first_pipe(char *line)
 		if (line[i] == '|')
 			return (1);
 	}
-	i = ft_count_btw_quotes(line, i);
+	i += ft_count_btw_quotes(line, i);
 	while (line[i] && line[i] != '|')
 		i++;
 	return (i);
@@ -83,7 +83,7 @@ int	ft_pipe(char *line, int count)
 			if (line[i] == '\0' || line[i] == '|')
 				return (1);
 		}
-		i = ft_count_btw_quotes(line, i);
+		i += ft_count_btw_quotes(line, i);
 		while (line[i] && line[i] != '|')
 			i++;
 		count--;

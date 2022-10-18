@@ -6,237 +6,106 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 14:07:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 01:36:38 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*	***** PARSING | unspace_cmd - LEN *****
-**	<SUMMARY>
-**	Defines the length of the new string (unspace_cmd) by removing useless
-**	spaces
-**	<PARAM>		{char *} raw_cmd --> from get_commands.c
-**	<RETURNS>	the size of the new string to be copied unspace_cmd (int)
-*/
-int	ft_unspace_cmd_len(char	*raw_cmd, int len)
-{
-	int		i;
-
-	i = -1;
-	while (raw_cmd[++i])
-	{
-		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
-			i = ft_count_btw_quotes(raw_cmd, i);
-		else if (raw_cmd[i] == ' ')
-		{
-			len = len - ft_count_space(raw_cmd, i, 0);
-			i += ft_count_space(raw_cmd, i, 0);
-		}	
-		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
-		{
-			i += ft_nb_csq_redir(raw_cmd, i);
-			if (raw_cmd[i] == ' ')
-			{
-				len = len - ft_count_space(raw_cmd, i, 1);
-				i += ft_count_space(raw_cmd, i, 1);
-			}
-		}
-	}
-	return (len);
-}
-
 /*	***** PARSING | unspace_cmd - CONTENT *****
-**	<SUMMARY>
-**	Creates the new string to be copied as 'unspace_cmd' in the t_cmd
-**	'cmd' linked list
-**	<PARAM>		{char *} raw_cmd
-				{int} len --> previously calculated len
+**	<SUMMARY> Creates the new string to be copied in the t_cmd linked list
 **	<RETURNS>	the new string value (char *) without useless spaces
 */
-
-
-// TO BE NORMED
-//between quotes
-char	*ft_fill_unspace_btw_quotes(char *raw, int i, char *unspace, int j)
+static char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j)
 {
 	char	c;
 
-	if (raw[i] == 34 || raw[i] == 39)
+	if (raw[*i] == 34 || raw[*i] == 39)
 	{
-		c = raw[i];
-		unspace[j] = raw[i];
-		i++;
-		j++;
-		while (raw[i] != c)
+		c = raw[*i];
+		unspace[*j] = raw[*i];
+		(*i)++;
+		(*j)++;
+		while (raw[*i] != c)
 		{
-			unspace[j] = raw[i];
-			i++;
-			j++;
+			unspace[*j] = raw[*i];
+			(*i)++;
+			(*j)++;
 		}
-		unspace[j] = raw[i];
-		j++;
+		unspace[*j] = raw[*i];
+		(*j)++;
 	}
 	return (unspace);
 }
 
-char	*ft_fill_unspace_redir(char *raw_cmd, int i, char *unspace_cmd, int j)
+static char	*ft_fill_unspace_redir(char *raw, int *i, char *unspace, int *j)
 {
 	char	c;
 
-	if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
+	if (raw[*i] == '>' || raw[*i] == '<')
 	{
-		c = raw_cmd[i];
-		unspace_cmd[j] = raw_cmd[i];
-		i++;
-		j++;
-		if (raw_cmd[i] == c)
+		c = raw[*i];
+		unspace[*j] = raw[*i];
+		(*i)++;
+		(*j)++;
+		if (raw[*i] == c)
 		{
-			unspace_cmd[j] = raw_cmd[i];
-			// i++;
-			// j++;
+			unspace[*j] = raw[*i];
+			(*i)++;
+			(*j)++;
 		}
-		// if (raw_cmd[i] == ' ')
-		// {
-		// 	i++;
-		// 	while (raw_cmd[i] && raw_cmd[i] == ' ')
-		// 		i++;
-		// 	i--;
-		// }
-		// else
-		// 	i--;
-	}
-	return (unspace_cmd);
-}
-
-char	*ft_fill_unspace_else(char *raw_cmd, int i, char *unspace_cmd, int j)
-{
-	unspace_cmd[j] = raw_cmd[i];
-	j++;
-
-	if (raw_cmd[i] == ' ')
-	{
-		unspace_cmd[j] = raw_cmd[i];
-		j++;
-		i += ft_count_space(raw_cmd, i, 0);
-	}
-	else
-	{
-
-	}
-	
-	return (unspace_cmd);
-}
-
-
-///////////
-
-char	*ft_fill_unspace_cmd(char *raw_cmd, int len, char *unspace_cmd, int j)
-{
-	int		i;
-
-	i = -1;
-	while (raw_cmd[++i])
-	{
-		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
+		if (raw[*i] == ' ')
 		{
-			unspace_cmd = ft_fill_unspace_cmd2(raw_cmd, i, unspace_cmd, j);
-			//j += ft_count_btw_quotes(raw_cmd, i) - i;// a checker
-			i = ft_count_btw_quotes(raw_cmd, i);
-		}
-		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
-		{
-			unspace_cmd = ft_fill_unspace_redir(raw_cmd, i, unspace_cmd, j);
-			j += ft_nb_csq_redir(raw_cmd, i);
-			i += ft_nb_csq_redir(raw_cmd, i) + ft_count_space(raw_cmd, i, 1);
+			(*i)++;
+			while (raw[*i] && raw[*i] == ' ')
+				(*i)++;
+			(*i)--;
 		}
 		else
-		{
-			unspace_cmd = ft_fill_unspace_else(raw_cmd, i, unspace_cmd, j);
-			j++;
-			i += ft_count_space(raw_cmd, i, 0);
-		}
+			(*i)--;
 	}
+	return (unspace);
+}
+
+static char	*ft_fill_unspace_else(char *raw, int *i, char *unspace, int *j)
+{
+	unspace[*j] = raw[*i];
+	(*j)++;
+	if (raw[*i] == ' ')
+	{
+		(*i)++;
+		while (raw[*i] && raw[*i] == ' ')
+			(*i)++;
+		(*i)--;
+	}
+	return (unspace);
+}
+
+char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
+{
+	char	*unspace_cmd;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	unspace_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	while (raw_cmd[i])
+	{
+		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
+			unspace_cmd = ft_fill_unspace_btw_q(raw_cmd, &i, unspace_cmd, &j);
+		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
+			unspace_cmd = ft_fill_unspace_redir(raw_cmd, &i, unspace_cmd, &j);
+		else
+			unspace_cmd = ft_fill_unspace_else(raw_cmd, &i, unspace_cmd, &j);
+		i++;
+	}
+	unspace_cmd[len] = '\0';
 	return (unspace_cmd);
 }
 
-// char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
-// {
-// 	char	*unspace_cmd;
-// 	int		i;
-// 	int		j;
-// 	char	c;
-
-// 	i = 0;
-// 	j = 0;
-// 	unspace_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
-// 	while (raw_cmd[i])
-// 	{
-// 		if (raw_cmd[i] == 34 || raw_cmd[i] == 39)
-// 		{
-// 			c = raw_cmd[i];
-// 			unspace_cmd[j] = raw_cmd[i];
-// 			i++;
-// 			j++;
-// 			while (raw_cmd[i] != c)
-// 			{
-// 				unspace_cmd[j] = raw_cmd[i];
-// 				i++;
-// 				j++;
-// 			}
-// 			unspace_cmd[j] = raw_cmd[i];
-// 			j++;
-// 		}
-// 		else if (raw_cmd[i] == ' ')
-// 		{
-// 			unspace_cmd[j] = raw_cmd[i];
-// 			i++;
-// 			j++;
-// 			while (raw_cmd[i] && raw_cmd[i] == ' ')
-// 				i++;
-// 			i--;
-// 		}
-// 		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
-// 		{
-// 			c = raw_cmd[i];
-// 			unspace_cmd[j] = raw_cmd[i];
-// 			i++;
-// 			j++;
-// 			if (raw_cmd[i] == c)
-// 			{
-// 				unspace_cmd[j] = raw_cmd[i];
-// 				i++;
-// 				j++;
-// 			}
-// 			if (raw_cmd[i] == ' ')
-// 			{
-// 				i++;
-// 				while (raw_cmd[i] && raw_cmd[i] == ' ')
-// 					i++;
-// 				i--;
-// 			}
-// 			else
-// 				i--;
-// 		}
-// 		else
-// 		{
-// 			unspace_cmd[j] = raw_cmd[i];
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	unspace_cmd[j] = '\0';
-// 	return (unspace_cmd);
-// }
-
 /*	***** PARSING | unspace_cmd *****
-**	<SUMMARY>
-**	Gets an updated cmd with unnecessary spaces (unspace_cmd) in 2 steps:
-**	1. Defines the length of the new string by removing useless spaces
-**	2. Copies the matching string in 'unspace_cmd' of the t_cmd 'cmd'
-**	linked list
-**	<PARAM>		{t_data *} data
-**	<RETURNS>	t_cmd 'cmd' linked list --> with an additional string
+**	<SUMMARY> Gets an updated cmd with unnecessary spaces (unspace_cmd)
 **	<REMARKS>	useless spaces are those outside of closed quotes
 **				- when there are consecutive spaces: keep only 1
 **				- except if they are just after an unquoted redirection: delete
@@ -246,20 +115,12 @@ int	ft_del_spaces(t_data *data)
 {
 	t_cmd	*cmd;
 	int		len;
-	int		j;
-	char	*unspace_cmd;
 
 	cmd = data->cmd;
 	while (cmd)
 	{
 		len = ft_unspace_cmd_len(cmd->raw_cmd, ft_strlen(cmd->raw_cmd));
-		unspace_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
-		j = 0;
-		unspace_cmd[len] = '\0';
-		cmd->unspace_cmd = ft_fill_unspace_cmd(cmd->raw_cmd, len, unspace_cmd, j);
-		// if (!cmd->unspace_cmd)
-		// 	return (1);// FREE TOUT CE QUI A ETE MALLOC !!!!!
-		// dprintf(2, "unspace cmd    = %s --> len = %d vs. strlen = %ld\n", cmd->unspace_cmd, len, ft_strlen(cmd->raw_cmd));//
+		cmd->unspace_cmd = ft_fill_unspace_cmd(cmd->raw_cmd, len);
 		cmd = cmd->next;
 	}
 	return (0);

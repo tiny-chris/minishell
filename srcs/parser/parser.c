@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:00:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 12:34:31 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 01:21:11 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,19 @@ int	ft_count_btw_quotes(char *line, int i)
 		j++;
 		while (line[j] && line[j] != c)
 			j++;
-		return (j);
+		return (j - i);
 	}
-	return (i);
+	return (0);
 }
 
-/*	<SUMMARY> Helper function to count extra spaces (on top of 1)
+/*	<SUMMARY> Helper function to count extra spaces (on top of 1st one)
 **	<RETURNS> the number of moves to get to the new position (last ' ')
 **	<REMARK> new position is just before the 1st ' ' in case of redir
 **			(space on 1st position has already been cleaned)
 */
-int	ft_count_space(char *line, int i, int post_redir)
+int	ft_count_space(char *line, int i)
 {
 	int		j;
-	char	c;
 
 	j = i;
 	if (line[j] && line[j] == ' ')
@@ -73,20 +72,13 @@ int	ft_count_space(char *line, int i, int post_redir)
 		while (line[j] && line[j] == ' ')
 			j++;
 		j--;
-		if (post_redir == 1)
-			j--;
-		return (j - i);
-	}
-	else if (line[j] && line[j] != ' ' && post_redir == 1)
-	{
-		j--;
 		return (j - i);
 	}
 	return (0);
 }
 
-/*	<SUMMARY> 
-**	<RETURNS> 
+/*	<SUMMARY> Helper function to check the number of consecutive redir
+**	<RETURNS> 1 or 2, if there are redir, 0 otherwise
 */
 int	ft_nb_csq_redir(char *line, int i)
 {

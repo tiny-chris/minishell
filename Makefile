@@ -29,11 +29,12 @@ SRCS 		:= \
 			parser/env.c \
 			parser/env_list.c \
 			parser/lexer.c \
-			parser/lexer2.c \
+			parser/lexer_2.c \
 			parser/get_commands.c \
 			parser/cmd_list.c \
 			parser/built_in.c \
 			parser/del_spaces.c \
+			parser/del_spaces_2.c \
 			parser/get_redir.c \
 			parser/token_list.c \
 			parser/del_dolls.c \
