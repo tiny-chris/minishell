@@ -6,23 +6,13 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 23:04:26 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 21:28:20 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_val_exit;
-
-void	ft_close_std(void)
-{
-	if (STDIN_FILENO != -1)
-		close(STDIN_FILENO);
-	if (STDOUT_FILENO != -1)
-		close(STDOUT_FILENO);
-	if (STDERR_FILENO != -1)
-		close(STDERR_FILENO);
-}
 
 void	ft_clean_exec(t_data *data)
 {
@@ -53,44 +43,6 @@ int	ft_free_data_child(int res, t_data *data)
 	ft_handle_malloc(0, NULL, 0, NULL);
 	ft_close_std();
 	return (res);
-}
-
-void	ft_close_fd(t_data *data)
-{
-	t_cmd	*cmd;
-	t_token	*token;
-	int		i;
-
-	cmd = data->cmd;
-	token = NULL;
-	i = 0;
-	if (!data)
-		return ;
-	if (data->cmd)
-	{
-		while (cmd)
-		{
-			token = cmd->tok_redir;
-			while (token)
-			{
-				if (token->fd != -1)
-					close(token->fd);
-				token = token->next;
-			}
-			cmd = cmd->next;
-		}
-	}
-	if (data->pipe_fd)
-	{
-		while (i < data->nb_pipes)
-		{
-			if (data->pipe_fd[i][0] != -1)
-				close(data->pipe_fd[i][0]);
-			if (data->pipe_fd[i][1] != -1)
-				close(data->pipe_fd[i][1]);
-			i++;
-		}
-	}
 }
 
 int	ft_msg(int val_exit, char *msg1, char *msg2, char *msg3)
