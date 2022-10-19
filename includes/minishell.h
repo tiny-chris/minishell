@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 18:34:37 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 19:35:58 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,8 +363,13 @@ void	ft_child_process(t_data *data, int i);
 int		ft_redirect_inout(t_data *data, t_cmd *cmd, int i);
 int		ft_exec_built_in(t_cmd *cmd, t_data *data, int flag);
 char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data);
-char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
+
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
+void	ft_path_given(t_data *data, t_cmd *cmd, char *full_path);
+char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
+char	*ft_try_access_path(t_env *env_path, t_data *data, t_cmd *cmd);
+char	*ft_get_new_path(t_env *env_path, t_data *data);
+void	ft_check_error_cmd_path(t_data *data, t_cmd *cmd, int res);
 
 /*	exec parent		*/
 
