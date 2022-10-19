@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 13:34:36 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 17:03:24 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag)
 int		ft_count_btw_quotes(char *line, int i);
 int		ft_count_space(char *line, int i);
 int		ft_nb_csq_redir(char *line, int i);
+
+char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j);
 
 
 /*	***** LEXER *****	*/

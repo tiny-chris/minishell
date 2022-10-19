@@ -6,17 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/19 16:07:31 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 17:03:20 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*	***** PARSING | unspace_cmd - CONTENT *****
-**	<SUMMARY> Creates the new string to be copied in the t_cmd linked list
-**	<RETURNS>	the new string value (char *) without useless spaces
-*/
-static char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j)
+char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j)
 {
 	char	c;
 
@@ -81,6 +77,10 @@ static char	*ft_fill_unspace_else(char *raw, int *i, char *unspace, int *j)
 	return (unspace);
 }
 
+/*	***** PARSING | unspace_cmd - CONTENT *****
+**	<SUMMARY> Creates the new string to be copied in the t_cmd linked list
+**	<RETURNS>	the new string value (char *) without useless spaces
+*/
 char	*ft_fill_unspace_cmd(char *raw_cmd, int len)
 {
 	char	*unspace_cmd;
