@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 19:35:58 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 20:05:36 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,10 +366,16 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data);
 
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
 void	ft_path_given(t_data *data, t_cmd *cmd, char *full_path);
+char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len);
+void	ft_abs_last_slash(char *token, char *full_path, t_data *data, char *tmp);
+char	*ft_abs_no_last_slash(char *token, char *full_path);
+void	ft_check_abspath_directory(char *token, char *full_path);
+
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_try_access_path(t_env *env_path, t_data *data, t_cmd *cmd);
 char	*ft_get_new_path(t_env *env_path, t_data *data);
 void	ft_check_error_cmd_path(t_data *data, t_cmd *cmd, int res);
+
 
 /*	exec parent		*/
 
