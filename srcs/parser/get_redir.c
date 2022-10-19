@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/19 17:02:03 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:01:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,106 +44,57 @@
 				puis on recommence au début de la boucle
 	à la fin, on retourne la len
 */
-
-void	ft_len_no_redir2(char *cmd, int *i, int *len)
-{
-	char	c;
-
-	while (cmd[*i] && cmd[*i] != ' ' && cmd[*i] != '>' && cmd[*i] != '<')
-	{
-		if (cmd[*i] && (cmd[*i] == 34 || cmd[*i] == 39))
-		{
-			c = cmd[*i];
-			(*len)--;
-			(*i)++;
-			while (cmd[*i] && cmd[*i] != c)
-			{
-				(*len)--;
-				(*i)++;
-			}
-			(*len)--;
-		}
-		else
-			(*len)--;
-		(*i)++;
-	}
-	if (!cmd[*i] || cmd[*i] == ' ' || cmd[*i] == '>' || cmd[*i] == '<')
-		(*i)--;
-}
-
 int	ft_len_no_redir(char *unspace_cmd)
 {
 	int		i;
 	int		len;
+	char	c;
 
 	i = 0;
 	len = ft_strlen(unspace_cmd);
 	while (unspace_cmd[i])
 	{
 		if (unspace_cmd[i] == 34 || unspace_cmd[i] == 39)
-			i += ft_count_btw_quotes(unspace_cmd, i);
+		{
+			c = unspace_cmd[i];
+			i++;
+			while (unspace_cmd[i] && unspace_cmd[i] != c)// ajout condition si existe
+				i++;
+		}
 		else if (unspace_cmd[i] == '>' || unspace_cmd[i] == '<')
 		{
-			i += ft_nb_csq_redir(unspace_cmd, i);
-			len -= (ft_nb_csq_redir(unspace_cmd, i) + 1);
-			ft_len_no_redir2(unspace_cmd, &i, &len);
+			len--;
+			i++;
+			if (unspace_cmd[i] && (unspace_cmd[i] == '>' || unspace_cmd[i] == '<'))
+			{
+				len--;
+				i++;
+			}
+			while (unspace_cmd[i] && unspace_cmd[i] != ' ' && unspace_cmd[i] != '>' && unspace_cmd[i] != '<')
+			{
+				if (unspace_cmd[i] && (unspace_cmd[i] == 34 || unspace_cmd[i] == 39))
+				{
+					c = unspace_cmd[i];
+					i++;
+					len--;
+					while (unspace_cmd[i] && unspace_cmd[i] != c)// ajout condition si existe
+					{
+						i++;
+						len--;
+					}
+					len--;
+				}
+				else
+					len--;
+				i++;
+			}
+			if (!unspace_cmd[i] || unspace_cmd[i] == ' ' || unspace_cmd[i] == '>' || unspace_cmd[i] == '<')// modif ici avec ajout si null
+				i--;
 		}
 		i++;
 	}
 	return (len);
 }
-
-// int	ft_len_no_redir(char *unspace_cmd)
-// {
-// 	int		i;
-// 	int		len;
-// 	char	c;
-
-// 	i = 0;
-// 	len = ft_strlen(unspace_cmd);
-// 	while (unspace_cmd[i])
-// 	{
-// 		if (unspace_cmd[i] == 34 || unspace_cmd[i] == 39)
-// 		{
-// 			c = unspace_cmd[i];
-// 			i++;
-// 			while (unspace_cmd[i] && unspace_cmd[i] != c)// ajout condition si existe
-// 				i++;
-// 		}
-// 		else if (unspace_cmd[i] == '>' || unspace_cmd[i] == '<')
-// 		{
-// 			len--;
-// 			i++;
-// 			if (unspace_cmd[i] && (unspace_cmd[i] == '>' || unspace_cmd[i] == '<'))
-// 			{
-// 				len--;
-// 				i++;
-// 			}
-// 			while (unspace_cmd[i] && unspace_cmd[i] != ' ' && unspace_cmd[i] != '>' && unspace_cmd[i] != '<')
-// 			{
-// 				if (unspace_cmd[i] && (unspace_cmd[i] == 34 || unspace_cmd[i] == 39))
-// 				{
-// 					c = unspace_cmd[i];
-// 					i++;
-// 					len--;
-// 					while (unspace_cmd[i] && unspace_cmd[i] != c)// ajout condition si existe
-// 					{
-// 						i++;
-// 						len--;
-// 					}
-// 					len--;
-// 				}
-// 				else
-// 					len--;
-// 				i++;
-// 			}
-// 			if (!unspace_cmd[i] || unspace_cmd[i] == ' ' || unspace_cmd[i] == '>' || unspace_cmd[i] == '<')// modif ici avec ajout si null
-// 				i--;
-// 		}
-// 		i++;
-// 	}
-// 	return (len);
-// }
 
 // TO BE NORMED
 /*	Notes pour nous:
@@ -162,62 +113,65 @@ int	ft_len_no_redir(char *unspace_cmd)
 	3. sinon, on copie et on avance
 		puis on recommence au début de la boucle
 	à la fin, on retourne la nouvelle string
-
-
-unspace_cmd
-no_redir_cmd
-
-
 */
-static void	ft_unfill_redir(char *cmd, int *i)
-{
-	char	c;
-
-	if (cmd[*i] == '>' || cmd[*i] == '<')
-	{
-		(*i)++;
-		if (cmd[*i] && (cmd[*i] == '>' || cmd[*i] == '<'))
-			(*i)++;
-		while (cmd[*i] && cmd[*i] != ' ' && cmd[*i] != '>' && cmd[*i]!= '<')
-		{
-			if (cmd[*i] && (cmd[*i] == 34 || cmd[*i] == 39))
-			{
-				c = cmd[*i];
-				(*i)++;
-				while (cmd[*i] && cmd[*i] != c)
-					(*i)++;
-			}
-			(*i)++;
-		}
-		if (!cmd[*i] || cmd[*i] == ' ' || cmd[*i] == '>' || cmd[*i] == '<')
-			(*i)--;
-	}
-}
-
 char	*ft_fill_no_redir(char *unspace_cmd, int len)
 {
-	char	*no_redir;
+	char	*no_redir_cmd;
 	int		i;
 	int		j;
+	char	c;
 
 	i = 0;
 	j = 0;
-	no_redir = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	no_redir_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	// no_redir_cmd = malloc(sizeof(char) * (len + 1));
+	// if (!no_redir_cmd)
+	// 	return (NULL); // free tout
 	while (unspace_cmd[i])
 	{
 		if (unspace_cmd[i] == 34 || unspace_cmd[i] == 39)
-			no_redir = ft_fill_unspace_btw_q(unspace_cmd, &i, no_redir, &j);
+		{
+			c = unspace_cmd[i];
+			no_redir_cmd[j] = c;
+			i++;
+			j++;
+			while (unspace_cmd[i] && unspace_cmd[i] != c)
+			{
+				no_redir_cmd[j] = unspace_cmd[i];
+				i++;
+				j++;
+			}
+			no_redir_cmd[j] = c;
+			j++;
+		}
 		else if (unspace_cmd[i] == '>' || unspace_cmd[i] == '<')
-			ft_unfill_redir(unspace_cmd, &i);
+		{
+			i++;
+			if (unspace_cmd[i] && (unspace_cmd[i] == '>' || unspace_cmd[i] == '<'))
+				i++;
+			while (unspace_cmd[i] && unspace_cmd[i] != ' ' && unspace_cmd[i] != '>' && unspace_cmd[i]!= '<')
+			{
+				if (unspace_cmd[i] && (unspace_cmd[i] == 34 || unspace_cmd[i] == 39))
+				{
+					c = unspace_cmd[i];
+					i++;
+					while (unspace_cmd[i] && unspace_cmd[i] != c)
+						i++;
+				}
+				i++;
+			}
+			if (!unspace_cmd[i] || unspace_cmd[i] == ' ' || unspace_cmd[i] == '>' || unspace_cmd[i] == '<')// modif ici avec ajout si null
+				i--;
+		}
 		else
 		{
-			no_redir[j] = unspace_cmd[i];
+			no_redir_cmd[j] = unspace_cmd[i];
 			j++;
 		}
 		i++;
 	}
-	no_redir[j] = '\0';
-	return (no_redir);
+	no_redir_cmd[j] = '\0';
+	return (no_redir_cmd);
 }
 
 int	ft_is_redir(char *unspace_cmd, int *j)

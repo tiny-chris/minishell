@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 17:03:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:06:03 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j);
 int		ft_lexer(char *line);
 int		ft_quote(char *line);
 int		ft_count_pipe(char *line);
-int		ft_pipe(char *line, int count);
+int		ft_pipe(char *line);
 int		ft_first_pipe(char *line);
 int		ft_redir(char *line);
 int		ft_check_redir(char *line, int i);
@@ -214,7 +214,7 @@ char	*ft_get_raw_cmd(t_data *data, int i);
 /*	Step 2	del_spaces */
 
 int		ft_del_spaces(t_data *data);
-int		ft_unspace_cmd_len(char	*raw_cmd, int len);
+int		ft_unspace_cmd_len(char	*raw_cmd);
 char	*ft_fill_unspace_cmd(char *raw_cmd, int len);
 
 /*	Step 3	extract_redir */
