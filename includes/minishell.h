@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 01:39:48 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:34:36 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,7 +333,7 @@ int		ft_nb_word(char const *str, char c);
 /*	****************	*/
 
 int		ft_exec(t_data *data);
-void	ft_get_pipe(t_data *data);
+void	ft_make_pipe(t_data *data);
 void	ft_fork(t_data *data, int *res);
 
 /*	exec init */

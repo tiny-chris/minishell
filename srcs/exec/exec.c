@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 22:27:53 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 13:34:23 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ extern int	g_val_exit;
 **	Return value: the exit status (when error) of the last child process
 */
 
-void	ft_get_pipe(t_data *data)
+void	ft_make_pipe(t_data *data)
 {
 	int	i;
 
@@ -89,7 +89,7 @@ int	ft_exec(t_data *data)
 		return (ft_check_sigint_heredoc(data));
 	if (data->nb_pipes == 0 && data->cmd->token->type == BUILTIN)
 		return (ft_unique_builtin(data));
-	ft_get_pipe(data);
+	ft_make_pipe(data);
 	res = -1;
 	ft_fork(data, &res);
 	if (res >= 0)
