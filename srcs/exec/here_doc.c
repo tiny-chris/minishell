@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:09:15 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/12 17:47:21 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 18:35:35 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,59 +14,7 @@
 
 extern int	g_val_exit;
 
-t_env	*ft_check_env(t_data *data, char *line)
-{
-	t_env	*env;
-	char	*tmp;
-
-	env = data->env;
-	tmp = NULL;
-	while (env)
-	{
-		tmp = ft_strjoin("$", env->var);
-		if (!tmp)
-			exit (EXIT_FAILURE); // et free tout;
-		if (ft_strncmp(tmp, line, ft_strlen(tmp)) == 0
-			&& (ft_strlen(line) - 1 == ft_strlen(tmp)))
-		{
-			free(tmp);
-			return (env);
-		}
-		free(tmp);
-		tmp = NULL;
-		env = env->next;
-	}
-	return (NULL);
-}
-
-void	ft_add_line(t_data *data, t_token *tok_redir, char *line)
-{
-	char	*expand_line;
-	t_env	*tmp;
-
-	expand_line = NULL;
-	if (line[0] == '$' && tok_redir->hd_quotes != 1)
-	{
-		tmp = ft_check_env(data, line);
-		if (tmp) // regarder si line est dans l'env
-		{
-			expand_line = ft_strjoin(tmp->content, "\n");
-			write(tok_redir->fd, expand_line, ft_strlen(expand_line));
-			free(expand_line);
-		}
-	}
-	else
-		write(tok_redir->fd, line, ft_strlen(line));
-	free(line);
-	line = NULL;
-}
-
-void	ft_heredoc_sigint(int sig)
-{
-	g_val_exit = 130;
-	(void)sig;
-	close(STDIN_FILENO);
-}
+/*	Ajouter les handle malloc	*/
 
 char	*ft_get_prompt_line(t_data *data)
 {
@@ -88,6 +36,34 @@ void	ft_end_of_file(t_token *tok_redir)
 	ft_putendl_fd("')", 2);
 }
 
+void	ft_exec_hd(t_data *data, t_token *tok_redir, char *line, int stdin_dup)
+{
+	while (1)
+	{
+		line = ft_get_prompt_line(data);
+		if (g_val_exit)
+		{
+			dup2(stdin_dup, STDIN_FILENO);
+			free(line);
+			break ;
+		}
+		if (!line)
+		{
+			ft_end_of_file(tok_redir);
+			break ;
+		}
+		if (ft_strncmp(line, tok_redir->token, ft_strlen(tok_redir->token)) == 0
+			&& (ft_strlen(tok_redir->token) == (ft_strlen(line) - 1)))
+		{
+			free(line);
+			break ;
+		}
+		ft_add_line(data, tok_redir, line);
+		line = NULL;
+		ft_init_signals(data);
+	}
+}
+
 void	ft_heredoc(t_data *data, t_cmd *cmd, t_token *tok_redir)
 {
 	char	*line;
@@ -100,31 +76,10 @@ void	ft_heredoc(t_data *data, t_cmd *cmd, t_token *tok_redir)
 	if (tok_redir->fd < 0)
 	{
 		cmd->file_err = 1;
-		g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno)); // exit avec free
+		g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
 	}
 	stdin_dup = dup(STDIN_FILENO);
-	while (1)
-	{
-		line = ft_get_prompt_line(data);
-		if (g_val_exit)
-		{
-			dup2(stdin_dup, STDIN_FILENO);
-			break ;
-		}
-		if (!line)
-		{
-			ft_end_of_file(tok_redir);
-			break ;
-		}
-		if (ft_strncmp(line, tok_redir->token, ft_strlen(tok_redir->token)) == 0
-			&& (ft_strlen(tok_redir->token) == (ft_strlen(line) - 1)))
-			break ;
-		ft_add_line(data, tok_redir, line);
-		line = NULL;
-		ft_init_signals(data);
-	}
-	if (line)
-		free(line);
+	ft_exec_hd(data, tok_redir, line, stdin_dup);
 	close(stdin_dup);
 	close(tok_redir->fd);
 	tok_redir->fd = open(cmd->heredoc_path, O_RDONLY);

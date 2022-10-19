@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 18:06:03 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:34:37 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,6 +440,7 @@ void	ft_add_line(t_data *data, t_token *tok_redir, char *line);
 t_env	*ft_check_env(t_data *data, char *line);
 void	ft_heredoc_sigint(int sig);
 void	ft_end_of_file(t_token *tok_redir);
+void	ft_exec_hd(t_data *data, t_token *tok_redir, char *line, int stdin_dup);
 
 /* **************************** */
 /* début - for ft_handle_malloc */

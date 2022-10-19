@@ -74,6 +74,7 @@ SRCS 		:= \
 			exec/clean.c \
 			exec/signal.c \
 			exec/here_doc.c \
+			exec/here_doc_2.c \
 			bin_collect/bin_coll.c \
 			bin_collect/bin_list.c \
 
