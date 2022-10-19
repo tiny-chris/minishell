@@ -76,6 +76,7 @@ SRCS 		:= \
 			exec/cmd_path_4.c \
 			exec/cmd_path_5.c \
 			exec/clean.c \
+			exec/close_fd.c \
 			exec/signal.c \
 			exec/here_doc.c \
 			exec/here_doc_2.c \
