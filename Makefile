@@ -69,6 +69,7 @@ SRCS 		:= \
 			exec/parent_process.c\
 			exec/env_path.c \
 			exec/init.c \
+			exec/get_files_io.c \
 			exec/cmd_path.c \
 			exec/clean.c \
 			exec/signal.c \
