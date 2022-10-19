@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:00:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/19 01:21:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:50:02 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	ft_del_tabs(t_data *data)
 }
 
 /*	<SUMMARY> Helper function to go through (closing) quotes
-**	<RETURNS> i, the position on the line of the closing quote (or '\0') 
+**	<RETURNS> i, the position on the line of the closing quote (or '\0')
 */
 int	ft_count_btw_quotes(char *line, int i)
 {
@@ -86,17 +86,16 @@ int	ft_nb_csq_redir(char *line, int i)
 	char	c;
 
 	j = i;
-	if (line[j] && (line[i] == '>' || line[i] == '<'))
+	if (line[j] && (line[j] == '>' || line[j] == '<'))
 	{
 		c = line[j];
 		j++;
-		if (line[j] && line[j] == ' ')
+		if (line[j] && (line[j] == c))
 			j++;
 		return (j - i);
 	}
 	return (0);
 }
-
 
 /*	<SUMMARY> parses the command line - main function
 */

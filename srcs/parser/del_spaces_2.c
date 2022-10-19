@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/19 01:35:24 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/19 16:01:35 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int	ft_unspace_cmd_len(char	*raw_cmd, int len)
 		{
 			len -= ft_count_space(raw_cmd, i);
 			i += ft_count_space(raw_cmd, i);
-		}	
+		}
 		else if (raw_cmd[i] == '>' || raw_cmd[i] == '<')
 		{
 			i += ft_nb_csq_redir(raw_cmd, i);
-			len = len - (ft_count_space(raw_cmd, i) + 2);
+			len = len - (ft_count_space(raw_cmd, i) + 1);
 			i += ft_count_space(raw_cmd, i);
 		}
 		i++;

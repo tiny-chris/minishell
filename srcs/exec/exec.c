@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 11:14:04 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 13:34:23 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 15:50:55 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ void	ft_fork(t_data *data, int *res)
 
 int	ft_exec(t_data *data)
 {
-	int	i;
+//
 	int	res;
 
-	i = 0;
+//	i = 0;
 	if (data->nb_pipes > 0)
 		data->pipe_fd = ft_init_pipe(data);
 	data->pid = ft_init_pid(data);
