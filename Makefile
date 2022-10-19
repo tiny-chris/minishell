@@ -24,7 +24,7 @@ LIBFT		:= lib/libft/libft.a
 SRC_DIR		:= srcs
 SRCS 		:= \
 			minishell.c \
-			minishell_utils.c \
+			minishell_init.c \
 			utils.c \
 			utils_2.c \
 			utils_3.c \
