@@ -24,7 +24,10 @@ LIBFT		:= lib/libft/libft.a
 SRC_DIR		:= srcs
 SRCS 		:= \
 			minishell.c \
+			minishell_utils.c \
 			utils.c \
+			utils_2.c \
+			utils_3.c \
 			parser/parser.c \
 			parser/env.c \
 			parser/env_list.c \

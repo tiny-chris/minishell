@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 21:04:55 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/19 21:59:19 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# define ERRINI "minishell : could not initialise minishell"
 # define ERRSTX "Syntax error near unexpected token"
 # define ERRMAL "Error: memory allocation failure"
 # define ERRCMD "command not found"
