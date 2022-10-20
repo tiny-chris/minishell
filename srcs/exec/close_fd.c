@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 21:26:02 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 21:28:27 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/20 15:31:55 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ static void	ft_close_pipefd(t_data *data)
 
 void	ft_close_fd(t_data *data)
 {
-	int		i;
-
-	i = 0;
 	if (!data)
 		return ;
 	if (data->cmd)

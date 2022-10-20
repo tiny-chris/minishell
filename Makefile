@@ -44,7 +44,7 @@ SRCS 		:= \
 			parser/del_dolls.c \
 			parser/expand.c \
 			parser/expand_2.c \
-			parser/token_2.c \
+			parser/token.c \
 			parser/clean_token_3.c \
 			parser/type_token.c \
 			parser/clean_redir.c \
@@ -94,8 +94,8 @@ OBJ_DIR		:= obj
 OBJS		:= $(subst .c,.o,$(SRCS))
 OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
-CC			:= clang
-# CC		:= gcc
+#CC			:= clang
+CC		:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
 CPPFLAGS	:= -I lib/libft -I includes
 LDFLAGS		:= -L lib/libft
