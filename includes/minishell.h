@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 06:12:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 12:09:48 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ int		ft_expand_cmd_len(char *undoll_cmd, t_data *data);
 int		ft_get_expand_size(char *undoll_cmd, int *i, t_data *data);
 int		ft_get_error_size(t_data *data);
 char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data);//modifier le nom de la fonction
-void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data);
+void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j);
 
 /*	Step 6	tokens */
 
