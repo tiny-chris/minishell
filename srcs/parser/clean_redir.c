@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 11:11:08 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:46:45 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 06:57:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,13 +306,15 @@ int	ft_clean_redir(t_cmd *cmd, t_data *data)
 	{
 		if (tok_redir->type != HERE_DOC)
 		{
-			len = ft_undoll_cmd_len(tok_redir->token);
-			ft_fill_undoll_redir(tok_redir, len);
-			ft_neg_dolls(tok_redir->token);
+			len = ft_undoll_cmd_len(tok_redir->token);//OK
+			ft_fill_undoll_redir(tok_redir, len);//OK
+			ft_neg_dolls(tok_redir->token);//OK
 			//dprintf(2, "undoll tok_redir[%d]   = %s, len = %d vs. strlen = %ld\n", nb, tok_redir->token, len, ft_strlen(tok_redir->token));
-			len = ft_expand_cmd_len(tok_redir->token, data);
-			ft_fill_expand_redir(tok_redir, len, data);
+			len = ft_expand_cmd_len(tok_redir->token, data);//avec EXPAND
+			ft_fill_expand_redir(tok_redir, len, data);//OK
 			//dprintf(2, "expand tok_redir[%d]   = %s, len = %d vs. strlen = %ld\n", nb, tok_redir->token, len, ft_strlen(tok_redir->token));
+
+
 			len = ft_consec_quotes_len(tok_redir->token);
 			ft_fill_consec_quotes_redir(tok_redir, len);
 			//dprintf(2, "unquote1 tok_redir[%d] = %s, len = %d vs. strlen = %ld\n", nb, tok_redir->token, len, ft_strlen(tok_redir->token));

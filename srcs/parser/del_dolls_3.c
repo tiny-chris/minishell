@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 05:31:12 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 06:18:45 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	'cmd' linked list
 **	<RETURNS>	the new string value (char *) without useless $ & spaces
 */
-static char	*ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j)
+char	*ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j)
 {
 	if (no_redir[*i] == '$')
 	{
@@ -90,7 +90,7 @@ static char	*ft_fill_doll_dquotes(char *no_redir, int *i, char *undoll, int *j)
 	return (undoll);
 }
 
-static char	*ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j)
+char	*ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j)
 {
 	char	c;
 

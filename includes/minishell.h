@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 21:59:19 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/20 06:12:46 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ int		ft_fill_unquote_heredoc(t_token *token, int len);
 int		ft_del_dolls(t_data *data);
 int		ft_undoll_cmd_len(char *no_redir_cmd);
 char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len);
+char	*ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j);
 void	ft_neg_dolls(char *undoll_cmd);
 
 /*	Step 5	expand */
