@@ -39,6 +39,7 @@ SRCS 		:= \
 			parser/del_spaces.c \
 			parser/del_spaces_2.c \
 			parser/get_redir.c \
+			parser/get_redir_2.c \
 			parser/token_list.c \
 			parser/del_dolls.c \
 			parser/expand_2.c \

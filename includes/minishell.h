@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 21:59:19 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/20 11:48:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,10 +183,11 @@ void 	ft_get_env_path(t_data *data, int flag);
 int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag);
 
 
-
-int		ft_count_btw_quotes(char *line, int i);
-int		ft_count_space(char *line, int i);
-int		ft_nb_csq_redir(char *line, int i);
+void	ft_count_btw_quotes(char *line, int *i);
+void	ft_nb_csq_redir(char *line, int *i, int *len);
+char	*ft_fill_btw_quotes(char *src, int *i, char *dst, int *j);
+// int		ft_count_space(char *line, int i);
+// int		ft_nb_csq_redir(char *line, int i);
 
 char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j);
 
@@ -197,10 +198,8 @@ char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j);
 int		ft_lexer(char *line);
 int		ft_quote(char *line);
 int		ft_count_pipe(char *line);
-int		ft_pipe(char *line);
-int		ft_first_pipe(char *line);
+int		ft_pipe(char *line, int count);
 int		ft_redir(char *line);
-int		ft_check_redir(char *line, int i);
 
 /*	***** PARSER *****	*/
 /*	******************	*/
@@ -223,8 +222,7 @@ char	*ft_fill_unspace_cmd(char *raw_cmd, int len);
 int		ft_get_redir(t_data *data);
 int		ft_len_no_redir(char *unspace_cmd);
 char	*ft_fill_no_redir(char *unspace_cmd, int len);
-int		ft_get_redir_list(char *unspace_cmd, t_token **tok_redir, t_data *data);
-int		ft_is_redir(char *unspace_cmd, int *j);
+int		ft_get_redir_lst(char *cmd, t_token **tok_redir, t_data *d, int type);
 
 /*	Step (x)	clean_redir */
 
@@ -307,7 +305,7 @@ void	ft_free_cmd(t_cmd **cmd);
 	/*	token_list */
 
 t_token	*ft_lstlast_tok(t_token *lst);
-int		ft_lstadd_token(t_token **tok, int type, char *token, t_data *data);
+int		ft_lstadd_tok(t_token **tok, int type, char *token, t_data *data);
 void	ft_lstdelone_tok(t_token *node);
 void	ft_lstdelone_tok_bin(t_token *node);
 void	ft_free_token(t_token **token);

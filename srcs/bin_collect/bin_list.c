@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 22:14:29 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 14:57:22 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:46:26 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	ft_lstclearone_bin(t_bin **bin_head, void *ptr)
 	{
 		todel = (*bin_head);
 		tmp = (*bin_head)->next;
+		todel->next = NULL;
 		ft_lstdelone_bin(todel);
 		(*bin_head) = tmp;
 		return ;

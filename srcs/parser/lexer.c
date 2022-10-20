@@ -12,34 +12,29 @@
 
 #include "minishell.h"
 
-/*	2 étapes
-	1. check contenu i+1
-		- espaces uniquement
-		- quotes fermées directement (simples ou doubles)
-		-
-	2. check file
+/*	<SUMMARY> checks redirections in 2 steps:
+**	1. checking of (i + 1) content (only spaces, direct closing quotes)
+**	2. checking file
 */
-int	ft_check_redir(char *line, int i)
+static int	ft_check_redir(char *line, int i)
 {
 	int		j;
-	char	q;
 
 	j = i;
 	if (line[j] && line[j] == ' ')
 	{
 		while (line[j] && line[j] == ' ')
 			j++;
-		if ((line[j] == '\0') || (line[j] == '|') || (line[j] == 60) || (line[j] == 62))
+		if ((line[j] == '\0') || (line[j] == '|') || (line[j] == 60) \
+			|| (line[j] == 62))
 			return (-1);
 	}
-	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62) && (line[j] != ' '))
+	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62) \
+		&& (line[j] != ' '))
 	{
 		if (line[j] == 34 || line[j] == 39)
 		{
-			q = line[j];
-			j++;
-			while (line[j] != q)
-				j++;
+			ft_count_btw_quotes(line, &j);
 			return (j);
 		}
 		j++;
@@ -49,26 +44,19 @@ int	ft_check_redir(char *line, int i)
 	return (j - 1);
 }
 
-/*	check 'chevrons'
-**	val ASCII redir infile : 60
-**	val ASCII redir outfile : 62
+/*	<SUMMARY> checks redirections - main function (nb & file/name that follows)
+**	ASCII values for infile : 60 and for outfile redir : 62
 */
 int	ft_redir(char *line)
 {
 	int		i;
-	char	q;
 	char	c;
 
 	i = 0;
 	while (line[i])
 	{
 		if (line[i] == 34 || line[i] == 39)
-		{
-			q = line[i];
-			i++;
-			while (line[i] != q)
-				i++;
-		}
+			ft_count_btw_quotes(line, &i);
 		else if (line[i] == 60 || line[i] == 62)
 		{
 			c = line[i];
@@ -84,14 +72,14 @@ int	ft_redir(char *line)
 	return (0);
 }
 
-/*	check if 'quotes englobantes' sont bien fermées
-**	val ASCII simple quote : 39
-**	val ASCII double quote : 34
+/*	<SUMMARY> checks if any open quote has its matching closing quote
+**	ASCII values for a simple quote : 39 and for a doubble quote : 34
 */
 int	ft_quote(char *line)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	c;
 
 	i = 0;
 	j = 0;
@@ -99,18 +87,10 @@ int	ft_quote(char *line)
 	{
 		if (line[i] == 39 || line[i] == 34)
 		{
-			if (line[i] == 39)
-			{
-				j = i + 1;
-				while (line[j] && line[j] != 39)
-					j++;
-			}
-			else if (line[i] == 34)
-			{
-				j = i + 1;
-				while (line[j] && line[j] != 34)
-					j++;
-			}
+			c = line[i];
+			j = i + 1;
+			while (line[j] && line[j] != c)
+				j++;
 			if (!line[j])
 				return (1);
 			i = j;
@@ -120,215 +100,24 @@ int	ft_quote(char *line)
 	return (0);
 }
 
-/* on compte le nombre de pipes hors quotes
+/*	<SUMMARY> first check (lexer) on the command line - main function
 */
-
-int	ft_count_pipe(char *line)
-{
-	int		count;
-	int		i;
-	char	c;
-
-	i = 0;
-	count = 0;
-	while (line[i])
-	{
-		if (line[i] == 34 || line[i] == 39)
-		{
-			c = line[i];
-			i++;
-			while (line[i] && line[i] != c)
-				i++;
-		}
-		else if (line[i] == '|')
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-int	ft_first_pipe(char *line)
-{
-	int		i;
-	char	c;
-
-	i = 0;
-	if (line[i] == '|')
-		return (-1);
-	if (line[i] == ' ')
-	{
-		while (line[i] && line[i] == ' ')
-			i++;
-		if (line[i] == '|')
-			return (1);
-	}
-	if (line[i] == 34 || line[i] == 39)
-	{
-		c = line[i];
-		i++;
-		while (line[i] != c)
-			i++;
-	}
-	while (line[i] && line[i] != '|')
-		i++;
-	return (i);
-}
-
-int	ft_pipe(char *line)
-{
-	int		i;
-	int		count;
-	char	c;
-
-	i = 0;
-	count = ft_count_pipe(line);
-	while (line[i] && count)
-	{
-		if (i == 0)
-			i = ft_first_pipe(line);
-		if (i == -1)
-			return (1);
-		i++;
-		if (line[i] == '\0' || line[i] == '|')
-			return (1);
-		if (line[i] == ' ')
-		{
-			while (line[i] && line[i] == ' ')
-				i++;
-			if (line[i] == '\0' || line[i] == '|')
-				return (1);
-		}
-		if (line[i] == 34 || line[i] == 39)
-		{
-			c = line[i];
-			i++;
-			while (line[i] != c)
-				i++;
-		}
-		while (line[i] && line[i] != '|')
-			i++;
-		count--;
-	}
-	return(0);
-}
-
 int	ft_lexer(char *line)
 {
+	int		count;
+
+	count = 0;
 	if (!line)
 		return (0);
 	else
 	{
 		if (ft_quote(line) == 1)
 			return (1);
-		if (ft_pipe(line) == 1)
+		count = ft_count_pipe(line);
+		if (ft_pipe(line, count) == 1)
 			return (2);
 		if (ft_redir(line) == 1)
 			return (3);
 	}
 	return (0);
 }
-
-
-// /*	<SUMMARY> checks redirections in 2 steps:
-// **	1. checking of (i + 1) content (only spaces, direct closing quotes)
-// **	2. checking file
-// */
-// int	ft_check_redir(char *line, int i)
-// {
-// 	int		j;
-
-// 	j = i;
-// 	if (line[j] && line[j] == ' ')
-// 	{
-// 		while (line[j] && line[j] == ' ')
-// 			j++;
-// 		if ((line[j] == '\0') || (line[j] == '|') || (line[j] == 60) \
-// 			|| (line[j] == 62))
-// 			return (-1);
-// 	}
-// 	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62) \
-// 		&& (line[j] != ' '))
-// 	{
-// 		j += ft_count_btw_quotes(line, j);
-// 		j++;
-// 	}
-// 	if (j == i)
-// 		return (-1);
-// 	return (j - 1);
-// }
-
-// /*	<SUMMARY> checks redirections - main function (nb & file/name that follows)
-// **	ASCII value for infile : 60 and for outfile redir : 62
-// */
-// int	ft_redir(char *line)
-// {
-// 	int		i;
-// 	char	c;
-
-// 	i = 0;
-// 	while (line[i])
-// 	{
-// 		if (line[i] == 34 || line[i] == 39)
-// 			i += ft_count_btw_quotes(line, i);
-// 		else if (line[i] == 60 || line[i] == 62)
-// 		{
-// 			c = line[i];
-// 			i++;
-// 			if (line[i] == c)
-// 				i++;
-// 			i = ft_check_redir(line, i);
-// 			if (i == -1)
-// 				return (1);
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// /*	<SUMMARY> checks if any open quote has its matching closing quote
-// **	ASCII value for a simple quote : 39 and for a doubble quote : 34
-// */
-// int	ft_quote(char *line)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	c;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (line[i])
-// 	{
-// 		if (line[i] == 39 || line[i] == 34)
-// 		{
-// 			c = line[i];
-// 			j = i + 1;
-// 			while (line[j] && line[j] != c)
-// 				j++;
-// 			if (!line[j])
-// 				return (1);
-// 			i = j;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-// int	ft_lexer(char *line)
-// {
-// 	int	count;
-
-// 	count = 0;
-// 	if (!line)
-// 		return (0);
-// 	else
-// 	{
-// 		if (ft_quote(line) == 1)
-// 			return (1);
-// 		count = ft_count_pipe(line);
-// 		if (ft_pipe(line, count) == 1)
-// 			return (2);
-// 		if (ft_redir(line) == 1)
-// 			return (3);
-// 	}
-// 	return (0);
-// }

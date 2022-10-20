@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 17:29:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 16:34:07 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:48:54 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_token	*ft_lstlast_tok(t_token *lst)
 	return (node);
 }
 
-int	ft_lstadd_token(t_token **tok, int type, char *token, t_data *data)
+int	ft_lstadd_tok(t_token **tok, int type, char *token, t_data *data)
 {
 	t_token	*new;
 	t_token	*last;

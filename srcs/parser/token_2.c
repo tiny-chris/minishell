@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 23:15:29 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:48:43 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_get_token(t_cmd *cmd, t_data *data)
 		}
 		if (clean_cmd[j] == ' ' || clean_cmd[j] == '\0')
 		{
-			ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i), data);
+			ft_lstadd_tok(&token, WORD, ft_substr(clean_cmd, i, j - i), data);
 			// if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
 			// 	return (1);//FREE & EXIT
 			if (clean_cmd[j] == '\0')
@@ -50,7 +50,7 @@ int	ft_get_token(t_cmd *cmd, t_data *data)
 		else if (clean_cmd[j] != 34 && clean_cmd[j] != 39)
 			j++;
 	}
-	ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i), data);
+	ft_lstadd_tok(&token, WORD, ft_substr(clean_cmd, i, j - i), data);
 	// if (ft_lstadd_token(&token, WORD, ft_substr(clean_cmd, i, j - i)))
 	// 	return (1);
 	if (clean_cmd[j] == '\0')
