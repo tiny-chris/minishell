@@ -42,6 +42,7 @@ SRCS 		:= \
 			parser/get_redir_2.c \
 			parser/token_list.c \
 			parser/del_dolls.c \
+			parser/expand.c \
 			parser/expand_2.c \
 			parser/token_2.c \
 			parser/clean_token_3.c \

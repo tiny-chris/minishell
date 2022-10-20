@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 11:48:23 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 14:50:23 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,13 @@ typedef enum s_flag
 	MALLOC_M		= 2001,
 	DELONE			= 3000,
 }	t_flag;
+
+typedef struct s_int
+{
+	int	i;
+	int	j;
+}	t_int;
+
 
 typedef struct s_bin
 {
@@ -255,6 +262,10 @@ int		ft_get_expand_size(char *undoll_cmd, int *i, t_data *data);
 int		ft_get_error_size(t_data *data);
 char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data);//modifier le nom de la fonction
 void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data);
+void	ft_fill_ex2(char *undoll_cmd, t_int *var, char *clean_cmd, t_data *data);
+void	ft_fill_ex3(t_env *env, char *clean_cmd, t_int *var);
+void	ft_fill_return_code(t_data *data, char *clean_cmd, int *j);
+void	ft_fill_normal(char *clean_cmd, char *undoll_cmd, int *i, int *j);
 
 /*	Step 6	tokens */
 

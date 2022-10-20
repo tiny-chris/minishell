@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 11:11:08 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/13 17:46:45 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 14:35:16 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,42 @@
 - expand (sauf heredoc)
 - quotes + positive doll
 */
+void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data)
+{
+	t_env	*env;
+	char	*var_to_expand;
+	int		k;
+	int		l;
+
+	env = data->env;
+	k = *i;
+	l = 0;
+	while (undoll_cmd[k] && (undoll_cmd[k] > 0) && ft_isalnum(undoll_cmd[k]))
+		k++;
+	var_to_expand = ft_substr(undoll_cmd, *i, (k - *i));
+	ft_handle_malloc(ADD_M + TAB_STR1, var_to_expand, 0, NULL);
+	while (env)
+	{
+		if ((ft_strlen(var_to_expand) == ft_strlen(env->var)) \
+			&& (ft_strncmp(var_to_expand, env->var, (k - *i)) == 0))
+		{
+			while (env->content[l])
+			{
+				if (env->content[l] == 34 || env->content[l] == 39)
+					clean_cmd[*j] = env->content[l] * (-1);
+				else
+					clean_cmd[*j] = env->content[l];
+				(*j)++;
+				l++;
+			}
+			break ;
+		}
+		env = env->next;
+	}
+	ft_handle_malloc(DELONE, var_to_expand, 0, NULL);
+	*i = k;
+	return ;
+}
 
 int	ft_fill_undoll_redir(t_token *token, int len)
 {
