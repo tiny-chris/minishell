@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 11:47:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 16:59:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_get_redir_lst(char *cmd, t_token **tok_redir, t_data *d, int type)
 
 	i = 0;
 	j = 0;
-	while(cmd[i])
+	while (cmd[i])
 	{
 		if (cmd[i] && (cmd[i] == 34 || cmd[i] == 39))
 			ft_count_btw_quotes(cmd, &i);
@@ -107,13 +107,11 @@ int	ft_get_redir(t_data *data)
 	{
 		len = ft_len_no_redir(cmd->unspace_cmd);
 		trim_cmd = ft_fill_no_redir(cmd->unspace_cmd, len);
-		dprintf(2, "trim cmd = %s --> len = %d vs. strlen = %ld\n", trim_cmd, len, ft_strlen(trim_cmd));//
 		cmd->no_redir_cmd = ft_strtrim(trim_cmd, " ");
 		ft_handle_malloc(ADD_M + TAB_STR1, cmd->no_redir_cmd, 0, NULL);
 		ft_handle_malloc(DELONE, trim_cmd, 0, NULL);
 		trim_cmd = NULL;
 		ft_get_redir_lst(cmd->unspace_cmd, &cmd->tok_redir, data, type);
-		dprintf(2, "no redir cmd   = %s --> strlen = %ld\n", cmd->no_redir_cmd, ft_strlen(cmd->no_redir_cmd));//
 		ft_clean_redir(cmd, data);
 		cmd = cmd->next;
 	}

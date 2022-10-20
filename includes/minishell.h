@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 15:22:18 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/20 16:52:20 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ char	*ft_fill_btw_quotes(char *src, int *i, char *dst, int *j);
 // int		ft_nb_csq_redir(char *line, int i);
 
 char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j);
+char	*ft_fill_btw_quotes(char *src, int *i, char *dst, int *j);
 
 
 /*	***** LEXER *****	*/
@@ -233,7 +234,7 @@ int		ft_get_redir_lst(char *cmd, t_token **tok_redir, t_data *d, int type);
 
 /*	Step (x)	clean_redir */
 
-int		ft_clean_redir(t_cmd *cmd, t_data *data);
+int		ft_clean_redir(t_cmd *cmd);
 int		ft_fill_undoll_redir(t_token *token, int len);
 int		ft_fill_expand_redir(t_token *token, int len, t_data *data);
 int		ft_fill_consec_quotes_redir(t_token *token, int len);
@@ -252,7 +253,9 @@ int		ft_fill_unquote_heredoc(t_token *token, int len);
 int		ft_del_dolls(t_data *data);
 int		ft_undoll_cmd_len(char *no_redir_cmd);
 char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len);
+char	*ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j);
 void	ft_neg_dolls(char *undoll_cmd);
+char	*ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j);
 
 /*	Step 5	expand */
 

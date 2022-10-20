@@ -42,12 +42,16 @@ SRCS 		:= \
 			parser/get_redir_2.c \
 			parser/token_list.c \
 			parser/del_dolls.c \
+			parser/del_dolls_2.c \
+			parser/del_dolls_3.c \
 			parser/expand.c \
 			parser/expand_2.c \
 			parser/token.c \
 			parser/clean_token_3.c \
 			parser/type_token.c \
 			parser/clean_redir.c \
+			parser/clean_redir_2.c \
+			parser/clean_redir_3.c \
 			parser/clean_heredoc.c \
 			parser/del_empty_token.c \
 			parser/space_quotes.c \
@@ -94,8 +98,8 @@ OBJ_DIR		:= obj
 OBJS		:= $(subst .c,.o,$(SRCS))
 OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
-#CC			:= clang
-CC		:= gcc
+CC			:= clang
+# CC		:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
 CPPFLAGS	:= -I lib/libft -I includes
 LDFLAGS		:= -L lib/libft
