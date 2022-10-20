@@ -47,6 +47,8 @@ SRCS 		:= \
 			parser/token.c \
 			parser/clean_token_3.c \
 			parser/type_token.c \
+			parser/type_token_env.c \
+			parser/type_token_echo.c \
 			parser/clean_redir.c \
 			parser/clean_heredoc.c \
 			parser/del_empty_token.c \
