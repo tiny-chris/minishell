@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/17 06:49:32 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:20:54 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,6 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline, t_data *data)
 	last->next = new;
 	return (0);
 }
-
-// void	ft_lstdelone_cmd(t_cmd *node, int type)
-// {
-// 	if (!node)
-// 		return ;
-// 	if (type != LST_CMD)
-// 	{
-// 		ft_free_strs(node->raw_cmd, node->unspace_cmd, node->no_redir_cmd);
-// 		ft_free_strs(node->undoll_cmd, node->clean_cmd, node->cmd_path);
-// 		ft_free_token(&(node->token));
-// 		ft_free_token(&(node->tok_redir));
-// 		if (node->cmd_opt != NULL)
-// 			ft_free_tabstr(node->cmd_opt);
-// 		node->infile = 0;
-// 		node->outfile = 1;
-// 		node->file_err = 0;
-// 	}
-// 	node->next = NULL;
-// 	free(node);
-// 	node = NULL;
-// }
 
 /*	<SUMMARY> Deletes the t_cmd node ONLY (not its content) and removes it
 **	from the garbage collector at the same time

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 16:45:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:11:44 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*ft_fill_ex_red(t_token *tok, char *t_expand, t_int *var, t_data *d)
 			(var->i)++;
 			if (tok->token[var->i] == '?')
 			{
-				t_expand = ft_fill_exp_red_val_exit(t_expand, var->j, d);
+				t_expand = ft_fill_exp_red_val_exit(t_expand, &(var->j), d);
 				(var->i)++;
 			}
 			else
@@ -43,9 +43,9 @@ static char	*ft_fill_ex_red(t_token *tok, char *t_expand, t_int *var, t_data *d)
 		}
 		else
 		{
-			t_expand[j] = tok->token[*i];
-			(*i)++;
-			j++;
+			t_expand[var->j] = tok->token[var->i];
+			(var->i)++;
+			(var->j)++;
 		}
 	}
 	return (t_expand);
@@ -59,7 +59,7 @@ int	ft_fill_expand_redir(t_token *token, int len, t_data *data)
 	var.i = 0;
 	var.j = 0;
 	tok_expand = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
-	tok_expand = ft_fill_exp_redir2(token, &var, tok_expand, data);
+	tok_expand = ft_fill_ex_red(token, tok_expand, &var, data);
 	tok_expand[len] = '\0';
 	ft_handle_malloc(DELONE, token->token, 0, NULL);
 	token->token = tok_expand;

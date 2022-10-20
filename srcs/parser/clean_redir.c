@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 11:11:08 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 16:53:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:07:25 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	ft_fill_clean_redir(t_token *token, int len)
 	return (0);
 }
 
-int	ft_clean_redir(t_cmd *cmd)
+int	ft_clean_redir(t_cmd *cmd, t_data *data)
 {
 	t_token	*tok_redir;
 	int		len;

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 05:32:42 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:21:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	ft_del_dolls(t_data *data)
 		if (!cmd->undoll_cmd)
 			return (1);
 		ft_neg_dolls(cmd->undoll_cmd);
-		dprintf(2, "undoll cmd     = %s --> len = %d vs. strlen = %ld\n", cmd->undoll_cmd, len, ft_strlen(cmd->undoll_cmd));//
 		cmd = cmd->next;
 	}
 	return (0);

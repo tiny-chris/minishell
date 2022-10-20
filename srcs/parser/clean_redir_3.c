@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 16:45:11 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:15:48 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,32 +45,32 @@ static char	*ft_csq_quotes_start(t_token *t, int *i, char *t_unquote, int *j)
 	return (t_unquote);
 }
 
-static char	*ft_csq_quotes_redir2(t_token *tok, char *t_unquote, t_int *var)
+static char	*ft_csq_quotes_redir2(t_token *t, char *unquote, t_int *v)
 {
 	char	c;
 
-	if (tok->token[*i] == 34 || tok->token[*i] == 39)
+	if (t->token[v->i] == 34 || t->token[v->i] == 39)
 	{
-		c = tok->token[*i];
-		if (tok->token[(*i) + 1] == c)
+		c = t->token[v->i];
+		if (t->token[(v->i) + 1] == c)
 		{
-			if (*i == 0)
+			if (v->i == 0)
 			{
-				t_unquote = ft_csq_quotes_start(tok, i, t_unquote, j);
-				if (tok->token == NULL)
-					return (t_unquote);
-				(*i)--;
+				unquote = ft_csq_quotes_start(t, &(v->i), unquote, &(v->j));
+				if (t->token == NULL)
+					return (unquote);
+				(v->i)--;
 			}
-			else if (*i > 0)
+			else if (v->i > 0)
 			{
-				ft_csq_quotes_uncopy(tok, i);
-				(*i)--;
+				ft_csq_quotes_uncopy(t, &(v->i));
+				(v->i)--;
 			}		
 		}
 		else
-			t_unquote = ft_fill_btw_quotes(tok->token, i, t_unquote, j);
+			unquote = ft_fill_btw_quotes(t->token, &(v->i), unquote, &(v->i));
 	}
-	return (t_unquote);
+	return (unquote);
 }
 
 int	ft_fill_consec_quotes_redir(t_token *token, int len)

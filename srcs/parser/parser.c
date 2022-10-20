@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:00:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 11:48:33 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:19:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,6 @@ void	ft_nb_csq_redir(char *line, int *i, int *len)
 		}
 	}
 }
-
-
-// /*	<SUMMARY> Helper function to count extra spaces (on top of 1st one)
-// **	<RETURNS> the number of moves to get to the new position (last ' ')
-// **	<REMARK> new position is just before the 1st ' ' in case of redir
-// **			(space on 1st position has already been cleaned)
-// */
-// int	ft_count_space(char *line, int i)
-// {
-// 	int		j;
-
-// 	j = i;
-// 	if (line[j] && line[j] == ' ')
-// 	{
-// 		j++;
-// 		while (line[j] && line[j] == ' ')
-// 			j++;
-// 		j--;
-// 		return (j - i);
-// 	}
-// 	return (0);
-// }
 
 /*	<SUMMARY> parses the command line - main function
 */

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 16:55:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/12 01:32:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:21:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ Notes : la boucle = reprendre depuis le début de la liste à chaque fois
 
 int	ft_del_empty_token(t_cmd *cmd, t_data *data)
 {
-//	dprintf(2, "check dans empty token\n");
+
 	t_token	*tok;
 	t_token	*todel;
 	t_token	*tmp;

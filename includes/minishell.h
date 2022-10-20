@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 16:52:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:07:45 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,7 @@ int		ft_get_redir_lst(char *cmd, t_token **tok_redir, t_data *d, int type);
 
 /*	Step (x)	clean_redir */
 
-int		ft_clean_redir(t_cmd *cmd);
+int		ft_clean_redir(t_cmd *cmd, t_data *data);
 int		ft_fill_undoll_redir(t_token *token, int len);
 int		ft_fill_expand_redir(t_token *token, int len, t_data *data);
 int		ft_fill_consec_quotes_redir(t_token *token, int len);

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 15:32:00 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 11:46:56 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 17:18:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*ft_fill_unspace_redir(char *raw, int *i, char *unspace, int *j)
 		{
 			unspace[*j] = raw[*i];
 			(*i)++;
-			(*j)++;			
+			(*j)++;
 		}
 		if (raw[*i] == ' ')
 		{
@@ -125,9 +125,7 @@ int	ft_del_spaces(t_data *data)
 	while (cmd)
 	{
 		len = ft_unspace_cmd_len(cmd->raw_cmd);
-		// dprintf(2, "len raw cmd = %d\n", len);//
 		cmd->unspace_cmd = ft_fill_unspace_cmd(cmd->raw_cmd, len);
-		// dprintf(2, "unspace cmd    = %s --> len = %d vs. strlen = %ld\n", cmd->unspace_cmd, len, ft_strlen(cmd->unspace_cmd));//
 		cmd = cmd->next;
 	}
 	return (0);
