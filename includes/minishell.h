@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 14:50:23 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/20 15:22:18 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,9 @@ void	ft_fill_normal(char *clean_cmd, char *undoll_cmd, int *i, int *j);
 
 int		ft_tokenizer(t_data *data);
 int		ft_get_token(t_cmd *cmd, t_data *data);
+int		ft_check_end(t_cmd *cmd, char *clean_cmd, t_token *token, t_int *var);
+int		ft_get_token_end(t_cmd *cmd, char *clean_cmd, t_token *token, int *j);
+void	ft_get_token_quotes(char *clean_cmd, int *j);
 int		ft_clean_token(t_cmd *cmd, t_data *data);
 int		ft_consec_quotes_len(char *token);
 char	*ft_fill_consec_quotes(char *token, int len);
