@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:52:35 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 23:15:29 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 15:39:21 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,6 @@ int	ft_get_token(t_cmd *cmd, t_data *data)
 	cmd->token = token;
 	return (0);
 }
-
-// static void	ft_print_token(t_cmd *cmd)//  A SUPPRIMER !!!!!!!!!!
-// {
-// 	t_token	*token;
-// 	int		nb;
-
-// 	nb = 0;
-// 	token = cmd->token;
-// 	while (token)
-// 	{
-// 		// dprintf(2, "print token[%d] = %s, type = %d, size = %ld, env = %d\n", \
-// 		nb, token->token, token->type, ft_strlen(token->token), token->type);
-// 		token = token->next;
-// 		nb++;
-// 	}
-// }
 
 int	ft_tokenizer(t_data *data)
 {

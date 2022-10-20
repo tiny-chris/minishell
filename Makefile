@@ -94,8 +94,8 @@ OBJ_DIR		:= obj
 OBJS		:= $(subst .c,.o,$(SRCS))
 OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
-CC			:= clang
-# CC		:= gcc
+#CC			:= clang
+CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
 CPPFLAGS	:= -I lib/libft -I includes
 LDFLAGS		:= -L lib/libft

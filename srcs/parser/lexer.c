@@ -242,11 +242,11 @@ int	ft_lexer(char *line)
 // 	{
 // 		while (line[j] && line[j] == ' ')
 // 			j++;
-// 		if ((line[j] == '\0') || (line[j] == '|') || (line[j] == 60) \
+// 		if ((line[j] == '\0') || (line[j] == '|') || (line[j] == 60) 
 // 			|| (line[j] == 62))
 // 			return (-1);
 // 	}
-// 	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62) \
+// 	while (line[j] && (line[j] != '|') && (line[j] != 60) && (line[j] != 62) 
 // 		&& (line[j] != ' '))
 // 	{
 // 		j += ft_count_btw_quotes(line, j);

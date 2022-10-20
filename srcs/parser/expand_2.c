@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 14:33:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 15:38:58 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,6 @@ int	ft_get_expand_size(char *undoll_cmd, int *i, t_data *data)
 	len = 0;
 	j = *i;
 	env = data->env;
-	// while (undoll_cmd[j] && (undoll_cmd[j] > 0) \
-	// 	&& undoll_cmd[j] != '$' && undoll_cmd[j] != '<' && undoll_cmd[j] != ' ' \
-	// 	&& undoll_cmd[j] != '>' && undoll_cmd[j] != 34 && undoll_cmd[j] != 39
-	// 	&& undoll_cmd[j] != '?' && undoll_cmd[j] != '=')
 	while (undoll_cmd[j] && (undoll_cmd[j] > 0) && ft_isalnum(undoll_cmd[j]))
 		j++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (j - *i));
@@ -96,7 +92,7 @@ int	ft_expand_cmd_len(char *undoll_cmd, t_data *data)
 	return (len);
 }
 
-void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j)
+void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data * data)
 {
 	t_env	*env;
 	char	*var_to_expand;
@@ -106,9 +102,6 @@ void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j)
 	env = data->env;
 	k = *i;
 	l = 0;
-	// while (undoll_cmd[k] > 0 && undoll_cmd[k] != '\0' && undoll_cmd[k] != '$' \
-	// 	&& undoll_cmd[k] != '<' && undoll_cmd[k] != '>' && undoll_cmd[k] != 34 \
-	// 	&& undoll_cmd[k] != 39 && undoll_cmd[k] != ' ' && undoll_cmd[k] != '?')
 	while (undoll_cmd[k] && (undoll_cmd[k] > 0) && ft_isalnum(undoll_cmd[k]))
 		k++;
 	var_to_expand = ft_substr(undoll_cmd, *i, (k - *i));
@@ -170,7 +163,7 @@ char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data)
 				k = 0;
 			}
 			else
-				ft_fill_expand(undoll_cmd, &i, clean_cmd, &j);
+				ft_fill_expand(undoll_cmd, &i, clean_cmd, &j, data);
 		}
 		else
 		{
