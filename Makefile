@@ -48,6 +48,8 @@ SRCS 		:= \
 			parser/clean_token_3.c \
 			parser/type_token.c \
 			parser/clean_redir.c \
+			parser/clean_redir_2.c \
+			parser/clean_redir_3.c \
 			parser/clean_heredoc.c \
 			parser/del_empty_token.c \
 			parser/space_quotes.c \
@@ -95,7 +97,7 @@ OBJS		:= $(subst .c,.o,$(SRCS))
 OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
 #CC			:= clang
-CC			:= gcc
+CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror
 CPPFLAGS	:= -I lib/libft -I includes
 LDFLAGS		:= -L lib/libft

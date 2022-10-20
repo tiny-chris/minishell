@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:17:53 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/19 18:01:07 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 16:48:08 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,30 +296,8 @@ int	ft_get_redir(t_data *data)
 		ft_get_redir_list(cmd->unspace_cmd, &cmd->tok_redir, data);
 		// if (ft_get_redir_list(cmd->no_redir_cmd, &cmd->tok_redir))
 		// 	return (1); // FREE tout ce qu'il y a à free
-		ft_clean_redir(cmd, data);
+		ft_clean_redir(cmd);
 		cmd = cmd->next;
 	}
-// EN COURS D'ECRITURE POUR NOS TOKEN REDIR
-//
-//	if (ft_clean_redir(data))
-//		return (1); // FREE tout ce qu'il y a à free + EXIT
-
-	/* 	TEMPORARY --> TO PRINT */
-	/*	start */
-	t_cmd	*tmp;
-	t_token	*token;
-
-	tmp = data->cmd;
-	while (tmp)
-	{
-		token = tmp->tok_redir;
-		while (token)
-		{
-			// dprintf(2, "token redir = %s, type = %d\n", token->token, token->type);
-			token = token->next;
-		}
-		tmp = tmp->next;
-	}
-	/*	end */
 	return (0);
 }
