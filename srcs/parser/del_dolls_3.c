@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 05:18:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/20 05:31:12 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j)
 	return (undoll);
 }
 
-static char	*ft_fill_undoll_unspace(char *no_redir, int *i, char *undoll, int *j)
+static char	*ft_fill_undoll_space(char *no_redir, int *i, char *undoll, int *j)
 {
 	if (no_redir[*i] == ' ')
 	{
@@ -131,7 +131,7 @@ char	*ft_fill_undoll_cmd(char *no_redir, int len)
 		if (no_redir[i] == 34 || no_redir[i] == 39)
 			undoll = ft_fill_undoll_quotes(no_redir, &i, undoll, &j);
 		else if (no_redir[i] == ' ')
-			undoll = ft_fill_undoll_unspace(no_redir, &i, undoll, &j);
+			undoll = ft_fill_undoll_space(no_redir, &i, undoll, &j);
 		else if (no_redir[i] == '$')
 			undoll = ft_fill_undoll_doll(no_redir, &i, undoll, &j);
 		else
