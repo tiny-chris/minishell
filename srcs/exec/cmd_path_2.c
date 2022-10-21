@@ -32,11 +32,9 @@ static void	ft_find_cmd_path_slash(t_cmd *cmd, char *full_path, t_data *data)
 	if (cmd->token->token[0] == '/')
 	{
 		full_path = ft_strdup(cmd->token->token);
-		dprintf(2, "val full path = %s\n", full_path);
 		ft_handle_malloc(ADD_C + TAB_STR1, full_path, 0, data);
 		cmd->cmd_path = ft_check_abs_path(cmd->token->token, full_path, data, \
 			ft_strlen(cmd->token->token));
-		dprintf(2, "val de full path apres check abs = %s\n", cmd->cmd_path);
 		ft_handle_malloc(ADD_C + TAB_STR1, cmd->cmd_path, 0, data);
 	}
 	else
