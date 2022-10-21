@@ -5,268 +5,98 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/14 18:47:52 by lmelard          ###   ########.fr       */
+/*   Created: 2022/10/20 17:58:32 by lmelard           #+#    #+#             */
+/*   Updated: 2022/10/21 13:33:01 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_consec_quotes_len(char *token)
+static void	ft_fill_cq4(char *token, char *tmp_cmd, char c, t_int *var)
 {
-	int		i;
-	int		j;
-	int		len;
+	tmp_cmd[var->j] = c;
+	(var->j)++;
+	(var->i)++;
+	while (token[var->i] && token[var->i] != c)
+	{
+		tmp_cmd[var->j] = token[var->i];
+		(var->i)++;
+		(var->j)++;
+	}
+	tmp_cmd[var->j] = c;
+	(var->j)++;
+}
+
+static void	ft_fill_cq3(char *token, t_int *var)
+{
+	(var->i) += 2;
+	while (token[var->i] && (token[var->i] == 34 || token[var->i] == 39)
+		&& (token[var->i + 1] && token[var->i + 1] == token[var->i]))
+		(var->i) += 2;
+	(var->i)--;
+}
+
+static char	*ft_fill_cq2(char *token, char *tmp_cmd, char c, t_int *var)
+{
+	if (var->i == 0)
+	{
+		(var->i) += 2;
+		while (token[var->i] && (token[var->i] == 34 || token[var->i] == 39)
+			&& (token[var->i + 1] && token[var->i + 1] == token[var->i]))
+			(var->i) += 2;
+		if (token[var->i] == '\0')
+		{
+			tmp_cmd[var->j] = c;
+			(var->j)++;
+			tmp_cmd[var->j] = c;
+			(var->j)++;
+			tmp_cmd[var->j] = '\0';
+			return (tmp_cmd);
+		}
+		(var->i)--;
+	}
+	else if (var->i > 0)
+		ft_fill_cq3(token, var);
+	return (NULL);
+}
+
+static char	*ft_fill_cq1(char *token, char *tmp_cmd, t_int *var)
+{
 	char	c;
 
-	i = 0;
-	j = 0;
-	len = ft_strlen(token);
-	while (token[i] != '\0')
+	c = token[var->i];
+	if (token[var->i + 1] == c)
 	{
-		if (token[i] == 34 || token[i] == 39)
-		{
-			c = token[i];
-			if (token[i + 1] != '\0')
-			{
-				if (token[i + 1] == c)
-				{
-					if (i == 0) //&& token[i + 2] != '\0')
-					{
-						if (token[i + 2] != '\0' && token[i + 2] != ' ')
-						{
-							i += 2;
-							while ((token[i] && token[i + 1]) && (token[i] == 34 || token[i] == 39)
-							&& (token[i + 1] == token[i]))
-								i += 2;
-							if (token[i] == '\0')
-							{
-								len = 2;
-								return (2);
-							}
-							else
-								len -= i;
-						}
-						else if (token [i + 2] == '\0')
-							return (2);
-					}
-					else if (i > 0)
-					{
-						j = i;
-						j += 2;
-						while ((token[j] && (token[j] == 34 || token[j] == 39))
-							&& (token[j + 1] && token[j + 1] == token[j]))
-							j += 2;
-						len -= (j - i);
-						i = j - 1;
-					}
-				}
-				else
-				{
-					i++;
-					while (token[i] && token[i] != c)
-						i++;
-				}
-			}
-		}
-		i++;
+		if (ft_fill_cq2(token, tmp_cmd, c, var))
+			return (tmp_cmd);
 	}
-	return (len);
+	else
+		ft_fill_cq4(token, tmp_cmd, c, var);
+	return (NULL);
 }
 
 char	*ft_fill_consec_quotes(char *token, int len)
 {
 	char	*tmp_cmd;
-	int		i;
-	int		j;
-	char	c;
+	t_int	var;
 
-	i = 0;
-	j = 0;
-
-	// // TEST clean_token
-	// (void) len;// TEST clean_token
-	// tmp_cmd = NULL;// TEST clean_token
-	// printf("test si tmp_cmd de clean token dans ft_fill_consec_quotes = NULL\n");
-	// ft_handle_malloc(ADD_M, tmp_cmd, 0, NULL);// TEST clean_token
-	// // TEST clean_token --> désactiver la ligne tmp_cmd = ft_handle_malloc(MALLOC_M...)
-
+	var.i = 0;
+	var.j = 0;
 	tmp_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
-	// tmp_cmd = malloc(sizeof(char) * (len + 1));
-	// if (!tmp_cmd)
-	// 	return (NULL); // FREE TOUTTTT + EXIT OF COURSE
-	while (token[i])
+	while (token[var.i])
 	{
-		if (token[i] == 34 || token[i] == 39)
+		if (token[var.i] == 34 || token[var.i] == 39)
 		{
-			c = token[i];
-			if (token[i + 1] == c)
-			{
-				if (i == 0)
-				{
-					i += 2;
-					while (token[i] && (token[i] == 34 || token[i] == 39)
-					&& (token[i + 1] && token[i + 1] == token[i]))
-						i += 2;
-					if (token[i] == '\0')
-					{
-						tmp_cmd[j] = c;
-						j++;
-						tmp_cmd[j] = c;
-						j++;
-						tmp_cmd[j] = '\0';
-						return (tmp_cmd);
-					}
-					i--;
-				}
-				else if (i > 0)
-				{
-					i += 2;
-					while (token[i] && (token[i] == 34 || token[i] == 39)
-						&& (token[i + 1] && token[i + 1] == token[i]))
-						i += 2;
-					i--;
-				}
-			}
-			else
-			{
-				tmp_cmd[j] = c;
-				j++;
-				i++;
-				while (token[i] && token[i] != c)
-				{
-					tmp_cmd[j] = token[i];
-					i++;
-					j++;
-				}
-				tmp_cmd[j] = c;
-				j++;
-			}
+			if (ft_fill_cq1(token, tmp_cmd, &var))
+				return (tmp_cmd);
 		}
 		else
 		{
-			tmp_cmd[j] = token[i];
-			j++;
+			tmp_cmd[var.j] = token[var.i];
+			(var.j)++;
 		}
-		i++;
+		(var.i)++;
 	}
-	tmp_cmd[j] = '\0';
+	tmp_cmd[var.j] = '\0';
 	return (tmp_cmd);
-}
-
-int	ft_clean_len(char *token)
-{
-	int		i;
-	int		len;
-	char	c;
-
-	i = 0;
-	len = ft_strlen(token);
-	while (token[i])
-	{
-		if ((token[i] == 34 || token[i] == 39) && (token[i + 1] == token[i]))
-			i++;
-		else if (token[i] == 34 || token[i] == 39)
-		{
-			c = token[i];
-			i++;
-			while (token[i] && token[i] != c)
-				i++;
-			len -= 2;
-		}
-		i++;
-	}
-	return (len);
-}
-
-char	*ft_fill_clean_token(char *tmp_token, int len)
-{
-	char	*token;
-	char 	c;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	token = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
-	// token = malloc(sizeof(char) * (len + 1));
-	// if (!token)
-	// 	return (NULL);// FREE TOUT ET EXIT
-	while (tmp_token[i])
-	{
-		if ((tmp_token[i] == 34 || tmp_token[i] == 39) && (tmp_token[i + 1] == tmp_token[i]))
-		{
-			token[j] = tmp_token[i];
-			j++;
-			i++;
-			token[j] = tmp_token[i];
-			j++;
-		}
-		else if (tmp_token[i] == 34 || tmp_token[i] == 39)
-		{
-			c = tmp_token[i];
-			i++;
-			while (tmp_token[i] && tmp_token[i] != c)
-			{
-				token[j] = tmp_token[i];
-				j++;
-				i++;
-			}
-		}
-		else
-		{
-			token[j] = tmp_token[i];
-			j++;
-		}
-		i++;
-	}
-	token[j] = '\0';
-	return (token);
-}
-
-void	ft_positive_token(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token->token[i] != '\0')
-	{
-		if(token->token[i] < 0)
-			token->token[i] = (-1) * token->token[i];
-		i++;
-	}
-}
-
-int	ft_clean_token(t_cmd *cmd, t_data *data)
-{
-	t_token		*token;
-	// t_token		*n_token;
-	char		*tmp_token;
-	int			len;
-
-	(void)data;// A SUPPRIMER
-	token = cmd->token;
-//	n_token = NULL;
-	while (token)
-	{
-		tmp_token = NULL;
-		//dprintf(2, "token->token   = %s, strlen = %ld\n", token->token, ft_strlen(token->token));
-		len = ft_consec_quotes_len(token->token);
-		//dprintf(2, "len = %d\n", len);
-		tmp_token = ft_fill_consec_quotes(token->token, len);
-		// dprintf(2, "csquotes token = %s --> len = %d vs. strlen = %ld\n", tmp_token, len, ft_strlen(tmp_token));
-		ft_handle_malloc(DELONE, token->token, 0, NULL);
-		// free(token->token);
-		//2e étape
-		ft_space_quotes(tmp_token, token);
-		len = ft_clean_len(tmp_token);
-		token->token = ft_fill_clean_token(tmp_token, len);
-		ft_handle_malloc(DELONE, tmp_token, 0, NULL);
-		// free(tmp_token);
-		ft_positive_token(token);
-	//	dprintf(2, "clean_token = %s\n", token->token);
-	//	dprintf(2, "  --> len = %d vs. strlen = %ld\n", len, ft_strlen(token->token));
-		token = token->next;
-	}
-	return (0);
 }
