@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:40:01 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 16:59:27 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/22 00:25:21 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	ft_token_echo(t_cmd *cmd, t_token *token)
 void	ft_token_env(t_data *data, t_cmd *cmd, t_token *token)
 {
 	token = token->next;
-	ft_token_env_2(cmd, token);
+	token = ft_token_env_2(cmd, token);
 	if (token && ft_is_in_set(token->token, '='))
 		ft_token_env_3(token);
 	else if (token)

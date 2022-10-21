@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:45:43 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 16:57:49 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/22 00:25:13 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_token_env_3(t_token *token)
 		token->env = 1;
 }
 
-void	ft_token_env_2(t_cmd *cmd, t_token *token)
+t_token	*ft_token_env_2(t_cmd *cmd, t_token *token)
 {
 	t_token		*todel;
 	t_token		*tmp;
@@ -64,4 +64,5 @@ void	ft_token_env_2(t_cmd *cmd, t_token *token)
 		else
 			break ;
 	}
+	return (token);
 }

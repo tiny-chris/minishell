@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/21 19:25:49 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/22 00:25:52 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ void	ft_positive_token(t_token *token);
 int		ft_del_empty_token(t_cmd *cmd, t_data *data);
 int		ft_type_token(t_cmd *cmd, t_data *data);
 void	ft_token_env(t_data *data, t_cmd *cmd, t_token *token);
-void	ft_token_env_2(t_cmd *cmd, t_token *token);
+t_token	*ft_token_env_2(t_cmd *cmd, t_token *token);
 void	ft_token_env_3(t_token *token);
 void	ft_token_env_4(t_data *data, t_cmd *cmd, t_token *token);
 int		ft_check_built_in(char *token, t_data *data, int tok_len);
