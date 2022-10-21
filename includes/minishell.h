@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/21 12:13:04 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/21 15:15:17 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,9 +238,13 @@ int		ft_fill_clean_redir(t_token *token, int len);
 
 int		ft_clean_heredoc(t_token *token);
 int		ft_undoll_heredoc_len(char *token);
+void	ft_undoll_hd_len_doll(char *token, int *i, int *j, int *len);
 int		ft_fill_undoll_heredoc(t_token *token, int len);
+void	ft_fill_hd_doll(t_token *token, char *undoll_token, int *i, int *j);
+void	ft_fill_hd_quotes(t_token *token, char *undoll_token, int *i, int *j);
 int		ft_unquote_heredoc_len(char *token);
 int		ft_fill_unquote_heredoc(t_token *token, int len);
+void	ft_fill_unquote_hd2(t_token *token, char *unquote_token, int *i, int *j);
 
 /*	Step 4	del_dolls */
 

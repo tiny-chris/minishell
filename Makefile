@@ -58,6 +58,7 @@ SRCS 		:= \
 			parser/clean_redir_2.c \
 			parser/clean_redir_3.c \
 			parser/clean_heredoc.c \
+			parser/clean_heredoc_dolls.c \
 			parser/del_empty_token.c \
 			parser/del_nwords.c \
 			parser/heredoc_path.c \
@@ -83,11 +84,7 @@ SRCS 		:= \
 			exec/env_path.c \
 			exec/init.c \
 			exec/get_files_io.c \
-			exec/cmd_path.c \
-			exec/cmd_path_2.c \
-			exec/cmd_path_3.c \
-			exec/cmd_path_4.c \
-			exec/cmd_path_5.c \
+			exec/cmd_path_1.c \
 			exec/clean.c \
 			exec/close_fd.c \
 			exec/signal.c \
@@ -95,6 +92,10 @@ SRCS 		:= \
 			exec/here_doc_2.c \
 			bin_collect/bin_coll.c \
 			bin_collect/bin_list.c \
+			#exec/cmd_path_2.c \
+			exec/cmd_path_3.c \
+			exec/cmd_path_4.c \
+			exec/cmd_path_5.c \
 
 SRCS		:= $(addprefix $(SRC_DIR)/,$(SRCS))
 
