@@ -18,6 +18,12 @@
 **	<RETURNS>	the token->token for redirections
 */
 
+static void	ft_copy_val(char *token, int *i, char *undoll, int *j)
+{
+	undoll[*j] = token[*i];
+	(*j)++;
+}
+
 int	ft_fill_undoll_redir(t_token *token, int len)
 {
 	char	*undoll;
@@ -30,14 +36,14 @@ int	ft_fill_undoll_redir(t_token *token, int len)
 	while (token->token[i])
 	{
 		if (token->token[i] == 34 || token->token[i] == 39)
-			undoll = ft_fill_undoll_quotes(token->token, &i, undoll, &j);
+			ft_fill_undoll_quotes(token->token, &i, undoll, &j);
 		else if (token->token[i] == '$')
-			undoll = ft_fill_undoll_doll(token->token, &i, undoll, &j);
-		else
 		{
-			undoll[j] = token->token[i];
-			j++;
+			if (ft_fill_undoll_doll(token->token, &i, undoll, &j))
+				break ;
 		}
+		else
+			ft_copy_val(token->token, &i, undoll, &j);
 		i++;
 	}
 	undoll[j] = '\0';
