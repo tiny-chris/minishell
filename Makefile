@@ -83,7 +83,7 @@ SRCS 		:= \
 			exec/env_path.c \
 			exec/init.c \
 			exec/get_files_io.c \
-			exec/cmd_path_1.c \
+			exec/cmd_path_12.c \
 			exec/clean.c \
 			exec/close_fd.c \
 			exec/signal.c \
@@ -92,6 +92,7 @@ SRCS 		:= \
 			bin_collect/bin_coll.c \
 			bin_collect/bin_list.c \
 			#exec/cmd_path_2.c \
+			exec/cmd_path_1.c \
 			exec/cmd_path_3.c \
 			exec/cmd_path_4.c \
 			exec/cmd_path_5.c \

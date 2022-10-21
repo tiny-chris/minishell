@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_path_1.c                                       :+:      :+:    :+:   */
+/*   cmd_path_12.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 16:11:22 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/21 18:46:08 by lmelard          ###   ########.fr       */
+/*   Created: 2022/10/21 19:23:33 by lmelard           #+#    #+#             */
+/*   Updated: 2022/10/21 21:28:33 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,12 @@
 
 extern int	g_val_exit;
 
-static void	ft_get_path_parent2(char *cwd_update, char *tmp_cwd, t_data *data, char *new_cwd)
+static char	*ft_get_parent3(char *cwd_update, char *tmp_cwd, t_data *data)
 {
-	int	i;
+	int		i;
+	char	*new_cwd;
 
-	i = ft_strlen(cwd_update) - 1;
-	if (cwd_update[i] == '/')
-	{
-		tmp_cwd = ft_substr(cwd_update, 0, i);
-		ft_handle_malloc(ADD_C + TAB_STR1, tmp_cwd, 0, data);
-	}
-	else
-	{
-		tmp_cwd = ft_strdup(cwd_update);
-		ft_handle_malloc(ADD_C + TAB_STR1, tmp_cwd, 0, data);
-	}
+	new_cwd = NULL;
 	i = ft_new_strrchr(tmp_cwd, '/');
 	ft_handle_malloc(DELONE, tmp_cwd, 0, NULL);
 	if (i == 0)
@@ -41,6 +32,28 @@ static void	ft_get_path_parent2(char *cwd_update, char *tmp_cwd, t_data *data, c
 		new_cwd = ft_substr(cwd_update, 0, i);
 		ft_handle_malloc(ADD_C + TAB_STR1, new_cwd, 0, data);
 	}
+	return (new_cwd);
+}
+
+static char	*ft_get_parent2(char *cwd_update, char *tmp_cwd, t_data *data)
+{
+	char	*new_cwd;
+	int		i;
+
+	i = ft_strlen(cwd_update) - 1;
+	new_cwd = NULL;
+	if (cwd_update[i] == '/')
+	{
+		tmp_cwd = ft_substr(cwd_update, 0, i);
+		ft_handle_malloc(ADD_C + TAB_STR1, tmp_cwd, 0, data);
+	}
+	else
+	{
+		tmp_cwd = ft_strdup(cwd_update);
+		ft_handle_malloc(ADD_C + TAB_STR1, tmp_cwd, 0, data);
+	}
+	new_cwd = ft_get_parent3(cwd_update, tmp_cwd, data);
+	return (new_cwd);
 }
 
 char	*ft_get_path_parent(char *cwd_update, t_data *data)
@@ -58,7 +71,7 @@ char	*ft_get_path_parent(char *cwd_update, t_data *data)
 		ft_handle_malloc(ADD_C + TAB_STR1, new_cwd, 0, data);
 	}
 	else
-		ft_get_path_parent2(cwd_update, tmp_cwd, data, new_cwd);
+		new_cwd = ft_get_parent2(cwd_update, tmp_cwd, data);
 	return (new_cwd);
 }
 
@@ -66,36 +79,30 @@ char	*ft_get_path_parent(char *cwd_update, t_data *data)
 	Next step will be to check it (rigths/access & directory)
 */
 
-static char	*ft_update_path_tmppath(char *cwd_update, char *check, t_data *data, t_int *var)
+static char *ft_update_path_tmppath(char *cwd_update, char *check, t_data *data)
 {
 	char	*tmp_path;
 	char	*tmp_path2;
 
 	tmp_path = NULL;
 	tmp_path2 = NULL;
-	if (ft_strncmp(check, "../", ft_strlen(check)) == 0)
-		tmp_path = ft_get_path_parent(cwd_update, data);
+	if (cwd_update[ft_strlen(cwd_update) - 1] != '/')
+	{
+		tmp_path2 = ft_strjoin(cwd_update, "/");
+		ft_handle_malloc(ADD_C + TAB_STR1, tmp_path2, 0, data);
+		tmp_path = ft_strjoin(tmp_path2, check);
+		ft_handle_malloc(ADD_C + TAB_STR1, tmp_path, 0, data);
+		ft_handle_malloc(DELONE, tmp_path2, 0, NULL);
+	}
 	else
 	{
-		var->i = ft_strlen(cwd_update) - 1;
-		if (cwd_update[ft_strlen(cwd_update) - 1] != '/')
-		{
-			tmp_path2 = ft_strjoin(cwd_update, "/");
-			ft_handle_malloc(ADD_C + TAB_STR1, tmp_path2, 0, data);
-			tmp_path = ft_strjoin(tmp_path2, check);
-			ft_handle_malloc(ADD_C + TAB_STR1, tmp_path, 0, data);
-			ft_handle_malloc(DELONE, tmp_path2, 0, NULL);
-		}
-		else
-		{
-			tmp_path = ft_strjoin(cwd_update, check);
-			ft_handle_malloc(ADD_C + TAB_STR1, tmp_path, 0, data);
-		}
+		tmp_path = ft_strjoin(cwd_update, check);
+		ft_handle_malloc(ADD_C + TAB_STR1, tmp_path, 0, data);
 	}
 	return (tmp_path);
 }
 
-void	ft_update_path(t_cmd *cmd, t_data *data, t_int *var)
+void	ft_update_path(t_cmd *cmd, t_data *data, int i, int j)
 {
 	char	*tmp_path;
 	char	*cwd_update;
@@ -104,7 +111,7 @@ void	ft_update_path(t_cmd *cmd, t_data *data, t_int *var)
 	tmp_path = NULL;
 	cwd_update = ft_strdup(cmd->cmd_path);
 	ft_handle_malloc(ADD_C + TAB_STR1, cwd_update, 0, data);
-	check = ft_substr(cmd->token->token, var->i, (var->j - var->i + 1));
+	check = ft_substr(cmd->token->token, i, (j - i + 1));
 	ft_handle_malloc(ADD_C + TAB_STR1, check, 0, data);
 	if (ft_strncmp(check, "./", ft_strlen(check)) == 0)
 	{
@@ -115,7 +122,7 @@ void	ft_update_path(t_cmd *cmd, t_data *data, t_int *var)
 	else if (ft_strncmp(check, "../", ft_strlen(check)) == 0)
 		tmp_path = ft_get_path_parent(cwd_update, data);
 	else
-		tmp_path = ft_update_path_tmppath(cwd_update, check, data, var);
+		tmp_path = ft_update_path_tmppath(cwd_update, check, data);
 	ft_handle_malloc(DELONE, cwd_update, 0, NULL);
 	ft_handle_malloc(DELONE, check, 0, NULL);
 	ft_handle_malloc(DELONE, cmd->cmd_path, 0, NULL);
@@ -140,13 +147,12 @@ static int	ft_get_full_path2(t_int	*var, char *token, t_cmd *cmd, t_data *data)
 		k = (var->j);
 		while (token[k] && token[k] == '/')
 			k++;
-		ft_update_path(cmd, data, var);
+		ft_update_path(cmd, data, var->i, var->j);
 		(var->i) = k - 1;
 	}
 	else
 	{
-		(var->j)--;
-		ft_update_path(cmd, data, var);
+		ft_update_path(cmd, data, var->i, var->j - 1);
 		return (1);
 	}
 	return (0);
@@ -156,7 +162,6 @@ char	*ft_get_full_path(t_cmd *cmd, t_data *data)
 {
 	char	*token;
 	t_int	var;
-	int		k;
 
 	token = cmd->token->token;
 	if (cmd->cmd_path)
@@ -165,7 +170,6 @@ char	*ft_get_full_path(t_cmd *cmd, t_data *data)
 	ft_handle_malloc(ADD_C + TAB_STR1, cmd->cmd_path, 0, data);
 	var.i = 0;
 	var.j = 0;
-	k = 0;
 	while (token[var.i])
 	{
 		if (token[var.i] && token[var.i] != '/')
@@ -259,7 +263,9 @@ char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 			return (ft_check_abs_path_nobackslash(full_path, token));
 	}
 	else
+	{
 		ft_check_abs_path_backslash(full_path, token, data);
+	}
 	g_val_exit = ft_msg(127, token, ": ", ERRFOD);
 	ft_handle_malloc(0, NULL, 0, NULL);
 	exit (g_val_exit);
@@ -322,6 +328,25 @@ char	*ft_find_cmd_path(t_cmd *cmd, t_data *data)
 	return (cmd->cmd_path);
 }
 
+static void	ft_find_cmd_path2_error(t_data *data, t_cmd *cmd)
+{
+	int	res;
+
+	res = -2;
+	if (!data->env_path)
+	{
+		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
+		ft_handle_malloc(0, NULL, 0, NULL);
+		exit(res);
+	}
+	if (ft_strncmp(cmd->token->token, "..", ft_strlen(cmd->token->token)) == 0)
+	{
+		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
+		ft_handle_malloc(0, NULL, 0, NULL);
+		exit(res);
+	}
+}
+
 static char	*ft_malloc_cmd_path(t_env *env_path, t_data *data, t_cmd *cmd)
 {
 	char	*new_path;
@@ -345,25 +370,6 @@ static char	*ft_malloc_cmd_path(t_env *env_path, t_data *data, t_cmd *cmd)
 	ft_handle_malloc(ADD_C + TAB_STR1, cmd_path, 0, data);
 	ft_handle_malloc(DELONE, new_path, 0, NULL);
 	return (cmd_path);
-}
-
-static void	ft_find_cmd_path2_error(t_data *data, t_cmd *cmd)
-{
-	int	res;
-
-	res = -2;
-	if (!data->env_path)
-	{
-		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
-		ft_handle_malloc(0, NULL, 0, NULL);
-		exit(res);
-	}
-	if (ft_strncmp(cmd->token->token, "..", ft_strlen(cmd->token->token)) == 0)
-	{
-		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
-		ft_handle_malloc(0, NULL, 0, NULL);
-		exit(res);
-	}
 }
 
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
