@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_token_echo.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:35:41 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 17:02:35 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/21 12:12:34 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	ft_echo_join_words_fill(t_token *token)
 	ft_join_words(tmp, token);
 	if (token)
 	{
-		ft_lstclear_token(token->next);
+		ft_free_token(&(token->next));
 		token->next = NULL;
 	}
 }

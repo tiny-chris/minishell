@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/21 10:54:38 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/21 12:13:04 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,7 +324,6 @@ int		ft_lstadd_tok(t_token **tok, int type, char *token, t_data *data);
 void	ft_lstdelone_tok(t_token *node);
 void	ft_lstdelone_tok_bin(t_token *node);
 void	ft_free_token(t_token **token);
-void	ft_lstclear_token(t_token *token);// a supprimer et remplacer par free // A TESTER d'abord
 
 	/*	utils */
 
