@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/21 15:15:17 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/21 19:25:49 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,7 +390,8 @@ void	ft_check_abspath_directory(char *token, char *full_path);
 
 char	*ft_get_path_parent(char *cwd_update, t_data *data);
 char	*ft_get_full_path(t_cmd *cmd, t_data *data);
-void	ft_update_path(t_cmd *cmd, t_data *data, int i, int j);
+//void	ft_update_path(t_cmd *cmd, t_data *data, t_int *var);
+void    ft_update_path(t_cmd *cmd, t_data *data, int i, int j);
 
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_try_access_path(t_env *env_path, t_data *data, t_cmd *cmd);

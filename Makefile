@@ -83,18 +83,17 @@ SRCS 		:= \
 			exec/env_path.c \
 			exec/init.c \
 			exec/get_files_io.c \
-			exec/cmd_path_1.c \
+			exec/cmd_path.c \
+			exec/cmd_path_2.c \
+			exec/cmd_path_3.c \
+			exec/cmd_path_4.c \
 			exec/clean.c \
 			exec/close_fd.c \
 			exec/signal.c \
 			exec/here_doc.c \
 			exec/here_doc_2.c \
 			bin_collect/bin_coll.c \
-			bin_collect/bin_list.c \
-			#exec/cmd_path_2.c \
-			exec/cmd_path_3.c \
-			exec/cmd_path_4.c \
-			exec/cmd_path_5.c \
+			bin_collect/bin_list.c 
 
 SRCS		:= $(addprefix $(SRC_DIR)/,$(SRCS))
 
