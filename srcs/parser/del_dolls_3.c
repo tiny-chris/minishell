@@ -17,7 +17,7 @@
 **	'cmd' linked list
 **	<RETURNS>	the new string value (char *) without useless $ & spaces
 */
-char	*ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j)
+int	ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j)
 {
 	if (no_redir[*i] == '$')
 	{
@@ -33,7 +33,7 @@ char	*ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j)
 			if (no_redir[*i] == '\0')
 			{
 				undoll[*j] = '\0';
-				return (undoll);
+				return (1);
 			}
 			else if (no_redir[*i] != '\0')
 			{
@@ -42,10 +42,10 @@ char	*ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j)
 			}
 		}
 	}
-	return (undoll);
+	return (0);
 }
 
-static char	*ft_fill_undoll_space(char *no_redir, int *i, char *undoll, int *j)
+static void	ft_fill_undoll_space(char *no_redir, int *i, char *undoll, int *j)
 {
 	if (no_redir[*i] == ' ')
 	{
@@ -59,10 +59,9 @@ static char	*ft_fill_undoll_space(char *no_redir, int *i, char *undoll, int *j)
 		}
 		(*i)--;
 	}
-	return (undoll);
 }
 
-static char	*ft_fill_doll_dquotes(char *no_redir, int *i, char *undoll, int *j)
+static void	ft_fill_doll_dquotes(char *no_redir, int *i, char *undoll, int *j)
 {
 	(*i)++;
 	while (no_redir[*i] && no_redir[*i] != 34 && no_redir[*i] == '$')
@@ -87,10 +86,9 @@ static char	*ft_fill_doll_dquotes(char *no_redir, int *i, char *undoll, int *j)
 		(*j)++;
 		(*i)--;
 	}
-	return (undoll);
 }
 
-char	*ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j)
+void	ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j)
 {
 	char	c;
 
@@ -101,7 +99,7 @@ char	*ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j)
 	while (no_redir[*i] && no_redir[*i] != c)
 	{
 		if (no_redir[*i] == '$' && c == 34)
-			undoll = ft_fill_doll_dquotes(no_redir, i, undoll, j);
+			ft_fill_doll_dquotes(no_redir, i, undoll, j);
 		else
 		{
 			undoll[*j] = no_redir[*i];
@@ -114,26 +112,24 @@ char	*ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j)
 		undoll[*j] = c;
 		(*j)++;
 	}
-	return (undoll);
 }
 
-char	*ft_fill_undoll_cmd(char *no_redir, int len)
+char	*ft_fill_undoll_cmd(char *no_redir, int len, int i, int j)
 {
 	char	*undoll;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
 	undoll = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
 	while (no_redir[i])
 	{
 		if (no_redir[i] == 34 || no_redir[i] == 39)
-			undoll = ft_fill_undoll_quotes(no_redir, &i, undoll, &j);
+			ft_fill_undoll_quotes(no_redir, &i, undoll, &j);
 		else if (no_redir[i] == ' ')
-			undoll = ft_fill_undoll_space(no_redir, &i, undoll, &j);
+			ft_fill_undoll_space(no_redir, &i, undoll, &j);
 		else if (no_redir[i] == '$')
-			undoll = ft_fill_undoll_doll(no_redir, &i, undoll, &j);
+		{
+			if (ft_fill_undoll_doll(no_redir, &i, undoll, &j))
+				break ;
+		}
 		else
 		{
 			undoll[j] = no_redir[i];

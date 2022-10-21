@@ -75,13 +75,17 @@ int	ft_del_dolls(t_data *data)
 {
 	t_cmd	*cmd;
 	int		len;
+	int		i;
+	int		j;
 
 	len = 0;
+	i = 0;
+	j = 0;
 	cmd = data->cmd;
 	while (cmd)
 	{
 		len = ft_undoll_cmd_len(cmd->no_redir_cmd);
-		cmd->undoll_cmd = ft_fill_undoll_cmd(cmd->no_redir_cmd, len);
+		cmd->undoll_cmd = ft_fill_undoll_cmd(cmd->no_redir_cmd, len, i, j);
 		if (!cmd->undoll_cmd)
 			return (1);
 		ft_neg_dolls(cmd->undoll_cmd);

@@ -109,6 +109,8 @@ int	ft_get_redir(t_data *data)
 		trim_cmd = ft_fill_no_redir(cmd->unspace_cmd, len);
 		cmd->no_redir_cmd = ft_strtrim(trim_cmd, " ");
 		ft_handle_malloc(ADD_M + TAB_STR1, cmd->no_redir_cmd, 0, NULL);
+		ft_handle_malloc(DELONE, trim_cmd, 0, NULL);
+		trim_cmd = NULL;
 		ft_get_redir_lst(cmd->unspace_cmd, &cmd->tok_redir, data, type);
 		ft_clean_redir(cmd, data);
 		cmd = cmd->next;

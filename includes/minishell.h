@@ -251,10 +251,10 @@ void	ft_fill_unquote_hd2(t_token *token, char *unquote_token, int *i, int *j);
 
 int		ft_del_dolls(t_data *data);
 int		ft_undoll_cmd_len(char *no_redir_cmd);
-char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len);
-char	*ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j);
+char	*ft_fill_undoll_cmd(char *no_redir_cmd, int len, int i, int j);
+void	ft_fill_undoll_quotes(char *no_redir, int *i, char *undoll, int *j);
 void	ft_neg_dolls(char *undoll_cmd);
-char	*ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j);
+int		ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j);
 
 /*	Step 5	expand */
 
