@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 23:51:41 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 17:20:54 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/21 12:04:04 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline, t_data *data)
 	new->clean_cmd = NULL;
 	new->token = NULL;
 	new->tok_redir = NULL;
-	new->infile = 0;
-	new->outfile = 1;
-	new->stin = 0;
-	new->stout = 1;
-	new->file_err = 0;
 	new->cmd_opt = NULL;
 	new->cmd_path = NULL;
 	new->heredoc_path = NULL;

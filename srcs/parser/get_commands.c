@@ -112,6 +112,11 @@ t_cmd	*ft_get_commands(t_data *data)
 	{
 		tmp = ft_get_raw_cmd(data, i);
 		ft_lstadd_cmd(&cmd, tmp, data);
+		cmd->infile = 0;
+		cmd->outfile = 1;
+		cmd->stin = 0;
+		cmd->stout = 1;
+		cmd->file_err = 0;
 		i = ft_next_pipe(data->line, i);
 		ft_handle_malloc(DELONE, tmp, 0, NULL);
 		nb_cmd--;
