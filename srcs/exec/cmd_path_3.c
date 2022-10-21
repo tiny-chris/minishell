@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/19 20:01:52 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 20:05:59 by lmelard          ###   ########.fr       */
+/*   Created: 2022/10/21 21:40:34 by lmelard           #+#    #+#             */
+/*   Updated: 2022/10/21 21:45:17 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ extern int	g_val_exit;
 **				- if no: 'no such file or directory', 127
 */
 
-void	ft_check_abspath_directory(char *token, char *full_path)
+static void	ft_check_directory(char *token, char *full_path)
 {
 	DIR		*directory;
 
@@ -49,24 +49,23 @@ void	ft_check_abspath_directory(char *token, char *full_path)
 	}
 }
 
-char	*ft_abs_no_last_slash(char *token, char *full_path)
+static char	*ft_check_abs_path_nobackslash(char *full_path, char *token)
 {
-	if (access((const char *)full_path, F_OK) == 0)
+	if (access((const char *)full_path, X_OK) == 0)
+		return (ft_strdup(full_path));
+	else
 	{
-		if (access((const char *)full_path, X_OK) == 0)
-			return (ft_strdup(full_path));
-		else
-		{
-			g_val_exit = ft_msg(126, token, ": ", ERRPRD);
-			ft_handle_malloc(0, NULL, 0, NULL);
-			exit (g_val_exit);
-		}
+		g_val_exit = ft_msg(126, token, ": ", ERRPRD);
+		ft_handle_malloc(0, NULL, 0, NULL);
+		exit (g_val_exit);
 	}
-	return (NULL);
 }
 
-void	ft_abs_last_slash(char *token, char *full_path, t_data *data, char *tmp)
+static void	ft_check_abs_backslash(char *full_path, char *token, t_data *data)
 {
+	char	*tmp;
+
+	tmp = NULL;
 	tmp = ft_substr(full_path, 0, ft_strlen(full_path) - 1);
 	ft_handle_malloc(ADD_M + TAB_STR1, tmp, 0, data);
 	if (access((const char *)tmp, F_OK) == 0)
@@ -84,20 +83,18 @@ void	ft_abs_last_slash(char *token, char *full_path, t_data *data, char *tmp)
 
 char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 {
-	char	*tmp;
-
-	tmp = NULL;
 	if (!token)
 		return (NULL);
-	ft_check_abspath_directory(token, full_path);
+	ft_check_directory(token, full_path);
 	if (token[len - 1] != '/')
 	{
-		tmp = ft_abs_no_last_slash(token, full_path);
-		if (tmp != NULL)
-			return (tmp);
+		if (access((const char *)full_path, F_OK) == 0)
+			return (ft_check_abs_path_nobackslash(full_path, token));
 	}
 	else
-		ft_abs_last_slash(token, full_path, data, tmp);
+	{
+		ft_check_abs_backslash(full_path, token, data);
+	}
 	g_val_exit = ft_msg(127, token, ": ", ERRFOD);
 	ft_handle_malloc(0, NULL, 0, NULL);
 	exit (g_val_exit);

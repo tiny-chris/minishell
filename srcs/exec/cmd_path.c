@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/19 15:26:40 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 19:35:49 by lmelard          ###   ########.fr       */
+/*   Created: 2022/10/21 19:23:33 by lmelard           #+#    #+#             */
+/*   Updated: 2022/10/21 21:43:28 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,80 +14,63 @@
 
 extern int	g_val_exit;
 
-void	ft_check_error_cmd_path(t_data *data, t_cmd *cmd, int res)
+static char	*ft_get_parent3(char *cwd_update, char *tmp_cwd, t_data *data)
 {
-	if (data->env_path == NULL || data->s_env_path == NULL)
-	{
-		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
-		ft_free_data_child(res, data);
-		exit(res);
-	}
-	if (ft_strncmp(cmd->token->token, "..", ft_strlen(cmd->token->token)) == 0)
-	{
-		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
-		ft_free_data_child(res, data);
-		exit(res);
-	}
-}
+	int		i;
+	char	*new_cwd;
 
-char	*ft_get_new_path(t_env *env_path, t_data *data)
-{
-	char	*new_path;
-	int		j;
-
-	new_path = NULL;
-	j = ft_strlen(env_path->content) - 1;
-	if (env_path->content[j] != '/')
+	new_cwd = NULL;
+	i = ft_new_strrchr(tmp_cwd, '/');
+	ft_handle_malloc(DELONE, tmp_cwd, 0, NULL);
+	if (i == 0)
 	{
-		new_path = ft_strjoin(env_path->content, "/");
-		ft_handle_malloc(ADD_C + TAB_STR1, new_path, 0, data);
+		new_cwd = ft_strdup("/");
+		ft_handle_malloc(ADD_C + TAB_STR1, new_cwd, 0, data);
 	}
 	else
 	{
-		new_path = ft_strdup(env_path->content);
-		ft_handle_malloc(ADD_C + TAB_STR1, new_path, 0, data);
+		new_cwd = ft_substr(cwd_update, 0, i);
+		ft_handle_malloc(ADD_C + TAB_STR1, new_cwd, 0, data);
 	}
-	return (new_path);
+	return (new_cwd);
 }
 
-char	*ft_try_access_path(t_env *env_path, t_data *data, t_cmd *cmd)
+static char	*ft_get_parent2(char *cwd_update, char *tmp_cwd, t_data *data)
 {
-	char	*new_path;
-	char	*cmd_path;
+	char	*new_cwd;
+	int		i;
 
-	cmd_path = NULL;
-	new_path = NULL;
-	while (env_path)
+	i = ft_strlen(cwd_update) - 1;
+	new_cwd = NULL;
+	if (cwd_update[i] == '/')
 	{
-		new_path = ft_get_new_path(env_path, data);
-		cmd_path = ft_strjoin(new_path, cmd->token->token);
-		ft_handle_malloc(ADD_C + TAB_STR1, cmd_path, 0, data);
-		ft_handle_malloc(DELONE, new_path, 0, NULL);
-		if (access((const char *)cmd_path, F_OK | X_OK) == 0)
-			return (cmd_path);
-		ft_handle_malloc(DELONE, cmd_path, 0, NULL);
-		env_path = env_path->next;
+		tmp_cwd = ft_substr(cwd_update, 0, i);
+		ft_handle_malloc(ADD_C + TAB_STR1, tmp_cwd, 0, data);
 	}
-	return (NULL);
+	else
+	{
+		tmp_cwd = ft_strdup(cwd_update);
+		ft_handle_malloc(ADD_C + TAB_STR1, tmp_cwd, 0, data);
+	}
+	new_cwd = ft_get_parent3(cwd_update, tmp_cwd, data);
+	return (new_cwd);
 }
 
-char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data)
+char	*ft_get_path_parent(char *cwd_update, t_data *data)
 {
-	char	*cmd_path;
-	t_env	*env_path;
-	int		res;
+	char	*new_cwd;
+	char	*tmp_cwd;
+	int		i;
 
-	cmd_path = NULL;
-	env_path = data->env_path;
-	res = -2;
-	ft_check_error_cmd_path(data, cmd, res);
-	cmd_path = ft_try_access_path(env_path, data, cmd);
-	if (cmd_path != NULL)
-		return (cmd_path);
-	if (cmd->token->env == 1)
-		res = ft_msg(127, cmd->token->token, ": ", ERRFOD);
+	new_cwd = NULL;
+	tmp_cwd = NULL;
+	i = 0;
+	if (ft_strlen(cwd_update) == 1 && cwd_update[0] == '/')
+	{
+		new_cwd = ft_strdup(cwd_update);
+		ft_handle_malloc(ADD_C + TAB_STR1, new_cwd, 0, data);
+	}
 	else
-		res = ft_msg(127, cmd->token->token, ": ", ERRCMD);
-	ft_free_data_child(res, data);
-	exit(res);
+		new_cwd = ft_get_parent2(cwd_update, tmp_cwd, data);
+	return (new_cwd);
 }
