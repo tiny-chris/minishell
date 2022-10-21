@@ -431,13 +431,6 @@ int		ft_check_export(t_token *token, t_data *data, int flag);
 
 int		ft_unset(t_cmd *cmd, t_data *data);
 int		ft_check_unset(t_token *token, t_data *data);
-void	ft_check_token_token(t_data *data, t_token *token, int *res);
-int		ft_check_unset(t_token *token, t_data *data);
-void	ft_var_in_env(t_token *token, t_env *env, t_env *tmp, t_data *data);
-void	ft_unset_var(t_env *env, t_env *tmp);
-void	ft_unset_first(t_env *env, t_env *tmp, t_data *data);
-void	ft_unset_home(t_data *data);
-void	ft_unset_path(t_data *data);
 
 int		ft_cd(t_cmd *cmd, t_data *data, int flag);
 // void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag);

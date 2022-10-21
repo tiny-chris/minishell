@@ -9,6 +9,127 @@
 >>	** tests non concluants **
 
 
+	--minishell> echo $? | unset PATH | > toto wc
+==1158175== Conditional jump or move depends on uninitialised value(s)
+==1158175==    at 0x40D524: ft_redir_outfile (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x40D469: ft_get_files_io_token (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x40D407: ft_get_files_io (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x40C08A: ft_exec (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x40136F: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==  Uninitialised value was created by a heap allocation
+==1158175==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1158175==    by 0x40F229: ft_handle_malloc (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x40354A: ft_lstadd_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x403372: ft_get_commands (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x402279: ft_parser (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x401366: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158175== 
+==1158247== Conditional jump or move depends on uninitialised value(s)
+==1158247==    at 0x40CA3B: ft_redirect_last_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x40C8F0: ft_redirect_inout (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x40C694: ft_child_process (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x40C01A: ft_fork (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x40C142: ft_exec (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x40136F: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==  Uninitialised value was created by a heap allocation
+==1158247==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1158247==    by 0x40F229: ft_handle_malloc (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x40354A: ft_lstadd_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x403372: ft_get_commands (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x402279: ft_parser (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x401366: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158247== 
+==1158246== Conditional jump or move depends on uninitialised value(s)
+==1158246==    at 0x40CB0B: ft_redirect_middle_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C91A: ft_redirect_inout (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C694: ft_child_process (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C01A: ft_fork (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C142: ft_exec (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40136F: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==  Uninitialised value was created by a heap allocation
+==1158246==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1158246==    by 0x40F229: ft_handle_malloc (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40354A: ft_lstadd_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x403372: ft_get_commands (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x402279: ft_parser (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x401366: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246== 
+==1158246== Conditional jump or move depends on uninitialised value(s)
+==1158246==    at 0x40CB79: ft_redirect_middle_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C91A: ft_redirect_inout (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C694: ft_child_process (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C01A: ft_fork (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C142: ft_exec (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40136F: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==  Uninitialised value was created by a heap allocation
+==1158246==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1158246==    by 0x40F229: ft_handle_malloc (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40354A: ft_lstadd_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x403372: ft_get_commands (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x402279: ft_parser (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x401366: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246== 
+==1158246== Syscall param dup2(oldfd) contains uninitialised byte(s)
+==1158246==    at 0x49DD1CB: dup2 (syscall-template.S:120)
+==1158246==    by 0x40CB8F: ft_redirect_middle_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C91A: ft_redirect_inout (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C694: ft_child_process (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C01A: ft_fork (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40C142: ft_exec (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40136F: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==  Uninitialised value was created by a heap allocation
+==1158246==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1158246==    by 0x40F229: ft_handle_malloc (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x40354A: ft_lstadd_cmd (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x403372: ft_get_commands (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x402279: ft_parser (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x401366: ft_minishell (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246==    by 0x4014B4: main (in /sgoinfre/goinfre/Perso/cgaillag/mygithub/bak_mn/minishell/minishell)
+==1158246== 
+==1158246== 
+==1158246== FILE DESCRIPTORS: 0 open (0 std) at exit.
+==1158246== 
+==1158246== HEAP SUMMARY:
+==1158246==     in use at exit: 208,295 bytes in 228 blocks
+==1158246==   total heap usage: 1,402 allocs, 1,174 frees, 255,961 bytes allocated
+==1158246== 
+==1158245== 
+==1158245== FILE DESCRIPTORS: 0 open (0 std) at exit.
+==1158245== 
+==1158245== HEAP SUMMARY:
+==1158245==     in use at exit: 208,295 bytes in 228 blocks
+==1158245==   total heap usage: 1,406 allocs, 1,178 frees, 256,014 bytes allocated
+==1158245== 
+==1158246== LEAK SUMMARY:
+==1158246==    definitely lost: 0 bytes in 0 blocks
+==1158246==    indirectly lost: 0 bytes in 0 blocks
+==1158246==      possibly lost: 0 bytes in 0 blocks
+==1158246==    still reachable: 0 bytes in 0 blocks
+==1158246==         suppressed: 208,295 bytes in 228 blocks
+==1158246== 
+==1158246== For lists of detected and suppressed errors, rerun with: -s
+==1158246== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 1 from 1)
+==1158245== LEAK SUMMARY:
+==1158245==    definitely lost: 0 bytes in 0 blocks
+==1158245==    indirectly lost: 0 bytes in 0 blocks
+==1158245==      possibly lost: 0 bytes in 0 blocks
+==1158245==    still reachable: 0 bytes in 0 blocks
+==1158245==         suppressed: 208,295 bytes in 228 blocks
+==1158245== 
+==1158245== For lists of detected and suppressed errors, rerun with: -s
+==1158245== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 1 from 1)
+
+
+
 	/*******************************/
 	FIXED
 	/*******************************/
