@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_utils.c                                  :+:      :+:    :+:   */
+/*   minishell_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 21:55:56 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 21:59:47 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/21 10:52:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,8 @@ extern int	g_val_exit;
 
 static void	ft_init_data_0(t_data *data)
 {
-	extern char	**environ;
-
 	data->line = NULL;
 	data->prompt = NULL;
-	data->environ = environ;
 	data->env = NULL;
 	data->cwd = NULL;
 	data->oldpwd = NULL;
@@ -65,10 +62,10 @@ void	ft_get_home(t_data *data, int flag)
 	return ;
 }
 
-int	ft_init_data_1(t_data *data)
+int	ft_init_data_1(t_data *data, char **envp)
 {
 	ft_init_data_0(data);
-	data->env = ft_get_env(data);
+	data->env = ft_get_env(envp, data);
 	data->prompt = ft_strdup("--minishell> ");
 	ft_handle_malloc(ADD_M + TAB_STR1, data->prompt, 0, data);
 	data->built_in = ft_built_in();

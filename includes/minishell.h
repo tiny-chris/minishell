@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 17:27:10 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/21 10:54:38 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ typedef struct s_data
 {
 	char			*line;
 	char			*prompt;
-	char			**environ;
 	t_env			*env;
 	char			*cwd;//current work directory
 	char			*oldpwd;
@@ -168,19 +167,14 @@ typedef struct s_data
 /*	***** INIT *****	*/
 /*	*****************	*/
 
-//int		main(int argc, char **argv, char **envp);
-//int		main(void);//
 void	ft_minishell(t_data *data);
-// int		ft_clean_loop(t_data *data);
 int		ft_clean_cmdline(t_data *data);
 void	ft_exit_ctrl_d(t_data *data);
 
-// t_env	*ft_get_env(char **envp, t_data *data);
-t_env	*ft_get_env(t_data *data);
+t_env	*ft_get_env(char **envp, t_data *data);
 char	**ft_built_in(void);
 int		ft_only_space(char *line);
-// int		ft_init_data_1(t_data *data, char **envp);
-int		ft_init_data_1(t_data *data);
+int		ft_init_data_1(t_data *data, char **envp);
 void	ft_get_home(t_data *data, int flag);
 
 /*	env_path */
