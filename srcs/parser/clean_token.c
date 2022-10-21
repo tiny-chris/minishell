@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 14:22:43 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 18:11:46 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/21 14:32:11 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ void	ft_positive_token(t_token *token)
 			token->token[i] = (-1) * token->token[i];
 		i++;
 	}
+}
+
+int	ft_space_quotes(char *tmp_token, t_token *token)
+{
+	if (ft_strlen(tmp_token) == 2 && (tmp_token[0] == 34 || tmp_token[0] == 39) \
+		&& tmp_token[1] == tmp_token[0])
+		token->type = SP_QUOTES;
+	return (0);
 }
 
 int	ft_clean_token(t_cmd *cmd, t_data *data)

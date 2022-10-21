@@ -6,80 +6,87 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 18:11:11 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 18:11:50 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/21 14:26:53 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_consec_quotes_len4(int *len, char *token, int *i, int *j)
+static void	ft_consec_quotes_len4(int *len, char *token, t_int *var)
 {
-	*j = *i;
-	(*j) += 2;
-	while ((token[*j] && (token[*j] == 34 || token[*j] == 39))
-		&& (token[*j + 1] && token[*j + 1] == token[*j]))
-		(*j) += 2;
-	(*len) -= (*j - *i);
-	(*i) = (*j) - 1;
+	var->j = var->i;
+	(var->j) += 2;
+	while ((token[var->j] && (token[var->j] == 34 || token[var->j] == 39))
+		&& (token[var->j + 1] && token[var->j + 1] == token[var->j]))
+		(var->j) += 2;
+	(*len) -= (var->j - var->i);
+	(var->i) = (var->j) - 1;
 }
 
-static void	ft_consec_quotes_len3(int c, char *token, int *i, int *j)
+static int	ft_consec_quotes_len3(int *len, char *token, t_int *var)
 {
-	(*i)++;
-	while (token[*i] && token[*i] != c)
-		(*i)++;
-}
-
-static void	ft_consec_quotes_len2(int *len, char *token, int *i, int *j)
-{
-	if (*i == 0)
+	if ((var->i) == 0)
 	{
-		if (token[*i + 2] != '\0' && token[*i + 2] != ' ')
+		if (token[var->i + 2] != '\0' && token[var->i + 2] != ' ')
 		{
-			(*i) += 2;
-			while ((token[*i] && token[*i + 1]) \
-				&& (token[*i] == 34 || token[*i] == 39) \
-				&& (token[*i + 1] == token[*i]))
-				(*i) += 2;
-			if (token[*i] == '\0')
+			(var->i) += 2;
+			while ((token[var->i] && token[var->i + 1]) \
+				&& (token[var->i] == 34 || token[var->i] == 39) \
+				&& (token[var->i + 1] == token[var->i]))
+				(var->i) += 2;
+			if (token[var->i] == '\0')
 			{
 				*len = 2;
 				return (2);
 			}
 			else
-				*len -= (*i);
+				*len -= (var->i);
 		}
-		else if (token [*i + 2] == '\0')
+		else if (token [var->i + 2] == '\0')
 			return (2);
 	}
-	else if ((*i) > 0)
-		ft_consec_quotes_len4(&len, token, &i, &j);
+	else if ((var->i) > 0)
+		ft_consec_quotes_len4(len, token, var);
+	return (0);
+}
+
+static int	ft_consec_quotes_len2(int *len, int c, char *token, t_int *var)
+{
+	if (token[var->i + 1] == c)
+	{
+		if (ft_consec_quotes_len3(len, token, var) == 2)
+			return (2);
+	}
+	else
+	{
+		(var->i)++;
+		while (token[var->i] && token[var->i] != c)
+			(var->i)++;
+	}
+	return (0);
 }
 
 int	ft_consec_quotes_len(char *token)
 {
-	int		i;
-	int		j;
+	t_int	var;
 	int		len;
 	char	c;
 
-	i = 0;
-	j = 0;
+	var.i = 0;
+	var.j = 0;
 	len = ft_strlen(token);
-	while (token[i] != '\0')
+	while (token[var.i] != '\0')
 	{
-		if (token[i] == 34 || token[i] == 39)
+		if (token[var.i] == 34 || token[var.i] == 39)
 		{
-			c = token[i];
-			if (token[i + 1] != '\0')
+			c = token[var.i];
+			if (token[var.i + 1] != '\0')
 			{
-				if (token[i + 1] == c)
-					ft_consec_quotes_len2(&len, token, &i, &j);
-				else
-					ft_consec_quotes_len3(c, token, &i, &j);
-			}
+				if (ft_consec_quotes_len2(&len, c, token, &var) == 2)
+					return (2);
+			}	
 		}
-		i++;
+		(var.i)++;
 	}
 	return (len);
 }
