@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:07:06 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/11 21:25:30 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/21 10:35:54 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,25 @@
 
 int	ft_del_nword(t_cmd *cmd)
 {
-	t_token	*token;
+	t_token	*tok;
 	t_token	*todel;
 	t_token	*tmp;
 
-	token = cmd->token;
+	tok = cmd->token;
 	todel = NULL;
 	tmp = NULL;
-	if (token && token->type == BUILTIN \
-		&& (ft_strncmp(token->token, "echo", 4) == 0))
+	if (tok && tok->type == BUILTIN && (ft_strncmp(tok->token, "echo", 4) == 0))
 	{
-		token = token->next;
-		while (token && token->type == WORD_N)
+		tok = tok->next;
+		while (tok && tok->type == WORD_N)
 		{
-			if (token->next && token->next->type == WORD_N)
+			if (tok->next && tok->next->type == WORD_N)
 			{
-				todel = token->next;
-				tmp = token->next->next;
+				todel = tok->next;
+				tmp = tok->next->next;
 				todel->next = NULL;
-				token->next = tmp;
 				ft_lstdelone_tok_bin(todel);
+				tok->next = tmp;
 			}
 			else
 				return (0);
