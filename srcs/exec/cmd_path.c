@@ -60,11 +60,9 @@ char	*ft_get_path_parent(char *cwd_update, t_data *data)
 {
 	char	*new_cwd;
 	char	*tmp_cwd;
-	int		i;
 
 	new_cwd = NULL;
 	tmp_cwd = NULL;
-	i = 0;
 	if (ft_strlen(cwd_update) == 1 && cwd_update[0] == '/')
 	{
 		new_cwd = ft_strdup(cwd_update);

@@ -88,6 +88,25 @@ char	*ft_get_raw_cmd(t_data *data, int i)
 	return (cmd);
 }
 
+void	ft_init_cmd(t_cmd *cmd)
+{
+	cmd->unspace_cmd = NULL;
+	cmd->no_redir_cmd = NULL;
+	cmd->undoll_cmd = NULL;
+	cmd->clean_cmd = NULL;
+	cmd->token = NULL;
+	cmd->tok_redir = NULL;
+	cmd->infile = 0;
+	cmd->outfile = 1;
+	cmd->stin = 0;
+	cmd->stout = 1;
+	cmd->file_err = 0;
+	cmd->cmd_opt = NULL;
+	cmd->cmd_path = NULL;
+	cmd->heredoc_path = NULL;
+	cmd->next = NULL;
+}
+
 /*	***** PARSING | raw_cmd *****
 **	<SUMMARY>
 **	Gets the number of commands = number of unquoted pipes + 1
@@ -112,11 +131,11 @@ t_cmd	*ft_get_commands(t_data *data)
 	{
 		tmp = ft_get_raw_cmd(data, i);
 		ft_lstadd_cmd(&cmd, tmp, data);
-		cmd->infile = 0;
-		cmd->outfile = 1;
-		cmd->stin = 0;
-		cmd->stout = 1;
-		cmd->file_err = 0;
+		// cmd->infile = 0;
+		// cmd->outfile = 1;
+		// cmd->stin = 0;
+		// cmd->stout = 1;
+		// cmd->file_err = 0;
 		i = ft_next_pipe(data->line, i);
 		ft_handle_malloc(DELONE, tmp, 0, NULL);
 		nb_cmd--;

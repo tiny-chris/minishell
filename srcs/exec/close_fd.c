@@ -51,9 +51,6 @@ static void	ft_close_pipefd(t_data *data)
 
 void	ft_close_fd(t_data *data)
 {
-	int		i;
-
-	i = 0;
 	if (!data)
 		return ;
 	if (data->cmd)

@@ -211,6 +211,7 @@ int		ft_parser(t_data *data);
 /*	Step 1	get_commands */
 
 t_cmd	*ft_get_commands(t_data *data);
+void	ft_init_cmd(t_cmd *cmd);
 char	*ft_get_raw_cmd(t_data *data, int i);
 
 /*	Step 2	del_spaces */

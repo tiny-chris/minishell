@@ -34,16 +34,17 @@ int	ft_lstadd_cmd(t_cmd **cmd, char *cmdline, t_data *data)
 	new = ft_handle_malloc(MALLOC_M + LST_CMD, NULL, 1, data);
 	new->raw_cmd = ft_strdup(cmdline);
 	ft_handle_malloc(ADD_M + TAB_STR1, new->raw_cmd, 0, data);
-	new->unspace_cmd = NULL;
-	new->no_redir_cmd = NULL;
-	new->undoll_cmd = NULL;
-	new->clean_cmd = NULL;
-	new->token = NULL;
-	new->tok_redir = NULL;
-	new->cmd_opt = NULL;
-	new->cmd_path = NULL;
-	new->heredoc_path = NULL;
-	new->next = NULL;
+	ft_init_cmd(new);
+	// new->unspace_cmd = NULL;
+	// new->no_redir_cmd = NULL;
+	// new->undoll_cmd = NULL;
+	// new->clean_cmd = NULL;
+	// new->token = NULL;
+	// new->tok_redir = NULL;
+	// new->cmd_opt = NULL;
+	// new->cmd_path = NULL;
+	// new->heredoc_path = NULL;
+	// new->next = NULL;
 	if (ft_lstlast_cmd(*cmd) == 0)
 	{
 		*cmd = new;
