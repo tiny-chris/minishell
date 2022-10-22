@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:25:45 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 23:14:52 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/22 15:13:05 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,16 @@ static void	ft_start_child_process(t_cmd *cmd, t_data *data, int res)
 	}
 }
 
+static void	ft_check_file_err(t_cmd *cmd, t_data *data)
+{
+	if (cmd->file_err == 1)
+	{
+		ft_close_fd(data);
+		ft_free_data_child(1, data);
+		exit(1);
+	}
+}
+
 void	ft_child_process(t_data *data, int i)
 {
 	t_cmd	*cmd;
@@ -53,6 +63,7 @@ void	ft_child_process(t_data *data, int i)
 		cmd = cmd->next;
 		j--;
 	}
+	ft_check_file_err(cmd, data);
 	res = ft_redirect_inout(data, cmd, i);
 	ft_close_fd(data);
 	ft_start_child_process(cmd, data, res);
