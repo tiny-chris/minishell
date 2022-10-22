@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/22 00:25:52 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/22 16:14:49 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,19 @@ typedef void	(*t_sighandler)(int);
 
 typedef enum s_type
 {
-	COMMAND 		= 0,
-	BUILTIN 		= 1,
-	WORD 			= 2,
-	WORD_N 			= 3,
+	COMMAND			= 0,
+	BUILTIN			= 1,
+	WORD			= 2,
+	WORD_N			= 3,
 	SP_QUOTES		= 4,
-	GREAT 			= 10,
-	OUTFILE 		= 20,
+	GREAT			= 10,
+	OUTFILE			= 20,
 	D_GREAT			= 11,
-	OUTFILE_APPEND 	= 21,
+	OUTFILE_APPEND	= 21,
 	LESS			= 12,
-	INFILE 			= 22,
+	INFILE			= 22,
 	D_LESS			= 13,
-	HERE_DOC 		= 23,
+	HERE_DOC		= 23,
 }	t_type;
 
 typedef enum s_sizetype
@@ -94,7 +94,6 @@ typedef struct s_int
 	int	j;
 }	t_int;
 
-
 typedef struct s_bin
 {
 	void			*ptr;
@@ -109,14 +108,13 @@ typedef struct s_token
 	int				type;
 	int				fd;
 	int				env;
-	int				printed;//pour env - init à 0 et passe à 1 si printé dans built-in env
+	int				printed;
 	int				hd_quotes;
 	struct s_token	*next;
 }	t_token;
 
 typedef struct s_env
 {
-	struct s_env	*head_addr;// ajout pour suprression via la liste bin
 	char			*var;
 	char			*var_equal;
 	char			*content;
@@ -130,13 +128,13 @@ typedef struct s_cmd
 	char			*unspace_cmd;
 	char			*no_redir_cmd;
 	char			*undoll_cmd;
-	char			*clean_cmd;//modifier par expand_cmd ??
+	char			*clean_cmd;
 	t_token			*token;
 	t_token			*tok_redir;
-	int				infile; //
-	int				outfile; //
-	int				stin; //
-	int				stout; //
+	int				infile;
+	int				outfile;
+	int				stin;
+	int				stout;
 	int				file_err;
 	char			**cmd_opt;
 	char			*cmd_path;
@@ -149,7 +147,7 @@ typedef struct s_data
 	char			*line;
 	char			*prompt;
 	t_env			*env;
-	char			*cwd;//current work directory
+	char			*cwd;
 	char			*oldpwd;
 	char			*home;
 	int				val_exit;
@@ -179,10 +177,9 @@ void	ft_get_home(t_data *data, int flag);
 
 /*	env_path */
 
-void 	ft_get_env_path(t_data *data, int flag);
-// int		ft_lstadd_env2(t_env **env, char *s_env_path_i, int flag);
-int	ft_lstadd_env2(t_env **env_path, char *s_env_path_i, t_data *data, int flag);
-
+void	ft_get_env_path(t_data *data, int flag);
+int		ft_lstadd_env2(t_env **env_path, char *s_env_path_i, \
+	t_data *data, int flag);
 
 void	ft_count_btw_quotes(char *line, int *i);
 void	ft_nb_csq_redir(char *line, int *i, int *len);
@@ -192,7 +189,6 @@ char	*ft_fill_btw_quotes(char *src, int *i, char *dst, int *j);
 
 char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j);
 char	*ft_fill_btw_quotes(char *src, int *i, char *dst, int *j);
-
 
 /*	***** LEXER *****	*/
 /*	*****************	*/
@@ -245,7 +241,8 @@ void	ft_fill_hd_doll(t_token *token, char *undoll_token, int *i, int *j);
 void	ft_fill_hd_quotes(t_token *token, char *undoll_token, int *i, int *j);
 int		ft_unquote_heredoc_len(char *token);
 int		ft_fill_unquote_heredoc(t_token *token, int len);
-void	ft_fill_unquote_hd2(t_token *token, char *unquote_token, int *i, int *j);
+void	ft_fill_unquote_hd2(t_token *token, char *unquote_token, \
+	int *i, int *j);
 
 /*	Step 4	del_dolls */
 
@@ -262,9 +259,9 @@ int		ft_expand(t_data *data);
 int		ft_expand_cmd_len(char *undoll_cmd, t_data *data);
 int		ft_get_expand_size(char *undoll_cmd, int *i, t_data *data);
 int		ft_get_error_size(t_data *data);
-char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data);//modifier le nom de la fonction
-void	ft_fill_expand(char *undoll_cmd, int *i, char *clean_cmd, int *j, t_data *data);
-void	ft_fill_ex2(char *undoll_cmd, t_int *var, char *clean_cmd, t_data *data);
+char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data);
+void	ft_fill_ex2(char *undoll_cmd, t_int *var, \
+	char *clean_cmd, t_data *data);
 void	ft_fill_ex3(t_env *env, char *clean_cmd, t_int *var);
 void	ft_fill_return_code(t_data *data, char *clean_cmd, int *j);
 void	ft_fill_normal(char *clean_cmd, char *undoll_cmd, int *i, int *j);
@@ -283,7 +280,6 @@ int		ft_space_quotes(char *tmp_token, t_token *token);
 int		ft_clean_len(char *token);
 char	*ft_fill_clean_token(char *tmp_token, int len);
 void	ft_positive_token(t_token *token);
-//int		ft_del_empty_token(t_cmd **cmd, t_data *data);
 int		ft_del_empty_token(t_cmd *cmd, t_data *data);
 int		ft_type_token(t_cmd *cmd, t_data *data);
 void	ft_token_env(t_data *data, t_cmd *cmd, t_token *token);
@@ -295,11 +291,6 @@ t_token	*ft_get_token_echo(t_token **token);
 void	ft_echo_join_words_fill(t_token *token);
 int		ft_del_nword(t_cmd *cmd);
 
-/*	Step 7 del_empty_cmd N'EXISTE PLUS */
-
-// int		ft_get_cmd_lst_size(t_data *data);
-// int		ft_del_empty_cmd(t_data *data);
-
 /*  Step 7	 heredoc_path  */
 
 int		ft_heredoc_path(t_data *data);
@@ -308,11 +299,10 @@ int		ft_heredoc_path(t_data *data);
 
 t_env	*ft_lstlast_env(t_env *lst);
 int		ft_lstadd_env(t_env **env, char *envp, t_data *data, int flag);
-//int		ft_lstadd_env(t_env **env, char *envp);///OLD VERSION
 void	ft_lstdelone_env(t_env *node);
 void	ft_lstdelone_env_bin(t_env *node);
 void	ft_free_env(t_env **env);
-void	ft_lstclearone_env(t_env **env_head, t_env *ptr);// voir si utile...
+void	ft_lstclearone_env(t_env **env_head, t_env *ptr);
 
 	/*	cmd_list */
 
@@ -336,7 +326,7 @@ void	ft_free_token(t_token **token);
 void	ft_free_strs(char *str1, char *str2, char *str3);
 void	*ft_free_tabstr(char **tab_str);
 void	*ft_free_tabstr2(char **tab_str, int type);
-void	*ft_free_tabstr_bin(char **tab_str, int type);//supprime tout char * et ** dans les 2 (yc bin)
+void	*ft_free_tabstr_bin(char **tab_str, int type);
 
 void	ft_free_ints(int *t_int1, int *t_int2, int *t_int3);
 void	*ft_free_tabint(int **tab_int, int size);
@@ -385,20 +375,19 @@ char	**ft_init_cmd_opt(t_cmd *cmd, t_data *data);
 char	*ft_find_cmd_path(t_cmd *cmd, t_data *data);
 void	ft_path_given(t_data *data, t_cmd *cmd, char *full_path);
 char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len);
-void	ft_abs_last_slash(char *token, char *full_path, t_data *data, char *tmp);
+void	ft_abs_last_slash(char *token, char *full_path, \
+	t_data *data, char *tmp);
 char	*ft_abs_no_last_slash(char *token, char *full_path);
 void	ft_check_abspath_directory(char *token, char *full_path);
 
 char	*ft_get_path_parent(char *cwd_update, t_data *data);
 char	*ft_get_full_path(t_cmd *cmd, t_data *data);
-//void	ft_update_path(t_cmd *cmd, t_data *data, t_int *var);
-void    ft_update_path(t_cmd *cmd, t_data *data, int i, int j);
+void	ft_update_path(t_cmd *cmd, t_data *data, int i, int j);
 
 char	*ft_find_cmd_path2(t_cmd *cmd, t_data *data);
 char	*ft_try_access_path(t_env *env_path, t_data *data, t_cmd *cmd);
 char	*ft_get_new_path(t_env *env_path, t_data *data);
 void	ft_check_error_cmd_path(t_data *data, t_cmd *cmd, int res);
-
 
 /*	exec parent		*/
 
@@ -410,8 +399,7 @@ int		ft_parent_exit(t_data *data, int res);
 int		ft_msg(int val_exit, char *msg1, char *msg2, char *msg3);
 void	ft_close_fd(t_data *data);
 void	ft_close_std(void);
-void	ft_exit_exec(t_data *data);//, int val_exit);
-void	ft_clean_exec(t_data *data);// pour remplacer petit à petit ft_exit_exec
+void	ft_clean_exec(t_data *data);
 int		ft_free_data_child(int res, t_data *data);
 
 int		ft_clean_cmdline(t_data *data);
@@ -435,9 +423,7 @@ int		ft_unset(t_cmd *cmd, t_data *data);
 int		ft_check_unset(t_token *token, t_data *data);
 
 int		ft_cd(t_cmd *cmd, t_data *data, int flag);
-// void	ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
 int		ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
-// void	ft_update_cwd(t_data *data, int flag);
 int		ft_update_cwd(t_token *token, t_data *data, int flag);
 int		ft_exec_cd(t_token *token, t_cmd *cmd, t_data *data, int flag);
 void	ft_new_oldpwd(t_env *env, t_data *data, int flag, int pwd_null);
@@ -469,15 +455,10 @@ void	ft_heredoc_sigint(int sig);
 void	ft_end_of_file(t_token *tok_redir);
 void	ft_exec_hd(t_data *data, t_token *tok_redir, char *line, int stdin_dup);
 
-/* **************************** */
-/* début - for ft_handle_malloc */
-
 /*	bin collector  */
 
-// void	*ft_handle_malloc(int flag, void *ptr, int type, int size);
 void	*ft_handle_malloc(int flag_type, void *ptr, int size, t_data *data);
 void	ft_free_ptr_type(void *ptr, int type, int size);
-// void	ft_free_ptr_type(void *ptr, int type, int size, int flag);
 
 /*	bin list  */
 
@@ -485,12 +466,5 @@ int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
 void	ft_lstdelone_bin(t_bin *node);
 void	ft_lstclearone_bin(t_bin **bin_head, void *ptr);
 void	ft_free_bin(t_bin **bin);
-// void	ft_lstdelone_bin(t_bin *node, int flag);
-// void	ft_lstclearone_bin(t_bin **bin_head, void *ptr, int flag);
-// void	ft_free_bin(t_bin **bin_head, int flag);
-
-/*	cas particulier pour env	*/
-
-int		ft_spec_env_case(t_cmd *cmd, t_data *data);
 
 #endif
