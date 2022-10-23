@@ -101,7 +101,7 @@ OBJS		:= $(subst .c,.o,$(SRCS))
 OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror
+CFLAGS		:= -Wall -Wextra -Werror -g
 CPPFLAGS	:= -I lib/libft -I includes
 LDFLAGS		:= -L lib/libft
 LDLIBS		:= -l ft -l readline

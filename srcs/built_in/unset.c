@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/21 21:35:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/23 15:47:20 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	ft_unset_spec_var(t_token *tok, t_data *data)
 	}
 }	
 
-static t_env	*ft_unset_var(t_env *env, t_env *tmp, t_data *data)
+static t_env	*ft_unset_var(t_env *env, t_env **tmp, t_data *data)
 {
 	t_env	*todel;
 
@@ -46,21 +46,21 @@ static t_env	*ft_unset_var(t_env *env, t_env *tmp, t_data *data)
 	if (env == data->env)
 	{
 		todel = env;
-		tmp = env->next;
+		(*tmp) = env->next;
 		todel->next = NULL;
 		ft_lstdelone_env_bin(todel);
-		data->env = tmp;
+		data->env = (*tmp);
 		env = data->env;
 	}
 	else
 	{
 		todel = env;
 		if (env->next)
-			tmp->next = env->next;
+			(*tmp)->next = env->next;
 		else
-			tmp->next = NULL;
+			(*tmp)->next = NULL;
 		ft_lstdelone_env_bin(todel);
-		env = tmp;
+		env = (*tmp);
 	}
 	return (env);
 }
@@ -78,7 +78,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 			&& ft_strlen(env->var) == ft_strlen(token->token))
 		{
 			ft_unset_spec_var(token, data);
-			env = ft_unset_var(env, tmp, data);
+			env = ft_unset_var(env, &tmp, data);
 		}
 		if (env != data->env || tmp != env)
 			tmp = tmp->next;
