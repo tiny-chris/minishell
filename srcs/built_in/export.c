@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 13:02:40 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/23 16:21:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	ft_export(t_cmd *cmd, t_data *data, int flag)
 	res = 0;
 	res2 = 0;
 	if (token->next == NULL)
-		return (ft_msg(EXIT_FAILURE, token->token, ": ", ERRFEW));
+		return (ft_display_export(data, flag), 0);
 	token = token->next;
 	while (token)
 	{
