@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/23 16:21:52 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/23 17:02:00 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ static int	ft_get_export(t_data *data, t_token *token, int *res, int flag)
 	}
 	if (token->token[i] == '=')
 		*res = ft_check_export(token, data, flag);
+	else if (token->token[i] == '\0')
+	{
+		*res = ft_add_export(token, data, flag);
+	}
 	return (0);
 }
 

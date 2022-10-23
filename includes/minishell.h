@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/23 16:22:47 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/23 17:02:37 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ typedef struct s_data
 	char			*line;
 	char			*prompt;
 	t_env			*env;
+	t_env			*export;
 	char			*cwd;
 	char			*oldpwd;
 	char			*home;
@@ -419,6 +420,7 @@ void	ft_display_env(t_data *data, t_token *token);
 int		ft_export(t_cmd *cmd, t_data *data, int flag);
 int		ft_check_export(t_token *token, t_data *data, int flag);
 void	ft_display_export(t_data *data, int flag);
+int		ft_add_export(t_token *token, t_data *data, int flag);
 
 int		ft_unset(t_cmd *cmd, t_data *data);
 int		ft_check_unset(t_token *token, t_data *data);

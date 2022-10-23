@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 21:55:56 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/22 16:32:19 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/23 16:31:05 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	ft_init_data_0(t_data *data)
 	data->line = NULL;
 	data->prompt = NULL;
 	data->env = NULL;
+	data->export = NULL;
 	data->cwd = NULL;
 	data->oldpwd = NULL;
 	data->home = NULL;

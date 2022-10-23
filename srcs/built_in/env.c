@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/19 21:44:18 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/23 17:36:19 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ static void	ft_print_env_lst(t_env *env, t_token *token)
 		{
 			if (ft_strncmp(tmp->token, env->var_equal, size_var_equal) == 0)
 			{
-				printf("%s\n", tmp->token);
+				ft_putendl_fd(tmp->token, STDOUT_FILENO);
 				tmp->printed = 1;
 				break ;
 			}
 			tmp = tmp->next;
 		}
 		if (tmp == NULL)
-			printf("%s\n", env->envp);
+			ft_putendl_fd(env->envp, STDOUT_FILENO);
 		env = env->next;
 	}
 }
@@ -49,7 +49,7 @@ void	ft_display_env(t_data *data, t_token *token)
 	while (token)
 	{
 		if (token->printed == 0)
-			printf("%s\n", token->token);
+			ft_putendl_fd(token->token, STDOUT_FILENO);
 		token = token->next;
 	}
 	tmp = token;
