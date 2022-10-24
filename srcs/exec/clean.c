@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:09:32 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 21:28:20 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/24 17:36:47 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	ft_clean_exec(t_data *data)
 			}
 			ft_handle_malloc(DELONE, data->pipe_fd, 0, NULL);
 		}
+		data->sigint_hd = 0;
 	}
 }
 

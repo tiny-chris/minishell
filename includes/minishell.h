@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/23 17:02:37 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/24 17:18:16 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ typedef struct s_data
 	t_env			*env_path;
 	char			**s_env_path;
 	char			*tmp_oldpwd;
+	int				sigint_hd;
 }	t_data;
 
 /*	***** INIT *****	*/

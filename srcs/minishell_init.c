@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 21:55:56 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/23 16:31:05 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/24 17:18:46 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	ft_init_data_0(t_data *data)
 	data->env_path = NULL;
 	data->s_env_path = NULL;
 	data->tmp_oldpwd = NULL;
+	data->sigint_hd = 0;
 }
 
 void	ft_get_home(t_data *data, int flag)

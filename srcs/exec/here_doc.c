@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:09:15 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/19 18:35:35 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/24 17:41:22 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	ft_exec_hd(t_data *data, t_token *tok_redir, char *line, int stdin_dup)
 		{
 			dup2(stdin_dup, STDIN_FILENO);
 			free(line);
+			data->sigint_hd = 1;
 			break ;
 		}
 		if (!line)
@@ -71,18 +72,22 @@ void	ft_heredoc(t_data *data, t_cmd *cmd, t_token *tok_redir)
 
 	line = NULL;
 	tok_redir = tok_redir->next;
-	tok_redir->fd = open(cmd->heredoc_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
-	g_val_exit = 0;
-	if (tok_redir->fd < 0)
+	if (data->sigint_hd != 1)
 	{
-		cmd->file_err = 1;
-		g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+		tok_redir->fd = open(cmd->heredoc_path, \
+			O_CREAT | O_TRUNC | O_RDWR, 0644);
+		g_val_exit = 0;
+		if (tok_redir->fd < 0)
+		{
+			cmd->file_err = 1;
+			g_val_exit = ft_msg(errno, ERRMSG, "", strerror(errno));
+		}
+		stdin_dup = dup(STDIN_FILENO);
+		ft_exec_hd(data, tok_redir, line, stdin_dup);
+		close(stdin_dup);
+		close(tok_redir->fd);
+		tok_redir->fd = open(cmd->heredoc_path, O_RDONLY);
+		cmd->infile = tok_redir->fd;
+		unlink(cmd->heredoc_path);
 	}
-	stdin_dup = dup(STDIN_FILENO);
-	ft_exec_hd(data, tok_redir, line, stdin_dup);
-	close(stdin_dup);
-	close(tok_redir->fd);
-	tok_redir->fd = open(cmd->heredoc_path, O_RDONLY);
-	cmd->infile = tok_redir->fd;
-	unlink(cmd->heredoc_path);
 }
