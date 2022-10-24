@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/23 15:47:20 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/24 18:18:42 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int	ft_check_unset(t_token *token, t_data *data)
 			ft_unset_spec_var(token, data);
 			env = ft_unset_var(env, &tmp, data);
 		}
+		if (env == NULL)
+			break ;
 		if (env != data->env || tmp != env)
 			tmp = tmp->next;
 		env = env->next;
