@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/23 17:36:19 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/24 15:52:13 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ int	ft_env(t_cmd *cmd, t_data *data)
 
 	token = cmd->token;
 	env = data->env;
-	if (data->env_path == NULL || data->s_env_path == NULL)
-		return (ft_msg(127, token->token, ": ", ERRFOD));
+	// if (data->env_path == NULL || data->s_env_path == NULL)
+	// 	return (ft_msg(127, token->token, ": ", ERRFOD));
 	if (env == NULL)
 	{
 		if (token->next == NULL)

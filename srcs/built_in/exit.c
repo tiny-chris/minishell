@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 11:41:59 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/17 18:22:09 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/24 15:32:08 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_exit_no_args(t_data *data)
 	}
 	ft_handle_malloc(0, NULL, 0, NULL);
 	rl_clear_history();
-	exit(EXIT_SUCCESS);
+	exit(g_val_exit);
 }
 
 static void	ft_exit_no_numeric_arg(t_data *data)
