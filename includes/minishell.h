@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/24 17:18:16 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/25 14:29:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,7 +393,7 @@ void	ft_check_error_cmd_path(t_data *data, t_cmd *cmd, int res);
 
 /*	exec parent		*/
 
-int		ft_parent_process(t_data *data);
+int		ft_parent_process(t_data *data, int j);
 int		ft_parent_exit(t_data *data, int res);
 
 /*	exec CLEAN */
