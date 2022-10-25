@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/24 17:35:44 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/25 18:18:52 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ void	ft_minishell(t_data *data)
 	else
 	{
 		ft_parser(data);
-		ft_exec(data);
-		ft_free_cmd(&(data->cmd));
+		if (data->nb_pipes < 500)
+		{
+			ft_exec(data);
+			ft_free_cmd(&(data->cmd));	
+		}
 	}
 	if (data != NULL)
 	{

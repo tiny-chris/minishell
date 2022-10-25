@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:00:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 17:19:23 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/25 18:23:04 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_val_exit;
 
 static int	ft_del_tabs(t_data *data)
 {
@@ -79,13 +81,18 @@ void	ft_nb_csq_redir(char *line, int *i, int *len)
 int	ft_parser(t_data *data)
 {
 	data->nb_pipes = ft_count_pipe(data->line);
-	data->cmd = ft_get_commands(data);
-	ft_del_tabs(data);
-	ft_del_spaces(data);
-	ft_get_redir(data);
-	ft_del_dolls(data);
-	ft_expand(data);
-	ft_tokenizer(data);
-	ft_heredoc_path(data);
+	if (data->nb_pipes < 500)
+	{
+		data->cmd = ft_get_commands(data);
+		ft_del_tabs(data);
+		ft_del_spaces(data);
+		ft_get_redir(data);
+		ft_del_dolls(data);
+		ft_expand(data);
+		ft_tokenizer(data);
+		ft_heredoc_path(data);
+	}
+	else
+		g_val_exit = ft_msg(1, ERRFIL, "", "");
 	return (0);
 }
