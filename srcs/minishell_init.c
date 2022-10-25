@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 21:55:56 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/25 19:10:46 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/25 19:41:38 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	ft_init_data_0(t_data *data)
 	data->val_exit = 0;
 	data->str_exit = NULL;
 	data->nb_pipes = -1;
+	data->nb_redir = 0;
 	data->cmd = NULL;
 	data->built_in = NULL;
 	data->pid = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/25 19:09:43 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/25 20:25:52 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ void	ft_minishell(t_data *data)
 	else
 	{
 		ft_parser(data);
-		if (data->nb_pipes < 500)
-		{
+		if ((data->nb_pipes + data->nb_redir) < 500)
 			ft_exec(data);
-			ft_free_cmd(&(data->cmd));
-		}
+		ft_free_cmd(&(data->cmd));
 	}
 	if (data != NULL)
 	{
@@ -33,6 +31,7 @@ void	ft_minishell(t_data *data)
 			ft_handle_malloc(DELONE, data->line, 0, NULL);
 		if (data->str_exit)
 			ft_handle_malloc(DELONE, data->str_exit, 0, NULL);
+		data->nb_redir = 0;
 	}
 }
 

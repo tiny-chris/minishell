@@ -6,7 +6,7 @@
 /*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 01:00:05 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/25 18:23:04 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/25 20:18:16 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,33 @@ void	ft_nb_csq_redir(char *line, int *i, int *len)
 	}
 }
 
+static int	ft_get_nbredir(t_data *data)
+{
+	t_cmd	*cmd;
+	t_token	*tok_redir;
+	int		i;
+
+	i = 0;
+	cmd = data->cmd;
+	tok_redir = NULL;
+	while (cmd != NULL)
+	{
+		tok_redir = cmd->tok_redir;
+		if (tok_redir)
+		{
+			while (tok_redir)
+			{
+				i++;
+				tok_redir = tok_redir->next;
+			}	
+		}
+		cmd = cmd->next;
+	}
+	if (i)
+		i = i / 2;
+	return (i);
+}
+
 /*	<SUMMARY> parses the command line - main function
 */
 int	ft_parser(t_data *data)
@@ -91,8 +118,9 @@ int	ft_parser(t_data *data)
 		ft_expand(data);
 		ft_tokenizer(data);
 		ft_heredoc_path(data);
+		data->nb_redir = ft_get_nbredir(data);
 	}
-	else
+	if (data->nb_pipes + data->nb_redir >= 500)
 		g_val_exit = ft_msg(1, ERRFIL, "", "");
 	return (0);
 }
