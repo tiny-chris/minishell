@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:25:45 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/22 15:13:05 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/25 19:11:10 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	ft_child_process(t_data *data, int i)
 	ft_start_child_process(cmd, data, res);
 	cmd->cmd_opt = ft_init_cmd_opt(cmd, data);
 	cmd->cmd_path = ft_find_cmd_path(cmd, data);
-	if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env_path) == -1)
+	if (execve(cmd->cmd_path, cmd->cmd_opt, data->s_env) == -1)
 	{
 		res = ft_msg(126, cmd->token->token, ": ", strerror(errno));
 		ft_free_data_child(res, data);

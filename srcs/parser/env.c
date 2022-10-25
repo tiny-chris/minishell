@@ -30,3 +30,49 @@ t_env	*ft_get_env(char **envp, t_data *data)
 	}
 	return (env);
 }
+
+static int	ft_check_env_size(t_data *data)
+{
+	t_env	*env;
+	int		i;
+
+	env = data->env;
+	i = 0;
+	if (env == NULL || env->var[0] == '\0')
+		return (-1);
+	while (env)
+	{
+		i++;
+		env = env->next;
+	}
+	return (i);
+}
+
+char	**ft_get_s_env(t_data *data)
+{
+	t_env	*env;
+	char	**s_env;
+	int		i;
+
+	env = data->env;
+	s_env = NULL;
+	if (data->s_env != NULL)
+	{
+		ft_handle_malloc(DELONE, data->s_env, 0, NULL);
+		data->s_env = NULL;
+	}
+	i = ft_check_env_size(data);
+	if (i == -1)
+		return (NULL);
+	s_env = ft_handle_malloc(MALLOC_M + TAB_STR2, NULL, (i + 1), NULL);
+	i = 0;
+	while (env)
+	{
+		s_env[i] = ft_strdup(env->envp);
+		ft_handle_malloc(ADD_M + TAB_STR1, s_env[i], 0, NULL);
+		i++;
+		env = env->next;
+	}
+	s_env[i] = NULL;
+	return (s_env);
+}

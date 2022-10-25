@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:47:25 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/25 18:18:52 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/25 19:09:43 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_minishell(t_data *data)
 		if (data->nb_pipes < 500)
 		{
 			ft_exec(data);
-			ft_free_cmd(&(data->cmd));	
+			ft_free_cmd(&(data->cmd));
 		}
 	}
 	if (data != NULL)
@@ -47,6 +47,7 @@ int	main(int argc, char **argv, char **envp)
 		while (1)
 		{
 			ft_init_signals(&data);
+			data.s_env = ft_get_s_env(&data);
 			data.line = readline(data.prompt);
 			if (!data.line)
 				ft_exit_ctrl_d(&data);

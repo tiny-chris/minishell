@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/25 18:22:58 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/25 19:10:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ typedef struct s_data
 	char			*line;
 	char			*prompt;
 	t_env			*env;
+	char			**s_env;
 	t_env			*export;
 	char			*cwd;
 	char			*oldpwd;
@@ -173,6 +174,7 @@ int		ft_clean_cmdline(t_data *data);
 void	ft_exit_ctrl_d(t_data *data);
 
 t_env	*ft_get_env(char **envp, t_data *data);
+char	**ft_get_s_env(t_data *data);
 char	**ft_built_in(void);
 int		ft_only_space(char *line);
 int		ft_init_data_1(t_data *data, char **envp);
