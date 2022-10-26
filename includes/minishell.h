@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/26 12:03:50 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/26 13:25:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -424,7 +424,7 @@ int		ft_env(t_cmd *cmd, t_data *data);
 void	ft_display_env(t_data *data, t_token *token);
 
 int		ft_export(t_cmd *cmd, t_data *data, int flag);
-int		ft_check_export(t_token *token, t_data *data, int flag);
+int		ft_check_export(t_token *token, t_data *data, int flag, char *var_name);
 void	ft_display_export(t_data *data, int flag);
 int		ft_add_export(t_token *token, t_data *data, int flag, int len);
 

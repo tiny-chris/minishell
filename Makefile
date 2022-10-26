@@ -68,6 +68,7 @@ SRCS 		:= \
 			built_in/env.c \
 			built_in/export.c \
 			built_in/export_2.c \
+			built_in/export_3.c \
 			built_in/unset.c \
 			built_in/unset_2.c \
 			built_in/cd.c \
