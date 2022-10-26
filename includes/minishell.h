@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/26 00:30:07 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/26 03:45:13 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,7 +398,7 @@ void	ft_check_error_cmd_path(t_data *data, t_cmd *cmd, int res);
 
 /*	exec parent		*/
 
-int		ft_parent_process(t_data *data);
+int		ft_parent_process(t_data *data, int j);
 int		ft_parent_exit(t_data *data, int res);
 
 /*	exec CLEAN */
@@ -430,6 +430,7 @@ int		ft_add_export(t_token *token, t_data *data, int flag);
 
 int		ft_unset(t_cmd *cmd, t_data *data);
 int		ft_check_unset(t_token *token, t_data *data);
+int		ft_check_unset_in_export(char *token, t_data *data);
 
 int		ft_cd(t_cmd *cmd, t_data *data, int flag);
 int		ft_update_pwd(t_cmd *cmd, t_data *data, int flag);

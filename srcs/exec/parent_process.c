@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_process.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 17:28:34 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/22 00:05:28 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/26 03:43:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static void	ft_wifsignaled(int *status)
 		*status = EINTR;
 }
 
-int	ft_parent_process(t_data *data)
+int	ft_parent_process(t_data *data, int j)
 {
-	int		i;
-	int		status;
+	int	i;
+	int	status;
 
 	ft_close_fd(data);
 	i = 0;
@@ -41,9 +41,13 @@ int	ft_parent_process(t_data *data)
 	{
 		waitpid(data->pid[i], &status, 0);
 		i++;
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			j++;
 	}
 	if (WIFEXITED(status))
 	{
+		if (j != 0)
+			write(1, "\n", 1);
 		if (status == 42)
 			ft_free_data_child(1, data);
 		status = WEXITSTATUS(status);
