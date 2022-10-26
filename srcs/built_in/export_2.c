@@ -6,11 +6,19 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 16:21:40 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/26 13:32:10 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:31:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	ft_clean_var_tmp(char **var_tmp, char **var_name)
+{
+	ft_handle_malloc(DELONE, (*var_tmp), 0, NULL);
+	(*var_tmp) = NULL;
+	ft_handle_malloc(DELONE, (*var_name), 0, NULL);
+	(*var_name) = NULL;
+}
 
 static void	ft_is_in_env(t_env **env, t_token *token, t_data *data, int flag)
 {
@@ -33,9 +41,9 @@ static void	ft_is_in_env(t_env **env, t_token *token, t_data *data, int flag)
 	ft_handle_malloc(DELONE, (*env)->envp, 0, NULL);
 	(*env)->content = ft_strjoin(tmp1, tmp2);
 	ft_handle_malloc(flag + TAB_STR1, (*env)->content, 0, data);
-	ft_handle_malloc(DELONE, tmp1, 0, NULL);
-	ft_handle_malloc(DELONE, tmp2, 0, NULL);
+	ft_clean_var_tmp(&tmp1, &tmp2);
 	tmp1 = ft_substr(token->token, 0, i + 1);
+	ft_handle_malloc(flag + TAB_STR1, tmp1, 0, data);
 	(*env)->envp = ft_strjoin(tmp1, (*env)->content);
 	ft_handle_malloc(flag + TAB_STR1, (*env)->envp, 0, data);
 	ft_handle_malloc(DELONE, tmp1, 0, NULL);
@@ -50,14 +58,6 @@ static void	ft_export_path_home(t_env *env, t_data *data, int flag)
 		ft_get_env_path(data, flag);
 	else if (ft_strncmp(env->var_equal, "HOME=", size_var_equal) == 0)
 		ft_get_home(data, flag);
-}
-
-static void	ft_clean_var_tmp(char **var_tmp, char **var_name)
-{
-	ft_handle_malloc(DELONE, (*var_tmp), 0, NULL);
-	(*var_tmp) = NULL;
-	ft_handle_malloc(DELONE, (*var_name), 0, NULL);
-	(*var_name) = NULL;
 }
 
 int	ft_check_export(t_token *token, t_data *data, int flag, char *var_name)
