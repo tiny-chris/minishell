@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/25 11:59:26 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:47:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	ft_check_token_token(t_token *token, t_data *data)
 	return (res);
 }
 
-/* <SUMMARY> Unsets tokens that are in the env 
+/* <SUMMARY> Unsets tokens that are in the env
 ** <REMARKS>	- Previous check of name validity
 **				- Additional cleaning for PATH & HOME
 */

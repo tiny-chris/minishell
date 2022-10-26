@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/25 12:10:14 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:46:38 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	ft_unset_path_home(t_token *tok, t_data *data)
 			data->home = NULL;
 		}
 	}
-}	
+}
 
 static t_env	*ft_unset_var(t_env *env, t_env **tmp, t_data *data)
 {
@@ -92,7 +92,7 @@ static t_env	*ft_unset_var2(t_env *env, t_env **tmp, t_env **data_env)
 	return (env);
 }
 
-static int	ft_check_unset_in_export(t_token *token, t_data *data)
+int	ft_check_unset_in_export(char *token, t_data *data)
 {
 	t_env	*exp;
 	t_env	*tmp;
@@ -101,8 +101,8 @@ static int	ft_check_unset_in_export(t_token *token, t_data *data)
 	tmp = data->export;
 	while (exp)
 	{
-		if (ft_strncmp(exp->content, token->token, ft_strlen(exp->var)) == 0 \
-			&& ft_strlen(exp->content) == ft_strlen(token->token))
+		if (ft_strncmp(exp->content, token, ft_strlen(exp->content)) == 0 \
+			&& ft_strlen(exp->content) == ft_strlen(token))
 		{
 			exp = ft_unset_var2(exp, &tmp, &(data->export));
 			return (1);
@@ -125,7 +125,7 @@ int	ft_check_unset(t_token *token, t_data *data)
 	tmp = data->env;
 	if (data->export)
 	{
-		if (ft_check_unset_in_export(token, data) == 1)
+		if (ft_check_unset_in_export(token->token, data) == 1)
 			return (0);
 	}
 	while (env)

@@ -68,6 +68,7 @@ SRCS 		:= \
 			built_in/env.c \
 			built_in/export.c \
 			built_in/export_2.c \
+			built_in/export_3.c \
 			built_in/unset.c \
 			built_in/unset_2.c \
 			built_in/cd.c \
@@ -94,7 +95,7 @@ SRCS 		:= \
 			exec/here_doc.c \
 			exec/here_doc_2.c \
 			bin_collect/bin_coll.c \
-			bin_collect/bin_list.c 
+			bin_collect/bin_list.c
 
 SRCS		:= $(addprefix $(SRC_DIR)/,$(SRCS))
 
@@ -103,7 +104,7 @@ OBJS		:= $(subst .c,.o,$(SRCS))
 OBJS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJS))
 
 CC			:= cc
-#CFLAGS		:= -Wall -Wextra -Werror -g
+CFLAGS		:= -Wall -Wextra -Werror -g
 CPPFLAGS	:= -I lib/libft -I includes
 LDFLAGS		:= -L lib/libft
 LDLIBS		:= -l ft -l readline

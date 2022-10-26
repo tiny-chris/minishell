@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/26 02:22:39 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:45:49 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct s_token
 	int				env;
 	int				printed;
 	int				hd_quotes;
+	int				plus;
 	struct s_token	*next;
 }	t_token;
 
@@ -421,12 +422,13 @@ int		ft_env(t_cmd *cmd, t_data *data);
 void	ft_display_env(t_data *data, t_token *token);
 
 int		ft_export(t_cmd *cmd, t_data *data, int flag);
-int		ft_check_export(t_token *token, t_data *data, int flag);
+int		ft_check_export(t_token *token, t_data *data, int flag, char *var_name);
 void	ft_display_export(t_data *data, int flag);
-int		ft_add_export(t_token *token, t_data *data, int flag);
+int		ft_add_export(t_token *token, t_data *data, int flag, int len);
 
 int		ft_unset(t_cmd *cmd, t_data *data);
 int		ft_check_unset(t_token *token, t_data *data);
+int		ft_check_unset_in_export(char *token, t_data *data);
 
 int		ft_cd(t_cmd *cmd, t_data *data, int flag);
 int		ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
