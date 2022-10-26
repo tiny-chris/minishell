@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/25 19:40:23 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/26 02:22:39 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,6 @@ int		ft_lstadd_env2(t_env **env_path, char *s_env_path_i, \
 void	ft_count_btw_quotes(char *line, int *i);
 void	ft_nb_csq_redir(char *line, int *i, int *len);
 char	*ft_fill_btw_quotes(char *src, int *i, char *dst, int *j);
-// int		ft_count_space(char *line, int i);
-// int		ft_nb_csq_redir(char *line, int i);
 
 char	*ft_fill_unspace_btw_q(char *raw, int *i, char *unspace, int *j);
 char	*ft_fill_btw_quotes(char *src, int *i, char *dst, int *j);
@@ -326,9 +324,8 @@ void	ft_lstdelone_tok(t_token *node);
 void	ft_lstdelone_tok_bin(t_token *node);
 void	ft_free_token(t_token **token);
 
-	/*	utils */
+	/*	utils CLEAN */
 
-// CLEAN
 void	ft_free_strs(char *str1, char *str2, char *str3);
 void	*ft_free_tabstr(char **tab_str);
 void	*ft_free_tabstr2(char **tab_str, int type);
@@ -339,7 +336,8 @@ void	*ft_free_tabint(int **tab_int, int size);
 void	*ft_free_tabint2(int **tab_int, int size, int type);
 void	*ft_free_tabint_bin(int **tab_int, int size, int type);
 
-// UTILS
+	/*	utils others */
+
 int		ft_new_strchr(const char *s, int c);
 int		ft_new_strrchr(const char *s, int c);
 int		ft_is_in_set(const char *set, char c);
@@ -395,9 +393,9 @@ char	*ft_try_access_path(t_env *env_path, t_data *data, t_cmd *cmd);
 char	*ft_get_new_path(t_env *env_path, t_data *data);
 void	ft_check_error_cmd_path(t_data *data, t_cmd *cmd, int res);
 
-/*	exec parent		*/
+/*	exec parent	*/
 
-int		ft_parent_process(t_data *data);
+int		ft_parent_process(t_data *data, int j);
 int		ft_parent_exit(t_data *data, int res);
 
 /*	exec CLEAN */
@@ -445,7 +443,7 @@ int		ft_exit(t_cmd *cmd, t_data *data, int flag);
 int		ft_check_digit(char *token);
 char	*ft_get_check2(char *token, int flag, t_data *data);
 
-/*  signaux  */
+/*	signals	*/
 
 void	sig_int(int sig);
 void	ft_init_signals(t_data *data);
@@ -453,7 +451,7 @@ void	ft_signal(t_data *data, int signum, t_sighandler handler);
 void	ft_sigquit_child(t_data *data, int signum, t_sighandler handler);
 void	sig_quit(int sig);
 
-/*   heredoc  */
+/*	heredoc	*/
 
 void	ft_heredoc(t_data *data, t_cmd *cmd, t_token *tok_redir);
 char	*ft_get_prompt_line(t_data *data);
@@ -463,12 +461,12 @@ void	ft_heredoc_sigint(int sig);
 void	ft_end_of_file(t_token *tok_redir);
 void	ft_exec_hd(t_data *data, t_token *tok_redir, char *line, int stdin_dup);
 
-/*	bin collector  */
+/*	bin collector	*/
 
 void	*ft_handle_malloc(int flag_type, void *ptr, int size, t_data *data);
 void	ft_free_ptr_type(void *ptr, int type, int size);
 
-/*	bin list  */
+/*	bin list 	*/
 
 int		ft_lstadd_bin(t_bin **bin, void *ptr, int type, int size);
 void	ft_lstdelone_bin(t_bin *node);
