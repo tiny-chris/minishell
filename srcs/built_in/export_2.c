@@ -3,29 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   export_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 16:21:40 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/23 17:02:14 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/26 12:03:40 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_add_export(t_token *token, t_data *data, int flag)
+int	ft_add_export(t_token *token, t_data *data, int flag, int len)
 {
 	t_env	*env;
+	t_env	*exp;
 
 	env = data->env;
+	exp = data->export;
 	while (env)
 	{
-		if (ft_strncmp(env->var, token->token, ft_strlen(env->var)) == 0 \
-			&& ft_strlen(env->var) == ft_strlen(token->token))
+		if (ft_strncmp(env->var, token->token, len) == 0 \
+			&& len == (int) ft_strlen(env->var))
 			break ;
 		env = env->next;
 	}
 	if (env == NULL)
-		ft_lstadd_env2(&(data->export), token->token, data, flag);
+	{
+		while (exp)
+		{
+			if (ft_strncmp(exp->content, token->token, len) == 0 \
+				&& len == (int) ft_strlen(exp->content))
+				break ;
+			exp = exp->next;
+		}
+		dprintf(2, "val de export = %p\n", exp);//
+		if (exp == NULL)
+			ft_lstadd_env2(&(data->export), token->token, data, flag);
+	}
 	return (0);
 }
 

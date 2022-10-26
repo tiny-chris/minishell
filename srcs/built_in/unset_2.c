@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:27:14 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/26 03:46:14 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:18:17 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	ft_check_unset_in_export(char *token, t_data *data)
 
 	exp = data->export;
 	tmp = data->export;
+	dprintf(2, "char token = %s\n", token);//
 	while (exp)
 	{
 		if (ft_strncmp(exp->content, token, ft_strlen(exp->var)) == 0 \

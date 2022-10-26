@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/26 03:54:10 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:50:52 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,15 @@ static char	*ft_update_plus_token(t_token **tok, t_data *data, int flag)
 	tmp1 = NULL;
 	tmp2 = NULL;
 	i = ft_new_strchr((*tok)->token, '=');
+	dprintf(2, "i pour égal : %d\n", i);
+	dprintf(2, "token->plus = %d\n", (*tok)->plus);
 	if ((*tok)->plus == 1)
 	{
-		tmp1 = ft_substr((*tok)->token, 0, i);
+		tmp1 = ft_substr((*tok)->token, 0, i - 1);
+		dprintf(2, "tmp1 = %s\n", tmp1);
 		ft_handle_malloc(flag + TAB_STR1, tmp1, 0, data);
 		tmp2 = ft_substr((*tok)->token, i, ft_strlen((*tok)->token) - i + 1);
+		dprintf(2, "tmp1 = %s\n", tmp2);
 		// if ((*tok)->token[i + 1] != '\0')
 		// 	tmp2 = ft_substr((*tok)->token, i + 1, ft_strlen((*tok)->token) - i);
 		// else
@@ -87,12 +91,15 @@ static char	*ft_update_plus_token(t_token **tok, t_data *data, int flag)
 		ft_handle_malloc(flag + TAB_STR1, tmp2, 0, data);
 		ft_handle_malloc(DELONE, (*tok)->token, 0, NULL);
 		(*tok)->token = ft_strjoin(tmp1, tmp2);
+		dprintf(2, "token-token * = %s\n", (*tok)->token);
 		ft_handle_malloc(flag + TAB_STR1, (*tok)->token, 0, data);
 		ft_handle_malloc(DELONE, tmp1, 0, NULL);
 		ft_handle_malloc(DELONE, tmp2, 0, NULL);
 		i = i - 1;
 	}
-	var_name = ft_substr((*tok)->token, 0, i + 1);
+	//variable sans plus
+	var_name = ft_substr((*tok)->token, 0, i);
+	// dprintf(2, "var_name * = %s\n", var_name);
 	ft_handle_malloc(flag + TAB_STR1, var_name, 0, data);
 	return (var_name);
 }
@@ -111,7 +118,9 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 
 	env = data->env;
 	var_name = ft_update_plus_token(&token, data, flag);
+	dprintf(2, "var_name * = %s\n", var_name);//
 	var_tmp = ft_strjoin(var_name, "=");
+	dprintf(2, "var_tmp * = %s\n", var_tmp);//
 	ft_handle_malloc(flag + TAB_STR1, var_tmp, 0, data);
 	// i =var_tmp_eqft_update_plus_token(&token, data, flag);
 	// var_tmp = ft_substr(token->token, 0, i + 1);
@@ -121,6 +130,7 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 		if (ft_strncmp(env->var_equal, var_tmp, ft_strlen(env->var_equal)) == 0)
 		{
 			ft_is_in_env(env, token, data, flag);
+			dprintf(2, "passe dans la boucle env (is in env)\n");//
 			ft_check_unset_in_export(var_name, data);
 			ft_handle_malloc(DELONE, var_tmp, 0, NULL);
 			ft_export_path_home(env, data, flag);
@@ -130,9 +140,12 @@ int	ft_check_export(t_token *token, t_data *data, int flag)
 	}
 	// pour lstadd :
 	// 1/ verifier que pas dans export sinon supprimer de export
-	// 2/ réécrire le token si token->plus = 1 (fonction en haut)
+	// 2/ réécrire le token si token->plus = 1 (fonction en haut) - NON car nouveau
 	if (env == NULL)
+	{
 		ft_lstadd_env(&(data->env), token->token, data, flag);
+		ft_check_unset_in_export(var_name, data);
+	}
 	env = data->env;
 	ft_handle_malloc(DELONE, var_tmp, 0, NULL);
 	return (0);
@@ -185,7 +198,10 @@ static int	ft_get_export(t_data *data, t_token *token, int *res, int flag)
 	else if (token->token[i] == '=')
 		*res = ft_check_export(token, data, flag);
 	else if (token->token[i] == '\0')
-		*res = ft_add_export(token, data, flag);
+	{
+		dprintf(2, "seulement alphanum\n");
+		*res = ft_add_export(token, data, flag, ft_strlen(token->token));
+	}
 	return (0);
 }
 
