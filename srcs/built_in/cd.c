@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/27 10:27:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 10:36:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,12 @@ int	ft_update_cwd(t_token *t, t_data *data, int flag)
 			if (tmp1)
 				ft_handle_malloc(flag + TAB_STR1, tmp1, 0, data);
 			data->cwd_err = 1;
-			ft_handle_malloc(DELONE, tmp1, 0, NULL);//inutile normalement car nul
+			ft_handle_malloc(DELONE, tmp1, 0, NULL);
 			ft_handle_malloc(DELONE, tmp2, 0, NULL);
 			return (ft_msg(1, ERRCWD, "", ""));
 		}
 		ft_handle_malloc(flag + TAB_STR1, tmp1, 0, data);
+		data->cwd_err = 0;
 		ft_handle_malloc(DELONE, data->cwd, 0, NULL);
 		data->cwd = ft_strdup(tmp1);
 		ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
