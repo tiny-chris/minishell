@@ -6,13 +6,13 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 16:21:40 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/26 15:31:01 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:51:41 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_clean_var_tmp(char **var_tmp, char **var_name)
+void	ft_clean_var_tmp(char **var_tmp, char **var_name)
 {
 	ft_handle_malloc(DELONE, (*var_tmp), 0, NULL);
 	(*var_tmp) = NULL;

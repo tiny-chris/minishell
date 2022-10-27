@@ -74,6 +74,7 @@ SRCS 		:= \
 			built_in/cd.c \
 			built_in/cd_2.c \
 			built_in/cd_3.c \
+			built_in/cd_4.c \
 			built_in/exit.c \
 			built_in/exit_utils.c \
 			exec/exec.c \
