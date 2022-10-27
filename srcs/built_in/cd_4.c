@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/27 16:06:20 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:51:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,10 @@ int	ft_update_cwd(t_token *t, t_data *data, int flag)
 int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 {
 	t_env	*env;
-	int		pwd_null;
 	t_token	*token;
 	int		res;
 
 	env = data->env;
-	pwd_null = 0;
 	token = cmd->token->next;
 	if (ft_update_cwd(token, data, flag))
 		return (1);
@@ -88,10 +86,10 @@ int	ft_update_pwd(t_cmd *cmd, t_data *data, int flag)
 	if (res == -1)
 	{
 		data->tmp_oldpwd = NULL;
-		pwd_null = 1;
+		data->pwd_null++;
 	}
 	env = data->env;
-	ft_new_oldpwd(env, data, flag, pwd_null);
+	ft_new_oldpwd(env, data, flag);
 	if (data->tmp_oldpwd)
 		ft_handle_malloc(DELONE, data->tmp_oldpwd, 0, NULL);
 	return (0);

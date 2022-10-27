@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/24 17:41:34 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/27 17:09:58 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ static void	ft_print_env_lst(t_env *env, t_token *token)
 			tmp = tmp->next;
 		}
 		if (tmp == NULL)
-			ft_putendl_fd(env->envp, STDOUT_FILENO);
+		{
+			if (env->envp)
+				ft_putendl_fd(env->envp, STDOUT_FILENO);
+		}
 		env = env->next;
 	}
 }

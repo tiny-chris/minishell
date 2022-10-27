@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:40:51 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/18 22:24:44 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:50:48 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 void	ft_oldpwd_nopwd(t_env *env, t_data *data, int flag)
 {
-	if (env->content)
+	if (env->content && data->pwd_null == 1)
 	{
 		ft_handle_malloc(DELONE, env->content, 0, NULL);
 		env->content = NULL;
 		if (env->envp)
 			ft_handle_malloc(DELONE, env->envp, 0, NULL);
-		env->envp = ft_strdup("OLDPWD=");
-		ft_handle_malloc(flag + TAB_STR1, env->envp, 0, data);
+		env->envp = NULL;
 	}
 	else
 	{
@@ -38,7 +37,8 @@ void	ft_oldpwd_pwd(t_env *env, t_data *data, int flag)
 {
 	if (!data->tmp_oldpwd)
 	{
-		ft_handle_malloc(DELONE, env->content, 0, NULL);
+		if (env->content)
+			ft_handle_malloc(DELONE, env->content, 0, NULL);
 		env->content = NULL;
 		if (env->envp)
 			ft_handle_malloc(DELONE, env->envp, 0, NULL);
@@ -47,7 +47,8 @@ void	ft_oldpwd_pwd(t_env *env, t_data *data, int flag)
 	}
 	else
 	{
-		ft_handle_malloc(DELONE, env->content, 0, NULL);
+		if (env->content)
+			ft_handle_malloc(DELONE, env->content, 0, NULL);
 		env->content = ft_strdup(data->tmp_oldpwd);
 		ft_handle_malloc(flag + TAB_STR1, env->content, 0, data);
 		if (env->envp)
@@ -57,14 +58,14 @@ void	ft_oldpwd_pwd(t_env *env, t_data *data, int flag)
 	}
 }
 
-void	ft_new_oldpwd(t_env *env, t_data *data, int flag, int pwd_null)
+void	ft_new_oldpwd(t_env *env, t_data *data, int flag)
 {
 	while (env)
 	{
 		if (ft_strncmp(env->var_equal, "OLDPWD=", 7) == 0 \
 			&& (ft_strlen(env->var_equal) == 7))
 		{
-			if (pwd_null == 1)
+			if (data->pwd_null)
 				ft_oldpwd_nopwd(env, data, flag);
 			else
 				ft_oldpwd_pwd(env, data, flag);

@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/27 15:52:06 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:47:57 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ typedef struct s_data
 	t_env			*env_path;
 	char			**s_env_path;
 	char			*tmp_oldpwd;
+	int				pwd_null;
 	int				sigint_hd;
 }	t_data;
 
@@ -425,6 +426,7 @@ int		ft_export(t_cmd *cmd, t_data *data, int flag);
 int		ft_check_export(t_token *token, t_data *data, int flag, char *var_name);
 void	ft_display_export(t_data *data, int flag);
 int		ft_add_export(t_token *token, t_data *data, int flag, int len);
+void	ft_exp_add_var(t_token *token, t_data *data, int flag, char *var_name);
 
 int		ft_unset(t_cmd *cmd, t_data *data);
 int		ft_check_unset(t_token *token, t_data *data);
@@ -434,7 +436,7 @@ int		ft_cd(t_cmd *cmd, t_data *data, int flag);
 int		ft_update_pwd(t_cmd *cmd, t_data *data, int flag);
 int		ft_update_cwd(t_token *token, t_data *data, int flag);
 int		ft_exec_cd(t_token *token, t_cmd *cmd, t_data *data, int flag);
-void	ft_new_oldpwd(t_env *env, t_data *data, int flag, int pwd_null);
+void	ft_new_oldpwd(t_env *env, t_data *data, int flag);
 void	ft_oldpwd_pwd(t_env *env, t_data *data, int flag);
 void	ft_oldpwd_nopwd(t_env *env, t_data *data, int flag);
 int		ft_new_pwd(t_env *env, t_data *data, t_token *token, int flag);

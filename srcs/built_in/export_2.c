@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 16:21:40 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/27 15:51:41 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:47:29 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,14 @@ static void	ft_export_path_home(t_env *env, t_data *data, int flag)
 		ft_get_home(data, flag);
 }
 
+void	ft_exp_add_var(t_token *token, t_data *data, int flag, char *var_name)
+{
+	ft_lstadd_env(&(data->env), token->token, data, flag);
+	if (ft_strncmp(token->token, "PWD=", 4) == 0)
+		data->pwd_null = 0;
+	ft_check_unset_in_export(var_name, data);
+}
+
 int	ft_check_export(t_token *token, t_data *data, int flag, char *var_name)
 {
 	t_env	*env;
@@ -81,10 +89,7 @@ int	ft_check_export(t_token *token, t_data *data, int flag, char *var_name)
 		env = env->next;
 	}
 	if (env == NULL)
-	{
-		ft_lstadd_env(&(data->env), token->token, data, flag);
-		ft_check_unset_in_export(var_name, data);
-	}
+		ft_exp_add_var(token, data, flag, var_name);
 	ft_clean_var_tmp(&var_tmp, &var_name);
 	return (0);
 }

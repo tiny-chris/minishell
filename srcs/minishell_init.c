@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 21:55:56 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/27 10:00:23 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:23:55 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	ft_init_data_0(t_data *data)
 	data->env_path = NULL;
 	data->s_env_path = NULL;
 	data->tmp_oldpwd = NULL;
+	data->pwd_null = 0;
 	data->sigint_hd = 0;
 }
 
