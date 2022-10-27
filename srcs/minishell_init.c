@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 21:55:56 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/25 19:41:38 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/27 10:00:23 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	ft_init_data_0(t_data *data)
 	data->s_env = NULL;
 	data->export = NULL;
 	data->cwd = NULL;
+	data->cwd_err = 0;
 	data->oldpwd = NULL;
 	data->home = NULL;
 	data->val_exit = 0;
