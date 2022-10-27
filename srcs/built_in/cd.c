@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 16:32:11 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/18 22:54:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 10:36:19 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,49 @@
 
 int	ft_update_cwd(t_token *t, t_data *data, int flag)
 {
-	if (data->oldpwd)
-		ft_handle_malloc(DELONE, data->oldpwd, 0, NULL);
-	data->oldpwd = ft_strdup(data->cwd);
-	ft_handle_malloc(flag + TAB_STR1, data->oldpwd, 0, data);
-	ft_handle_malloc(DELONE, data->cwd, 0, NULL);
+	char	*tmp1;
+	char	*tmp2;
+
+	tmp1 = NULL;
+	tmp2 = NULL;
+	if (data->cwd)
+	{
+		tmp2 = ft_strdup(data->cwd);
+		ft_handle_malloc(flag + TAB_STR1, tmp2, 0, data);
+	}
+	printf("val de tmp2 (avant getcwd) = %s\n", tmp2);
+	printf("val de cwd_err (avant getcwd) = %d\n", data->cwd_err);
 	if (t && (ft_strncmp(t->token, "//", 2) == 0 && ft_strlen(t->token) == 2))
+	{
+		ft_handle_malloc(DELONE, data->cwd, 0, NULL);
 		data->cwd = ft_strdup("//");
+		ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
+	}
 	else
 	{
-		data->cwd = getcwd(NULL, 0);
-		if (!data->cwd)
+		tmp1 = getcwd(NULL, 0);
+		printf("val de tmp1 (post getcwd) = %s\n", tmp1);
+		if (tmp1 == NULL || (data->cwd_err == 1 && t->token[0] != '/'))
+		{
+			if (tmp1)
+				ft_handle_malloc(flag + TAB_STR1, tmp1, 0, data);
+			data->cwd_err = 1;
+			ft_handle_malloc(DELONE, tmp1, 0, NULL);
+			ft_handle_malloc(DELONE, tmp2, 0, NULL);
 			return (ft_msg(1, ERRCWD, "", ""));
+		}
+		ft_handle_malloc(flag + TAB_STR1, tmp1, 0, data);
+		data->cwd_err = 0;
+		ft_handle_malloc(DELONE, data->cwd, 0, NULL);
+		data->cwd = ft_strdup(tmp1);
+		ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
+		ft_handle_malloc(DELONE, tmp1, 0, NULL);
 	}
-	ft_handle_malloc(flag + TAB_STR1, data->cwd, 0, data);
+	if (data->oldpwd)
+		ft_handle_malloc(DELONE, data->oldpwd, 0, NULL);
+	data->oldpwd = ft_strdup(tmp2);
+	ft_handle_malloc(flag + TAB_STR1, data->oldpwd, 0, data);
+	ft_handle_malloc(DELONE, tmp2, 0, NULL);
 	return (0);
 }
 

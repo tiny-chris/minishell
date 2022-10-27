@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/26 15:45:49 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:54:27 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ typedef struct s_data
 	char			**s_env;
 	t_env			*export;
 	char			*cwd;
+	int				cwd_err;
 	char			*oldpwd;
 	char			*home;
 	int				val_exit;
