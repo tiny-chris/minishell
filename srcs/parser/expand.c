@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 14:37:41 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/28 17:27:25 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:50:15 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ int	ft_expand_cmd_len(char *undoll_cmd, t_data *data)
 			if (undoll_cmd[i] == '?')
 				len += ft_get_error_size(data) - 1;
 			else if (ft_isdigit(undoll_cmd[i]))
+			{
+				len -= 2;//
 				i++;
+			}
 			else
 				len += ft_get_expand_size(undoll_cmd, &i, data);
 		}
