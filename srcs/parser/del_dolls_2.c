@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 05:03:29 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/28 16:16:30 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ static void	ft_undoll_len_btw_quotes(char *no_redir_cmd, int *i, int *len)
 					(*len)--;
 					(*i)++;
 				}
-				if (ft_isdigit(no_redir_cmd[*i]))
-					(*len) -= 2;
-				else if (no_redir_cmd[*i] == c)
+				// if (ft_isdigit(no_redir_cmd[*i]))
+				// 	(*len) -= 2;
+				// else if (no_redir_cmd[*i] == c)
+				if (no_redir_cmd[*i] == c)
 					(*i)--;
 			}
 			(*i)++;
@@ -75,11 +76,11 @@ static void	ft_undoll_len_doll(char *no_redir_cmd, int *i, int *len)
 		}
 		if (no_redir_cmd[*i] == 39 || no_redir_cmd[*i] == 34)
 			(*len)--;
-		else if (ft_isdigit(no_redir_cmd[*i]))
-		{
-			(*len) -= 2;
-			(*i)++;
-		}
+		// else if (ft_isdigit(no_redir_cmd[*i]))
+		// {
+		// 	(*len) -= 2;
+		// 	(*i)++;
+		// }
 		else if (no_redir_cmd[*i] && no_redir_cmd[*i] == '?')
 			(*i)++;
 		(*i)--;

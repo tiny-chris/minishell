@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 12:24:34 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 16:56:51 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:29:07 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,34 @@ void	ft_fill_return_code(t_data *data, char *clean_cmd, int *j)
 		(*j)++;
 		k++;
 	}
+}
+
+char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data)
+{
+	char	*clean_cmd;
+	t_int	var;
+
+	var.i = 0;
+	var.j = 0;
+	clean_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
+	while (undoll_cmd[var.i])
+	{
+		if (undoll_cmd[var.i] == '$')
+		{
+			(var.i)++;
+			if (undoll_cmd[var.i] == '?')
+			{
+				ft_fill_return_code(data, clean_cmd, &(var.j));
+				(var.i)++;
+			}
+			if (ft_isdigit(undoll_cmd[var.i]))
+				(var.i)++;
+			else
+				ft_fill_ex2(undoll_cmd, &var, clean_cmd, data);
+		}
+		else
+			ft_fill_normal(clean_cmd, undoll_cmd, &var.i, &var.j);
+	}
+	clean_cmd[var.j] = '\0';
+	return (clean_cmd);
 }

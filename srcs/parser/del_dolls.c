@@ -6,7 +6,7 @@
 /*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/20 17:21:23 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/28 17:10:47 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void	ft_neg_dolls(char *undoll_cmd)
 **	2. Copies the matching string in 'undoll_cmd' of the t_cmd 'cmd' linked list
 **	<REMARKS>	1. useless dollars are those:
 **					- when there are consecutive dollars: keep only 1
-**					- when the next character is a digit and they are not into
-**					simple quotes
-**				2. useless spaces consecutive ones outside closed quotes that could
-**					appear again because of removed redirections
+**					//- when the next character is a digit and they are not into
+**					//simple quotes // not here
+**				2. useless spaces are consecutive ones outside closed quotes 
+**					that could appear again because of removed redirections
 */
 int	ft_del_dolls(t_data *data)
 {
@@ -85,6 +85,7 @@ int	ft_del_dolls(t_data *data)
 	while (cmd)
 	{
 		len = ft_undoll_cmd_len(cmd->no_redir_cmd);
+		dprintf(2, "len de no redir = %d\n", len);
 		cmd->undoll_cmd = ft_fill_undoll_cmd(cmd->no_redir_cmd, len, i, j);
 		if (!cmd->undoll_cmd)
 			return (1);

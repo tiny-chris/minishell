@@ -3,44 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 14:37:41 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/20 14:50:03 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/28 17:27:25 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_val_exit;
-
-char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data)
-{
-	char	*clean_cmd;
-	t_int	var;
-
-	var.i = 0;
-	var.j = 0;
-	clean_cmd = ft_handle_malloc(MALLOC_M + TAB_STR1, NULL, (len + 1), NULL);
-	while (undoll_cmd[var.i])
-	{
-		if (undoll_cmd[var.i] == '$')
-		{
-			(var.i)++;
-			if (undoll_cmd[var.i] == '?')
-			{
-				ft_fill_return_code(data, clean_cmd, &(var.j));
-				(var.i)++;
-			}
-			else
-				ft_fill_ex2(undoll_cmd, &var, clean_cmd, data);
-		}
-		else
-			ft_fill_normal(clean_cmd, undoll_cmd, &var.i, &var.j);
-	}
-	clean_cmd[var.j] = '\0';
-	return (clean_cmd);
-}
 
 int	ft_get_expand_size(char *undoll_cmd, int *i, t_data *data)
 {
@@ -84,6 +56,11 @@ int	ft_get_error_size(t_data *data)
 	return (len);
 }
 
+/*	Gets the length of the cmd including expands
+**		1. if quotes : if quotes 34 then $ then digit --> expand to nothing
+**		2. if $ : if followed by a digit --> expand to nothing
+**		3. else 
+*/
 int	ft_expand_cmd_len(char *undoll_cmd, t_data *data)
 {
 	int		i;
@@ -98,6 +75,8 @@ int	ft_expand_cmd_len(char *undoll_cmd, t_data *data)
 			i++;
 			if (undoll_cmd[i] == '?')
 				len += ft_get_error_size(data) - 1;
+			else if (ft_isdigit(undoll_cmd[i]))
+				i++;
 			else
 				len += ft_get_expand_size(undoll_cmd, &i, data);
 		}
@@ -116,10 +95,12 @@ int	ft_expand(t_data *data)
 	int		len;
 
 	cmd = data->cmd;
+	dprintf(2, "val de undoll cmd = %s\n", cmd->undoll_cmd);
 	len = 0;
 	while (cmd)
 	{
 		len = ft_expand_cmd_len(cmd->undoll_cmd, data);
+		dprintf(2, "len de expand = %d\n", len);//
 		cmd->clean_cmd = ft_fill_clean_cmd(cmd->undoll_cmd, len, data);
 		cmd = cmd->next;
 	}
