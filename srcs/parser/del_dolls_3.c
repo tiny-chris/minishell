@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   del_dolls_3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:17:21 by cgaillag          #+#    #+#             */
-/*   Updated: 2022/10/28 17:17:54 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/28 18:09:16 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_fill_undoll_doll(char *no_redir, int *i, char *undoll, int *j)
 			(*i)++;
 		if (no_redir[*i] == 39 || no_redir[*i] == 34)
 			(*i)--;
-		else// if (!ft_isdigit(no_redir[*i]))
+		else
 		{
 			undoll[*j] = '$';
 			(*j)++;
@@ -73,7 +73,6 @@ static void	ft_fill_doll_dquotes(char *no_redir, int *i, char *undoll, int *j)
 		undoll[*j] = no_redir[*i];
 		(*j)++;
 	}
-	// else if (ft_isdigit(no_redir[*i]) == 0 && no_redir[*i] != 34)
 	else if (no_redir[*i] != 34)
 	{
 		undoll[*j] = '$';

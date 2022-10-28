@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/27 17:47:57 by cgaillag         ###   ########.fr       */
+/*   Updated: 2022/10/28 18:17:31 by lmelard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,6 +267,7 @@ int		ft_expand_cmd_len(char *undoll_cmd, t_data *data);
 int		ft_get_expand_size(char *undoll_cmd, int *i, t_data *data);
 int		ft_get_error_size(t_data *data);
 char	*ft_fill_clean_cmd(char *undoll_cmd, int len, t_data *data);
+void	ft_clean_cmd_doll(t_int *var, char *undoll, char *clean_cmd, t_data *d);
 void	ft_fill_ex2(char *undoll_cmd, t_int *var, \
 	char *clean_cmd, t_data *data);
 void	ft_fill_ex3(t_env *env, char *clean_cmd, t_int *var);
