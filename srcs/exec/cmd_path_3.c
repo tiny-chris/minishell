@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_path_3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 21:40:34 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/21 21:45:17 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/30 12:44:01 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,6 @@
 extern int	g_val_exit;
 
 /*	<SUMMARY> Checks if absolute path as a directory & its access
-**
-**	Details (TO BE REMOVED) !!!!!!!!!!!!!!!!!!!!!!!!!!
-**	Check #1: is it a directory?
-**	- if yes: 'is a directory', 126
-**	- if no:
-**		Check #2: is the last character of token a '/' (slash)?
-**		- if no:
-**			Check #3: is access 'F_OK' = success?
-**				- if yes:
-**					Check #4: is access 'X_OK' = success?
-**						- if yes: return token
-**						- it no: 'permission denied', 126
-**				- if no: 'no such file or directory', 127
-**		- if yes (last char = '/')
-**			Check #5: is access 'F_OK' = success?
-**				- if yes: 'not a directory', 126
-**				- if no: 'no such file or directory', 127
 */
 
 static void	ft_check_directory(char *token, char *full_path)
@@ -81,13 +64,37 @@ static void	ft_check_abs_backslash(char *full_path, char *token, t_data *data)
 		ft_handle_malloc(DELONE, full_path, 0, NULL);
 }
 
+static void	ft_check_sub_directory(char *token, char *tmp)
+{
+	DIR		*directory;
+
+	directory = NULL;
+	directory = opendir(tmp);
+	if (directory == NULL)
+	{
+		g_val_exit = ft_msg(126, token, ": ", ERRNDR);
+		ft_handle_malloc(0, NULL, 0, NULL);
+		exit (g_val_exit);
+	}
+	closedir(directory);
+}
+
 char	*ft_check_abs_path(char *token, char *full_path, t_data *data, int len)
 {
+	char	*tmp;
+
+	tmp = NULL;
 	if (!token)
 		return (NULL);
 	ft_check_directory(token, full_path);
 	if (token[len - 1] != '/')
 	{
+		tmp = ft_path_last_slash(full_path, tmp);
+		if (tmp)
+		{
+			ft_check_sub_directory(token, tmp);
+			ft_handle_malloc(DELONE, tmp, 0, NULL);
+		}
 		if (access((const char *)full_path, F_OK) == 0)
 			return (ft_check_abs_path_nobackslash(full_path, token));
 	}

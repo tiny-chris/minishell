@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmelard <lmelard@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cgaillag <cgaillag@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:48:07 by lmelard           #+#    #+#             */
-/*   Updated: 2022/10/28 18:17:31 by lmelard          ###   ########.fr       */
+/*   Updated: 2022/10/30 12:44:31 by cgaillag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,6 +387,7 @@ void	ft_abs_last_slash(char *token, char *full_path, \
 	t_data *data, char *tmp);
 char	*ft_abs_no_last_slash(char *token, char *full_path);
 void	ft_check_abspath_directory(char *token, char *full_path);
+char	*ft_path_last_slash(char *full_path, char *tmp);
 
 char	*ft_get_path_parent(char *cwd_update, t_data *data);
 char	*ft_get_full_path(t_cmd *cmd, t_data *data);
